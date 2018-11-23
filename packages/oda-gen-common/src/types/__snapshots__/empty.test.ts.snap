@@ -1,0 +1,295 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`override by name override objects 1`] = `
+MainSchema {
+  "_composite": Array [
+    FirstPackage {
+      "_composite": Array [
+        UserHooks {
+          "_hooks": Array [
+            Object {
+              "RootMutation.createUser": 1,
+              "RootMutation.updateUser": 1,
+            },
+          ],
+          "_name": "UserHooks",
+        },
+        UserOriginal {
+          "_hooks": Array [
+            Object {
+              "RootMutation.createUser": true,
+              "RootMutation.updateUser": true,
+            },
+          ],
+          "_name": "User",
+          "_queryEntry": Object {
+            "queryEntry": Array [
+              "override",
+            ],
+          },
+          "_resolver": Object {
+            "User": Object {
+              "id": "User",
+              "isAdmin": true,
+              "isSystem": true,
+              "toBeRemoved": null,
+            },
+          },
+          "_viewerEntry": null,
+        },
+      ],
+      "_name": "First",
+    },
+    SecondPackage {
+      "_composite": Array [
+        User {
+          "_hooks": Array [
+            Object {
+              "RootMutation.createUser": true,
+              "RootMutation.updateUser": true,
+            },
+          ],
+          "_name": "User",
+          "_queryEntry": Object {
+            "queryEntry": Array [
+              "override",
+            ],
+          },
+          "_resolver": Object {
+            "User": Object {
+              "id": "User",
+              "isSystem": true,
+              "toBeRemoved": null,
+            },
+          },
+          "_viewerEntry": null,
+        },
+      ],
+      "_name": "Second",
+    },
+  ],
+  "_compositeOf": Immutable.OrderedMap {
+    "UserHooks": UserHooks {
+      "_hooks": Array [
+        Object {
+          "RootMutation.createUser": 1,
+          "RootMutation.updateUser": 1,
+        },
+      ],
+      "_name": "UserHooks",
+    },
+    "User": UserOriginal {
+      "_hooks": Array [
+        Object {
+          "RootMutation.createUser": true,
+          "RootMutation.updateUser": true,
+        },
+      ],
+      "_name": "User",
+      "_queryEntry": Object {
+        "queryEntry": Array [
+          "override",
+        ],
+      },
+      "_resolver": Object {
+        "User": Object {
+          "id": "User",
+          "isAdmin": true,
+          "isSystem": true,
+          "toBeRemoved": null,
+        },
+      },
+      "_viewerEntry": null,
+    },
+    "First": FirstPackage {
+      "_composite": Array [
+        UserHooks {
+          "_hooks": Array [
+            Object {
+              "RootMutation.createUser": 1,
+              "RootMutation.updateUser": 1,
+            },
+          ],
+          "_name": "UserHooks",
+        },
+        UserOriginal {
+          "_hooks": Array [
+            Object {
+              "RootMutation.createUser": true,
+              "RootMutation.updateUser": true,
+            },
+          ],
+          "_name": "User",
+          "_queryEntry": Object {
+            "queryEntry": Array [
+              "override",
+            ],
+          },
+          "_resolver": Object {
+            "User": Object {
+              "id": "User",
+              "isAdmin": true,
+              "isSystem": true,
+              "toBeRemoved": null,
+            },
+          },
+          "_viewerEntry": null,
+        },
+      ],
+      "_name": "First",
+    },
+    "Second": SecondPackage {
+      "_composite": Array [
+        User {
+          "_hooks": Array [
+            Object {
+              "RootMutation.createUser": true,
+              "RootMutation.updateUser": true,
+            },
+          ],
+          "_name": "User",
+          "_queryEntry": Object {
+            "queryEntry": Array [
+              "override",
+            ],
+          },
+          "_resolver": Object {
+            "User": Object {
+              "id": "User",
+              "isSystem": true,
+              "toBeRemoved": null,
+            },
+          },
+          "_viewerEntry": null,
+        },
+      ],
+      "_name": "Second",
+    },
+  },
+  "_extendsOf": Immutable.OrderedMap {},
+  "_hooks": Array [
+    Object {
+      "RootMutation.createUser": 1,
+      "RootMutation.updateUser": 1,
+    },
+    Object {
+      "RootMutation.createUser": true,
+      "RootMutation.updateUser": true,
+    },
+  ],
+  "_name": "Main",
+  "_queryEntry": Object {
+    "queryEntry": Array [
+      "override",
+    ],
+  },
+  "_resolver": Object {
+    "User": Object {
+      "id": "User",
+      "isAdmin": true,
+      "isSystem": true,
+      "toBeRemoved": null,
+    },
+  },
+  "_viewerEntry": Object {},
+}
+`;
+
+exports[`override in module override objects 1`] = `
+User {
+  "_composite": Array [
+    UserHooks {
+      "_hooks": Array [
+        Object {
+          "RootMutation.createUser": 1,
+          "RootMutation.updateUser": 1,
+        },
+      ],
+      "_name": "UserHooks",
+    },
+  ],
+  "_compositeOf": Immutable.OrderedMap {
+    "UserHooks": UserHooks {
+      "_hooks": Array [
+        Object {
+          "RootMutation.createUser": 1,
+          "RootMutation.updateUser": 1,
+        },
+      ],
+      "_name": "UserHooks",
+    },
+  },
+  "_extend": Array [
+    UserOriginal {
+      "_hooks": Array [
+        Object {
+          "RootMutation.createUser": false,
+          "RootMutation.updateUser": true,
+        },
+      ],
+      "_name": "User",
+      "_queryEntry": Object {
+        "queryEntry": Array [
+          "override",
+        ],
+      },
+      "_resolver": Object {
+        "User": Object {
+          "id": "User",
+          "isAdmin": true,
+          "isSystem": true,
+          "toBeRemoved": null,
+        },
+      },
+    },
+  ],
+  "_extendsOf": Immutable.OrderedMap {
+    "User": UserOriginal {
+      "_hooks": Array [
+        Object {
+          "RootMutation.createUser": false,
+          "RootMutation.updateUser": true,
+        },
+      ],
+      "_name": "User",
+      "_queryEntry": Object {
+        "queryEntry": Array [
+          "override",
+        ],
+      },
+      "_resolver": Object {
+        "User": Object {
+          "id": "User",
+          "isAdmin": true,
+          "isSystem": true,
+          "toBeRemoved": null,
+        },
+      },
+    },
+  },
+  "_hooks": Array [
+    Object {
+      "RootMutation.createUser": false,
+      "RootMutation.updateUser": true,
+    },
+    Object {
+      "RootMutation.createUser": 1,
+      "RootMutation.updateUser": 1,
+    },
+  ],
+  "_name": "User",
+  "_queryEntry": Object {
+    "queryEntry": Array [
+      "override",
+    ],
+  },
+  "_resolver": Object {
+    "User": Object {
+      "id": "User",
+      "isAdmin": true,
+      "isSystem": true,
+      "toBeRemoved": null,
+    },
+  },
+}
+`;

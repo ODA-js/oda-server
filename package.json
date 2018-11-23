@@ -1,0 +1,40 @@
+{
+  "name": "oda-server",
+  "private": true,
+  "scripts": {
+    "clean": "git clean -dfqX -- ./node_modules **/{dist,node_modules}/",
+    "compile": "tsc --build tsconfig.build.json",
+    "compile:clean": "tsc --build tsconfig.build.json --clean",
+    "watch": "tsc --build tsconfig.build.json --watch",
+    "release": "npm run clean && npm ci && lerna publish --exact",
+    "postinstall": "lerna run prepare && npm run compile",
+    "lint": "prettier-check '**/*.{js,ts}'",
+    "lint-fix": "prettier '**/*.{js,ts}' --write",
+    "test": "jest --verbose",
+    "test:clean": "jest --clearCache",
+    "test:watch": "jest --verbose --watchAll",
+    "testonly": "npm test",
+    "test:ci": "npm run coverage -- --ci --maxWorkers=2  --reporters=default --reporters=jest-junit",
+    "coverage": "npm test -- --coverage",
+    "coverage:upload": "codecov"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "devDependencies": {
+    "lerna": "^3.4.3"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
