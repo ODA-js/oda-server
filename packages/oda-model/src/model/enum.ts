@@ -1,17 +1,13 @@
 import clean from '../lib/json/clean';
-import {
-  MetaModelType,
-  EnumStorage,
-  EnumItemInput,
-  EnumInput,
-} from './interfaces';
+import { MetaModelType, EnumStorage, EnumInput } from './interfaces';
 import { ModelBase } from './modelbase';
+import { IEnum, IEnumItemsInput } from './interfaces/model';
 
-export class Enum extends ModelBase {
+export class Enum extends ModelBase implements IEnum {
   public modelType: MetaModelType = 'union';
   protected $obj!: EnumStorage;
 
-  get items(): EnumItemInput[] {
+  get items(): IEnumItemsInput[] {
     return this.$obj.items;
   }
 
@@ -46,17 +42,7 @@ export class Enum extends ModelBase {
     let res = super.toObject();
     return clean({
       ...res,
-      items: props.items || props.items_,
-    });
-  }
-
-  // it get clean object with no default values
-  public toJSON() {
-    let props = this.$obj;
-    let res = super.toJSON();
-    return clean({
-      ...res,
-      items: props.items_,
+      items: props.items,
     });
   }
 }

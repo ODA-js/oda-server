@@ -11,7 +11,7 @@ export default class implements Rule<IRelationContext> {
     if (entity) {
       let refField = entity.fields.get(context.relation.ref.field);
       if (refField && !refField.indexed) {
-        const update = refField.toJSON();
+        const update = refField.toObjec();
         update.indexed = true;
         update.entity = context.entity.name;
         refField.updateWith(update);

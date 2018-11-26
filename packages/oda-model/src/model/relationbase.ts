@@ -154,17 +154,6 @@ export class RelationBase extends Metadata implements IRelation {
     });
   }
 
-  public toJSON(): RelationBaseJSON {
-    let props = this.$obj;
-    return clean({
-      ...super.toJSON(),
-      name: props.name_,
-      fields: props.fields && Array.from(props.fields.values()),
-      opposite: props.opposite,
-      embedded: this.embedded || undefined,
-    });
-  }
-
   public updateWith(obj: RelationBaseInput): void {
     if (obj) {
       const result: RelationBaseStorage = { ...this.$obj };
@@ -174,7 +163,6 @@ export class RelationBase extends Metadata implements IRelation {
 
       let name = $name ? inflected.camelize($name.trim()) : $name;
 
-      result.name_ = $name;
       result.name = name;
 
       result.opposite = opposite;
@@ -204,10 +192,8 @@ export class RelationBase extends Metadata implements IRelation {
       let field = $field;
 
       result.entity = entity;
-      result.entity_ = $entity;
 
       result.field = field;
-      result.field_ = $field;
 
       this.$obj = result;
     }

@@ -1,8 +1,9 @@
 import clean from '../lib/json/clean';
 import { FieldArgs, MutationInput, MutationStorage } from './interfaces';
 import { ModelBase } from './modelbase';
+import { IMutation } from './interfaces/model';
 
-export class Mutation extends ModelBase {
+export class Mutation extends ModelBase implements IMutation {
   protected $obj!: MutationStorage;
 
   public get args(): FieldArgs[] {

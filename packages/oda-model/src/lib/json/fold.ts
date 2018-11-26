@@ -1,6 +1,6 @@
 import set from './set';
 
-const fold = data => {
+const fold = (data: any) => {
   let result = data;
   if (Array.isArray(data)) {
     result = [];

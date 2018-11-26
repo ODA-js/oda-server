@@ -8,8 +8,9 @@ import {
 } from './interfaces';
 import { ModelBase } from './modelbase';
 import decapitalize from './../lib/decapitalize';
+import { IFieldBase } from './interfaces/model';
 
-export class FieldBase extends ModelBase {
+export class FieldBase extends ModelBase implements IFieldBase {
   public modelType: MetaModelType = 'field';
   protected $obj: FieldBaseStorage;
 

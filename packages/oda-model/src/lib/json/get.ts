@@ -1,4 +1,4 @@
-const get = (data, path) => {
+const get = (data: any, path: string): any => {
   if (Array.isArray(data)) {
     const result = [];
     for (let i = 0, len = data.length; i < len; i++) {
@@ -10,10 +10,12 @@ const get = (data, path) => {
       const parts = path.split('.');
       if (Array.isArray(parts)) {
         const curr = parts.shift();
-        if (parts.length > 0) {
-          return get(data[curr], parts.join('.'));
+        if (curr) {
+          if (parts.length > 0) {
+            return get(data[curr], parts.join('.'));
+          }
+          return data[curr];
         }
-        return data[curr];
       }
     }
     return data[path];

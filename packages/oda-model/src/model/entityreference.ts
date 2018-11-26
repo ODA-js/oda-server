@@ -99,14 +99,6 @@ export class EntityReference implements IEntityRef {
     });
   }
 
-  public toJSON() {
-    return clean({
-      backField: this.$obj.backField_,
-      entity: this.$obj.entity_,
-      field: this.$obj.field_,
-    });
-  }
-
   public updateWith(obj: EntityReferenceInput) {
     this.backField = obj.backField || this.backField;
     this.field = obj.field || this.field;

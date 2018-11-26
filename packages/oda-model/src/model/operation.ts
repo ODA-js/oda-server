@@ -1,8 +1,9 @@
 import clean from '../lib/json/clean';
 import { MetaModelType, OperationStorage, OperationInput } from './interfaces';
 import { FieldBase } from './fieldbase';
+import { IOperation } from './interfaces/model';
 
-export class Operation extends FieldBase {
+export class Operation extends FieldBase implements IOperation {
   public modelType: MetaModelType = 'operation';
   protected $obj!: OperationStorage;
 

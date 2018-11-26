@@ -4,17 +4,18 @@ import get from './../lib/json/get';
 import set from './../lib/json/set';
 import {
   IValidate,
-  IValidationResult,
   IValidator,
   MetadataInput,
   MetaModelType,
+  ValidationResultInput,
 } from './interfaces';
+import { BaseMeta } from './interfaces/metadata';
 
-export class Metadata implements IValidate {
+export class Metadata<T extends BaseMeta> implements IValidate {
   public modelType?: MetaModelType;
-  public metadata?: { [key: string]: any };
+  public metadata!: T;
 
-  public validate(validator: IValidator): IValidationResult[] {
+  public validate(validator: IValidator): ValidationResultInput[] {
     return validator.check(this);
   }
 

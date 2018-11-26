@@ -1,13 +1,13 @@
 import clean from '../lib/json/clean';
 import { EntityReference } from './entityreference';
-import { BelongsToInput, BelongsToStorage, MetaModelType } from './interfaces';
+import { BelongsToInput, BelongsToStorage } from './interfaces';
 import { RelationBase } from './relationbase';
 
 /**
  * BelongsTo Relation
  */
 export class BelongsTo extends RelationBase {
-  protected $obj: BelongsToStorage;
+  protected $obj!: BelongsToStorage;
   get belongsTo(): EntityReference {
     return this.$obj.belongsTo;
   }
@@ -65,18 +65,6 @@ export class BelongsTo extends RelationBase {
     return clean({
       ...res,
       belongsTo: props.belongsTo ? props.belongsTo.toString() : undefined,
-    });
-  }
-
-  /**
-   * it get clean object with no default values
-   */
-  public toJSON(): BelongsToInput {
-    let props = this.$obj;
-    let res = super.toJSON();
-    return clean({
-      ...res,
-      belongsTo: props.belongsTo_,
     });
   }
 }

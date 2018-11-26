@@ -42,16 +42,6 @@ export class ModelBase extends Metadata {
     });
   }
 
-  public toJSON(_modelPackage?: ModelPackage): ModelBaseInput | undefined {
-    let props = this.$obj;
-    return clean({
-      ...super.toJSON(),
-      name: props.name_,
-      title: props.title_,
-      description: props.description_,
-    });
-  }
-
   public updateWith(obj: ModelBaseInput) {
     if (obj) {
       super.updateWith(obj);
@@ -77,19 +67,16 @@ export class ModelBase extends Metadata {
       }
       description = inflected.titleize(description);
 
-      result.name_ = $name;
       result.name = name;
 
-      result.title_ = $title;
       result.title = title;
 
-      result.description_ = $description;
       result.description = description;
       this.$obj = result;
     }
   }
 
   public clone() {
-    return new (<typeof ModelBase>this.constructor)(this.toJSON());
+    return new (<typeof ModelBase>this.constructor)(this.toObject());
   }
 }

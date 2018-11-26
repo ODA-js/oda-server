@@ -9,13 +9,13 @@ import { ModelBase } from './modelbase';
 
 export class Directive extends ModelBase {
   public modelType: MetaModelType = 'field';
-  protected $obj: DirectiveStorage;
+  protected $obj!: DirectiveStorage;
 
-  get args(): FieldArgs[] {
+  get args(): FieldArgs[] | undefined {
     return this.$obj.args;
   }
 
-  get on(): string[] {
+  get on(): string[] | undefined {
     return this.$obj.on;
   }
 
@@ -31,17 +31,6 @@ export class Directive extends ModelBase {
   public toObject() {
     let props = this.$obj;
     let res = super.toObject();
-    return clean({
-      ...res,
-      args: props.args,
-      on: props.on,
-    });
-  }
-
-  // it get clean object with no default values
-  public toJSON() {
-    let props = this.$obj;
-    let res = super.toJSON();
     return clean({
       ...res,
       args: props.args,

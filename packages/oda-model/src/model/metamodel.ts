@@ -9,10 +9,10 @@ import {
   IModel,
   IValidationResult,
   IValidator,
-  MetaModelStore,
+  MetaModelInput,
   MetaModelType,
-  ModelHook,
-  ModelPackageStore,
+  IModelHook,
+  ModelPackageInput,
   MutationInput,
   QueryInput,
 } from './interfaces';
@@ -80,7 +80,7 @@ export class MetaModel extends ModelPackage implements IModel {
 
   public loadModel(fileName: string = this.store) {
     let txt = fs.readFileSync(fileName);
-    let store = JSON.parse(txt.toString()) as MetaModelStore;
+    let store = JSON.parse(txt.toString()) as MetaModelInput;
     this.loadPackage(store);
   }
 
@@ -196,7 +196,7 @@ export class MetaModel extends ModelPackage implements IModel {
     return new Query(result);
   }
 
-  public applyHooks(hooks?: ModelHook[]) {
+  public applyHooks(hooks?: IModelHook[]) {
     if (hooks && !Array.isArray(hooks)) {
       hooks = [hooks];
     }
@@ -284,7 +284,7 @@ export class MetaModel extends ModelPackage implements IModel {
     }
   }
 
-  public addPackage(pckg: ModelPackageStore) {
+  public addPackage(pckg: ModelPackageInput) {
     let pack: ModelPackage;
     if (pckg.name && this.packages.has(pckg.name)) {
       pack = this.packages.get(pckg.name) as ModelPackage;
@@ -361,7 +361,7 @@ export class MetaModel extends ModelPackage implements IModel {
     pack.ensureAll();
   }
 
-  public loadPackage(store: MetaModelStore, hooks?: any[]) {
+  public loadPackage(store: MetaModelInput, hooks?: any[]) {
     this.reset();
 
     // must go first
@@ -414,7 +414,7 @@ export class MetaModel extends ModelPackage implements IModel {
 
     this.ensureDefaultPackage();
 
-    this.applyHooks(fold(hooks) as ModelHook[]);
+    this.applyHooks(fold(hooks) as IModelHook[]);
 
     if (Array.isArray(store.packages)) {
       store.packages.forEach(this.addPackage.bind(this));

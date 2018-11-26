@@ -65,7 +65,7 @@ function pushUnique(result: any[], current: any) {
   }
 }
 
-function removeIfExists(result, current: any) {
+function removeIfExists(result: any, current: any) {
   if (Array.isArray(current)) {
     current.forEach(item => {
       removeIfExists(result, item);

@@ -20,7 +20,7 @@ import { EntityBase } from './entitybase';
 export class Entity extends EntityBase implements IEntity {
   public modelType: MetaModelType = 'entity';
 
-  protected $obj: EntityStorage;
+  protected $obj!: EntityStorage;
 
   constructor(obj: EntityInput) {
     super(obj);
@@ -97,32 +97,6 @@ export class Entity extends EntityBase implements IEntity {
             modelPackage.mixins.has(i),
           ),
         });
-      }
-    }
-  }
-
-  public toJSON(modelPackage?: ModelPackage): EntityJSON {
-    if (!modelPackage) {
-      let res = super.toJSON();
-      return clean({
-        ...res,
-        implements: [...this.implements],
-        embedded: this.embedded,
-        abstract: this.abstract,
-      }) as any;
-    } else {
-      let modelRelations = modelPackage.relations.get(this.name);
-      if (modelRelations) {
-        let res = super.toJSON();
-        return clean({
-          ...res,
-          implements: [...this.implements].filter(i =>
-            modelPackage.mixins.has(i),
-          ),
-          abstract: this.abstract,
-        });
-      } else {
-        return {} as EntityJSON;
       }
     }
   }

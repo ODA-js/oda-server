@@ -1,16 +1,17 @@
 import clean from '../lib/json/clean';
 import { FieldArgs, QueryInput, QueryStorage } from './interfaces';
 import { ModelBase } from './modelbase';
+import { IQuery } from './interfaces/model';
 
-export class Query extends ModelBase {
+export class Query extends ModelBase implements IQuery {
   protected $obj!: QueryStorage;
 
   public get args(): FieldArgs[] {
-    return this.$obj.args_;
+    return this.$obj.args;
   }
 
   public get payload(): FieldArgs[] {
-    return this.$obj.payload_;
+    return this.$obj.payload;
   }
 
   public updateWith(obj: QueryInput) {
@@ -20,16 +21,12 @@ export class Query extends ModelBase {
       const result = { ...this.$obj };
 
       let args = obj.args;
-      let $args = obj.args;
 
       let payload = obj.payload;
-      let $payload = obj.payload;
 
       result.args = args;
-      result.args_ = $args;
 
       result.payload = payload;
-      result.payload_ = $payload;
 
       this.$obj = result;
     }
@@ -43,17 +40,6 @@ export class Query extends ModelBase {
       ...res,
       args: props.args ? props.args : undefined,
       payload: props.payload ? props.payload : undefined,
-    });
-  }
-
-  // it get clean object with no default values
-  public toJSON() {
-    let props = this.$obj;
-    let res = super.toJSON();
-    return clean({
-      ...res,
-      args: props.args_ ? props.args_ : undefined,
-      payload: props.payload_ ? props.payload_ : undefined,
     });
   }
 }

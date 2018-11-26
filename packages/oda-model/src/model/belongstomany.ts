@@ -8,7 +8,7 @@ import { RelationBase } from './relationbase';
 // http://ooad.asf.ru/standarts/UML/spr/Association_class.aspx
 
 export class BelongsToMany extends RelationBase {
-  protected $obj: BelongsToManyStorage;
+  protected $obj!: BelongsToManyStorage;
 
   get belongsToMany(): EntityReference {
     return this.$obj.belongsToMany;
@@ -93,17 +93,6 @@ export class BelongsToMany extends RelationBase {
         ? props.belongsToMany.toString()
         : undefined,
       using: props.using ? props.using.toString() : undefined,
-    });
-  }
-
-  // it get clean object with no default values
-  public toJSON(): any {
-    let props = this.$obj;
-    let res = super.toJSON();
-    return clean({
-      ...res,
-      belongsToMany: props.belongsToMany_,
-      using: props.using_,
     });
   }
 }
