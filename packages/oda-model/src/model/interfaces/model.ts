@@ -51,7 +51,7 @@ import {
   EntityBaseMeta,
   EnumItemMeta,
   MixinMeta,
-  ComplextFieldMeta,
+  ComplexFieldMeta,
   RelationFieldMeta,
 } from './metadata';
 /**
@@ -316,7 +316,7 @@ export interface IField extends IFieldBase<FieldMeta, FieldInput> {
  * entity complex field definition
  */
 export interface IComplexField
-  extends IFieldBase<FieldMeta, FieldBaseInput<ComplextFieldMeta>> {
+  extends IFieldBase<FieldMeta, FieldBaseInput<ComplexFieldMeta>> {
   /**
    * is field indexed
    */

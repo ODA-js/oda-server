@@ -1,27 +1,29 @@
-import clean from '../lib/json/clean';
-import { MetaModelType, UnionStorage, UnionInput } from './interfaces';
+import {
+  MetaModelType,
+  UnionStorage,
+  UnionInput,
+  UnionMeta,
+} from './interfaces';
 import { ModelBase } from './modelbase';
 import { IUnion } from './interfaces/model';
 
-export class Union extends ModelBase implements IUnion {
+export class Union extends ModelBase<UnionMeta, UnionInput, UnionStorage>
+  implements IUnion {
   public modelType: MetaModelType = 'union';
-  protected $obj!: UnionStorage;
 
-  get items(): string[] {
+  get items(): Set<string> {
     return this.$obj.items;
   }
 
   public updateWith(obj: UnionInput) {
-    if (obj) {
-      super.updateWith(obj);
-      this.$obj = {
-        ...this.$obj,
-        ...obj,
-      };
-    }
+    super.updateWith(obj);
+    this.$obj.items = new Set(obj.items);
   }
 
-  public toObject() {
-    return this.$obj;
+  public toObject(): UnionInput {
+    return {
+      ...super.toObject(),
+      items: [...this.items],
+    };
   }
 }

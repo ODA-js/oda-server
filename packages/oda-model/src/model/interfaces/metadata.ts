@@ -22,6 +22,6 @@ export interface PackageMeta extends BaseMeta {}
 export interface FieldBaseMeta extends BaseMeta {}
 export interface QueryMeta extends FieldBaseMeta {}
 export interface FieldMeta extends FieldBaseMeta {}
-export interface ComplextFieldMeta extends FieldBaseMeta {}
+export interface ComplexFieldMeta extends FieldBaseMeta {}
 export interface RelationFieldMeta extends FieldBaseMeta {}
 export interface OperationMeta extends FieldBaseMeta {}

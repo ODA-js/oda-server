@@ -37,7 +37,7 @@ export interface ScalarInput extends ModelBaseInput<ScalarMeta> {}
 
 export interface FieldBaseInput<T extends FieldBaseMeta>
   extends ModelBaseInput<T> {
-  args?: FieldArgs[];
+  args?: AsHash<FieldArgs>;
   inheritedFrom?: string;
   type?: FieldType;
   derived?: boolean;
@@ -52,7 +52,7 @@ export interface FieldInput extends FieldBaseInput<FieldMeta> {
   identity?: boolean | string | string[];
   indexed?: boolean | string | string[];
   required?: boolean;
-  arguments?: FieldArgs[];
+  arguments?: AsHash<FieldArgs>;
   relation?: (
     | { hasMany: string }
     | { hasOne: string }
@@ -115,7 +115,7 @@ export interface RelationBaseInput<T extends RelationMeta>
   field: string;
   name?: string;
   embedded?: boolean;
-  fields?: FieldArgs[];
+  fields?: AsHash<FieldArgs>;
   opposite?: string;
 }
 
@@ -138,13 +138,13 @@ export interface HasOneInput extends RelationBaseInput<HasOneMeta> {
 }
 
 export interface MutationInput extends ModelBaseInput<MutationMeta> {
-  args: FieldArgs[];
-  payload: FieldArgs[];
+  args: AsHash<FieldArgs>;
+  payload: AsHash<FieldArgs>;
 }
 
 export interface QueryInput extends ModelBaseInput<QueryMeta> {
-  args: FieldArgs[];
-  payload: FieldArgs[];
+  args: AsHash<FieldArgs>;
+  payload: AsHash<FieldArgs>;
 }
 
 export interface UnionInput extends ModelBaseInput<UnionMeta> {
@@ -152,7 +152,7 @@ export interface UnionInput extends ModelBaseInput<UnionMeta> {
 }
 
 export interface DirectiveInput extends ModelBaseInput<DirectiveMeta> {
-  args?: FieldArgs[];
+  args?: AsHash<FieldArgs>;
   on?: string[];
 }
 

@@ -1,20 +1,21 @@
 import * as inflected from 'inflected';
 
-import clean from '../lib/json/clean';
-import fold from './../lib/json/fold';
-import { ModelBaseInput, ModelBaseStorage } from './interfaces';
+import {
+  ModelBaseInput,
+  ModelBaseStorage,
+  IValidate,
+  ValidationResultInput,
+  IValidator,
+  BaseMeta,
+} from './interfaces';
 import { Metadata } from './metadata';
-import { ModelPackage } from './modelpackage';
 
-export class ModelBase extends Metadata {
-  protected $obj!: ModelBaseStorage;
-
-  constructor(obj?: ModelBaseInput) {
-    super(obj);
-    if (obj) {
-      this.updateWith(fold(obj) as ModelBaseInput);
-    }
-  }
+export abstract class ModelBase<
+  T extends BaseMeta,
+  I extends ModelBaseInput<T>,
+  S extends ModelBaseStorage
+> extends Metadata<T, I> implements IValidate {
+  protected $obj!: S;
 
   get name(): string {
     return this.$obj.name;
@@ -28,25 +29,22 @@ export class ModelBase extends Metadata {
     return this.$obj.description;
   }
 
-  public toString() {
-    return JSON.stringify(this.toObject());
+  public validate(validator: IValidator): ValidationResultInput[] {
+    return validator.check(this);
   }
 
-  public toObject(_modelPackage?: ModelPackage) {
-    let props = this.$obj;
-    return clean({
+  public toObject(): I {
+    return {
       ...super.toObject(),
-      name: props.name,
-      title: props.title,
-      description: props.description,
-    });
+      ...this.$obj,
+    };
   }
 
-  public updateWith(obj: ModelBaseInput) {
+  public updateWith(obj: I) {
     if (obj) {
       super.updateWith(obj);
 
-      const result: ModelBaseStorage = { ...this.$obj };
+      const result = { ...this.$obj };
 
       let $name = obj.name;
       let $title = obj.title;
@@ -74,9 +72,5 @@ export class ModelBase extends Metadata {
       result.description = description;
       this.$obj = result;
     }
-  }
-
-  public clone() {
-    return new (<typeof ModelBase>this.constructor)(this.toObject());
   }
 }

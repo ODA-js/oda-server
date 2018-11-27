@@ -2,6 +2,8 @@ export type RelationType = 'HasMany' | 'HasOne' | 'BelongsToMany' | 'BelongsTo';
 
 export type MetaModelType =
   | 'model'
+  | 'query'
+  | 'mutation'
   | 'package'
   | 'entity'
   | 'scalar'
@@ -63,6 +65,23 @@ export type ComplexType = {
 
 export type FieldType = string | ComplexType;
 
-export interface AsHash<T> {
+export interface AsHash<T extends INamed> {
   [name: string]: T;
+}
+
+export function HashToMap<T extends INamed>(input: AsHash<T>): Map<string, T> {
+  const res = Object.keys(input).map(name => {
+    return [name, input[name] as T] as [string, T];
+  });
+  return new Map(res);
+}
+
+export function MapToHash<T extends INamed>(input: Map<string, T>): AsHash<T> {
+  return [...input.entries()].reduce(
+    (hash, [name, value]) => {
+      hash[name] = value;
+      return hash;
+    },
+    {} as AsHash<T>,
+  );
 }

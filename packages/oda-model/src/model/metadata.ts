@@ -1,85 +1,33 @@
-import clean from '../lib/json/clean';
-import deepMerge from './../lib/json/deepMerge';
-import get from './../lib/json/get';
-import set from './../lib/json/set';
-import {
-  IValidate,
-  IValidator,
-  MetadataInput,
-  MetaModelType,
-  ValidationResultInput,
-} from './interfaces';
+import { MetadataInput, IMeta } from './interfaces';
 import { BaseMeta } from './interfaces/metadata';
-
-export class Metadata<T extends BaseMeta> implements IValidate {
-  public modelType?: MetaModelType;
-  public metadata!: T;
-
-  public validate(validator: IValidator): ValidationResultInput[] {
-    return validator.check(this);
+import { merge, cloneDeep } from 'lodash';
+/**
+ * abstract base for any modeled item
+ */
+export abstract class Metadata<T extends BaseMeta, K extends MetadataInput<T>>
+  implements IMeta<T, K> {
+  protected metadata_: T;
+  public get metadata(): T {
+    return this.metadata_;
   }
 
-  constructor(inp?: { metadata?: { [key: string]: any } }) {
-    if (inp && inp.metadata) {
-      this.setMetadata('*', inp.metadata);
+  constructor(inp: MetadataInput<T>) {
+    this.metadata_ = {} as T;
+    this.updateWith(inp);
+  }
+
+  public updateWith(obj: MetadataInput<T>) {
+    if (obj.metadata) {
+      this.metadata_ = merge({}, this.metadata_, obj.metadata);
     }
   }
-
-  public getMetadata(key?: string, def?: any): any {
-    if (!key) {
-      return this.metadata;
-    } else {
-      let result = get(this.metadata, key);
-      if (result === undefined && def !== undefined) {
-        this.setMetadata(key, def);
-      }
-      return result !== undefined ? result : def;
-    }
-  }
-
-  public hasMetadata(key: string) {
-    if (key) {
-      return !!get(this.metadata, key);
-    } else {
-      return false;
-    }
-  }
-
-  public setMetadata(
-    key?: string | { [key: string]: any },
-    data?: { [key: string]: any } | any,
-  ): any {
-    if (typeof key !== 'string' && !data) {
-      data = key;
-      key = '*';
-    }
-    if (data !== undefined) {
-      if (key === '*') {
-        this.metadata = data as any;
-      } else {
-        if (!this.metadata) {
-          this.metadata = {};
-        }
-        set(this.metadata, key, data);
-      }
-    }
-  }
-
-  public updateWith(obj: MetadataInput) {
-    if (obj && obj.metadata) {
-      this.metadata = deepMerge(this.metadata || {}, obj.metadata);
-    }
-  }
-
-  public toObject(): { [key: string]: any } {
-    return clean({
-      metadata: this.metadata,
-    });
-  }
-
-  public toJSON(): { [key: string]: any } | undefined {
-    return clean({
-      metadata: this.metadata,
-    });
+  /**
+   * make item usable within another constructor
+   * it is suitable for cloning items
+   */
+  public toObject(): K {
+    return {
+      metadata: cloneDeep(this.metadata_),
+    } as K;
   }
 }

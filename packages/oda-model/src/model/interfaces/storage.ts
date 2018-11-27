@@ -16,7 +16,7 @@ export interface ModelBaseStorage {
 export interface FieldStorage extends FieldBaseStorage {
   list: boolean;
   map: boolean;
-  arguments: [FieldArgs];
+  arguments: Map<string, FieldArgs>;
 }
 
 export interface RelationFieldStorage<
@@ -62,7 +62,7 @@ export interface EntityStorage extends EntityBaseStorage {
 }
 
 export interface FieldBaseStorage extends ModelBaseStorage {
-  args?: FieldArgs[];
+  args?: Map<string, FieldArgs>;
   inheritedFrom?: string;
   type: FieldType;
   entity: string;
@@ -83,7 +83,7 @@ export interface UnionStorage extends ModelBaseStorage {
 }
 
 export interface EnumStorage extends ModelBaseStorage {
-  items: EnumItemInput[];
+  items: Map<string, EnumItemInput>;
 }
 
 export interface OperationStorage extends FieldBaseStorage {
@@ -91,16 +91,16 @@ export interface OperationStorage extends FieldBaseStorage {
 }
 
 export interface DirectiveStorage extends ModelBaseStorage {
-  args?: FieldArgs[];
+  args?: Map<string, FieldArgs>;
   on?: string[];
 }
 
 export interface MutationStorage extends ModelBaseStorage {
-  args: FieldArgs[];
-  payload: FieldArgs[];
+  args: Map<string, FieldArgs>;
+  payload: Map<string, FieldArgs>;
 }
 
 export interface QueryStorage extends ModelBaseStorage {
-  args: FieldArgs[];
-  payload: FieldArgs[];
+  args: Map<string, FieldArgs>;
+  payload: Map<string, FieldArgs>;
 }
