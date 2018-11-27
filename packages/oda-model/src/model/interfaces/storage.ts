@@ -1,7 +1,17 @@
-import { FieldArgs, FieldType } from './types';
+import { FieldArgs, FieldType, OperationKind } from './types';
 import { IEntityRef, IField, IRelation, IOperation } from './model';
-import { EnumItemInput } from './input';
-import { RelationMeta } from './metadata';
+import { EnumItemInput, RelationBaseInput } from './input';
+import { RelationMeta, BaseMeta } from './metadata';
+
+export interface MetadataStorage<T extends BaseMeta> {
+  metadata: T;
+}
+
+export interface ModelBaseStorage {
+  name: string;
+  title: string;
+  description: string;
+}
 
 export interface FieldStorage extends FieldBaseStorage {
   list: boolean;
@@ -9,10 +19,12 @@ export interface FieldStorage extends FieldBaseStorage {
   arguments: [FieldArgs];
 }
 
-export interface RealtionFieldStorage<T extends RelationMeta>
-  extends FieldStorage {
+export interface RelationFieldStorage<
+  T extends RelationMeta,
+  I extends RelationBaseInput<T>
+> extends FieldStorage {
   idKey: IEntityRef;
-  relation: IRelation<T>;
+  relation: IRelation<T, I>;
 }
 
 export interface RelationBaseStorage {
@@ -45,8 +57,8 @@ export interface EntityBaseStorage extends ModelBaseStorage {
 
 export interface EntityStorage extends EntityBaseStorage {
   implements: Set<string>;
-  embedded?: boolean | Set<string>;
-  abstract?: boolean;
+  embedded: boolean | Set<string>;
+  abstract: boolean;
 }
 
 export interface FieldBaseStorage extends ModelBaseStorage {
@@ -64,16 +76,10 @@ export interface HasOneStorage extends RelationBaseStorage {
   hasOne: IEntityRef;
 }
 
-export interface ModelBaseStorage {
-  name: string;
-  title: string;
-  description: string;
-}
-
 export interface ScalarStorage extends ModelBaseStorage {}
 
 export interface UnionStorage extends ModelBaseStorage {
-  items: string[];
+  items: Set<string>;
 }
 
 export interface EnumStorage extends ModelBaseStorage {
@@ -81,7 +87,7 @@ export interface EnumStorage extends ModelBaseStorage {
 }
 
 export interface OperationStorage extends FieldBaseStorage {
-  actionType: string;
+  actionType: OperationKind;
 }
 
 export interface DirectiveStorage extends ModelBaseStorage {

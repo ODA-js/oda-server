@@ -4,14 +4,15 @@ export type MetaModelType =
   | 'model'
   | 'package'
   | 'entity'
-  | 'entitybase'
-  | 'object-type'
   | 'scalar'
   | 'mixin'
   | 'union'
   | 'enum'
+  | 'enum-item'
   | 'field'
   | 'relation'
+  | 'complex-field'
+  | 'relation-field'
   | 'operation'
   | 'ref'
   | RelationType;
@@ -19,6 +20,28 @@ export type MetaModelType =
 export type Multiplicity = 'one' | 'many';
 
 export type ComplexTypeKind = 'enum' | 'entity';
+
+export type OperationKind = 'create' | 'read' | 'update' | 'delete';
+
+export type DirectiveLocation =
+  | 'QUERY'
+  | 'MUTATION'
+  | 'SUBSCRIPTION'
+  | 'FIELD'
+  | 'FRAGMENT_DEFINITION'
+  | 'FRAGMENT_SPREAD'
+  | 'INLINE_FRAGMENT'
+  | 'SCHEMA'
+  | 'SCALAR'
+  | 'OBJECT'
+  | 'FIELD_DEFINITION'
+  | 'ARGUMENT_DEFINITION'
+  | 'INTERFACE'
+  | 'UNION'
+  | 'ENUM'
+  | 'ENUM_VALUE'
+  | 'INPUT_OBJECT'
+  | 'INPUT_FIELD_DEFINITION';
 
 export interface INamed {
   name: string;

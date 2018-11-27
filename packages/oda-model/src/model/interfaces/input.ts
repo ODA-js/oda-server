@@ -1,11 +1,33 @@
-import { FieldArgs, FieldType, AsHash } from './types';
-import { BaseMeta, ModelMeta, ScalarMeta, EntityBaseMeta, EntityMeta, MixinMeta, QueryMeta, MutationMeta, FieldBaseMeta } from './metadata';
+import { FieldArgs, FieldType, AsHash, OperationKind } from './types';
+import {
+  BaseMeta,
+  ScalarMeta,
+  EntityBaseMeta,
+  EntityMeta,
+  MixinMeta,
+  QueryMeta,
+  MutationMeta,
+  FieldBaseMeta,
+  FieldMeta,
+  UnionMeta,
+  DirectiveMeta,
+  EnumMeta,
+  EnumItemMeta,
+  OperationMeta,
+  ModelMeta,
+  PackageMeta,
+  RelationMeta,
+  BelongsToMeta,
+  BelongsToManyMeta,
+  HasManyMeta,
+  HasOneMeta,
+} from './metadata';
 
 export interface MetadataInput<T extends BaseMeta> {
   metadata: T;
 }
 
-export interface ModelBaseInput<T> extends MetadataInput<T extends ModelMeta> {
+export interface ModelBaseInput<T extends BaseMeta> extends MetadataInput<T> {
   name: string;
   title?: string;
   description?: string;
@@ -13,13 +35,24 @@ export interface ModelBaseInput<T> extends MetadataInput<T extends ModelMeta> {
 
 export interface ScalarInput extends ModelBaseInput<ScalarMeta> {}
 
-export interface FieldInput extends FieldBaseInput {
+export interface FieldBaseInput<T extends FieldBaseMeta>
+  extends ModelBaseInput<T> {
+  args?: FieldArgs[];
+  inheritedFrom?: string;
+  type?: FieldType;
+  derived?: boolean;
+  persistent?: boolean;
+  entity?: string;
+  defaultValue?: string;
+}
+
+export interface FieldInput extends FieldBaseInput<FieldMeta> {
   list?: boolean;
   map?: boolean;
   identity?: boolean | string | string[];
   indexed?: boolean | string | string[];
   required?: boolean;
-  arguments?: [FieldArgs];
+  arguments?: FieldArgs[];
   relation?: (
     | { hasMany: string }
     | { hasOne: string }
@@ -30,20 +63,12 @@ export interface FieldInput extends FieldBaseInput {
   };
 }
 
-export interface EntityBaseInput<T extends EntityBaseMeta> extends ModelBaseInput<T> {
+export interface EntityBaseInput<T extends EntityBaseMeta>
+  extends ModelBaseInput<T> {
   plural?: string;
   titlePlural?: string;
   fields?: AsHash<FieldInput>;
   operations?: AsHash<OperationInput>;
-}
-
-export interface BelongsToInput extends RelationBaseInput {
-  belongsTo: string;
-}
-
-export interface BelongsToManyInput extends RelationBaseInput {
-  belongsToMany: string;
-  using: string;
 }
 
 export interface EntityInput extends EntityBaseInput<EntityMeta> {
@@ -54,21 +79,22 @@ export interface EntityInput extends EntityBaseInput<EntityMeta> {
 
 export interface MixinInput extends EntityBaseInput<MixinMeta> {}
 
-export interface ModelPackageInput {
+export interface ModelPackageInput extends ModelBaseInput<PackageMeta> {
   name: string;
   title?: string;
   description?: string;
+  abstract?: boolean;
   entities: string[];
   mutations: any[];
   queries: any[];
   directives: any[];
   scalars: any[];
   enums: any[];
-  unions: any[];
   mixins: any[];
+  unions: any[];
 }
 
-export interface MetaModelInput {
+export interface MetaModelInput extends ModelBaseInput<ModelMeta> {
   entities: EntityInput[];
   packages: ModelPackageInput[];
   mutations?: MutationInput[];
@@ -83,18 +109,32 @@ export interface MetaModelInput {
   description?: string;
 }
 
-export interface RelationBaseInput {
-  /**
-   * нужно в случае когда мы будем показывать атрибут связи, и ассоциацию отдельно???
-   * больше не зачем
-   */
-  metadata?: { [key: string]: any };
-  embedded?: boolean;
-  name?: string;
+export interface RelationBaseInput<T extends RelationMeta>
+  extends MetadataInput<T> {
   entity: string;
   field: string;
-  fields?: AsHash<FieldInput>;
+  name?: string;
+  embedded?: boolean;
+  fields?: FieldArgs[];
   opposite?: string;
+}
+
+export interface BelongsToInput extends RelationBaseInput<BelongsToMeta> {
+  belongsTo: string;
+}
+
+export interface BelongsToManyInput
+  extends RelationBaseInput<BelongsToManyMeta> {
+  belongsToMany: string;
+  using: string;
+}
+
+export interface HasManyInput extends RelationBaseInput<HasManyMeta> {
+  hasMany: string;
+}
+
+export interface HasOneInput extends RelationBaseInput<HasOneMeta> {
+  hasOne: string;
 }
 
 export interface MutationInput extends ModelBaseInput<MutationMeta> {
@@ -107,58 +147,25 @@ export interface QueryInput extends ModelBaseInput<QueryMeta> {
   payload: FieldArgs[];
 }
 
-export interface FieldBaseInput<T extends FieldBaseMeta> extends ModelBaseInput<T> {
-  args?: FieldArgs[];
-  inheritedFrom?: string;
-  type?: FieldType;
-  derived?: boolean;
-  persistent?: boolean;
-  entity?: string;
-  defaultValue?: string;
-}
-
-export interface HasManyInput extends RelationBaseInput {
-  hasMany: string;
-}
-
-export interface HasOneInput extends RelationBaseInput {
-  hasOne: string;
-}
-
-export interface UnionInput extends ModelBaseInput {
+export interface UnionInput extends ModelBaseInput<UnionMeta> {
   items: string[];
 }
 
-export interface DirectiveInput extends ModelBaseInput {
+export interface DirectiveInput extends ModelBaseInput<DirectiveMeta> {
   args?: FieldArgs[];
   on?: string[];
 }
 
-export interface EnumItemInput extends ModelBaseInput {
+export interface EnumItemInput extends ModelBaseInput<EnumItemMeta> {
   value?: string;
 }
 
-export interface EnumInput extends ModelBaseInput {
+export interface EnumInput extends ModelBaseInput<EnumMeta> {
   items: (EnumItemInput | string)[];
 }
 
-export interface OperationInput extends FieldBaseInput {
-  actionType: string;
-}
-
-export interface ModelPackageInput extends ModelBaseInput {
-  name: string;
-  title?: string;
-  description?: string;
-  abstract?: boolean;
-  entities: string[];
-  mutations: any[];
-  queries: any[];
-  directives: any[];
-  scalars: any[];
-  enums: any[];
-  mixins: any[];
-  unions: any[];
+export interface OperationInput extends FieldBaseInput<OperationMeta> {
+  actionType: OperationKind;
 }
 
 export interface IModelHook {
