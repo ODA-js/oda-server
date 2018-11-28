@@ -46,7 +46,7 @@ export type DirectiveLocation =
   | 'INPUT_FIELD_DEFINITION';
 
 export interface INamed {
-  name: string;
+  readonly name: string;
 }
 
 export interface FieldArgsForHash {

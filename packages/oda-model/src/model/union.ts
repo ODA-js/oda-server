@@ -10,7 +10,9 @@ import { IUnion } from './interfaces/model';
 export class Union extends ModelBase<UnionMeta, UnionInput, UnionStorage>
   implements IUnion {
   public modelType: MetaModelType = 'union';
-
+  constructor(inp: UnionInput) {
+    super(inp);
+  }
   get items(): Set<string> {
     return this.$obj.items;
   }

@@ -6,6 +6,7 @@ import {
   OperationKind,
   DirectiveLocation,
   ComplexType,
+  INamed,
 } from './types';
 import { IValidate } from './validation';
 import {
@@ -85,7 +86,8 @@ export interface IMeta<T extends BaseMeta, K extends MetadataInput<T>>
  */
 export interface IModelBase<T extends ModelMeta, K extends MetadataInput<T>>
   extends IMeta<T, K>,
-    IValidate {
+    IValidate,
+    INamed {
   /**
    * the kind of current item
    */
@@ -220,12 +222,12 @@ export interface IEnum extends IModelBase<EnumMeta, EnumInput> {
   /**
    * Enum item definition
    */
-  items: Map<string, IEnumItems>;
+  items: Map<string, IEnumItem>;
 }
 /**
  * enumItem definition
  */
-export interface IEnumItems extends IModelBase<EnumItemMeta, EnumItemInput> {
+export interface IEnumItem extends IModelBase<EnumItemMeta, EnumItemInput> {
   /**
    * value
    */

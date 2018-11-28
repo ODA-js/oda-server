@@ -7,6 +7,9 @@ import { merge, cloneDeep } from 'lodash';
 export abstract class Metadata<T extends BaseMeta, K extends MetadataInput<T>>
   implements IMeta<T, K> {
   protected metadata_: T;
+  /**
+   * metadata is not immutable
+   */
   public get metadata(): T {
     return this.metadata_;
   }
@@ -15,7 +18,10 @@ export abstract class Metadata<T extends BaseMeta, K extends MetadataInput<T>>
     this.metadata_ = {} as T;
     this.updateWith(inp);
   }
-
+  /**
+   * patches metadata for entity
+   * @param obj metadata patch object
+   */
   public updateWith(obj: MetadataInput<T>) {
     if (obj.metadata) {
       this.metadata_ = merge({}, this.metadata_, obj.metadata);

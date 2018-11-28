@@ -1,60 +1,42 @@
-import clean from '../lib/json/clean';
-import { FieldArgs, MutationInput, MutationStorage } from './interfaces';
+import {
+  MutationInput,
+  MutationStorage,
+  MutationMeta,
+  MapToHash,
+  HashToMap,
+  MetaModelType,
+} from './interfaces';
 import { ModelBase } from './modelbase';
 import { IMutation } from './interfaces/model';
 
-export class Mutation extends ModelBase implements IMutation {
-  protected $obj!: MutationStorage;
-
-  public get args(): FieldArgs[] {
-    return this.$obj.args_;
+export class Mutation
+  extends ModelBase<MutationMeta, MutationInput, MutationStorage>
+  implements IMutation {
+  public modelType: MetaModelType = 'mutation';
+  constructor(inp: MutationInput) {
+    super(inp);
+  }
+  public get args() {
+    return this.$obj.args;
   }
 
-  public get payload(): FieldArgs[] {
-    return this.$obj.payload_;
+  public get payload() {
+    return this.$obj.payload;
   }
 
   public updateWith(obj: MutationInput) {
     if (obj) {
       super.updateWith(obj);
-
-      const result = { ...this.$obj };
-
-      let args = obj.args;
-      let $args = obj.args;
-
-      let payload = obj.payload;
-      let $payload = obj.payload;
-
-      result.args = args;
-      result.args_ = $args;
-
-      result.payload = payload;
-      result.payload_ = $payload;
-
-      this.$obj = result;
+      this.$obj.args = HashToMap(obj.args);
+      this.$obj.payload = HashToMap(obj.payload);
     }
   }
 
-  // it get fixed object
-  public toObject() {
-    let props = this.$obj;
-    let res = super.toObject();
-    return clean({
-      ...res,
-      args: props.args ? props.args : undefined,
-      payload: props.payload ? props.payload : undefined,
-    });
-  }
-
-  // it get clean object with no default values
-  public toJSON(): MutationInput {
-    let props = this.$obj;
-    let res = super.toJSON();
-    return clean({
-      ...res,
-      args: props.args_ ? props.args_ : undefined,
-      payload: props.payload_ ? props.payload_ : undefined,
-    });
+  public toObject(): MutationInput {
+    return {
+      ...super.toObject(),
+      args: MapToHash(this.$obj.args),
+      payload: MapToHash(this.$obj.payload),
+    };
   }
 }

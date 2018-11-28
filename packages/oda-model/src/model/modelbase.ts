@@ -16,7 +16,9 @@ export abstract class ModelBase<
   S extends ModelBaseStorage
 > extends Metadata<T, I> implements IValidate {
   protected $obj!: S;
-
+  constructor(inp: ModelBaseInput<T>) {
+    super(inp);
+  }
   get name(): string {
     return this.$obj.name;
   }
@@ -36,7 +38,9 @@ export abstract class ModelBase<
   public toObject(): I {
     return {
       ...super.toObject(),
-      ...this.$obj,
+      name: this.name,
+      title: this.title,
+      description: this.description,
     };
   }
 

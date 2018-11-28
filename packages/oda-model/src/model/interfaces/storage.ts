@@ -1,6 +1,6 @@
 import { FieldArgs, FieldType, OperationKind } from './types';
-import { IEntityRef, IField, IRelation, IOperation } from './model';
-import { EnumItemInput, RelationBaseInput } from './input';
+import { IEntityRef, IField, IRelation, IOperation, IEnumItem } from './model';
+import { RelationBaseInput } from './input';
 import { RelationMeta, BaseMeta } from './metadata';
 
 export interface MetadataStorage<T extends BaseMeta> {
@@ -83,7 +83,11 @@ export interface UnionStorage extends ModelBaseStorage {
 }
 
 export interface EnumStorage extends ModelBaseStorage {
-  items: Map<string, EnumItemInput>;
+  items: Map<string, IEnumItem>;
+}
+
+export interface EnumItemStorage extends ModelBaseStorage {
+  value: string;
 }
 
 export interface OperationStorage extends FieldBaseStorage {
