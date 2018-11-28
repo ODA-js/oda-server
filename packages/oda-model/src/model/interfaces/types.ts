@@ -1,6 +1,7 @@
 export type RelationType = 'HasMany' | 'HasOne' | 'BelongsToMany' | 'BelongsTo';
 
 export type MetaModelType =
+  | 'metadata'
   | 'model'
   | 'query'
   | 'mutation'
@@ -11,16 +12,20 @@ export type MetaModelType =
   | 'union'
   | 'enum'
   | 'enum-item'
+  | 'field-base'
   | 'field'
-  | 'relation'
-  | 'complex-field'
+  | 'enum-field'
+  | 'entity-field'
   | 'relation-field'
+  | 'relation'
   | 'operation'
   | 'ref'
   | RelationType;
 
 export type Multiplicity = 'one' | 'many';
-
+/**
+ * kind of complex type
+ */
 export type ComplexTypeKind = 'enum' | 'entity';
 
 export type OperationKind = 'create' | 'read' | 'update' | 'delete';
@@ -56,14 +61,40 @@ export interface FieldArgsForHash {
 }
 
 export interface FieldArgs extends INamed, FieldArgsForHash {}
-
-export type ComplexType = {
+/**
+ * Complext type can refer to existing type system
+ */
+export type EntityType = {
+  /**
+   * complext type name
+   */
   name: string;
-  type: ComplexTypeKind;
+  /**
+   * kind of complex type
+   */
+  type: 'entity';
+  /**
+   * multiplicity of it
+   */
   multiplicity: Multiplicity;
 };
 
-export type FieldType = string | ComplexType;
+export type EnumType = {
+  /**
+   * complext type name
+   */
+  name: string;
+  /**
+   * kind of complex type
+   */
+  type: 'enum';
+  /**
+   * multiplicity of it
+   */
+  multiplicity: Multiplicity;
+};
+
+export type FieldType = string | EnumType | EntityType;
 
 export interface AsHash<T extends INamed> {
   [name: string]: T;

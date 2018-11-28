@@ -1,19 +1,19 @@
 export interface IValidate {
-  validate(validator: IValidator): ValidationResultInput[];
+  validate(validator: IValidator): IValidationResultInput[];
 }
 
 export interface IValidator {
-  check(item: IValidate): ValidationResultInput[];
+  check(item: IValidate): IValidationResultInput[];
 }
 
 export type ValidationResultKind = 'error' | 'warning' | 'critics' | 'fixable';
 
-export interface ValidationResultInput {
+export interface IValidationResultInput {
   result: ValidationResultKind;
   message: string;
 }
 
-export interface IValidationResultField extends ValidationResultInput {
+export interface IValidationResultField extends IValidationResultInput {
   field: string;
 }
 export interface IValidationResultEntity extends IValidationResultField {
