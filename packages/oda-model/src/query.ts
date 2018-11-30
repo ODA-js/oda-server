@@ -1,20 +1,22 @@
 import { merge } from 'lodash';
-import { BaseMeta } from './metadata';
+import { ElementMetaInfo } from './element';
 import {
   FieldArgs,
   AsHash,
   MetaModelType,
   HashToMap,
   MapToHash,
+  Nullable,
+  assignValue,
 } from './model';
 import {
   IModelBase,
-  ModelBaseStorage,
+  ModelBaseInternal,
   ModelBaseInput,
   ModelBase,
 } from './modelbase';
 
-export interface IQuery extends IModelBase<QueryMeta, QueryInput> {
+export interface IQuery extends IModelBase<QueryMetaInfo, QueryInput> {
   /**
    * set of arguments
    */
@@ -25,21 +27,32 @@ export interface IQuery extends IModelBase<QueryMeta, QueryInput> {
   readonly payload: Map<string, FieldArgs>;
 }
 
-export interface QueryMeta extends BaseMeta {}
+export interface QueryMetaInfo extends ElementMetaInfo {}
 
-export interface QueryStorage extends ModelBaseStorage<QueryMeta> {
+export interface QueryInternal extends ModelBaseInternal<QueryMetaInfo> {
   args: Map<string, FieldArgs>;
   payload: Map<string, FieldArgs>;
 }
 
-export interface QueryInput extends ModelBaseInput<QueryMeta> {
+export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
   args: AsHash<FieldArgs>;
   payload: AsHash<FieldArgs>;
 }
 
-export class Query extends ModelBase<QueryMeta, QueryInput, QueryStorage>
+const defaultMetaInfo = {};
+const defaultInternal = {};
+const defaultInput = {};
+
+export class Query extends ModelBase<QueryMetaInfo, QueryInput, QueryInternal>
   implements IQuery {
   public modelType: MetaModelType = 'query';
+
+  constructor(inp: QueryInput) {
+    super(merge({}, defaultInput, inp));
+    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
+    this.$obj = merge({}, defaultInternal, this.$obj);
+  }
+
   public get args(): Map<string, FieldArgs> {
     return this.$obj.args;
   }
@@ -48,14 +61,24 @@ export class Query extends ModelBase<QueryMeta, QueryInput, QueryStorage>
     return this.$obj.payload;
   }
 
-  public updateWith(obj: Partial<QueryInput>) {
-    super.updateWith(obj);
-    if (obj.args) {
-      this.$obj.args = HashToMap(obj.args);
-    }
-    if (obj.payload) {
-      this.$obj.payload = HashToMap(obj.payload);
-    }
+  public updateWith(input: Nullable<QueryInput>) {
+    super.updateWith(input);
+
+    assignValue<QueryInternal, QueryInput, QueryInput['args']>({
+      src: this.$obj,
+      input,
+      field: 'args',
+      effect: (src, value) => (src.args = HashToMap(value)),
+      required: true,
+    });
+
+    assignValue<QueryInternal, QueryInput, QueryInput['payload']>({
+      src: this.$obj,
+      input,
+      field: 'payload',
+      effect: (src, value) => (src.args = HashToMap(value)),
+      required: true,
+    });
   }
 
   public toObject(): QueryInput {

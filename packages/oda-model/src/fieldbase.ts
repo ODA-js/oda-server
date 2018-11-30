@@ -1,11 +1,11 @@
 import {
   ModelBase,
   IModelBase,
-  ModelBaseStorage,
+  ModelBaseInternal,
   ModelBaseInput,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
-import { merge } from 'lodash';
+import { merge, get, set } from 'lodash';
 import {
   FieldArgs,
   FieldType,
@@ -13,13 +13,16 @@ import {
   MetaModelType,
   HashToMap,
   MapToHash,
+  Nullable,
+  assignValue,
 } from './model';
-import { BaseMeta } from './metadata';
+import { ElementMetaInfo } from './element';
 
 export interface IFieldBase<
-  T extends FieldBaseMeta,
-  K extends FieldBaseInput<T>
-> extends IModelBase<T, K> {
+  M extends FieldBaseMetaInfo<P>,
+  I extends FieldBaseInput<M, P>,
+  P extends FieldBasePersistence
+> extends IModelBase<M, I> {
   /**
    * set of arguments
    */
@@ -31,21 +34,31 @@ export interface IFieldBase<
   type?: FieldType;
 }
 
-export interface FieldBaseMeta extends BaseMeta {
-  entity: string;
+export interface FieldBasePersistence {
   derived: boolean;
   persistent: boolean;
 }
 
-export interface FieldBaseStorage<T extends FieldBaseMeta>
-  extends ModelBaseStorage<T> {
+export interface FieldBaseMetaInfo<T extends FieldBasePersistence>
+  extends ElementMetaInfo {
+  entity: string;
+  persistence: T;
+  order: number;
+}
+
+export interface FieldBaseInternal<
+  T extends FieldBaseMetaInfo<P>,
+  P extends FieldBasePersistence
+> extends ModelBaseInternal<T> {
   args?: Map<string, FieldArgs>;
   inheritedFrom?: string;
   type?: FieldType;
 }
 
-export interface FieldBaseInput<T extends FieldBaseMeta>
-  extends ModelBaseInput<T> {
+export interface FieldBaseInput<
+  T extends FieldBaseMetaInfo<P>,
+  P extends FieldBasePersistence
+> extends ModelBaseInput<T> {
   args?: AsHash<FieldArgs>;
   inheritedFrom?: string;
   derived?: boolean;
@@ -53,13 +66,19 @@ export interface FieldBaseInput<T extends FieldBaseMeta>
   entity: string;
   arguments?: AsHash<FieldArgs>;
   type?: FieldType;
+  order?: number;
 }
 
+const defaultMetaInfo = {};
+const defaultInternal = {};
+const defaultInput = {};
+
 export abstract class FieldBase<
-  T extends FieldBaseMeta,
-  I extends FieldBaseInput<T>,
-  S extends FieldBaseStorage<T>
-> extends ModelBase<T, I, S> implements IFieldBase<T, I> {
+  T extends FieldBaseMetaInfo<P>,
+  I extends FieldBaseInput<T, P>,
+  S extends FieldBaseInternal<T, P>,
+  P extends FieldBasePersistence
+> extends ModelBase<T, I, S> implements IFieldBase<T, I, P> {
   public modelType: MetaModelType = 'field-base';
 
   get type(): FieldType | undefined {
@@ -74,30 +93,86 @@ export abstract class FieldBase<
     return this.$obj.args;
   }
 
-  public updateWith(obj: Partial<I>) {
-    super.updateWith(obj);
-    if (obj.name) {
-      this.$obj.name = decapitalize(obj.name);
-    }
-    if (obj.inheritedFrom) {
-      this.$obj.inheritedFrom = obj.inheritedFrom;
-    }
-    if (obj.args) {
-      this.$obj.args = HashToMap(obj.args as any);
-    }
-    this.metadata_ = merge({}, this.metadata_, {
-      entity: obj.entity,
-      derived: obj.derived,
-      persistent: obj.persistent,
+  get order(): number {
+    return this.metadata_.order;
+  }
+
+  get derived(): boolean {
+    return get(this.metadata_, 'persistence.derived', false);
+  }
+
+  get persistent(): boolean {
+    return get(this.metadata_, 'persistence.persistent', false);
+  }
+
+  constructor(inp: I) {
+    super(merge({}, defaultInput, inp));
+    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
+    this.$obj = merge({}, defaultInternal, this.$obj);
+  }
+
+  public updateWith(input: Nullable<I>) {
+    super.updateWith(input);
+
+    assignValue<S, I, string>({
+      src: this.$obj,
+      input,
+      field: 'name',
+      effect: (src, value) => {
+        src.name = decapitalize(value);
+      },
+      required: true,
+    });
+
+    assignValue({
+      src: this.$obj,
+      input,
+      field: 'inheritedFrom',
+    });
+
+    assignValue<S, I, AsHash<FieldArgs>>({
+      src: this.$obj,
+      input,
+      field: 'args',
+      effect: (src, value) => (src.args = HashToMap(value)),
+    });
+
+    assignValue<T, I, AsHash<FieldArgs>>({
+      src: this.metadata_,
+      input,
+      field: 'entity',
+      effect: (src, value) => set(src, 'entity', value),
+    });
+
+    assignValue<T, I, AsHash<FieldArgs>>({
+      src: this.metadata_,
+      input,
+      field: 'order',
+      effect: (src, value) => set(src, 'order', value),
+    });
+
+    assignValue<T, I, AsHash<FieldArgs>>({
+      src: this.metadata_,
+      input,
+      inputField: 'derived',
+      effect: (src, value) => set(src, 'persistence.derived', value),
+    });
+
+    assignValue<T, I, AsHash<FieldArgs>>({
+      src: this.metadata_,
+      input,
+      inputField: 'persistent',
+      effect: (src, value) => set(src, 'persistence.persistent', value),
     });
   }
 
   public toObject(): I {
     return merge({}, super.toObject(), {
       entity: this.metadata_.entity,
-      derived: this.metadata_.derived,
-      persistent: this.metadata_.persistent,
+      derived: this.derived,
+      persistent: this.persistent,
       inheritedFrom: this.$obj.inheritedFrom,
+      order: this.metadata_.order,
       args: this.$obj.args ? MapToHash(this.$obj.args) : undefined,
     });
   }

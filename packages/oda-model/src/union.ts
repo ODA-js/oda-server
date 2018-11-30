@@ -1,48 +1,59 @@
 import { merge } from 'lodash';
-import { BaseMeta } from './metadata';
+import { ElementMetaInfo } from './element';
 import {
-  ModelBaseStorage,
+  ModelBaseInternal,
   ModelBaseInput,
   ModelBase,
   IModelBase,
 } from './modelbase';
-import { MetaModelType } from './model';
+import { MetaModelType, Nullable, assignValue } from './model';
 
 /**
  * union definition
  */
-export interface IUnion extends IModelBase<UnionMeta, UnionInput> {
+export interface IUnion extends IModelBase<UnionMetaInfo, UnionInput> {
   /**
    * item list
    */
   readonly items: Set<string>;
 }
 
-export interface UnionMeta extends BaseMeta {}
+export interface UnionMetaInfo extends ElementMetaInfo {}
 
-export interface UnionStorage extends ModelBaseStorage<UnionMeta> {
+export interface UnionInternal extends ModelBaseInternal<UnionMetaInfo> {
   items: Set<string>;
 }
 
-export interface UnionInput extends ModelBaseInput<UnionMeta> {
+export interface UnionInput extends ModelBaseInput<UnionMetaInfo> {
   items: string[];
 }
 
-export class Union extends ModelBase<UnionMeta, UnionInput, UnionStorage>
+const defaultMetaInfo = {};
+const defaultInternal = {};
+const defaultInput = {};
+
+export class Union extends ModelBase<UnionMetaInfo, UnionInput, UnionInternal>
   implements IUnion {
   public modelType: MetaModelType = 'union';
   constructor(inp: UnionInput) {
-    super(inp);
+    super(merge({}, defaultInput, inp));
+    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
+    this.$obj = merge({}, defaultInternal, this.$obj);
   }
   get items(): Set<string> {
     return this.$obj.items;
   }
 
-  public updateWith(obj: Partial<UnionInput>) {
-    super.updateWith(obj);
-    if (obj.items) {
-      this.$obj.items = new Set(obj.items);
-    }
+  public updateWith(input: Nullable<UnionInput>) {
+    super.updateWith(input);
+    assignValue<UnionInternal, UnionInput, UnionInput['items']>({
+      src: this.$obj,
+      input,
+      field: 'items',
+      effect: (src, value) => (src.items = new Set(value)),
+      required: true,
+      setDefault: src => (src.items = new Set()),
+    });
   }
 
   public toObject(): UnionInput {

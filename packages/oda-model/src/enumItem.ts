@@ -1,43 +1,55 @@
 import {
   ModelBase,
   ModelBaseInput,
-  ModelBaseStorage,
+  ModelBaseInternal,
   IModelBase,
 } from './modelbase';
 import { merge } from 'lodash';
-import { MetaModelType } from './model';
-import { BaseMeta } from './metadata';
+import { MetaModelType, Nullable, assignValue } from './model';
+import { ElementMetaInfo } from './element';
 
-export interface IEnumItem extends IModelBase<EnumItemMeta, EnumItemInput> {
+export interface IEnumItem extends IModelBase<EnumItemMetaInfo, EnumItemInput> {
   value?: string;
 }
 
-export interface EnumItemMeta extends BaseMeta {}
+export interface EnumItemMetaInfo extends ElementMetaInfo {}
 
-export interface EnumItemStorage extends ModelBaseStorage<EnumItemMeta> {
+export interface EnumItemInternal extends ModelBaseInternal<EnumItemMetaInfo> {
   value?: string;
 }
 
-export interface EnumItemInput extends ModelBaseInput<EnumItemMeta> {
+export interface EnumItemInput extends ModelBaseInput<EnumItemMetaInfo> {
   value?: string;
 }
+
+const defaultMetaInfo = {};
+const defaultInternal = {};
+const defaultInput = {};
 
 export class EnumItem
-  extends ModelBase<EnumItemMeta, EnumItemInput, EnumItemStorage>
+  extends ModelBase<EnumItemMetaInfo, EnumItemInput, EnumItemInternal>
   implements IEnumItem {
   public modelType: MetaModelType = 'enum-item';
+
   constructor(inp: EnumItemInput) {
-    super(inp);
+    super(merge({}, defaultInput, inp));
+    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
+    this.$obj = merge({}, defaultInternal, this.$obj);
   }
+
   get value(): string | undefined {
     return this.$obj.value;
   }
-  updateWith(inp: Partial<EnumItemInput>) {
-    super.updateWith(inp);
-    if (inp.value) {
-      this.$obj.value = inp.value;
-    }
+
+  updateWith(input: Nullable<EnumItemInput>) {
+    super.updateWith(input);
+    assignValue<EnumItemInternal, EnumItemInput, EnumItemInput['value']>({
+      src: this.$obj,
+      input,
+      field: 'value',
+    });
   }
+
   toObject(): EnumItemInput {
     return merge({}, super.toObject(), { value: this.value });
   }

@@ -1,24 +1,37 @@
 import * as inflected from 'inflected';
 import {
-  BaseMeta,
-  MetadataStorage,
-  MetadataInput,
-  Metadata,
+  ElementMetaInfo,
+  ElementInternal,
+  ElementInput,
+  Element,
   IMeta,
-} from './metadata';
+} from './element';
 import { MetaModelType, INamed } from './model';
 import { merge } from 'lodash';
+import { Nullable, assignValue } from './model/interfaces';
+
+export interface ModelMetaInfo extends ElementMetaInfo {}
+
+export interface ModelBaseInternal<T extends ModelMetaInfo>
+  extends ElementInternal<T> {
+  name: string;
+  title?: string;
+  description?: string;
+}
+
+export interface ModelBaseInput<T extends ModelMetaInfo>
+  extends ElementInput<T> {
+  name: string;
+  title?: string;
+  description?: string;
+}
 
 /**
  * the base model item
  */
-export interface IModelBase<T extends ModelMeta, K extends MetadataInput<T>>
+export interface IModelBase<T extends ModelMetaInfo, K extends ElementInput<T>>
   extends IMeta<T, K>,
     INamed {
-  /**
-   * the kind of current item
-   */
-  readonly modelType: MetaModelType;
   /**
    * name of modeled item
    */
@@ -33,29 +46,20 @@ export interface IModelBase<T extends ModelMeta, K extends MetadataInput<T>>
   readonly description?: string;
 }
 
-export interface ModelMeta extends BaseMeta {}
-
-export interface ModelBaseStorage<T extends ModelMeta>
-  extends MetadataStorage<T> {
-  name: string;
-  title?: string;
-  description?: string;
-}
-
-export interface ModelBaseInput<T extends ModelMeta> extends MetadataInput<T> {
-  name: string;
-  title?: string;
-  description?: string;
-}
+const defaultMetaInfo = {};
+const defaultInternal = {};
+const defaultInput = {};
 
 export abstract class ModelBase<
-  T extends BaseMeta,
+  T extends ElementMetaInfo,
   I extends ModelBaseInput<T>,
-  S extends ModelBaseStorage<T>
-> extends Metadata<T, I, S> implements IModelBase<T, I> {
+  S extends ModelBaseInternal<T>
+> extends Element<T, I, S> implements IModelBase<T, I> {
   readonly modelType: MetaModelType = 'metadata';
   constructor(inp: ModelBaseInput<T>) {
-    super(inp);
+    super(merge({}, defaultInput, inp));
+    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
+    this.$obj = merge({}, defaultInternal, this.$obj);
   }
   get name(): string {
     return this.$obj.name;
@@ -69,28 +73,45 @@ export abstract class ModelBase<
     return this.$obj.description;
   }
 
+  /**
+   * update Modelbase
+   * @param input update payload
+   */
+  public updateWith(input: Nullable<I>) {
+    super.updateWith(input);
+
+    assignValue<S, I, string>({
+      src: this.$obj,
+      input,
+      field: 'name',
+      effect: (src, value) => (src.name = inflected.camelize(value, false)),
+      required: true,
+    });
+
+    assignValue<S, I, string>({
+      src: this.$obj,
+      input,
+      field: 'title',
+      effect: (src, value) =>
+        (src.title = inflected.camelize(value.trim(), false)),
+      required: true,
+    });
+
+    assignValue<S, I, string>({
+      src: this.$obj,
+      input,
+      field: 'description',
+      effect: (src, value) =>
+        (src.description = inflected.camelize(value.trim(), false)),
+      required: true,
+    });
+  }
+
   public toObject(): I {
     return merge(super.toObject(), {
       name: this.name,
       title: this.title,
       description: this.description,
     });
-  }
-
-  /**
-   * update Modelbase
-   * @param obj update payload
-   */
-  public updateWith(obj: Partial<I>) {
-    super.updateWith(obj);
-    if (obj.name) {
-      this.$obj.name = inflected.camelize(obj.name.trim(), false);
-    }
-    if (obj.title) {
-      this.$obj.title = inflected.titleize(obj.title.trim());
-    }
-    if (obj.description) {
-      this.$obj.description = obj.description.trim();
-    }
   }
 }

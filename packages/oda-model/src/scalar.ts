@@ -1,27 +1,35 @@
+import { merge } from 'lodash';
 import { MetaModelType } from './model';
 import {
   ModelBase,
   ModelBaseInput,
-  ModelBaseStorage,
+  ModelBaseInternal,
   IModelBase,
 } from './modelbase';
-import { BaseMeta } from './metadata';
+import { ElementMetaInfo } from './element';
 
 /**
  * scalar item
  */
-export interface IScalar extends IModelBase<ScalarMeta, ScalarInput> {}
+export interface IScalar extends IModelBase<ScalarMetaInfo, ScalarInput> {}
 
-export interface ScalarMeta extends BaseMeta {}
+export interface ScalarMetaInfo extends ElementMetaInfo {}
 
-export interface ScalarStorage extends ModelBaseStorage<ScalarMeta> {}
+export interface ScalarInternal extends ModelBaseInternal<ScalarMetaInfo> {}
 
-export interface ScalarInput extends ModelBaseInput<ScalarMeta> {}
+export interface ScalarInput extends ModelBaseInput<ScalarMetaInfo> {}
 
-export class Scalar extends ModelBase<ScalarMeta, ScalarInput, ScalarStorage>
+const defaultMetaInfo = {};
+const defaultInternal = {};
+const defaultInput = {};
+
+export class Scalar
+  extends ModelBase<ScalarMetaInfo, ScalarInput, ScalarInternal>
   implements IScalar {
   public modelType: MetaModelType = 'scalar';
   constructor(inp: ScalarInput) {
-    super(inp);
+    super(merge({}, defaultInput, inp));
+    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
+    this.$obj = merge({}, defaultInternal, this.$obj);
   }
 }
