@@ -1,5 +1,5 @@
 import {
-  IRelation,
+  IRelationBase,
   RelationBasePersistence,
   RelationBaseMetaInfo,
   RelationBaseInput,
@@ -19,13 +19,13 @@ export interface BelongsToManyPersistence extends RelationBasePersistence {
 }
 
 export interface IBelongsToManyRelation
-  extends IRelation<
+  extends IRelationBase<
     BelongsToManyMetaInfo,
     BelongsToManyInput,
     BelongsToManyPersistence
   > {
   belongsToMany: IEntityRef;
-  using: string;
+  using: IEntityRef;
   fields: Map<string, ISimpleField>;
 }
 
@@ -39,6 +39,7 @@ export interface BelongsToManyInternal
   > {
   belongsToMany: IEntityRef;
   using: IEntityRef;
+  fields: Map<string, ISimpleField>;
 }
 
 export interface BelongsToManyInput
@@ -59,18 +60,28 @@ const defaultMetaInfo = {
 const defaultInternal = {};
 const defaultInput = {};
 
-export class BelongsToMany extends RelationBase<
-  BelongsToManyMetaInfo,
-  BelongsToManyInput,
-  BelongsToManyInternal,
-  BelongsToManyPersistence
-> {
+export class BelongsToMany
+  extends RelationBase<
+    BelongsToManyMetaInfo,
+    BelongsToManyInput,
+    BelongsToManyInternal,
+    BelongsToManyPersistence
+  >
+  implements IBelongsToManyRelation {
   get belongsToMany(): IEntityRef {
     return this.$obj.belongsToMany;
   }
 
   get ref(): IEntityRef {
     return this.$obj.belongsToMany;
+  }
+
+  get using() {
+    return this.$obj.using;
+  }
+
+  get fields() {
+    return this.$obj.fields;
   }
 
   constructor(inp: BelongsToManyInput) {

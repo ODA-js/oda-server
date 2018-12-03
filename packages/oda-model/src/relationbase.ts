@@ -15,7 +15,7 @@ import * as inflected from 'inflected';
 /**
  * base Relation for relation definition
  */
-export interface IRelation<
+export interface IRelationBase<
   T extends RelationBaseMetaInfo<P>,
   K extends RelationBaseInput<T, P>,
   P extends RelationBasePersistence
@@ -28,10 +28,6 @@ export interface IRelation<
    * the reference to specific entity
    */
   ref: IEntityRef | never;
-  /**
-   * set of fields
-   */
-  fields: Map<string, ISimpleField>;
   /**
    * the opposite field
    */
@@ -62,7 +58,6 @@ export interface RelationBaseInternal<
   name: string;
   entity: string;
   field: string;
-  fields: Map<string, ISimpleField>;
   opposite?: string;
 }
 
@@ -86,7 +81,7 @@ export abstract class RelationBase<
   I extends RelationBaseInput<T, P>,
   S extends RelationBaseInternal<T, P>,
   P extends RelationBasePersistence
-> extends Element<T, I, S> implements IRelation<T, I, P> {
+> extends Element<T, I, S> implements IRelationBase<T, I, P> {
   public get modelType(): MetaModelType {
     return this.verb;
   }
@@ -110,10 +105,6 @@ export abstract class RelationBase<
 
   get entity(): string {
     return this.$obj.entity;
-  }
-
-  get fields(): Map<string, ISimpleField> {
-    return this.$obj.fields;
   }
 
   get ref(): IEntityRef | never {

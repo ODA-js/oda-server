@@ -1,21 +1,19 @@
-import {
-  IRelation,
-  RelationBaseInput,
-  RelationBasePersistence,
-  RelationBaseMetaInfo,
-} from './relationbase';
-import {
-  FieldBaseInput,
-  IFieldBase,
-  FieldBase,
-  FieldBasePersistence,
-  FieldBaseMetaInfo,
-  FieldBaseInternal,
-} from './fieldbase';
-import { SimpleFieldInput } from './simplefield';
 import { IEntityRef } from './entityreference';
 import { merge } from 'lodash';
-import { Nullable } from './model';
+import { Nullable, assignValue } from './model';
+import { RelationInput, IRelation } from './relation';
+import { HasOne } from './hasone';
+import { HasMany } from './hasmany';
+import { BelongsToMany } from './belongstmany';
+import { BelongsTo } from './belongsto';
+import {
+  RelationFieldBase,
+  RelationFieldBaseMetaInfo,
+  RelationFieldBasePersistence,
+  IRelationFieldBase,
+  RelationFieldBaseInternal,
+  RelationFieldBaseInput,
+} from './relationbasefield';
 
 function discoverFieldType(obj: any) {
   // сделать проверку по полю...
@@ -33,122 +31,103 @@ function discoverFieldType(obj: any) {
   }
 }
 
-export interface RelationFieldMetaInfo<P extends RelationFieldPersistence>
-  extends FieldBaseMetaInfo<P> {}
+export interface RelationFieldMetaInfo
+  extends RelationFieldBaseMetaInfo<RelationFieldPersistence> {}
 
-export interface RelationFieldPersistence extends FieldBasePersistence {
+export interface RelationFieldPersistence extends RelationFieldBasePersistence {
   derived: boolean;
   persistent: boolean;
 }
 
-export interface RelationFieldInput<
-  T extends RelationFieldMetaInfo<P>,
-  P extends RelationFieldPersistence,
-  RT extends RelationBaseMetaInfo<RP>,
-  RP extends RelationBasePersistence
-> extends FieldBaseInput<T, P> {
-  relation: RelationBaseInput<RT, RP>;
+export interface RelationFieldInput
+  extends RelationFieldBaseInput<
+    RelationFieldMetaInfo,
+    RelationFieldPersistence
+  > {
+  relation: RelationInput;
 }
 
 /**
  * relation field definition
  */
-export interface IRelationField<
-  T extends RelationFieldMetaInfo<P>,
-  I extends FieldBaseInput<T, P>,
-  RT extends RelationBaseMetaInfo<RP>,
-  RI extends RelationBaseInput<RT, RP>,
-  P extends RelationFieldPersistence,
-  RP extends RelationBasePersistence
-> extends IFieldBase<T, I, P> {
-  relation: IRelation<RT, RI, RP>;
-}
+export interface IRelationField
+  extends IRelationFieldBase<
+    RelationFieldMetaInfo,
+    RelationFieldInput,
+    RelationFieldPersistence
+  > {}
 
-export interface RelationFieldBaseInput<
-  T extends RelationFieldMetaInfo<P>,
-  P extends RelationFieldPersistence
-> extends FieldBaseInput<T, P> {}
+export interface RelationFieldInput
+  extends RelationFieldBaseInput<
+    RelationFieldMetaInfo,
+    RelationFieldPersistence
+  > {}
 
-export interface RelationFieldInternal<
-  T extends RelationFieldMetaInfo<P>,
-  P extends RelationFieldPersistence,
-  RT extends RelationBaseMetaInfo<RP>,
-  RI extends RelationBaseInput<RT, RP>,
-  RP extends RelationBasePersistence
-> extends FieldBaseInternal<T, P> {
-  idKey: IEntityRef;
-  relation: IRelation<RT, RI, RP>;
-}
+export interface RelationFieldInternal
+  extends RelationFieldBaseInternal<
+    RelationFieldMetaInfo,
+    RelationFieldPersistence
+  > {}
 
 const defaultMetaInfo = {};
 const defaultInternal = {};
 const defaultInput = {};
 
-export class RelationField<
-  T extends RelationFieldMetaInfo<P>,
-  I extends RelationFieldInput<T, P, RT, RP>,
-  S extends RelationFieldInternal<T, P, RT, RI, RP>,
-  P extends RelationFieldPersistence,
-  RT extends RelationBaseMetaInfo<RP>,
-  RI extends RelationBaseInput<RT, RP>,
-  RP extends RelationBasePersistence
-> extends FieldBase<T, I, S, P> implements IRelationField<T, I, RT, RI, P, RP> {
-  constructor(inp: I) {
+export class RelationField
+  extends RelationFieldBase<
+    RelationFieldMetaInfo,
+    RelationFieldInput,
+    RelationFieldInternal,
+    RelationFieldPersistence
+  >
+  implements IRelationField {
+  constructor(inp: RelationFieldInput) {
     super(merge({}, defaultInput, inp));
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
     this.$obj = merge({}, defaultInternal, this.$obj);
   }
 
-  get relation(): IRelation<RT, RI, RP> {
-    return this.$obj.relation;
-  }
-
-  set relation(value: IRelation<RT, RI, RP>) {
-    this.$obj.relation = value;
-  }
-
-  public updateWith(obj: Nullable<I>) {
-    super.updateWith(obj);
-    const result = { ...this.$obj };
-
-    if (obj.relation) {
-      let $relation = obj.relation;
-      let relation: IRelation<RT, RI, RP>;
-
-      switch (discoverFieldType($relation)) {
-        case 'HasOne':
-          relation = new HasOne({
-            ...($relation as { hasOne: string }),
-            entity: obj.entity,
-            field: obj.name,
-          });
-          break;
-        case 'HasMany':
-          relation = new HasMany({
-            ...($relation as { hasMany: string }),
-            entity: obj.entity,
-            field: obj.name,
-          });
-          break;
-        case 'BelongsToMany':
-          relation = new BelongsToMany({
-            ...($relation as { belongsToMany: string; using: string }),
-            entity: obj.entity,
-            field: obj.name,
-          });
-          break;
-        case 'BelongsTo':
-          relation = new BelongsTo({
-            ...($relation as { belongsTo: string }),
-            entity: obj.entity,
-            field: obj.name,
-          });
-          break;
-        default:
-          throw new Error('undefined type');
-      }
-      result.relation = relation;
-    }
+  public updateWith(input: Nullable<RelationFieldInput>) {
+    super.updateWith(input);
+    assignValue<RelationFieldInternal, RelationFieldInput, RelationInput>({
+      src: this.$obj,
+      input,
+      field: 'relation',
+      effect: (src, value) => {
+        switch (discoverFieldType(value)) {
+          case 'HasOne':
+            src.relation = new HasOne({
+              ...(value as { hasOne: string }),
+              entity: this.metadata_.entity,
+              field: this.name,
+            });
+            break;
+          case 'HasMany':
+            src.relation = new HasMany({
+              ...(value as { hasMany: string }),
+              entity: this.metadata_.entity,
+              field: this.name,
+            });
+            break;
+          case 'BelongsToMany':
+            src.relation = new BelongsToMany({
+              ...(value as { belongsToMany: string; using: string }),
+              entity: this.metadata_.entity,
+              field: this.name,
+            });
+            break;
+          case 'BelongsTo':
+            src.relation = new BelongsTo({
+              ...(value as { belongsTo: string }),
+              entity: this.metadata_.entity,
+              field: this.name,
+            });
+            break;
+          default:
+            throw new Error('undefined type');
+        }
+      },
+    });
   }
 
   // it get fixed object

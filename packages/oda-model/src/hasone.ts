@@ -1,5 +1,5 @@
 import {
-  IRelation,
+  IRelationBase,
   RelationBasePersistence,
   RelationBaseMetaInfo,
   RelationBaseInput,
@@ -17,7 +17,7 @@ export interface HasOnePersistence extends RelationBasePersistence {
 }
 
 export interface IHasOneRelation
-  extends IRelation<HasOneMetaInfo, HasOneInput, HasOnePersistence> {
+  extends IRelationBase<HasOneMetaInfo, HasOneInput, HasOnePersistence> {
   hasOne: IEntityRef;
 }
 

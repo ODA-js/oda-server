@@ -1,5 +1,5 @@
 import {
-  IRelation,
+  IRelationBase,
   RelationBasePersistence,
   RelationBaseMetaInfo,
   RelationBaseInput,
@@ -17,7 +17,11 @@ export interface BelongsToPersistence extends RelationBasePersistence {
 }
 
 export interface IBelongsToRelation
-  extends IRelation<BelongsToMetaInfo, BelongsToInput, BelongsToPersistence> {
+  extends IRelationBase<
+    BelongsToMetaInfo,
+    BelongsToInput,
+    BelongsToPersistence
+  > {
   belongsTo: IEntityRef;
 }
 

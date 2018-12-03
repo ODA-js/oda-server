@@ -1,16 +1,19 @@
 import {
-  FieldBaseInput,
-  FieldBaseInternal,
-  FieldBaseMetaInfo,
-  IFieldBase,
-  FieldBase,
-  FieldBasePersistence,
-} from './fieldbase';
+  RelationFieldBaseInput,
+  RelationFieldBaseInternal,
+  RelationFieldBaseMetaInfo,
+  IRelationFieldBase,
+  RelationFieldBase,
+  RelationFieldBasePersistence,
+} from './relationbasefield';
 import { merge, get } from 'lodash';
 import { EntityType, Nullable, assignValue } from './model';
+import { IRelation } from './relation';
+import { HasMany } from './hasmany';
+import { HasOne } from './hasone';
 
 export interface IEntityField
-  extends IFieldBase<
+  extends IRelationFieldBase<
     EntityFieldMeta,
     EntityFieldInput,
     EntityFieldPersistence
@@ -22,21 +25,19 @@ export interface IEntityField
   list?: boolean;
 }
 
-export interface EntityFieldPersistence extends FieldBasePersistence {}
+export interface EntityFieldPersistence extends RelationFieldBasePersistence {}
 
 export interface EntityFieldMeta
-  extends FieldBaseMetaInfo<EntityFieldPersistence> {
-  defaultValue?: string;
-}
+  extends RelationFieldBaseMetaInfo<EntityFieldPersistence> {}
 
 export interface EntityFieldInternal
-  extends FieldBaseInternal<EntityFieldMeta, EntityFieldPersistence> {
+  extends RelationFieldBaseInternal<EntityFieldMeta, EntityFieldPersistence> {
   type: EntityType;
   list: boolean;
 }
 
 export interface EntityFieldInput
-  extends FieldBaseInput<EntityFieldMeta, EntityFieldPersistence> {
+  extends RelationFieldBaseInput<EntityFieldMeta, EntityFieldPersistence> {
   type: string;
   list?: boolean;
 }
@@ -46,7 +47,7 @@ const defaultInternal = {};
 const defaultInput = {};
 
 export class EntityField
-  extends FieldBase<
+  extends RelationFieldBase<
     EntityFieldMeta,
     EntityFieldInput,
     EntityFieldInternal,
@@ -62,7 +63,6 @@ export class EntityField
     return this.$obj.type;
   }
 
-  // if it is the field is List of Items i.e. String[]
   get list(): boolean {
     return get(this.$obj, 'list', false);
   }
@@ -84,36 +84,36 @@ export class EntityField
       required: true,
       setDefault: src => (src.list = false),
     });
-    //TODO:  ref field!!!
 
-    if (typeof obj.type === 'object') {
-      if (obj.type.type === 'entity') {
-        const type = obj.type;
-        let relation: HasMany | HasOne;
+    assignValue<EntityFieldInternal, EntityFieldInput, EntityType>({
+      src: this.$obj,
+      input,
+      field: 'type',
+      effect: (src, type) => {
         switch (type.multiplicity) {
           case 'one': {
-            relation = new HasOne({
+            src.relation = new HasOne({
               hasOne: `${type.name}#`,
-              entity: obj.entity,
-              field: obj.name,
+              entity: this.metadata_.entity,
+              field: this.name,
               embedded: true,
             });
             break;
           }
           case 'many': {
-            relation = new HasMany({
+            src.relation = new HasMany({
               hasMany: `${type.name}#`,
-              entity: obj.entity,
-              field: obj.name,
+              entity: this.metadata_.entity,
+              field: this.name,
               embedded: true,
             });
             break;
           }
           default:
         }
-        result.relation = relation;
-      }
-    }
+      },
+      required: true,
+    });
   }
 
   public toObject(): EntityFieldInput {
