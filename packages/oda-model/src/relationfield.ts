@@ -12,7 +12,7 @@ import {
   IRelationFieldBase,
   RelationFieldBaseInternal,
   RelationFieldBaseInput,
-} from './relationbasefield';
+} from './relationfieldbase';
 
 function discoverFieldType(obj: any) {
   // сделать проверку по полю...

@@ -5,10 +5,9 @@ import {
   IRelationFieldBase,
   RelationFieldBase,
   RelationFieldBasePersistence,
-} from './relationbasefield';
+} from './relationfieldbase';
 import { merge, get } from 'lodash';
 import { EntityType, Nullable, assignValue } from './model';
-import { IRelation } from './relation';
 import { HasMany } from './hasmany';
 import { HasOne } from './hasone';
 
