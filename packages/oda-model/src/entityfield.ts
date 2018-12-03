@@ -84,6 +84,36 @@ export class EntityField
       required: true,
       setDefault: src => (src.list = false),
     });
+    //TODO:  ref field!!!
+
+    if (typeof obj.type === 'object') {
+      if (obj.type.type === 'entity') {
+        const type = obj.type;
+        let relation: HasMany | HasOne;
+        switch (type.multiplicity) {
+          case 'one': {
+            relation = new HasOne({
+              hasOne: `${type.name}#`,
+              entity: obj.entity,
+              field: obj.name,
+              embedded: true,
+            });
+            break;
+          }
+          case 'many': {
+            relation = new HasMany({
+              hasMany: `${type.name}#`,
+              entity: obj.entity,
+              field: obj.name,
+              embedded: true,
+            });
+            break;
+          }
+          default:
+        }
+        result.relation = relation;
+      }
+    }
   }
 
   public toObject(): EntityFieldInput {

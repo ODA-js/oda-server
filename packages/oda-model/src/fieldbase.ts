@@ -63,7 +63,7 @@ export interface FieldBaseInput<
   inheritedFrom?: string;
   derived?: boolean;
   persistent?: boolean;
-  entity: string;
+  entity?: string;
   arguments?: AsHash<FieldArgs>;
   type?: FieldType;
   order?: number;

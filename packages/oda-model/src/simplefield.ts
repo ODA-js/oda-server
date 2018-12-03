@@ -55,8 +55,8 @@ export interface SimpleFieldInternal
 
 export interface SimpleFieldInput
   extends FieldBaseInput<SimpleFieldMeta, SimpleFieldPersistence> {
-  type: string | EnumType;
-  required: boolean;
+  type?: string | EnumType;
+  required?: boolean;
   identity?: boolean | string | string[];
   indexed?: boolean | string | string[];
   defaultValue?: string;

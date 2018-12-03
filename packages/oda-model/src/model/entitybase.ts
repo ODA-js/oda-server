@@ -6,7 +6,7 @@ import { DEFAULT_ID_FIELD } from './definitions';
 import { Field } from './field';
 import {
   EntityInput,
-  FieldInput,
+  SimpleFieldInput,
   MetaModelType,
   EntityBaseStorage,
   EntityBaseInput,
@@ -278,7 +278,7 @@ export class EntityBase extends ModelBase implements IEntityBase {
       };
 
       if (Array.isArray(obj.fields)) {
-        (obj.fields as FieldInput[]).forEach(traverse);
+        (obj.fields as SimpleFieldInput[]).forEach(traverse);
       } else {
         let fieldNames = Object.keys(obj.fields);
         for (let i = 0, len = fieldNames.length; i < len; i++) {
@@ -288,7 +288,7 @@ export class EntityBase extends ModelBase implements IEntityBase {
       }
 
       if (Array.isArray(obj.operations)) {
-        (obj.operations as FieldInput[]).forEach(opTraverse);
+        (obj.operations as SimpleFieldInput[]).forEach(opTraverse);
       } else if (obj.operations) {
         let opName = Object.keys(obj.operations);
         for (let i = 0, len = opName.length; i < len; i++) {

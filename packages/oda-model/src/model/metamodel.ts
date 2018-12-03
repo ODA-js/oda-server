@@ -5,7 +5,7 @@ import fold from '../lib/json/fold';
 import { Entity } from './entity';
 import {
   EntityInput,
-  FieldInput,
+  SimpleFieldInput,
   IModel,
   IValidationResult,
   IValidator,
@@ -84,7 +84,9 @@ export class MetaModel extends ModelPackage implements IModel {
     this.loadPackage(store);
   }
 
-  protected dedupeFields(src: FieldInput[]): { [key: string]: FieldInput } {
+  protected dedupeFields(
+    src: SimpleFieldInput[],
+  ): { [key: string]: SimpleFieldInput } {
     return src.reduce(
       (res, curr) => {
         if (!res.hasOwnProperty(curr.name)) {
@@ -94,7 +96,7 @@ export class MetaModel extends ModelPackage implements IModel {
         }
         return res;
       },
-      {} as { [key: string]: FieldInput },
+      {} as { [key: string]: SimpleFieldInput },
     );
   }
 
@@ -105,13 +107,13 @@ export class MetaModel extends ModelPackage implements IModel {
       metadata = deepMerge(result.metadata || {}, hook.metadata);
     }
     let fields: {
-      [fName: string]: FieldInput;
+      [fName: string]: SimpleFieldInput;
     };
 
     if (Array.isArray(hook.fields)) {
       fields = this.dedupeFields([
-        ...(result.fields as FieldInput[]),
-        ...(hook.fields as FieldInput[]),
+        ...(result.fields as SimpleFieldInput[]),
+        ...(hook.fields as SimpleFieldInput[]),
       ]);
     } else {
       fields = this.dedupeFields(result.fields || []);
