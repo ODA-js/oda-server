@@ -6,10 +6,9 @@ import {
   FieldBaseMetaInfo,
   FieldBaseInternal,
 } from './fieldbase';
-import { IEntityRef } from './entityreference';
 import { merge } from 'lodash';
 import { Nullable } from './model';
-import { IRelation, RelationInput } from './relation';
+import { IRelation } from './relation';
 
 export interface RelationFieldBaseMetaInfo<
   P extends RelationFieldBasePersistence

@@ -7,7 +7,6 @@ import {
 } from './element';
 import { RelationType, MetaModelType, assignValue, Nullable } from './model';
 import { IEntityRef } from './entityreference';
-import { ISimpleField } from './simplefield';
 import { merge } from 'lodash';
 import decapitalize from './lib/decapitalize';
 import * as inflected from 'inflected';

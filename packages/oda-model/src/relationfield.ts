@@ -1,10 +1,9 @@
-import { IEntityRef } from './entityreference';
 import { merge } from 'lodash';
 import { Nullable, assignValue } from './model';
-import { RelationInput, IRelation } from './relation';
+import { RelationInput } from './relation';
 import { HasOne } from './hasone';
 import { HasMany } from './hasmany';
-import { BelongsToMany } from './belongstmany';
+import { BelongsToMany } from './belongstomany';
 import { BelongsTo } from './belongsto';
 import {
   RelationFieldBase,
