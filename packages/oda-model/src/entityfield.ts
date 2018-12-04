@@ -17,11 +17,9 @@ export interface IEntityField
     EntityFieldInput,
     EntityFieldPersistence
   > {
-  /**
-   * field type
-   */
   type: EntityType;
-  list?: boolean;
+  list: boolean;
+  derived: boolean;
 }
 
 export interface EntityFieldPersistence extends RelationFieldBasePersistence {}
@@ -33,12 +31,14 @@ export interface EntityFieldInternal
   extends RelationFieldBaseInternal<EntityFieldMeta, EntityFieldPersistence> {
   type: EntityType;
   list: boolean;
+  derived: boolean;
 }
 
 export interface EntityFieldInput
   extends RelationFieldBaseInput<EntityFieldMeta, EntityFieldPersistence> {
   type: string;
   list?: boolean;
+  derived?: boolean;
 }
 
 const defaultMetaInfo = {};
@@ -63,7 +63,11 @@ export class EntityField
   }
 
   get list(): boolean {
-    return get(this.$obj, 'list', false);
+    return this.$obj.list;
+  }
+
+  get derived(): boolean {
+    return this.$obj.derived;
   }
 
   public updateWith(input: Nullable<EntityFieldInput>) {
@@ -80,8 +84,15 @@ export class EntityField
       input,
       field: 'list',
       effect: (src, value) => (src.list = value),
-      required: true,
       setDefault: src => (src.list = false),
+    });
+
+    assignValue<EntityFieldInternal, EntityFieldInput, boolean>({
+      src: this.$obj,
+      input,
+      field: 'derived',
+      effect: (src, value) => (src.derived = value),
+      setDefault: src => (src.derived = false),
     });
 
     assignValue<EntityFieldInternal, EntityFieldInput, EntityType>({

@@ -17,26 +17,27 @@ import {
   assignValue,
 } from './model';
 import { ElementMetaInfo } from './element';
+import { IEntityRef, EntityReference } from './entityreference';
 
 export interface IFieldBase<
   M extends FieldBaseMetaInfo<P>,
   I extends FieldBaseInput<M, P>,
   P extends FieldBasePersistence
 > extends IModelBase<M, I> {
-  /**
-   * set of arguments
-   */
   args?: Map<string, FieldArgs>;
-  /**
-   * is it field inherited from other entity and which one
-   */
   inheritedFrom?: string;
   type?: FieldType;
+  required?: boolean;
+  indexed: boolean | string | string[];
+  identity: boolean | string | string[];
 }
 
 export interface FieldBasePersistence {
   derived: boolean;
   persistent: boolean;
+  required: boolean;
+  identity: boolean | string | string[];
+  indexed: boolean | string | string[];
 }
 
 export interface FieldBaseMetaInfo<T extends FieldBasePersistence>
@@ -53,6 +54,7 @@ export interface FieldBaseInternal<
   args?: Map<string, FieldArgs>;
   inheritedFrom?: string;
   type?: FieldType;
+  idKey: IEntityRef;
 }
 
 export interface FieldBaseInput<
@@ -64,9 +66,11 @@ export interface FieldBaseInput<
   derived?: boolean;
   persistent?: boolean;
   entity?: string;
-  arguments?: AsHash<FieldArgs>;
   type?: FieldType;
   order?: number;
+  required?: boolean;
+  identity?: boolean | string | string[];
+  indexed?: boolean | string | string[];
 }
 
 const defaultMetaInfo = {};
@@ -105,6 +109,18 @@ export abstract class FieldBase<
     return get(this.metadata_, 'persistence.persistent', false);
   }
 
+  get identity(): boolean | string | string[] {
+    return get(this.metadata_, 'persistence.identity', false);
+  }
+
+  get required(): boolean {
+    return get(this.metadata_, 'persistence.required', false);
+  }
+
+  get indexed(): boolean | string | string[] {
+    return get(this.metadata_, 'persistence.indexed', false);
+  }
+
   constructor(inp: I) {
     super(merge({}, defaultInput, inp));
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
@@ -137,33 +153,75 @@ export abstract class FieldBase<
       effect: (src, value) => (src.args = HashToMap(value)),
     });
 
-    assignValue<T, I, AsHash<FieldArgs>>({
+    assignValue({
       src: this.metadata_,
       input,
       field: 'entity',
       effect: (src, value) => set(src, 'entity', value),
     });
 
-    assignValue<T, I, AsHash<FieldArgs>>({
+    assignValue({
       src: this.metadata_,
       input,
       field: 'order',
       effect: (src, value) => set(src, 'order', value),
     });
 
-    assignValue<T, I, AsHash<FieldArgs>>({
+    assignValue({
       src: this.metadata_,
       input,
       inputField: 'derived',
       effect: (src, value) => set(src, 'persistence.derived', value),
     });
 
-    assignValue<T, I, AsHash<FieldArgs>>({
+    assignValue({
       src: this.metadata_,
       input,
       inputField: 'persistent',
       effect: (src, value) => set(src, 'persistence.persistent', value),
     });
+
+    assignValue<T, I, boolean>({
+      src: this.metadata_,
+      input,
+      inputField: 'identity',
+      effect: (_, value) => {
+        set(this.metadata_, 'persistence.identity', value);
+        if (value) {
+          set(this.metadata_, 'persistence.required', true);
+          set(this.metadata_, 'persistence.indexed', true);
+          this.$obj.idKey = new EntityReference({
+            entity: this.metadata_.entity,
+            field: this.$obj.name,
+          });
+        }
+      },
+    });
+
+    assignValue<T, I, boolean>({
+      src: this.metadata_,
+      input,
+      inputField: 'indexed',
+      effect: (src, value) => set(src, 'persistence.indexed', value),
+    });
+
+    assignValue<T, I, boolean>({
+      src: this.metadata_,
+      input,
+      inputField: 'required',
+      effect: (src, value) => set(src, 'persistence.required', value),
+    });
+  }
+
+  public makeIdentity() {
+    this.$obj.idKey = new EntityReference({
+      entity: this.$obj.metadata.entity,
+      field: this.$obj.name,
+      backField: 'id',
+    });
+    this.metadata_.persistence.indexed = true;
+    this.metadata_.persistence.identity = true;
+    this.metadata_.persistence.required = true;
   }
 
   public toObject(): I {
@@ -174,6 +232,9 @@ export abstract class FieldBase<
       inheritedFrom: this.$obj.inheritedFrom,
       order: this.metadata_.order,
       args: this.$obj.args ? MapToHash(this.$obj.args) : undefined,
-    });
+      required: this.required,
+      indexed: this.indexed,
+      identity: this.identity,
+    } as Partial<I>);
   }
 }

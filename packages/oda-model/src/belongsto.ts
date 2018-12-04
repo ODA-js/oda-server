@@ -7,13 +7,16 @@ import {
   RelationBase,
 } from './relationbase';
 import { IEntityRef, EntityReference } from './entityreference';
-import { merge, set } from 'lodash';
+import { merge, set, get } from 'lodash';
 import { assignValue } from './model';
 
 export interface BelongsToPersistence extends RelationBasePersistence {
   single: boolean;
   stored: boolean;
   embedded: boolean;
+  required: boolean;
+  identity: boolean | string | string[];
+  indexed: boolean | string | string[];
 }
 
 export interface IBelongsToRelation
@@ -36,6 +39,9 @@ export interface BelongsToInternal
 export interface BelongsToInput
   extends RelationBaseInput<BelongsToMetaInfo, BelongsToPersistence> {
   belongsTo: string;
+  required?: boolean;
+  identity?: boolean | string | string[];
+  indexed?: boolean | string | string[];
 }
 
 const defaultMetaInfo = {
@@ -44,6 +50,9 @@ const defaultMetaInfo = {
     single: true,
     stored: true,
     embedded: false,
+    indexed: true,
+    identity: false,
+    required: false,
   },
 };
 const defaultInternal = {};
@@ -61,6 +70,18 @@ export class BelongsTo extends RelationBase<
 
   get ref(): IEntityRef {
     return this.$obj.belongsTo;
+  }
+
+  get identity(): boolean | string | string[] {
+    return get(this.metadata_, 'persistence.identity', false);
+  }
+
+  get required(): boolean {
+    return get(this.metadata_, 'persistence.required', false);
+  }
+
+  get indexed(): boolean | string | string[] {
+    return get(this.metadata_, 'persistence.indexed', false);
   }
 
   constructor(inp: BelongsToInput) {
@@ -84,6 +105,30 @@ export class BelongsTo extends RelationBase<
       input,
       field: 'belongsTo',
       effect: (src, value) => (src.belongsTo = new EntityReference(value)),
+    });
+
+    assignValue<BelongsToMetaInfo, BelongsToInput, boolean>({
+      src: this.metadata_,
+      input,
+      inputField: 'indexed',
+      effect: (src, value) => set(src, 'persistence.indexed', value),
+      setDefault: src => (src.persistence.indexed = false),
+    });
+
+    assignValue<BelongsToMetaInfo, BelongsToInput, boolean>({
+      src: this.metadata_,
+      input,
+      inputField: 'identity',
+      effect: (src, value) => set(src, 'persistence.identity', value),
+      setDefault: src => (src.persistence.identity = false),
+    });
+
+    assignValue<BelongsToMetaInfo, BelongsToInput, boolean>({
+      src: this.metadata_,
+      input,
+      inputField: 'required',
+      effect: (src, value) => set(src, 'persistence.required', value),
+      setDefault: src => (src.persistence.required = false),
     });
   }
 
