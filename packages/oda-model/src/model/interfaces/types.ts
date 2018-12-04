@@ -25,7 +25,8 @@ export type assignInput<I, T, K = any> = {
    */
   allowEffect?: (src: I, value: K) => boolean;
   /**
-   * is field required
+   * is field required, so it can't be reset by set null.
+   * in this case assign will throw
    */
   required?: boolean;
   /**
@@ -96,6 +97,7 @@ export type MetaModelType =
   | 'query'
   | 'mutation'
   | 'package'
+  | 'entity-base'
   | 'entity'
   | 'scalar'
   | 'mixin'
@@ -195,6 +197,10 @@ export function HashToMap<T extends INamed>(input: AsHash<T>): Map<string, T> {
     return [name, input[name] as T] as [string, T];
   });
   return new Map(res);
+}
+
+export function HashToArray<T extends INamed>(input: AsHash<T>): T[] {
+  return Object.values(input);
 }
 
 export function MapToHash<T extends INamed>(input: Map<string, T>): AsHash<T> {

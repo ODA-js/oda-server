@@ -6,7 +6,7 @@ import {
   FieldBase,
   FieldBasePersistence,
 } from './fieldbase';
-import { EntityReference, IEntityRef } from './entityreference';
+import { IEntityRef } from './entityreference';
 import { merge, get, set } from 'lodash';
 import { EnumType, Nullable, assignValue, AsHash, FieldArgs } from './model';
 
@@ -16,29 +16,14 @@ export interface ISimpleField
     SimpleFieldInput,
     SimpleFieldPersistence
   > {
-  /**
-   * is field indexed
-   */
-  indexed: boolean | string | string[];
-  /**
-   * if field is used like identity/unique key
-   */
-  identity: boolean | string | string[];
-  /**
-   * field type
-   */
   type: string | EnumType;
   defaultValue?: string;
-  required?: boolean;
   list?: boolean;
 }
 
 export interface SimpleFieldPersistence extends FieldBasePersistence {
   derived: boolean;
   persistent: boolean;
-  indexed: boolean;
-  required: boolean;
-  identity: boolean;
 }
 
 export interface SimpleFieldMeta
@@ -50,15 +35,11 @@ export interface SimpleFieldInternal
   extends FieldBaseInternal<SimpleFieldMeta, SimpleFieldPersistence> {
   type: string | EnumType;
   list: boolean;
-  idKey: IEntityRef;
 }
 
 export interface SimpleFieldInput
   extends FieldBaseInput<SimpleFieldMeta, SimpleFieldPersistence> {
   type?: string | EnumType;
-  required?: boolean;
-  identity?: boolean | string | string[];
-  indexed?: boolean | string | string[];
   defaultValue?: string;
   list?: boolean;
 }
@@ -82,18 +63,6 @@ export class SimpleField
   // if it is the field is List of Items i.e. String[]
   get list(): boolean {
     return get(this.$obj, 'list', false);
-  }
-
-  get identity(): boolean | string | string[] {
-    return get(this.metadata_, 'persistence.identity', false);
-  }
-
-  get required(): boolean {
-    return get(this.metadata_, 'persistence.required', false);
-  }
-
-  get indexed(): boolean | string | string[] {
-    return get(this.metadata_, 'persistence.indexed', false);
   }
 
   get defaultValue(): string | undefined {
@@ -162,37 +131,6 @@ export class SimpleField
       inputField: 'defaultValue',
       allowEffect: (src, _) => get(src, 'persistence.derived', false),
     });
-
-    assignValue<SimpleFieldMeta, SimpleFieldInput, boolean>({
-      src: this.metadata_,
-      input,
-      inputField: 'identity',
-      effect: (_, value) => {
-        set(this.metadata_, 'storage.identity', value);
-        if (value) {
-          set(this.metadata_, 'storage.required', true);
-          set(this.metadata_, 'storage.indexed', true);
-          this.$obj.idKey = new EntityReference({
-            entity: this.metadata_.entity,
-            field: this.$obj.name,
-          });
-        }
-      },
-    });
-
-    assignValue<SimpleFieldMeta, SimpleFieldInput, boolean>({
-      src: this.metadata_,
-      input,
-      inputField: 'required',
-      effect: (src, value) => set(src, 'storage.required', value),
-    });
-
-    assignValue<SimpleFieldMeta, SimpleFieldInput, boolean>({
-      src: this.metadata_,
-      input,
-      inputField: 'required',
-      effect: (src, value) => set(src, 'storage.required', value),
-    });
   }
 
   public toObject(): SimpleFieldInput {
@@ -204,7 +142,6 @@ export class SimpleField
       type: this.type,
       inheritedFrom: this.$obj.inheritedFrom,
       list: this.$obj.list,
-      idKey: this.$obj.idKey ? this.$obj.idKey.toString() : undefined,
-    });
+    } as Partial<SimpleFieldInput>);
   }
 }

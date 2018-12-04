@@ -1,6 +1,6 @@
 import {
   IEntity,
-  IField,
+  ISimpleField,
   IModel,
   IPackage,
   IRelation,
@@ -100,9 +100,9 @@ export class FieldContext implements IFieldContext {
   public model: IModel;
   public package: IPackage;
   public entity: IEntity;
-  public field: IField;
+  public field: ISimpleField;
   public errors?: IValidationResult[];
-  constructor(context: IEntityContext, field: IField) {
+  constructor(context: IEntityContext, field: ISimpleField) {
     this.model = context.model;
     this.package = context.package;
     this.entity = context.entity;
@@ -121,7 +121,7 @@ export class RelationContext implements IRelationContext {
   public model: IModel;
   public package: IPackage;
   public entity: IEntity;
-  public field: IField;
+  public field: ISimpleField;
   public relation: IRelation;
   public errors?: IValidationResult[];
   constructor(context: IFieldContext, relation: IRelation) {

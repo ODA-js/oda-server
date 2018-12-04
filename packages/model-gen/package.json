@@ -1,0 +1,13 @@
+{
+  "name": "model-gen",
+  "version": "1.0.0",
+  "description": "generate model from StarUML",
+  "main": "index.js",
+  "author": "vedmalex@gmail.com",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "fte.js": "^0.8.1",
+    "metadata-json-oda": "^0.9.16"
+  }
+}

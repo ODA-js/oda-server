@@ -2,7 +2,13 @@ import { BelongsTo } from '../belongsto';
 import { BelongsToMany } from '../belongstomany';
 import { HasMany } from '../hasmany';
 import { HasOne } from '../hasone';
-import { IEntity, IField, IModel, IPackage, IRelation } from '../interfaces';
+import {
+  IEntity,
+  ISimpleField,
+  IModel,
+  IPackage,
+  IRelation,
+} from '../interfaces';
 import { RestartType } from './contexts';
 
 export interface IModelContext {
@@ -27,7 +33,7 @@ export interface IFieldContext {
   model: IModel;
   package: IPackage;
   entity: IEntity;
-  field: IField;
+  field: ISimpleField;
   restart(level: RestartType): void;
 }
 
@@ -37,7 +43,7 @@ export interface IRelationContext {
   model: IModel;
   package: IPackage;
   entity: IEntity;
-  field: IField;
+  field: ISimpleField;
   relation: IRelation;
   restart(level: RestartType): void;
 }

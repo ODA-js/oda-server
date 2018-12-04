@@ -1,6 +1,6 @@
 import {
   IEntity,
-  IField,
+  ISimpleField,
   IModel,
   IPackage,
   IRelation,
@@ -168,10 +168,10 @@ export class EntityVisitor implements IVisitor<IEntity, IPackageContext> {
   }
 }
 
-export class FieldVisitor implements IVisitor<IField, IEntityContext> {
+export class FieldVisitor implements IVisitor<ISimpleField, IEntityContext> {
   public validator: Validator;
   public context: IEntityContext; // has to be parent context
-  public visit(item: IField) {
+  public visit(item: ISimpleField) {
     const context = new FieldContext(this.context, item);
     const result = [];
     if (context.isValid) {

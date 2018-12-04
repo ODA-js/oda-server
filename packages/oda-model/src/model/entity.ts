@@ -76,28 +76,13 @@ export class Entity extends EntityBase implements IEntity {
     }
   }
 
-  public toObject(modelPackage?: ModelPackage) {
-    if (!modelPackage) {
-      let res = super.toObject();
-      return clean({
-        ...res,
-        implements: [...this.implements],
-        embedded: this.embedded,
-        abstract: this.abstract,
-      });
-    } else {
-      let modelRelations = modelPackage.relations.get(this.name);
-      if (modelRelations) {
-        let res = super.toObject();
-        return clean({
-          ...res,
-          embedded: this.embedded,
-          abstract: this.abstract,
-          implements: [...this.implements].filter(i =>
-            modelPackage.mixins.has(i),
-          ),
-        });
-      }
-    }
+  public toObject() {
+    let res = super.toObject();
+    return clean({
+      ...res,
+      implements: [...this.implements],
+      embedded: this.embedded,
+      abstract: this.abstract,
+    });
   }
 }

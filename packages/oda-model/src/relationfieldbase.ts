@@ -62,15 +62,10 @@ export abstract class RelationFieldBase<
     return this.$obj.relation;
   }
 
-  set relation(value: IRelation) {
-    this.$obj.relation = value;
-  }
-
   public updateWith(obj: Nullable<I>) {
     super.updateWith(obj);
   }
 
-  // it get fixed object
   public toObject(): any {
     return merge({}, super.toObject(), {
       relation: this.relation.toObject(),
