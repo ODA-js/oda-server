@@ -5,13 +5,23 @@ import {
   IEntityBase,
   EntityBase,
   EntityBaseInternal,
+  EntityBaseOutput,
 } from './entitybase';
 import { merge } from 'lodash';
+import { Nullable } from './model';
 
-export interface IMixin extends IEntityBase<MixinMetaInfo, MixinPersistence> {}
+export interface IMixin
+  extends IEntityBase<
+    MixinMetaInfo,
+    MixinPersistence,
+    MixinInput,
+    MixinOutput
+  > {}
 export interface MixinPersistence extends EntityBasePersistence {}
 export interface MixinInput
   extends EntityBaseInput<MixinMetaInfo, MixinPersistence> {}
+export interface MixinOutput
+  extends EntityBaseOutput<MixinMetaInfo, MixinPersistence> {}
 export interface MixinInternal
   extends EntityBaseInternal<MixinMetaInfo, MixinPersistence> {}
 export interface MixinMetaInfo extends EntityBaseMetaInfo<MixinPersistence> {}
@@ -21,7 +31,13 @@ const defaultInternal = {};
 const defaultInput = {};
 
 export class Mixin
-  extends EntityBase<MixinMetaInfo, MixinInput, MixinInternal, MixinPersistence>
+  extends EntityBase<
+    MixinMetaInfo,
+    MixinInput,
+    MixinInternal,
+    MixinPersistence,
+    MixinOutput
+  >
   implements IMixin {
   constructor(inp: MixinInput) {
     super(merge({}, defaultInput, inp));
@@ -29,7 +45,11 @@ export class Mixin
     this.$obj = merge({}, defaultInternal, this.$obj);
   }
 
-  public toObject(): MixinInput {
-    return merge({}, super.toObject(), {} as Partial<MixinInput>);
+  public updateWith(input: Nullable<MixinInput>) {
+    super.updateWith(input);
+  }
+
+  public toObject(): MixinOutput {
+    return merge({}, super.toObject(), {} as Partial<MixinOutput>);
   }
 }

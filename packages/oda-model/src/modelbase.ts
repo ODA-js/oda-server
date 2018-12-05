@@ -5,6 +5,7 @@ import {
   ElementInput,
   Element,
   IMeta,
+  ElementOutput,
 } from './element';
 import { MetaModelType, INamed } from './model';
 import { merge } from 'lodash';
@@ -26,12 +27,21 @@ export interface ModelBaseInput<T extends ModelMetaInfo>
   description?: string;
 }
 
+export interface ModelBaseOutput<T extends ModelMetaInfo>
+  extends ElementOutput<T> {
+  name: string;
+  title?: string;
+  description?: string;
+}
+
 /**
  * the base model item
  */
-export interface IModelBase<T extends ModelMetaInfo, K extends ElementInput<T>>
-  extends IMeta<T, K>,
-    INamed {
+export interface IModelBase<
+  T extends ModelMetaInfo,
+  I extends ModelBaseInput<T>,
+  O extends ModelBaseOutput<T>
+> extends IMeta<T, I, O>, INamed {
   /**
    * name of modeled item
    */
@@ -53,8 +63,9 @@ const defaultInput = {};
 export abstract class ModelBase<
   T extends ElementMetaInfo,
   I extends ModelBaseInput<T>,
-  S extends ModelBaseInternal<T>
-> extends Element<T, I, S> implements IModelBase<T, I> {
+  S extends ModelBaseInternal<T>,
+  O extends ModelBaseOutput<T>
+> extends Element<T, I, S, O> implements IModelBase<T, I, O> {
   readonly modelType: MetaModelType = 'metadata';
   constructor(inp: ModelBaseInput<T>) {
     super(merge({}, defaultInput, inp));
@@ -107,11 +118,11 @@ export abstract class ModelBase<
     });
   }
 
-  public toObject(): I {
-    return merge(super.toObject(), {
+  public toObject(): O {
+    return merge({}, super.toObject(), {
       name: this.name,
       title: this.title,
       description: this.description,
-    });
+    } as Partial<O>);
   }
 }

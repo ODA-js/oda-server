@@ -4,6 +4,7 @@ import {
   ElementInput,
   Element,
   ElementInternal,
+  ElementOutput,
 } from './element';
 import { RelationType, MetaModelType, assignValue, Nullable } from './model';
 import { IEntityRef } from './entityreference';
@@ -17,8 +18,9 @@ import * as inflected from 'inflected';
 export interface IRelationBase<
   T extends RelationBaseMetaInfo<P>,
   K extends RelationBaseInput<T, P>,
-  P extends RelationBasePersistence
-> extends IMeta<T, K> {
+  P extends RelationBasePersistence,
+  O extends RelationBaseOutput<T, P>
+> extends IMeta<T, K, O> {
   /**
    * the verb of relation
    */
@@ -71,6 +73,17 @@ export interface RelationBaseInput<
   opposite?: string;
 }
 
+export interface RelationBaseOutput<
+  T extends RelationBaseMetaInfo<P>,
+  P extends RelationBasePersistence
+> extends ElementOutput<T> {
+  entity: string;
+  field: string;
+  name?: string;
+  embedded?: boolean;
+  opposite?: string;
+}
+
 const defaultMetaInfo = { persistence: {} };
 const defaultInternal = {};
 const defaultInput = {};
@@ -79,8 +92,9 @@ export abstract class RelationBase<
   T extends RelationBaseMetaInfo<P>,
   I extends RelationBaseInput<T, P>,
   S extends RelationBaseInternal<T, P>,
-  P extends RelationBasePersistence
-> extends Element<T, I, S> implements IRelationBase<T, I, P> {
+  P extends RelationBasePersistence,
+  O extends RelationBaseOutput<T, P>
+> extends Element<T, I, S, O> implements IRelationBase<T, I, P, O> {
   public get modelType(): MetaModelType {
     return this.verb;
   }
@@ -217,13 +231,13 @@ export abstract class RelationBase<
     });
   }
 
-  public toObject(): I {
+  public toObject(): O {
     return merge({}, super.toObject(), {
       name: this.name,
       entity: this.entity,
       field: this.field,
       opposite: this.opposite,
       embedded: this.embedded,
-    });
+    } as Partial<O>);
   }
 }

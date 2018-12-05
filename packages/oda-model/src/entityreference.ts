@@ -9,6 +9,7 @@ import {
   ElementInternal,
   Element,
   ElementInput,
+  ElementOutput,
 } from './element';
 
 function StrToEntityRef(input: string): EntityRefInput {
@@ -16,7 +17,7 @@ function StrToEntityRef(input: string): EntityRefInput {
   return {
     backField: decapitalize(res ? res[1] : ''),
     entity: inflected.classify(res ? res[2] : ''),
-    field: decapitalize(res ? res[3].trim() : ''),
+    field: decapitalize(res ? res[3].trim() : DEFAULT_ID_FIELDNAME),
   };
 }
 
@@ -40,7 +41,7 @@ export interface EntityRefMetaInfo extends ElementMetaInfo {}
 
 export interface EntityRefInternal extends ElementInternal<EntityRefMetaInfo> {
   entity: string;
-  field?: string;
+  field: string;
   backField?: string;
 }
 
@@ -50,13 +51,24 @@ export interface EntityRefInput extends ElementInput<EntityRefMetaInfo> {
   backField?: string;
 }
 
+export interface EntityRefOutput extends ElementOutput<EntityRefMetaInfo> {
+  entity: string;
+  backField?: string;
+  field: string;
+}
+
 const defaultMetaInfo = {};
 const defaultInternal = {};
 const defaultInput = {};
 
 /** Entity reference implementation */
 export class EntityReference
-  extends Element<EntityRefMetaInfo, EntityRefInput, EntityRefInternal>
+  extends Element<
+    EntityRefMetaInfo,
+    EntityRefInput,
+    EntityRefInternal,
+    EntityRefOutput
+  >
   implements IEntityRef {
   public modelType: MetaModelType = 'ref';
   /** the Entity that is referenced */
@@ -69,7 +81,7 @@ export class EntityReference
   }
   /** the Identity field */
   public get field(): string {
-    return this.$obj.field ? this.$obj.field : DEFAULT_ID_FIELDNAME;
+    return this.$obj.field;
   }
 
   public set field(value: string) {
@@ -92,16 +104,14 @@ export class EntityReference
     this.updateWith(typeof init === 'object' ? init : StrToEntityRef(init));
   }
 
-  public toObject() {
-    return merge({}, super.toObject(), {
-      backField: this.$obj.backField,
-      entity: this.$obj.entity,
-      field: this.$obj.field,
-    });
+  public toString(): string {
+    return `${this.backField ? this.backField + '@' : ''}${this.$obj.entity}#${
+      this.$obj.field
+    }`;
   }
 
   public updateWith(input: Nullable<EntityRefInput>) {
-    super.updateWith(input);
+    super.updateWith(typeof input === 'object' ? input : StrToEntityRef(input));
 
     assignValue<EntityRefInternal, EntityRefInput, EntityRefInput['entity']>({
       src: this.$obj,
@@ -122,9 +132,11 @@ export class EntityReference
     );
   }
 
-  public toString(): string {
-    return `${this.backField ? this.backField + '@' : ''}${this.$obj.entity}#${
-      this.$obj.field
-    }`;
+  public toObject(): EntityRefOutput {
+    return merge({}, super.toObject(), {
+      backField: this.$obj.backField,
+      entity: this.$obj.entity,
+      field: this.$obj.field,
+    } as Partial<EntityRefOutput>) as EntityRefOutput;
   }
 }

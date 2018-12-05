@@ -1,29 +1,24 @@
 import * as fs from 'fs';
 
-import deepMerge from '../lib/json/deepMerge';
-import fold from '../lib/json/fold';
-import { Entity } from './entity';
+import { Entity, EntityInput } from './entity';
+
 import {
-  EntityInput,
-  SimpleFieldInput,
-  IModel,
-  IValidationResult,
-  IValidator,
-  MetaModelInput,
-  MetaModelType,
-  IModelHook,
+  ModelPackage,
+  IPackage,
+  PackageMetaInfo,
+  ModelPackageInternal,
   ModelPackageInput,
-  MutationInput,
-  QueryInput,
-} from './interfaces';
-import { ModelPackage } from './modelpackage';
-import { Mutation } from './mutation';
-import { Query } from './query';
-import { Mixin } from './mixin';
-import { Union } from './union';
-import { Enum } from './enum';
-import { Scalar } from './scalar';
-import { Directive } from './directive';
+} from './modelpackage';
+import { Mutation, MutationInput } from './mutation';
+import { Query, QueryInput } from './query';
+import { Mixin, MixinInput } from './mixin';
+import { Union, UnionInput } from './union';
+import { Enum, EnumInput } from './enum';
+import { Scalar, ScalarInput } from './scalar';
+import { Directive, DirectiveInput } from './directive';
+import { MetaModelType, AsHash } from './model';
+import { IModelBase, ModelBaseInput } from './modelbase';
+import fold from './lib/json/fold';
 
 function getFilter(inp: string): { filter: (f) => boolean; fields: string[] } {
   let result = {
@@ -60,6 +55,36 @@ function getFilter(inp: string): { filter: (f) => boolean; fields: string[] } {
   return result;
 }
 
+export interface IModelHook {
+  name: string;
+  entities?: AsHash<EntityInput>;
+  mutations?: AsHash<MutationInput>;
+  queries?: AsHash<QueryInput>;
+}
+
+export interface IModel extends IModelBase<MetaModelMetaInfo, MetaModelInput> {
+  readonly packages: Map<string, IPackage>;
+}
+
+export interface MetaModelInput extends ModelBaseInput<MetaModelMetaInfo> {
+  entities: EntityInput[];
+  packages: ModelPackageInput[];
+  mutations?: MutationInput[];
+  queries?: QueryInput[];
+  scalars: ScalarInput[];
+  directives: DirectiveInput[];
+  enums?: EnumInput[];
+  unions?: UnionInput[];
+  mixins?: MixinInput[];
+  name: string;
+  title?: string;
+  description?: string;
+}
+
+export interface MetaModelMetaInfo extends PackageMetaInfo {}
+
+export interface MetaModelInternal extends ModelPackageInternal {}
+
 /**
  * Represents meta-model store
  */
@@ -68,10 +93,6 @@ export class MetaModel extends ModelPackage implements IModel {
   public packages: Map<string, ModelPackage> = new Map();
   public store: string = 'default.json';
   public defaultPackage: ModelPackage;
-
-  public validate(validator: IValidator): IValidationResult[] {
-    return validator.check(this);
-  }
 
   constructor(name: string = 'default') {
     super(name);
@@ -147,7 +168,7 @@ export class MetaModel extends ModelPackage implements IModel {
     mutation: Mutation,
     hook: MutationInput,
   ): Mutation {
-    let result = mutation.toJSON() as MutationInput;
+    let result = mutation.toObject();
     let metadata;
     if (hook.metadata) {
       metadata = deepMerge(result.metadata || {}, hook.metadata);
@@ -431,7 +452,7 @@ export class MetaModel extends ModelPackage implements IModel {
         packages: Array.from(
           this.packages.values(),
         ) /*.filter(p => p.name !== 'default')*/
-          .map(f => f.toJSON()),
+          .map(f => f.toObject()),
         mutations: Array.from(this.mutations.values()).map(f => f.toJSON()),
         queries: Array.from(this.queries.values()).map(f => f.toJSON()),
         enums: Array.from(this.enums.values()).map(f => f.toJSON()),

@@ -59,6 +59,7 @@ export function assignValue<I, T, K = any>(options: assignInput<I, T, K>) {
     inputField = field as keyof T;
   }
   if (input.hasOwnProperty(inputField)) {
+    // update value
     if (input[inputField] != null) {
       if (effect) {
         if (
@@ -70,16 +71,17 @@ export function assignValue<I, T, K = any>(options: assignInput<I, T, K>) {
       } else if (field) {
         src[field] = input[inputField] as any;
       }
-    } else if (field && src[field] == null && required) {
+    } else if (inputField && input[inputField] === null && required) {
       throw new Error("can't reset required value");
-    } else if (field && src[field] === null) {
+    } else if (inputField && input[inputField] === null) {
       if (setDefault instanceof Function) {
         setDefault(src);
-      } else {
+      } else if (field) {
         delete src[field];
       }
     }
   } else {
+    // set default value
     if (field && required && src[field] == null) {
       if (setDefault instanceof Function) {
         setDefault(src);
@@ -192,6 +194,12 @@ export interface AsHash<T extends INamed> {
   [name: string]: T;
 }
 
+export type NamedArray<T extends INamed> = Array<T>;
+
+export function ArrayToMap<T extends INamed>(input: NamedArray<T>) {
+  return new Map<string, T>(input.map(f => [f.name, f] as [string, T]));
+}
+
 export function HashToMap<T extends INamed>(input: AsHash<T>): Map<string, T> {
   const res = Object.keys(input).map(name => {
     return [name, input[name] as T] as [string, T];
@@ -203,6 +211,16 @@ export function HashToArray<T extends INamed>(input: AsHash<T>): T[] {
   return Object.values(input);
 }
 
+export function ArrayToHash<T extends INamed>(input: Array<T>): AsHash<T> {
+  return input.reduce(
+    (result, item) => {
+      result[item.name] = item;
+      return result;
+    },
+    {} as AsHash<T>,
+  );
+}
+
 export function MapToHash<T extends INamed>(input: Map<string, T>): AsHash<T> {
   return [...input.entries()].reduce(
     (hash, [name, value]) => {
@@ -212,3 +230,29 @@ export function MapToHash<T extends INamed>(input: Map<string, T>): AsHash<T> {
     {} as AsHash<T>,
   );
 }
+
+export function MapToArray<T extends INamed>(
+  input: Map<string, T>,
+): NamedArray<T> {
+  return [...input.values()];
+}
+
+// interface A {
+//   A?: string;
+// }
+
+// interface Aa extends A {
+//   A: string;
+// }
+
+// interface B extends A {
+//   B?: string;
+// }
+
+// interface Bb extends Aa, B{
+//   B: string;
+// }
+
+// const b: Bb;
+
+// b.

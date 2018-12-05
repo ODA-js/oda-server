@@ -5,13 +5,15 @@ import {
   ModelBaseInput,
   ModelBase,
   IModelBase,
+  ModelBaseOutput,
 } from './modelbase';
 import { MetaModelType, Nullable, assignValue } from './model';
 
 /**
  * union definition
  */
-export interface IUnion extends IModelBase<UnionMetaInfo, UnionInput> {
+export interface IUnion
+  extends IModelBase<UnionMetaInfo, UnionInput, UnionOutput> {
   /**
    * item list
    */
@@ -28,11 +30,16 @@ export interface UnionInput extends ModelBaseInput<UnionMetaInfo> {
   items: string[];
 }
 
+export interface UnionOutput extends ModelBaseOutput<UnionMetaInfo> {
+  items: string[];
+}
+
 const defaultMetaInfo = {};
 const defaultInternal = {};
 const defaultInput = {};
 
-export class Union extends ModelBase<UnionMetaInfo, UnionInput, UnionInternal>
+export class Union
+  extends ModelBase<UnionMetaInfo, UnionInput, UnionInternal, UnionOutput>
   implements IUnion {
   public modelType: MetaModelType = 'union';
   constructor(inp: UnionInput) {
@@ -56,7 +63,9 @@ export class Union extends ModelBase<UnionMetaInfo, UnionInput, UnionInternal>
     });
   }
 
-  public toObject(): UnionInput {
-    return merge({}, super.toObject(), { items: [...this.items] });
+  public toObject(): UnionOutput {
+    return merge({}, super.toObject(), { items: [...this.items] } as Partial<
+      UnionOutput
+    >);
   }
 }

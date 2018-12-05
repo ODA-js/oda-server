@@ -5,10 +5,11 @@ import {
   RelationBaseInput,
   RelationBaseInternal,
   RelationBase,
+  RelationBaseOutput,
 } from './relationbase';
 import { IEntityRef, EntityReference } from './entityreference';
-import { merge, set } from 'lodash';
-import { assignValue } from './model';
+import { merge } from 'lodash';
+import { assignValue, Nullable } from './model';
 
 export interface HasOnePersistence extends RelationBasePersistence {
   single: boolean;
@@ -17,7 +18,12 @@ export interface HasOnePersistence extends RelationBasePersistence {
 }
 
 export interface IHasOneRelation
-  extends IRelationBase<HasOneMetaInfo, HasOneInput, HasOnePersistence> {
+  extends IRelationBase<
+    HasOneMetaInfo,
+    HasOneInput,
+    HasOnePersistence,
+    HasOneOutput
+  > {
   hasOne: IEntityRef;
 }
 
@@ -31,6 +37,11 @@ export interface HasOneInternal
 
 export interface HasOneInput
   extends RelationBaseInput<HasOneMetaInfo, HasOnePersistence> {
+  hasOne: string;
+}
+
+export interface HasOneOutput
+  extends RelationBaseOutput<HasOneMetaInfo, HasOnePersistence> {
   hasOne: string;
 }
 
@@ -49,7 +60,8 @@ export class HasOne extends RelationBase<
   HasOneMetaInfo,
   HasOneInput,
   HasOneInternal,
-  HasOnePersistence
+  HasOnePersistence,
+  HasOneOutput
 > {
   get hasOne(): IEntityRef {
     return this.$obj.hasOne;
@@ -65,14 +77,14 @@ export class HasOne extends RelationBase<
     this.$obj = merge({}, defaultInternal, this.$obj);
   }
 
-  public updateWith(input: HasOneInput) {
+  public updateWith(input: Nullable<HasOneInput>) {
     super.updateWith(input);
 
     assignValue<HasOneMetaInfo, HasOneInput, boolean>({
       src: this.metadata_,
       input,
       inputField: 'embedded',
-      effect: (src, value) => set(src, 'persistence.embedded', value),
+      effect: (src, value) => (src.persistence.embedded = value),
     });
 
     assignValue<HasOneInternal, HasOneInput, string>({
@@ -89,9 +101,9 @@ export class HasOne extends RelationBase<
   }
 
   // it get fixed object
-  public toObject(): HasOneInput {
+  public toObject(): HasOneOutput {
     return merge({}, super.toObject(), {
       hasOne: this.hasOne.toString(),
-    });
+    } as Partial<HasOneOutput>);
   }
 }

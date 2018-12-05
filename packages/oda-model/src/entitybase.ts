@@ -4,6 +4,7 @@ import {
   ModelBaseInput,
   ModelBaseInternal,
   ModelBase,
+  ModelBaseOutput,
 } from './modelbase';
 import {
   AsHash,
@@ -12,6 +13,8 @@ import {
   assignValue,
   HashToArray,
   MapToHash,
+  NamedArray,
+  MapToArray,
 } from './model';
 import { OperationInput, IOperation, Operation } from './operation';
 import {
@@ -30,8 +33,10 @@ import { EntityField, EntityFieldInput } from './entityfield';
 
 export interface IEntityBase<
   T extends EntityBaseMetaInfo<P>,
-  P extends EntityBasePersistence
-> extends IModelBase<EntityBaseMetaInfo<P>, EntityBaseInput<T, P>> {
+  P extends EntityBasePersistence,
+  I extends EntityBaseInput<T, P>,
+  O extends EntityBaseOutput<T, P>
+> extends IModelBase<T, I, O> {
   plural: string;
   titlePlural: string;
   fields: Map<string, IField>;
@@ -83,8 +88,18 @@ export interface EntityBaseInput<
 > extends ModelBaseInput<T> {
   plural?: string;
   titlePlural?: string;
-  operations?: AsHash<OperationInput>;
-  fields: AsHash<FieldInput>;
+  operations?: AsHash<OperationInput> | NamedArray<OperationInput>;
+  fields: AsHash<FieldInput> | NamedArray<FieldInput>;
+}
+
+export interface EntityBaseOutput<
+  T extends EntityBaseMetaInfo<P>,
+  P extends EntityBasePersistence
+> extends ModelBaseOutput<T> {
+  plural?: string;
+  titlePlural?: string;
+  operations?: NamedArray<OperationInput>;
+  fields: NamedArray<FieldInput>;
 }
 
 const defaultMetaInfo = { name: {}, persistence: {} };
@@ -95,8 +110,9 @@ export abstract class EntityBase<
   M extends EntityBaseMetaInfo<MP>,
   I extends EntityBaseInput<M, MP>,
   P extends EntityBaseInternal<M, MP>,
-  MP extends EntityBasePersistence
-> extends ModelBase<M, I, P> implements IEntityBase<M, MP> {
+  MP extends EntityBasePersistence,
+  O extends EntityBaseOutput<M, MP>
+> extends ModelBase<M, I, P, O> implements IEntityBase<M, MP, I, O> {
   public modelType: MetaModelType = 'entity-base';
 
   constructor(inp: I) {
@@ -256,7 +272,7 @@ export abstract class EntityBase<
       },
     });
 
-    assignValue<P, I, AsHash<FieldInput>>({
+    assignValue<P, I, AsHash<FieldInput> | NamedArray<FieldInput>>({
       src: this.$obj,
       input,
       field: 'fields',
@@ -267,7 +283,7 @@ export abstract class EntityBase<
         const indexed = new Set();
 
         const fields = new Map(
-          HashToArray(value)
+          (Array.isArray(value) ? value : HashToArray(value))
             .map((fld, order) => {
               let field: Field;
               if (isSimpleInput(fld)) {
@@ -315,13 +331,13 @@ export abstract class EntityBase<
             .map(f => [f.name, f] as [string, Field]),
         );
         let f: SimpleField;
-        if (src.fields.has('id')) {
-          f = src.fields.get('id') as SimpleField;
-        } else if (src.fields.has('_id')) {
-          f = src.fields.get('_id') as SimpleField;
+        if (fields.has('id')) {
+          f = fields.get('id') as SimpleField;
+        } else if (fields.has('_id')) {
+          f = fields.get('_id') as SimpleField;
         } else {
           f = new SimpleField({ ...DEFAULT_ID_FIELD, entity: result.name });
-          src.fields.set(f.name, f);
+          fields.set(f.name, f);
         }
 
         f.makeIdentity();
@@ -338,13 +354,13 @@ export abstract class EntityBase<
       setDefault: src => (src.fields = new Map()),
     });
 
-    assignValue<P, I, AsHash<OperationInput>>({
+    assignValue<P, I, AsHash<OperationInput> | NamedArray<OperationInput>>({
       src: this.$obj,
       input,
       field: 'operations',
       effect: (src, value) => {
         src.operations = new Map(
-          HashToArray(value)
+          (Array.isArray(value) ? value : HashToArray(value))
             .map(
               (fld, order) =>
                 new Operation(
@@ -357,7 +373,7 @@ export abstract class EntityBase<
             .map(f => [f.name, f] as [string, Operation]),
         );
       },
-      setDefault: src => (src.fields = new Map()),
+      setDefault: src => (src.operations = new Map<string, Operation>()),
     });
   }
 
@@ -371,10 +387,10 @@ export abstract class EntityBase<
     });
   }
 
-  public toObject() {
+  public toObject(): O {
     return merge({}, super.toObject(), {
-      fields: MapToHash(this.fields),
-      operations: MapToHash(this.operations),
-    });
+      fields: MapToArray(this.fields),
+      operations: MapToArray(this.operations),
+    } as Partial<O>);
   }
 }

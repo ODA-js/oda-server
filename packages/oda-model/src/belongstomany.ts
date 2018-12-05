@@ -5,10 +5,18 @@ import {
   RelationBaseInput,
   RelationBaseInternal,
   RelationBase,
+  RelationBaseOutput,
 } from './relationbase';
 import { IEntityRef, EntityReference } from './entityreference';
-import { merge, set } from 'lodash';
-import { assignValue, AsHash, HashToArray } from './model';
+import { merge } from 'lodash';
+import {
+  assignValue,
+  AsHash,
+  HashToArray,
+  Nullable,
+  NamedArray,
+  MapToArray,
+} from './model';
 import { ISimpleField, SimpleFieldInput, SimpleField } from './simplefield';
 import decapitalize from './lib/decapitalize';
 
@@ -22,7 +30,8 @@ export interface IBelongsToManyRelation
   extends IRelationBase<
     BelongsToManyMetaInfo,
     BelongsToManyInput,
-    BelongsToManyPersistence
+    BelongsToManyPersistence,
+    BelongsToManyOutput
   > {
   belongsToMany: IEntityRef;
   using: IEntityRef;
@@ -46,7 +55,14 @@ export interface BelongsToManyInput
   extends RelationBaseInput<BelongsToManyMetaInfo, BelongsToManyPersistence> {
   belongsToMany: string;
   using: string;
-  fields?: AsHash<SimpleFieldInput>;
+  fields?: AsHash<SimpleFieldInput> | NamedArray<SimpleFieldInput>;
+}
+
+export interface BelongsToManyOutput
+  extends RelationBaseOutput<BelongsToManyMetaInfo, BelongsToManyPersistence> {
+  belongsToMany: string;
+  using: string;
+  fields?: NamedArray<SimpleFieldInput>;
 }
 
 const defaultMetaInfo = {
@@ -65,7 +81,8 @@ export class BelongsToMany
     BelongsToManyMetaInfo,
     BelongsToManyInput,
     BelongsToManyInternal,
-    BelongsToManyPersistence
+    BelongsToManyPersistence,
+    BelongsToManyOutput
   >
   implements IBelongsToManyRelation {
   get belongsToMany(): IEntityRef {
@@ -90,19 +107,19 @@ export class BelongsToMany
     this.$obj = merge({}, defaultInternal, this.$obj);
   }
 
-  public updateWith(input: BelongsToManyInput) {
+  public updateWith(input: Nullable<BelongsToManyInput>) {
     super.updateWith(input);
     assignValue<
       BelongsToManyInternal,
       BelongsToManyInput,
-      AsHash<SimpleFieldInput>
+      AsHash<SimpleFieldInput> | NamedArray<SimpleFieldInput>
     >({
       src: this.$obj,
       input,
       field: 'fields',
       effect: (src, value) =>
         (src.fields = new Map<string, ISimpleField>(
-          HashToArray(value).map(
+          (Array.isArray(value) ? value : HashToArray(value)).map(
             i =>
               [
                 i.name,
@@ -119,7 +136,7 @@ export class BelongsToMany
       src: this.metadata_,
       input,
       inputField: 'embedded',
-      effect: (src, value) => set(src, 'persistence.embedded', value),
+      effect: (src, value) => (src.persistence.embedded = value),
     });
 
     assignValue<BelongsToManyInternal, BelongsToManyInput, string>({
@@ -151,9 +168,10 @@ export class BelongsToMany
   }
 
   // it get fixed object
-  public toObject(): BelongsToManyInput {
+  public toObject(): BelongsToManyOutput {
     return merge({}, super.toObject(), {
       belongsToMany: this.belongsToMany.toString(),
-    });
+      fields: MapToArray(this.$obj.fields),
+    } as Partial<BelongsToManyOutput>);
   }
 }

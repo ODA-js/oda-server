@@ -5,10 +5,11 @@ import {
   RelationBaseInput,
   RelationBaseInternal,
   RelationBase,
+  RelationBaseOutput,
 } from './relationbase';
 import { IEntityRef, EntityReference } from './entityreference';
-import { merge, set, get } from 'lodash';
-import { assignValue } from './model';
+import { merge, get } from 'lodash';
+import { assignValue, Nullable } from './model';
 
 export interface BelongsToPersistence extends RelationBasePersistence {
   single: boolean;
@@ -23,7 +24,8 @@ export interface IBelongsToRelation
   extends IRelationBase<
     BelongsToMetaInfo,
     BelongsToInput,
-    BelongsToPersistence
+    BelongsToPersistence,
+    BelongsToOutput
   > {
   belongsTo: IEntityRef;
 }
@@ -38,6 +40,14 @@ export interface BelongsToInternal
 
 export interface BelongsToInput
   extends RelationBaseInput<BelongsToMetaInfo, BelongsToPersistence> {
+  belongsTo: string;
+  required?: boolean;
+  identity?: boolean | string | string[];
+  indexed?: boolean | string | string[];
+}
+
+export interface BelongsToOutput
+  extends RelationBaseOutput<BelongsToMetaInfo, BelongsToPersistence> {
   belongsTo: string;
   required?: boolean;
   identity?: boolean | string | string[];
@@ -62,7 +72,8 @@ export class BelongsTo extends RelationBase<
   BelongsToMetaInfo,
   BelongsToInput,
   BelongsToInternal,
-  BelongsToPersistence
+  BelongsToPersistence,
+  BelongsToOutput
 > {
   get belongsTo(): IEntityRef {
     return this.$obj.belongsTo;
@@ -90,14 +101,14 @@ export class BelongsTo extends RelationBase<
     this.$obj = merge({}, defaultInternal, this.$obj);
   }
 
-  public updateWith(input: BelongsToInput) {
+  public updateWith(input: Nullable<BelongsToInput>) {
     super.updateWith(input);
 
     assignValue<BelongsToMetaInfo, BelongsToInput, boolean>({
       src: this.metadata_,
       input,
       inputField: 'embedded',
-      effect: (src, value) => set(src, 'persistence.embedded', value),
+      effect: (src, value) => (src.persistence.embedded = value),
     });
 
     assignValue<BelongsToInternal, BelongsToInput, string>({
@@ -111,7 +122,7 @@ export class BelongsTo extends RelationBase<
       src: this.metadata_,
       input,
       inputField: 'indexed',
-      effect: (src, value) => set(src, 'persistence.indexed', value),
+      effect: (src, value) => (src.persistence.indexed = value),
       setDefault: src => (src.persistence.indexed = false),
     });
 
@@ -119,7 +130,7 @@ export class BelongsTo extends RelationBase<
       src: this.metadata_,
       input,
       inputField: 'identity',
-      effect: (src, value) => set(src, 'persistence.identity', value),
+      effect: (src, value) => (src.persistence.identity = value),
       setDefault: src => (src.persistence.identity = false),
     });
 
@@ -127,15 +138,15 @@ export class BelongsTo extends RelationBase<
       src: this.metadata_,
       input,
       inputField: 'required',
-      effect: (src, value) => set(src, 'persistence.required', value),
+      effect: (src, value) => (src.persistence.required = value),
       setDefault: src => (src.persistence.required = false),
     });
   }
 
   // it get fixed object
-  public toObject(): BelongsToInput {
+  public toObject(): BelongsToOutput {
     return merge({}, super.toObject(), {
       belongsTo: this.belongsTo.toString(),
-    });
+    } as Partial<BelongsToOutput>);
   }
 }

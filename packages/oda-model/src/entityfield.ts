@@ -5,8 +5,9 @@ import {
   IRelationFieldBase,
   RelationFieldBase,
   RelationFieldBasePersistence,
+  RelationFieldBaseOutput,
 } from './relationfieldbase';
-import { merge, get } from 'lodash';
+import { merge } from 'lodash';
 import { EntityType, Nullable, assignValue } from './model';
 import { HasMany } from './hasmany';
 import { HasOne } from './hasone';
@@ -15,7 +16,8 @@ export interface IEntityField
   extends IRelationFieldBase<
     EntityFieldMeta,
     EntityFieldInput,
-    EntityFieldPersistence
+    EntityFieldPersistence,
+    EntityFieldOutput
   > {
   type: EntityType;
   list: boolean;
@@ -36,7 +38,14 @@ export interface EntityFieldInternal
 
 export interface EntityFieldInput
   extends RelationFieldBaseInput<EntityFieldMeta, EntityFieldPersistence> {
-  type: string;
+  type: EntityType;
+  list?: boolean;
+  derived?: boolean;
+}
+
+export interface EntityFieldOutput
+  extends RelationFieldBaseOutput<EntityFieldMeta, EntityFieldPersistence> {
+  type: EntityType;
   list?: boolean;
   derived?: boolean;
 }
@@ -50,7 +59,8 @@ export class EntityField
     EntityFieldMeta,
     EntityFieldInput,
     EntityFieldInternal,
-    EntityFieldPersistence
+    EntityFieldPersistence,
+    EntityFieldOutput
   >
   implements IEntityField {
   constructor(init: EntityFieldInput) {
@@ -121,15 +131,16 @@ export class EntityField
           }
           default:
         }
+        src.type = type;
       },
       required: true,
     });
   }
 
-  public toObject(): EntityFieldInput {
+  public toObject(): EntityFieldOutput {
     return merge({}, super.toObject(), {
       type: this.$obj.type,
       list: this.$obj.list,
-    });
+    } as Partial<EntityFieldOutput>);
   }
 }

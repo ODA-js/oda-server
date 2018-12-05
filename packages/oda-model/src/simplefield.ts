@@ -5,16 +5,24 @@ import {
   IFieldBase,
   FieldBase,
   FieldBasePersistence,
+  FieldBaseOutput,
 } from './fieldbase';
-import { IEntityRef } from './entityreference';
-import { merge, get, set } from 'lodash';
-import { EnumType, Nullable, assignValue, AsHash, FieldArgs } from './model';
+import { merge, get } from 'lodash';
+import {
+  EnumType,
+  Nullable,
+  assignValue,
+  AsHash,
+  FieldArgs,
+  NamedArray,
+} from './model';
 
 export interface ISimpleField
   extends IFieldBase<
     SimpleFieldMeta,
     SimpleFieldInput,
-    SimpleFieldPersistence
+    SimpleFieldPersistence,
+    SimpleFieldOutput
   > {
   type: string | EnumType;
   defaultValue?: string;
@@ -44,6 +52,13 @@ export interface SimpleFieldInput
   list?: boolean;
 }
 
+export interface SimpleFieldOutput
+  extends FieldBaseOutput<SimpleFieldMeta, SimpleFieldPersistence> {
+  type?: string | EnumType;
+  defaultValue?: string;
+  list?: boolean;
+}
+
 const defaultMetaInfo = {};
 const defaultInternal = {};
 const defaultInput = {};
@@ -53,7 +68,8 @@ export class SimpleField
     SimpleFieldMeta,
     SimpleFieldInput,
     SimpleFieldInternal,
-    SimpleFieldPersistence
+    SimpleFieldPersistence,
+    SimpleFieldOutput
   >
   implements ISimpleField {
   get type(): string | EnumType {
@@ -97,43 +113,44 @@ export class SimpleField
       input,
       inputField: 'derived',
       effect: (src, value) => {
-        set(src, 'persistence.derived', value);
+        src.persistence.derived = value;
         if (!value) {
-          set(this.metadata_, 'persistence.persistent', true);
+          this.metadata_.persistence.persistent = true;
         }
       },
-      setDefault: src => set(src, 'persistence.derived', false),
+      setDefault: src => (src.persistence.derived = false),
     });
 
     assignValue<SimpleFieldMeta, SimpleFieldInput, boolean>({
       src: this.metadata_,
       input,
       inputField: 'persistent',
-      effect: (src, value) => set(src, 'persistence.persistent', value),
-      setDefault: src => set(src, 'persistence.persistent', true),
+      effect: (src, value) => (src.persistence.persistent = value),
+      setDefault: src => (src.persistence.persistent = true),
     });
 
-    assignValue<SimpleFieldMeta, SimpleFieldInput, AsHash<FieldArgs>>({
+    assignValue<
+      SimpleFieldMeta,
+      SimpleFieldInput,
+      AsHash<FieldArgs> | NamedArray<FieldArgs>
+    >({
       src: this.metadata_,
       input,
       inputField: 'args',
-      allowEffect: (_, value) => value && Object.keys(value).length > 0,
-      effect: (src, _) => set(src, 'persistence.derived', true),
+      allowEffect: (_, value) =>
+        Array.isArray(value) ? value.length > 0 : Object.keys(value).length > 0,
+      effect: (src, _) => (src.persistence.derived = true),
     });
-
-    if (input.args && Object.keys(input.args).length > 0) {
-      set(this.metadata_, 'persistence.derived', true);
-    }
 
     assignValue({
       src: this.metadata_,
       input,
       inputField: 'defaultValue',
-      allowEffect: (src, _) => get(src, 'persistence.derived', false),
+      allowEffect: (src, _) => src.persistence.derived,
     });
   }
 
-  public toObject(): SimpleFieldInput {
+  public toObject(): SimpleFieldOutput {
     return merge({}, super.toObject(), {
       derived: this.derived,
       defaultValue: this.defaultValue,
@@ -142,6 +159,6 @@ export class SimpleField
       type: this.type,
       inheritedFrom: this.$obj.inheritedFrom,
       list: this.$obj.list,
-    } as Partial<SimpleFieldInput>);
+    } as Partial<SimpleFieldOutput>);
   }
 }

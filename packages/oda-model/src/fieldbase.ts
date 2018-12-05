@@ -3,9 +3,10 @@ import {
   IModelBase,
   ModelBaseInternal,
   ModelBaseInput,
+  ModelBaseOutput,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
-import { merge, get, set } from 'lodash';
+import { merge, get } from 'lodash';
 import {
   FieldArgs,
   FieldType,
@@ -15,6 +16,8 @@ import {
   MapToHash,
   Nullable,
   assignValue,
+  NamedArray,
+  ArrayToMap,
 } from './model';
 import { ElementMetaInfo } from './element';
 import { IEntityRef, EntityReference } from './entityreference';
@@ -22,9 +25,10 @@ import { IEntityRef, EntityReference } from './entityreference';
 export interface IFieldBase<
   M extends FieldBaseMetaInfo<P>,
   I extends FieldBaseInput<M, P>,
-  P extends FieldBasePersistence
-> extends IModelBase<M, I> {
-  args?: Map<string, FieldArgs>;
+  P extends FieldBasePersistence,
+  O extends FieldBaseOutput<M, P>
+> extends IModelBase<M, I, O> {
+  args: Map<string, FieldArgs>;
   inheritedFrom?: string;
   type?: FieldType;
   required?: boolean;
@@ -51,7 +55,7 @@ export interface FieldBaseInternal<
   T extends FieldBaseMetaInfo<P>,
   P extends FieldBasePersistence
 > extends ModelBaseInternal<T> {
-  args?: Map<string, FieldArgs>;
+  args: Map<string, FieldArgs>;
   inheritedFrom?: string;
   type?: FieldType;
   idKey: IEntityRef;
@@ -61,7 +65,7 @@ export interface FieldBaseInput<
   T extends FieldBaseMetaInfo<P>,
   P extends FieldBasePersistence
 > extends ModelBaseInput<T> {
-  args?: AsHash<FieldArgs>;
+  args?: AsHash<FieldArgs> | NamedArray<FieldArgs>;
   inheritedFrom?: string;
   derived?: boolean;
   persistent?: boolean;
@@ -73,6 +77,22 @@ export interface FieldBaseInput<
   indexed?: boolean | string | string[];
 }
 
+export interface FieldBaseOutput<
+  T extends FieldBaseMetaInfo<P>,
+  P extends FieldBasePersistence
+> extends ModelBaseOutput<T> {
+  inheritedFrom?: string;
+  derived?: boolean;
+  persistent?: boolean;
+  entity?: string;
+  type?: FieldType;
+  order?: number;
+  required?: boolean;
+  identity?: boolean | string | string[];
+  indexed?: boolean | string | string[];
+  args: NamedArray<FieldArgs>;
+}
+
 const defaultMetaInfo = {};
 const defaultInternal = {};
 const defaultInput = {};
@@ -81,8 +101,9 @@ export abstract class FieldBase<
   T extends FieldBaseMetaInfo<P>,
   I extends FieldBaseInput<T, P>,
   S extends FieldBaseInternal<T, P>,
-  P extends FieldBasePersistence
-> extends ModelBase<T, I, S> implements IFieldBase<T, I, P> {
+  P extends FieldBasePersistence,
+  O extends FieldBaseOutput<T, P>
+> extends ModelBase<T, I, S, O> implements IFieldBase<T, I, P, O> {
   public modelType: MetaModelType = 'field-base';
 
   get type(): FieldType | undefined {
@@ -93,7 +114,7 @@ export abstract class FieldBase<
     return this.$obj.inheritedFrom;
   }
 
-  get args(): Map<string, FieldArgs> | undefined {
+  get args(): Map<string, FieldArgs> {
     return this.$obj.args;
   }
 
@@ -146,39 +167,43 @@ export abstract class FieldBase<
       field: 'inheritedFrom',
     });
 
-    assignValue<S, I, AsHash<FieldArgs>>({
+    assignValue<S, I, AsHash<FieldArgs> | NamedArray<FieldArgs>>({
       src: this.$obj,
       input,
       field: 'args',
-      effect: (src, value) => (src.args = HashToMap(value)),
+      effect: (src, value) =>
+        (src.args = Array.isArray(value)
+          ? ArrayToMap(value)
+          : HashToMap(value)),
+      setDefault: src => (src.args = new Map()),
     });
 
     assignValue({
       src: this.metadata_,
       input,
       field: 'entity',
-      effect: (src, value) => set(src, 'entity', value),
+      effect: (src, value) => (src.entity = value),
     });
 
     assignValue({
       src: this.metadata_,
       input,
       field: 'order',
-      effect: (src, value) => set(src, 'order', value),
+      effect: (src, value) => (src.order = value),
     });
 
     assignValue({
       src: this.metadata_,
       input,
       inputField: 'derived',
-      effect: (src, value) => set(src, 'persistence.derived', value),
+      effect: (src, value) => (src.persistence.derived, value),
     });
 
     assignValue({
       src: this.metadata_,
       input,
       inputField: 'persistent',
-      effect: (src, value) => set(src, 'persistence.persistent', value),
+      effect: (src, value) => (src.persistence.persistent = value),
     });
 
     assignValue<T, I, boolean>({
@@ -186,10 +211,10 @@ export abstract class FieldBase<
       input,
       inputField: 'identity',
       effect: (_, value) => {
-        set(this.metadata_, 'persistence.identity', value);
+        this.metadata_.persistence.identity = value;
         if (value) {
-          set(this.metadata_, 'persistence.required', true);
-          set(this.metadata_, 'persistence.indexed', true);
+          this.metadata_.persistence.required = true;
+          this.metadata_.persistence.indexed = true;
           this.$obj.idKey = new EntityReference({
             entity: this.metadata_.entity,
             field: this.$obj.name,
@@ -202,14 +227,14 @@ export abstract class FieldBase<
       src: this.metadata_,
       input,
       inputField: 'indexed',
-      effect: (src, value) => set(src, 'persistence.indexed', value),
+      effect: (src, value) => (src.persistence.indexed = value),
     });
 
     assignValue<T, I, boolean>({
       src: this.metadata_,
       input,
       inputField: 'required',
-      effect: (src, value) => set(src, 'persistence.required', value),
+      effect: (src, value) => (src.persistence.required = value),
     });
   }
 
@@ -224,7 +249,7 @@ export abstract class FieldBase<
     this.metadata_.persistence.required = true;
   }
 
-  public toObject(): I {
+  public toObject(): O {
     return merge({}, super.toObject(), {
       entity: this.metadata_.entity,
       derived: this.derived,
@@ -235,6 +260,6 @@ export abstract class FieldBase<
       required: this.required,
       indexed: this.indexed,
       identity: this.identity,
-    } as Partial<I>);
+    } as Partial<O>);
   }
 }

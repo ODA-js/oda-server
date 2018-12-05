@@ -5,18 +5,22 @@ import {
   AsHash,
   MetaModelType,
   HashToMap,
-  MapToHash,
   Nullable,
   assignValue,
+  NamedArray,
+  ArrayToMap,
+  MapToArray,
 } from './model';
 import {
   IModelBase,
   ModelBaseInternal,
   ModelBaseInput,
   ModelBase,
+  ModelBaseOutput,
 } from './modelbase';
 
-export interface IQuery extends IModelBase<QueryMetaInfo, QueryInput> {
+export interface IQuery
+  extends IModelBase<QueryMetaInfo, QueryInput, QueryOutput> {
   /**
    * set of arguments
    */
@@ -35,15 +39,21 @@ export interface QueryInternal extends ModelBaseInternal<QueryMetaInfo> {
 }
 
 export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
-  args: AsHash<FieldArgs>;
-  payload: AsHash<FieldArgs>;
+  args: AsHash<FieldArgs> | NamedArray<FieldArgs>;
+  payload: AsHash<FieldArgs> | NamedArray<FieldArgs>;
+}
+
+export interface QueryOutput extends ModelBaseOutput<QueryMetaInfo> {
+  args: NamedArray<FieldArgs>;
+  payload: NamedArray<FieldArgs>;
 }
 
 const defaultMetaInfo = {};
 const defaultInternal = {};
 const defaultInput = {};
 
-export class Query extends ModelBase<QueryMetaInfo, QueryInput, QueryInternal>
+export class Query
+  extends ModelBase<QueryMetaInfo, QueryInput, QueryInternal, QueryOutput>
   implements IQuery {
   public modelType: MetaModelType = 'query';
 
@@ -64,27 +74,41 @@ export class Query extends ModelBase<QueryMetaInfo, QueryInput, QueryInternal>
   public updateWith(input: Nullable<QueryInput>) {
     super.updateWith(input);
 
-    assignValue<QueryInternal, QueryInput, QueryInput['args']>({
+    assignValue<
+      QueryInternal,
+      QueryInput,
+      AsHash<FieldArgs> | NamedArray<FieldArgs>
+    >({
       src: this.$obj,
       input,
       field: 'args',
-      effect: (src, value) => (src.args = HashToMap(value)),
+      effect: (src, value) =>
+        (src.args = Array.isArray(value)
+          ? ArrayToMap(value)
+          : HashToMap(value)),
       required: true,
     });
 
-    assignValue<QueryInternal, QueryInput, QueryInput['payload']>({
+    assignValue<
+      QueryInternal,
+      QueryInput,
+      AsHash<FieldArgs> | NamedArray<FieldArgs>
+    >({
       src: this.$obj,
       input,
       field: 'payload',
-      effect: (src, value) => (src.args = HashToMap(value)),
+      effect: (src, value) =>
+        (src.payload = Array.isArray(value)
+          ? ArrayToMap(value)
+          : HashToMap(value)),
       required: true,
     });
   }
 
-  public toObject(): QueryInput {
+  public toObject(): QueryOutput {
     return merge({}, super.toObject(), {
-      args: MapToHash(this.$obj.args),
-      payload: MapToHash(this.$obj.payload),
-    });
+      args: MapToArray(this.$obj.args),
+      payload: MapToArray(this.$obj.payload),
+    } as Partial<QueryOutput>);
   }
 }

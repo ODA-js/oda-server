@@ -12,30 +12,37 @@ export interface ElementInput<T extends ElementMetaInfo> {
   metadata?: T;
 }
 
+export interface ElementOutput<T extends ElementMetaInfo> {
+  metadata: T;
+}
+
 /**
  * updatable items
  */
 export interface IUpdatable<
   T extends ElementMetaInfo,
-  K extends ElementInput<T>
+  I extends ElementInput<T>,
+  O extends ElementOutput<T>
 > {
   /**
    * update item with data
    * @param payload the update payload
    */
-  updateWith(payload: Nullable<K>): void;
+  updateWith(payload: Nullable<I>): void;
   /**
    * return copy of object item that is suitable for creating new one
    */
-  toObject(): K;
+  toObject(): O;
 }
 
 /**
  * Meta interface for updating items with metadata
  */
-export interface IMeta<T extends ElementMetaInfo, K extends ElementInput<T>>
-  extends IUpdatable<T, K>,
-    IValidate {
+export interface IMeta<
+  M extends ElementMetaInfo,
+  I extends ElementInput<M>,
+  O extends ElementOutput<M>
+> extends IUpdatable<M, I, O>, IValidate {
   /**
    * the kind of current item
    */
@@ -43,7 +50,7 @@ export interface IMeta<T extends ElementMetaInfo, K extends ElementInput<T>>
   /**
    * meta information that is outside of model notations and can be customized as well
    */
-  readonly metadata: Readonly<T>;
+  readonly metadata: Readonly<M>;
 }
 
 const defaultMetaInfo = {};
@@ -55,8 +62,9 @@ const defaultInput = { metadata: {} };
 export abstract class Element<
   M extends ElementMetaInfo,
   I extends ElementInput<M>,
-  S extends ElementInternal<M>
-> implements IMeta<M, I> {
+  S extends ElementInternal<M>,
+  O extends ElementOutput<M>
+> implements IMeta<M, I, O> {
   readonly modelType: MetaModelType = 'element';
   protected $obj: S;
   protected metadata_: M;
@@ -81,7 +89,7 @@ export abstract class Element<
    * @param input metadata patch object
    */
   public updateWith(input: Nullable<ElementInput<M>>) {
-    assignValue<Element<M, I, S>, ElementInput<M>, ElementInternal<M>>({
+    assignValue<Element<M, I, S, O>, ElementInput<M>, ElementInternal<M>>({
       src: this,
       input,
       field: 'metadata',
@@ -94,7 +102,7 @@ export abstract class Element<
    * make item usable within another constructor
    * it is suitable for cloning items
    */
-  public toObject(): I {
-    return merge({}, { metadata: this.metadata_ }) as I;
+  public toObject(): O {
+    return merge({}, { metadata: this.metadata_ } as O);
   }
 }

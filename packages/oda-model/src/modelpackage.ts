@@ -1,28 +1,75 @@
-import clean from '../lib/json/clean';
-import { Entity } from './entity';
-import { Field } from './field';
 import {
-  EntityInput,
-  IPackage,
-  IValidate,
-  IValidationResult,
-  IValidator,
-  MetaModelType,
-  ModelPackageInput,
-  IEntityBase,
-} from './interfaces';
-import { MetaModel } from './metamodel';
-import { Mutation } from './mutation';
-import { Query } from './query';
-import { Mixin } from './mixin';
-import { Union } from './union';
-import { Enum } from './enum';
-import { Scalar } from './scalar';
-import { Directive } from './directive';
+  IModelBase,
+  ModelMetaInfo,
+  ModelBaseInput,
+  ModelBase,
+  ModelBaseInternal,
+} from './modelbase';
+import { IEntity } from './entity';
+import { IScalar } from './scalar';
+import { IMixin } from './mixin';
+import { IEnum } from './enum';
+import { IUnion } from './union';
+import { IMutation } from './mutation';
+import { IQuery } from './query';
+import { IDirective } from './directive';
+import { MetaModelType } from './model';
+import { IRelationField } from './relationfield';
 
-// tslint:disable-next-line:no-unused-variable
+export interface IPackage
+  extends IModelBase<PackageMetaInfo, ModelPackageInput> {
+  readonly abstract: boolean;
+  readonly metaModel: IModel;
+  readonly entities: Map<string, IEntity>;
+  readonly scalars: Map<string, IScalar>;
+  readonly mixins: Map<string, IMixin>;
+  readonly enums: Map<string, IEnum>;
+  readonly unions: Map<string, IUnion>;
+  readonly mutations: Map<string, IMutation>;
+  readonly queries: Map<string, IQuery>;
+  readonly directives: Map<string, IDirective>;
+}
+
+export interface PackageMetaInfo extends ModelMetaInfo {}
+
+export interface ModelPackageInput extends ModelBaseInput<PackageMetaInfo> {
+  name: string;
+  title?: string;
+  description?: string;
+  abstract?: boolean;
+  entities: string[];
+  mutations: any[];
+  queries: any[];
+  directives: any[];
+  scalars: any[];
+  enums: any[];
+  mixins: any[];
+  unions: any[];
+}
+
+export interface ModelPackageInternal
+  extends ModelBaseInternal<PackageMetaInfo> {
+  abstract: boolean;
+  /** entity storage */
+  entities: Map<string, IEntity>;
+  scalars: Map<string, IScalar>;
+  directives: Map<string, IDirective>;
+  mixins: Map<string, IMixin>;
+  unions: Map<string, IUnion>;
+  enums: Map<string, IEnum>;
+  /** Identity fields cache */
+  identityFields: Map<string, IEntity>;
+  /** relation cache */
+  relations: Map<string, Map<string, IRelationField>>;
+  mutations: Map<string, IMutation>;
+  queries: Map<string, IQuery>;
+  metaModel: MetaModel;
+}
+
 /** Model package is the storage place of Entities */
-export class ModelPackage implements IValidate, IPackage {
+export class ModelPackage
+  extends ModelBase<PackageMetaInfo, ModelPackageInput, ModelPackageInternal>
+  implements IPackage {
   public modelType: MetaModelType = 'package';
   /** name of the package */
   public name: string;
@@ -47,10 +94,6 @@ export class ModelPackage implements IValidate, IPackage {
   public queries: Map<string, Query> = new Map();
 
   public metaModel!: MetaModel;
-
-  public validate(validator: IValidator): IValidationResult[] {
-    return validator.check(this);
-  }
 
   constructor(
     name?: string | ModelPackageInput,
@@ -175,22 +218,6 @@ export class ModelPackage implements IValidate, IPackage {
     this.entities.forEach(e => {
       e.ensureImplementation(this);
       e.ensureFKs(this);
-    });
-  }
-
-  public toJSON(): ModelPackageInput {
-    return clean({
-      name: this.name,
-      title: this.title,
-      abstract: this.abstract,
-      description: this.description,
-      entities: Array.from(this.entities.values()).map(f => f.name),
-      mutations: Array.from(this.mutations.values()).map(f => f.name),
-      queries: Array.from(this.queries.values()).map(f => f.name),
-      directives: Array.from(this.directives.values()).map(f => f.name),
-      enums: Array.from(this.enums.values()).map(f => f.name),
-      unions: Array.from(this.unions.values()).map(f => f.name),
-      mixins: Array.from(this.mixins.values()).map(f => f.name),
     });
   }
 

@@ -5,6 +5,7 @@ import {
   FieldBasePersistence,
   FieldBaseMetaInfo,
   FieldBaseInternal,
+  FieldBaseOutput,
 } from './fieldbase';
 import { merge } from 'lodash';
 import { Nullable } from './model';
@@ -24,14 +25,20 @@ export interface RelationFieldBaseInput<
   P extends RelationFieldBasePersistence
 > extends FieldBaseInput<T, P> {}
 
+export interface RelationFieldBaseOutput<
+  T extends RelationFieldBaseMetaInfo<P>,
+  P extends RelationFieldBasePersistence
+> extends FieldBaseOutput<T, P> {}
+
 /**
  * relation field definition
  */
 export interface IRelationFieldBase<
   T extends RelationFieldBaseMetaInfo<P>,
   I extends FieldBaseInput<T, P>,
-  P extends RelationFieldBasePersistence
-> extends IFieldBase<T, I, P> {
+  P extends RelationFieldBasePersistence,
+  O extends FieldBaseOutput<T, P>
+> extends IFieldBase<T, I, P, O> {
   relation: IRelation;
 }
 
@@ -50,8 +57,9 @@ export abstract class RelationFieldBase<
   T extends RelationFieldBaseMetaInfo<P>,
   I extends RelationFieldBaseInput<T, P>,
   S extends RelationFieldBaseInternal<T, P>,
-  P extends RelationFieldBasePersistence
-> extends FieldBase<T, I, S, P> implements IRelationFieldBase<T, I, P> {
+  P extends RelationFieldBasePersistence,
+  O extends FieldBaseOutput<T, P>
+> extends FieldBase<T, I, S, P, O> implements IRelationFieldBase<T, I, P, O> {
   constructor(inp: I) {
     super(merge({}, defaultInput, inp));
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
@@ -66,9 +74,7 @@ export abstract class RelationFieldBase<
     super.updateWith(obj);
   }
 
-  public toObject(): any {
-    return merge({}, super.toObject(), {
-      relation: this.relation.toObject(),
-    });
+  public toObject(): O {
+    return merge({}, super.toObject(), {} as Partial<O>);
   }
 }

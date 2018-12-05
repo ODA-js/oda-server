@@ -5,10 +5,11 @@ import {
   RelationBaseInput,
   RelationBaseInternal,
   RelationBase,
+  RelationBaseOutput,
 } from './relationbase';
 import { IEntityRef, EntityReference } from './entityreference';
-import { merge, set } from 'lodash';
-import { assignValue } from './model';
+import { merge } from 'lodash';
+import { assignValue, Nullable } from './model';
 
 export interface HasManyPersistence extends RelationBasePersistence {
   single: boolean;
@@ -17,7 +18,12 @@ export interface HasManyPersistence extends RelationBasePersistence {
 }
 
 export interface IHasManyRelation
-  extends IRelationBase<HasManyMetaInfo, HasManyInput, HasManyPersistence> {
+  extends IRelationBase<
+    HasManyMetaInfo,
+    HasManyInput,
+    HasManyPersistence,
+    HasManyOutput
+  > {
   hasMany: IEntityRef;
 }
 
@@ -31,6 +37,11 @@ export interface HasManyInternal
 
 export interface HasManyInput
   extends RelationBaseInput<HasManyMetaInfo, HasManyPersistence> {
+  hasMany: string;
+}
+
+export interface HasManyOutput
+  extends RelationBaseOutput<HasManyMetaInfo, HasManyPersistence> {
   hasMany: string;
 }
 
@@ -49,7 +60,8 @@ export class HasMany extends RelationBase<
   HasManyMetaInfo,
   HasManyInput,
   HasManyInternal,
-  HasManyPersistence
+  HasManyPersistence,
+  HasManyOutput
 > {
   get hasMany(): IEntityRef {
     return this.$obj.hasMany;
@@ -65,14 +77,14 @@ export class HasMany extends RelationBase<
     this.$obj = merge({}, defaultInternal, this.$obj);
   }
 
-  public updateWith(input: HasManyInput) {
+  public updateWith(input: Nullable<HasManyInput>) {
     super.updateWith(input);
 
     assignValue<HasManyMetaInfo, HasManyInput, boolean>({
       src: this.metadata_,
       input,
       inputField: 'embedded',
-      effect: (src, value) => set(src, 'persistence.embedded', value),
+      effect: (src, value) => (src.persistence.embedded = value),
     });
 
     assignValue<HasManyInternal, HasManyInput, string>({
@@ -89,7 +101,7 @@ export class HasMany extends RelationBase<
   }
 
   // it get fixed object
-  public toObject(): HasManyInput {
+  public toObject(): HasManyOutput {
     return merge({}, super.toObject(), {
       hasMany: this.hasMany.toString(),
     });

@@ -25,7 +25,7 @@ import {
   BelongsToManyInternal,
   BelongsToManyMetaInfo,
   IBelongsToManyRelation,
-} from './belongstmany';
+} from './belongstomany';
 
 export type IRelation =
   | IHasOneRelation

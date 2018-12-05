@@ -12,6 +12,7 @@ import {
   IRelationFieldBase,
   RelationFieldBaseInternal,
   RelationFieldBaseInput,
+  RelationFieldBaseOutput,
 } from './relationfieldbase';
 
 function discoverFieldType(obj: any) {
@@ -46,6 +47,14 @@ export interface RelationFieldInput
   relation: RelationInput;
 }
 
+export interface RelationFieldOutput
+  extends RelationFieldBaseOutput<
+    RelationFieldMetaInfo,
+    RelationFieldPersistence
+  > {
+  relation: RelationInput;
+}
+
 /**
  * relation field definition
  */
@@ -53,7 +62,8 @@ export interface IRelationField
   extends IRelationFieldBase<
     RelationFieldMetaInfo,
     RelationFieldInput,
-    RelationFieldPersistence
+    RelationFieldPersistence,
+    RelationFieldOutput
   > {}
 
 export interface RelationFieldInput
@@ -77,7 +87,8 @@ export class RelationField
     RelationFieldMetaInfo,
     RelationFieldInput,
     RelationFieldInternal,
-    RelationFieldPersistence
+    RelationFieldPersistence,
+    RelationFieldOutput
   >
   implements IRelationField {
   constructor(inp: RelationFieldInput) {
@@ -130,9 +141,9 @@ export class RelationField
   }
 
   // it get fixed object
-  public toObject(): any {
+  public toObject(): RelationFieldOutput {
     return merge({}, super.toObject(), {
       relation: this.relation.toObject(),
-    });
+    } as Partial<RelationFieldOutput>);
   }
 }

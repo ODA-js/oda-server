@@ -5,18 +5,22 @@ import {
   AsHash,
   MetaModelType,
   HashToMap,
-  MapToHash,
   Nullable,
   assignValue,
+  NamedArray,
+  ArrayToMap,
+  MapToArray,
 } from './model';
 import {
   IModelBase,
   ModelBaseInternal,
   ModelBaseInput,
   ModelBase,
+  ModelBaseOutput,
 } from './modelbase';
 
-export interface IMutation extends IModelBase<MutationMetaInfo, MutationInput> {
+export interface IMutation
+  extends IModelBase<MutationMetaInfo, MutationInput, MutationOutput> {
   /**
    * set of arguments
    */
@@ -35,8 +39,13 @@ export interface MutationInternal extends ModelBaseInternal<MutationMetaInfo> {
 }
 
 export interface MutationInput extends ModelBaseInput<MutationMetaInfo> {
-  args: AsHash<FieldArgs>;
-  payload: AsHash<FieldArgs>;
+  args: AsHash<FieldArgs> | NamedArray<FieldArgs>;
+  payload: AsHash<FieldArgs> | NamedArray<FieldArgs>;
+}
+
+export interface MutationOutput extends ModelBaseOutput<MutationMetaInfo> {
+  args: NamedArray<FieldArgs>;
+  payload: NamedArray<FieldArgs>;
 }
 
 const defaultMetaInfo = {};
@@ -44,7 +53,12 @@ const defaultInternal = {};
 const defaultInput = {};
 
 export class Mutation
-  extends ModelBase<MutationMetaInfo, MutationInput, MutationInternal>
+  extends ModelBase<
+    MutationMetaInfo,
+    MutationInput,
+    MutationInternal,
+    MutationOutput
+  >
   implements IMutation {
   public modelType: MetaModelType = 'mutation';
 
@@ -68,7 +82,10 @@ export class Mutation
       src: this.$obj,
       input,
       field: 'args',
-      effect: (src, value) => (src.args = HashToMap(value)),
+      effect: (src, value) =>
+        (src.args = Array.isArray(value)
+          ? ArrayToMap(value)
+          : HashToMap(value)),
       required: true,
     });
 
@@ -76,15 +93,18 @@ export class Mutation
       src: this.$obj,
       input,
       field: 'payload',
-      effect: (src, value) => (src.args = HashToMap(value)),
+      effect: (src, value) =>
+        (src.payload = Array.isArray(value)
+          ? ArrayToMap(value)
+          : HashToMap(value)),
       required: true,
     });
   }
 
-  public toObject(): MutationInput {
+  public toObject(): MutationOutput {
     return merge({}, super.toObject(), {
-      args: MapToHash(this.$obj.args),
-      payload: MapToHash(this.$obj.payload),
-    });
+      args: MapToArray(this.$obj.args),
+      payload: MapToArray(this.$obj.payload),
+    } as Partial<MutationOutput>);
   }
 }

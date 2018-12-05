@@ -3,13 +3,14 @@ import {
   IModelBase,
   ModelBaseInternal,
   ModelBaseInput,
+  ModelBaseOutput,
 } from './modelbase';
 import { EnumItem, IEnumItem, EnumItemInput } from './enumItem';
 import { merge } from 'lodash';
 import { ElementMetaInfo } from './element';
 import { MetaModelType, Nullable, assignValue } from './model';
 
-export interface IEnum extends IModelBase<EnumMetaInfo, EnumInput> {
+export interface IEnum extends IModelBase<EnumMetaInfo, EnumInput, EnumOutput> {
   /**
    * Enum item definition
    */
@@ -26,11 +27,16 @@ export interface EnumInput extends ModelBaseInput<EnumMetaInfo> {
   items: (EnumItemInput | string)[];
 }
 
+export interface EnumOutput extends ModelBaseOutput<EnumMetaInfo> {
+  items: EnumItemInput[];
+}
+
 const defaultMetaInfo = {};
 const defaultInternal = {};
 const defaultInput = {};
 
-export class Enum extends ModelBase<EnumMetaInfo, EnumInput, EnumInternal>
+export class Enum
+  extends ModelBase<EnumMetaInfo, EnumInput, EnumInternal, EnumOutput>
   implements IEnum {
   public modelType: MetaModelType = 'union';
   get items() {
@@ -74,9 +80,9 @@ export class Enum extends ModelBase<EnumMetaInfo, EnumInput, EnumInternal>
     });
   }
 
-  public toObject(): EnumInput {
+  public toObject(): EnumOutput {
     return merge({}, super.toObject(), {
       items: [...this.$obj.items.values()].map(i => i.toObject()),
-    });
+    } as Partial<EnumOutput>);
   }
 }
