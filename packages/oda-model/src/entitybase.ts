@@ -12,10 +12,9 @@ import {
   Nullable,
   assignValue,
   HashToArray,
-  MapToHash,
   NamedArray,
   MapToArray,
-} from './model';
+} from './types';
 import { OperationInput, IOperation, Operation } from './operation';
 import {
   FieldInput,
@@ -41,6 +40,10 @@ export interface IEntityBase<
   titlePlural: string;
   fields: Map<string, IField>;
   operations: Map<string, IOperation>;
+  relations: Set<string>;
+  identity: Set<string>;
+  required: Set<string>;
+  indexed: Set<string>;
 }
 
 export interface IndexEntry {
@@ -120,46 +123,6 @@ export abstract class EntityBase<
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
     this.$obj = merge({}, defaultInternal, this.$obj);
   }
-
-  // public ensureIds(modelPackage: ModelPackage) {
-  //   this.identity.forEach(value => {
-  //     let ids = this.fields.get(value);
-  //     if (ids) {
-  //       modelPackage.identityFields.set(ids.idKey.toString(), this);
-  //     }
-  //   });
-  // }
-
-  // public ensureFKs(modelPackage: ModelPackage) {
-  //   if (modelPackage) {
-  //     let modelRelations;
-  //     if (modelPackage.relations.has(this.name)) {
-  //       modelRelations = modelPackage.relations.get(this.name);
-  //     } else {
-  //       modelRelations = new Map();
-  //       modelPackage.relations.set(this.name, modelRelations);
-  //     }
-
-  //     if (modelRelations) {
-  //       this.relations.forEach(value => {
-  //         let ref = this.fields.get(value);
-  //         // must be different to apply fixup
-  //         if (ref && modelRelations) {
-  //           modelRelations.set(ref.name, ref.clone());
-  //         }
-  //       });
-  //     }
-  //   }
-  // }
-
-  // public removeIds(modelPackage: ModelPackage) {
-  //   this.identity.forEach(value => {
-  //     let ids = this.fields.get(value);
-  //     if (ids) {
-  //       modelPackage.identityFields.delete(ids.idKey.toString());
-  //     }
-  //   });
-  // }
 
   get plural(): string {
     return this.metadata_.name.plural;
@@ -389,8 +352,8 @@ export abstract class EntityBase<
 
   public toObject(): O {
     return merge({}, super.toObject(), {
-      fields: MapToArray(this.fields),
-      operations: MapToArray(this.operations),
+      fields: MapToArray(this.fields).map(f => f.toObject()),
+      operations: MapToArray(this.operations).map(f => f.toObject()),
     } as Partial<O>);
   }
 }

@@ -6,7 +6,7 @@ import {
   ElementInternal,
   ElementOutput,
 } from './element';
-import { RelationType, MetaModelType, assignValue, Nullable } from './model';
+import { RelationType, MetaModelType, assignValue, Nullable } from './types';
 import { IEntityRef } from './entityreference';
 import { merge } from 'lodash';
 import decapitalize from './lib/decapitalize';

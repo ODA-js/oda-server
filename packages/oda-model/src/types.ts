@@ -3,27 +3,27 @@ export type Nullable<T> = { [P in keyof T]: T[P] | undefined | null };
 /**
  *
  */
-export type assignInput<I, T, K = any> = {
+export type assignInput<S, I, V = any> = {
   /**
    * source object
    */
-  src: I;
+  src: S;
   /**
    * dest object
    */
-  input: Nullable<T>;
+  input: Nullable<I>;
   /**
    * field from source object which is assigned
    */
-  field?: keyof I | keyof I & keyof T;
+  field?: keyof S | keyof S & keyof I;
   /**
    * function that will call to assign value
    */
-  effect?: (src: I, value: K) => void;
+  effect?: (src: S, value: V) => void;
   /**
    * function that check if effect is allowed
    */
-  allowEffect?: (src: I, value: K) => boolean;
+  allowEffect?: (src: S, value: V) => boolean;
   /**
    * is field required, so it can't be reset by set null.
    * in this case assign will throw
@@ -32,18 +32,18 @@ export type assignInput<I, T, K = any> = {
   /**
    * field from dest object which value will be assigned to dest field
    */
-  inputField?: keyof T;
+  inputField?: keyof I;
   /**
    * function that will call to set default value
    */
-  setDefault?: (src: I) => void;
+  setDefault?: (src: S) => void;
 };
 
 /**
  * check specified value from input and assign
  * @param options assign Options
  */
-export function assignValue<I, T, K = any>(options: assignInput<I, T, K>) {
+export function assignValue<S, I, V = any>(options: assignInput<S, I, V>) {
   let {
     src,
     input,
@@ -56,7 +56,7 @@ export function assignValue<I, T, K = any>(options: assignInput<I, T, K>) {
   } = options;
 
   if (!inputField) {
-    inputField = field as keyof T;
+    inputField = field as keyof I;
   }
   if (input.hasOwnProperty(inputField)) {
     // update value
@@ -175,7 +175,7 @@ export type EntityType = {
 
 export type EnumType = {
   /**
-   * complext type name
+   * complex type name
    */
   name: string;
   /**
@@ -237,22 +237,18 @@ export function MapToArray<T extends INamed>(
   return [...input.values()];
 }
 
-// interface A {
-//   A?: string;
-// }
-
-// interface Aa extends A {
-//   A: string;
-// }
-
-// interface B extends A {
-//   B?: string;
-// }
-
-// interface Bb extends Aa, B{
-//   B: string;
-// }
-
-// const b: Bb;
-
-// b.
+export function createFromMap<T, N extends INamed, I, V extends string | I>(
+  src: T,
+  create: new (input: I) => N,
+  prop: keyof T,
+) {
+  return (value: V) => {
+    let result: N | undefined;
+    if (typeof value === 'string') {
+      result = ((src[prop] as unknown) as Map<string, N>).get(value);
+    } else {
+      result = new create(value as I);
+    }
+    return result ? ([result.name, result] as [string, N]) : undefined;
+  };
+}

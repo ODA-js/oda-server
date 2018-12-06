@@ -9,7 +9,7 @@ import {
 } from './relationbase';
 import { IEntityRef, EntityReference } from './entityreference';
 import { merge } from 'lodash';
-import { assignValue, Nullable } from './model';
+import { assignValue, Nullable } from './types';
 
 export interface HasManyPersistence extends RelationBasePersistence {
   single: boolean;

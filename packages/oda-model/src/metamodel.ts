@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-import { Entity, EntityInput } from './entity';
+import { Entity, EntityInput, IEntity } from './entity';
 
 import {
   ModelPackage,
@@ -8,21 +8,35 @@ import {
   PackageMetaInfo,
   ModelPackageInternal,
   ModelPackageInput,
+  ModelPackageOutput,
 } from './modelpackage';
-import { Mutation, MutationInput } from './mutation';
-import { Query, QueryInput } from './query';
-import { Mixin, MixinInput } from './mixin';
-import { Union, UnionInput } from './union';
-import { Enum, EnumInput } from './enum';
-import { Scalar, ScalarInput } from './scalar';
-import { Directive, DirectiveInput } from './directive';
-import { MetaModelType, AsHash } from './model';
-import { IModelBase, ModelBaseInput } from './modelbase';
+import { Mutation, MutationInput, IMutation } from './mutation';
+import { Query, QueryInput, IQuery } from './query';
+import { Mixin, MixinInput, IMixin } from './mixin';
+import { Union, UnionInput, IUnion } from './union';
+import { Enum, EnumInput, IEnum } from './enum';
+import { Scalar, ScalarInput, IScalar } from './scalar';
+import { Directive, DirectiveInput, IDirective } from './directive';
+import { MetaModelType, AsHash } from './types';
+import {
+  IModelBase,
+  ModelBaseInput,
+  ModelBaseOutput,
+  ModelBase,
+} from './modelbase';
 import fold from './lib/json/fold';
+import { IField } from './field';
+import { merge } from 'lodash';
 
-function getFilter(inp: string): { filter: (f) => boolean; fields: string[] } {
+type FieldMap = {
+  [name: string]: boolean;
+};
+
+function getFilter(
+  inp: string,
+): { filter: (f: IField) => boolean; fields: string[] } {
   let result = {
-    filter: f => f.name === inp,
+    filter: (f: IField) => f.name === inp,
     fields: [inp],
   };
   if (inp === '*') {
@@ -33,11 +47,14 @@ function getFilter(inp: string): { filter: (f) => boolean; fields: string[] } {
       .slice(2, inp.length - 1)
       .split(',')
       .map(f => f.trim())
-      .reduce((res, cur) => {
-        res[cur] = 1;
-        return res;
-      }, {});
-    result.filter = f => !notFields[f.name];
+      .reduce(
+        (res, cur) => {
+          res[cur] = true;
+          return res;
+        },
+        {} as FieldMap,
+      );
+    result.filter = (f: IField) => !notFields[f.name];
     result.fields = [];
   }
   if (inp.startsWith('[')) {
@@ -45,11 +62,14 @@ function getFilter(inp: string): { filter: (f) => boolean; fields: string[] } {
       .slice(1, inp.length - 1)
       .split(',')
       .map(f => f.trim())
-      .reduce((res, cur) => {
-        res[cur] = 1;
-        return res;
-      }, {});
-    result.filter = f => !!onlyFields[f.name];
+      .reduce(
+        (res, cur) => {
+          res[cur] = true;
+          return res;
+        },
+        {} as FieldMap,
+      );
+    result.filter = (f: IField) => !!onlyFields[f.name];
     result.fields = Object.keys(onlyFields);
   }
   return result;
@@ -62,13 +82,22 @@ export interface IModelHook {
   queries?: AsHash<QueryInput>;
 }
 
-export interface IModel extends IModelBase<MetaModelMetaInfo, MetaModelInput> {
+export interface IModel
+  extends IModelBase<MetaModelMetaInfo, MetaModelInput, MetaModelOutput> {
   readonly packages: Map<string, IPackage>;
+  readonly entities: Map<string, IEntity>;
+  readonly scalars: Map<string, IScalar>;
+  readonly mixins: Map<string, IMixin>;
+  readonly enums: Map<string, IEnum>;
+  readonly unions: Map<string, IUnion>;
+  readonly mutations: Map<string, IMutation>;
+  readonly queries: Map<string, IQuery>;
+  readonly directives: Map<string, IDirective>;
 }
 
 export interface MetaModelInput extends ModelBaseInput<MetaModelMetaInfo> {
   entities: EntityInput[];
-  packages: ModelPackageInput[];
+  packages?: ModelPackageInput[];
   mutations?: MutationInput[];
   queries?: QueryInput[];
   scalars: ScalarInput[];
@@ -81,24 +110,98 @@ export interface MetaModelInput extends ModelBaseInput<MetaModelMetaInfo> {
   description?: string;
 }
 
+export interface MetaModelOutput
+  extends ModelBaseOutput<MetaModelMetaInfo>,
+    ModelPackageOutput {
+  entities: EntityInput[];
+  packages: ModelPackageInput[];
+  mutations: MutationInput[];
+  queries: QueryInput[];
+  scalars: ScalarInput[];
+  directives: DirectiveInput[];
+  enums: EnumInput[];
+  unions: UnionInput[];
+  mixins: MixinInput[];
+}
+
 export interface MetaModelMetaInfo extends PackageMetaInfo {}
 
 export interface MetaModelInternal extends ModelPackageInternal {}
 
+const defaultMetaInfo = {};
+const defaultInternal = {};
+const defaultInput = {};
+
 /**
  * Represents meta-model store
  */
-export class MetaModel extends ModelPackage implements IModel {
+export class MetaModel
+  extends ModelBase<
+    MetaModelMetaInfo,
+    MetaModelInput,
+    MetaModelInternal,
+    MetaModelOutput
+  >
+  implements IModel, IPackage {
   public modelType: MetaModelType = 'model';
   public packages: Map<string, ModelPackage> = new Map();
   public store: string = 'default.json';
-  public defaultPackage: ModelPackage;
+  public defaultPackage: IPackage = this;
 
-  constructor(name: string = 'default') {
-    super(name);
+  public get metaModel() {
+    return this;
+  }
+  public get abstract() {
+    return false;
+  }
+
+  public get entities() {
+    return this.$obj.entities;
+  }
+  public get enums() {
+    return this.$obj.enums;
+  }
+  public get scalars() {
+    return this.$obj.scalars;
+  }
+  public get directives() {
+    return this.$obj.directives;
+  }
+  public get mixins() {
+    return this.$obj.mixins;
+  }
+  public get unions() {
+    return this.$obj.unions;
+  }
+  public get mutations() {
+    return this.$obj.mutations;
+  }
+  public get queries() {
+    return this.$obj.queries;
+  }
+  public get identityFields() {
+    return this.$obj.identityFields;
+  }
+  public get relations() {
+    return this.$obj.relations;
+  }
+
+  constructor(inp: MetaModelInput) {
+    super(merge({}, defaultInput, inp));
+    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
+    this.$obj = merge({}, defaultInternal, this.$obj);
     this.ensureDefaultPackage();
   }
 
+  private ensureDefaultPackage() {
+    if (!this.packages.has(this.name)) {
+      this.ensureAll();
+      this.packages.set(this.name, this);
+    }
+  }
+  public toObject(): MetaModelOutput {
+    return merge({}, super.toObject(), {} as Partial<MetaModelOutput>);
+  }
   public loadModel(fileName: string = this.store) {
     let txt = fs.readFileSync(fileName);
     let store = JSON.parse(txt.toString()) as MetaModelInput;
@@ -501,14 +604,5 @@ export class MetaModel extends ModelPackage implements IModel {
       package: pack,
       entity: ent,
     };
-  }
-
-  private ensureDefaultPackage() {
-    if (!this.packages.has(this.name)) {
-      this.defaultPackage = this;
-      this.connect(this);
-      this.ensureAll();
-      this.packages.set(this.name, this);
-    }
   }
 }

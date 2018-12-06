@@ -18,7 +18,7 @@ import {
   assignValue,
   NamedArray,
   ArrayToMap,
-} from './model';
+} from './types';
 import { ElementMetaInfo } from './element';
 import { IEntityRef, EntityReference } from './entityreference';
 
@@ -34,6 +34,7 @@ export interface IFieldBase<
   required?: boolean;
   indexed: boolean | string | string[];
   identity: boolean | string | string[];
+  idKey: IEntityRef;
 }
 
 export interface FieldBasePersistence {
@@ -105,6 +106,9 @@ export abstract class FieldBase<
   O extends FieldBaseOutput<T, P>
 > extends ModelBase<T, I, S, O> implements IFieldBase<T, I, P, O> {
   public modelType: MetaModelType = 'field-base';
+  public get idKey(): IEntityRef {
+    return this.$obj.idKey;
+  }
 
   get type(): FieldType | undefined {
     return this.$obj.type;

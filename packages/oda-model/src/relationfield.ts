@@ -1,5 +1,5 @@
 import { merge } from 'lodash';
-import { Nullable, assignValue } from './model';
+import { Nullable, assignValue } from './types';
 import { RelationInput } from './relation';
 import { HasOne } from './hasone';
 import { HasMany } from './hasmany';

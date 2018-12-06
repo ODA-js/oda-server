@@ -1,6 +1,6 @@
 import { IValidate, IValidator, IValidationResultInput } from './validation';
 import { merge } from 'lodash';
-import { MetaModelType, Nullable, assignValue } from './model';
+import { MetaModelType, Nullable, assignValue } from './types';
 
 export interface ElementMetaInfo {}
 

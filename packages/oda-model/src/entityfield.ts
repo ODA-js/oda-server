@@ -8,7 +8,7 @@ import {
   RelationFieldBaseOutput,
 } from './relationfieldbase';
 import { merge } from 'lodash';
-import { EntityType, Nullable, assignValue } from './model';
+import { EntityType, Nullable, assignValue } from './types';
 import { HasMany } from './hasmany';
 import { HasOne } from './hasone';
 

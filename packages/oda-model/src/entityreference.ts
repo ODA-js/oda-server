@@ -3,7 +3,7 @@ import decapitalize from './lib/decapitalize';
 import { merge } from 'lodash';
 
 import { DEFAULT_ID_FIELDNAME, REF_PATTERN } from './definitions';
-import { MetaModelType, Nullable, assignValue } from './model';
+import { MetaModelType, Nullable, assignValue } from './types';
 import {
   ElementMetaInfo,
   ElementInternal,

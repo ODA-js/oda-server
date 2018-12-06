@@ -7,9 +7,9 @@ import {
   IMeta,
   ElementOutput,
 } from './element';
-import { MetaModelType, INamed } from './model';
+import { MetaModelType, INamed } from './types';
 import { merge } from 'lodash';
-import { Nullable, assignValue } from './model/interfaces';
+import { Nullable, assignValue } from './types';
 
 export interface ModelMetaInfo extends ElementMetaInfo {}
 

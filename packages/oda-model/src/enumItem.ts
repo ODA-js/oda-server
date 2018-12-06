@@ -6,7 +6,7 @@ import {
   ModelBaseOutput,
 } from './modelbase';
 import { merge } from 'lodash';
-import { MetaModelType, Nullable, assignValue } from './model';
+import { MetaModelType, Nullable, assignValue } from './types';
 import { ElementMetaInfo } from './element';
 
 export interface IEnumItem

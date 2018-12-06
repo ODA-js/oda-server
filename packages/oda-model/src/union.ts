@@ -7,7 +7,7 @@ import {
   IModelBase,
   ModelBaseOutput,
 } from './modelbase';
-import { MetaModelType, Nullable, assignValue } from './model';
+import { MetaModelType, Nullable, assignValue } from './types';
 
 /**
  * union definition

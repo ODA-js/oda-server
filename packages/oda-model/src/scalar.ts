@@ -1,5 +1,5 @@
 import { merge } from 'lodash';
-import { MetaModelType, Nullable } from './model';
+import { MetaModelType, Nullable } from './types';
 import {
   ModelBase,
   ModelBaseInput,

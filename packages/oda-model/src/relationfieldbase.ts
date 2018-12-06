@@ -8,7 +8,7 @@ import {
   FieldBaseOutput,
 } from './fieldbase';
 import { merge } from 'lodash';
-import { Nullable } from './model';
+import { Nullable } from './types';
 import { IRelation } from './relation';
 
 export interface RelationFieldBaseMetaInfo<

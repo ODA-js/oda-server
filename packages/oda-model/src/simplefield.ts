@@ -15,7 +15,7 @@ import {
   AsHash,
   FieldArgs,
   NamedArray,
-} from './model';
+} from './types';
 
 export interface ISimpleField
   extends IFieldBase<

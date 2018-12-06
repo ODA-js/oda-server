@@ -16,7 +16,7 @@ import {
   NamedArray,
   ArrayToMap,
   MapToArray,
-} from './model';
+} from './types';
 import { merge } from 'lodash';
 
 export interface IOperation

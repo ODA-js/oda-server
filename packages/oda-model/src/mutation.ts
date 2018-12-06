@@ -10,7 +10,7 @@ import {
   NamedArray,
   ArrayToMap,
   MapToArray,
-} from './model';
+} from './types';
 import {
   IModelBase,
   ModelBaseInternal,

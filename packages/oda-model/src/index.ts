@@ -18,13 +18,13 @@ import { Query } from './query';
 import { DEFAULT_ID_FIELD } from './definitions';
 import { ModelPackage } from './modelpackage';
 import { RelationBase } from './relationbase';
-import { Metadata } from './metadata';
+import { Element } from './element';
 import Validator from './validator/index';
-export * from './interfaces';
 
 export {
-  Metadata,
+  Element,
   Entity,
+  EntityBase,
   Field,
   HasOne,
   HasMany,

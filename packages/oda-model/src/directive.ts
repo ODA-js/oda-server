@@ -16,7 +16,7 @@ import {
   NamedArray,
   ArrayToMap,
   MapToArray,
-} from './model';
+} from './types';
 import { ElementMetaInfo } from './element';
 import { merge } from 'lodash';
 
@@ -37,37 +37,39 @@ export interface DirectiveMetaInfo extends ElementMetaInfo {}
 export interface DirectiveInternal
   extends ModelBaseInternal<DirectiveMetaInfo> {
   args: Map<string, FieldArgs>;
-  on: string[];
+  on: DirectiveLocation[];
 }
 
 export interface DirectiveInput extends ModelBaseInput<DirectiveMetaInfo> {
   args?: AsHash<FieldArgs> | NamedArray<FieldArgs>;
-  on?: string[];
+  on?: DirectiveLocation[];
 }
 
 export interface DirectiveOutput extends ModelBaseOutput<DirectiveMetaInfo> {
   args: NamedArray<FieldArgs>;
-  on: string[];
+  on: DirectiveLocation[];
 }
 
 const defaultMetaInfo = {};
 const defaultInternal = {};
 const defaultInput = {};
 
-export class Directive extends ModelBase<
-  DirectiveMetaInfo,
-  DirectiveInput,
-  DirectiveInternal,
-  DirectiveOutput
-> {
+export class Directive
+  extends ModelBase<
+    DirectiveMetaInfo,
+    DirectiveInput,
+    DirectiveInternal,
+    DirectiveOutput
+  >
+  implements IDirective {
   public modelType: MetaModelType = 'field';
   protected $obj!: DirectiveInternal;
 
-  get args(): Map<string, FieldArgs> | undefined {
+  get args(): Map<string, FieldArgs> {
     return this.$obj.args;
   }
 
-  get on(): string[] | undefined {
+  get on(): DirectiveLocation[] {
     return this.$obj.on;
   }
 

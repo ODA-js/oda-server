@@ -8,7 +8,7 @@ import {
   EntityBaseOutput,
 } from './entitybase';
 import { merge } from 'lodash';
-import { Nullable } from './model';
+import { Nullable } from './types';
 
 export interface IMixin
   extends IEntityBase<

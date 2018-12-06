@@ -8,7 +8,7 @@ import {
 import { EnumItem, IEnumItem, EnumItemInput } from './enumItem';
 import { merge } from 'lodash';
 import { ElementMetaInfo } from './element';
-import { MetaModelType, Nullable, assignValue } from './model';
+import { MetaModelType, Nullable, assignValue } from './types';
 
 export interface IEnum extends IModelBase<EnumMetaInfo, EnumInput, EnumOutput> {
   /**

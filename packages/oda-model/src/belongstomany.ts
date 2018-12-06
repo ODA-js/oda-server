@@ -16,7 +16,7 @@ import {
   Nullable,
   NamedArray,
   MapToArray,
-} from './model';
+} from './types';
 import { ISimpleField, SimpleFieldInput, SimpleField } from './simplefield';
 import decapitalize from './lib/decapitalize';
 
@@ -171,7 +171,7 @@ export class BelongsToMany
   public toObject(): BelongsToManyOutput {
     return merge({}, super.toObject(), {
       belongsToMany: this.belongsToMany.toString(),
-      fields: MapToArray(this.$obj.fields),
+      fields: MapToArray(this.$obj.fields).map(f => f.toObject()),
     } as Partial<BelongsToManyOutput>);
   }
 }

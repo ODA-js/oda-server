@@ -7,13 +7,16 @@ import {
   EntityBase,
   EntityBaseOutput,
 } from './entitybase';
-import { MetaModelType, Nullable, assignValue } from './model';
+import { MetaModelType, Nullable, assignValue } from './types';
 import { merge } from 'lodash';
-import { ModelPackage, IPackage } from './modelpackage';
-import { Field, IField } from './field';
 
 export interface IEntity
-  extends IEntityBase<EntityMetaInfo, EntityPersistence> {
+  extends IEntityBase<
+    EntityMetaInfo,
+    EntityPersistence,
+    EntityInput,
+    EntityOutput
+  > {
   implements: Set<string>;
   embedded: boolean | Set<string>;
   abstract: boolean;
@@ -75,29 +78,6 @@ export class Entity
 
   get embedded(): boolean | Set<string> {
     return this.$obj.embedded;
-  }
-
-  public ensureImplementation(modelPackage: IPackage) {
-    const newFields: Map<string, IField> = new Map<string, IField>();
-    this.implements.forEach(mixin => {
-      if (modelPackage.mixins.has(mixin)) {
-        const impl = modelPackage.mixins.get(mixin);
-        if (impl) {
-          impl.fields.forEach(f => {
-            if (!this.fields.has(f.name)) {
-              newFields.set(f.name, f);
-            }
-          });
-        }
-      }
-    });
-
-    if (newFields.size > 0) {
-      const update = this.toObject();
-      update.fields.push(...[...newFields.values()].map(f => f.toObject()));
-      this.updateWith(update);
-      this.ensureIds(modelPackage);
-    }
   }
 
   public updateWith(input: Nullable<EntityInput>) {
