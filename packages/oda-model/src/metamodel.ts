@@ -17,7 +17,13 @@ import { Union, UnionInput, IUnion } from './union';
 import { Enum, EnumInput, IEnum } from './enum';
 import { Scalar, ScalarInput, IScalar } from './scalar';
 import { Directive, DirectiveInput, IDirective } from './directive';
-import { MetaModelType, AsHash } from './types';
+import {
+  MetaModelType,
+  AsHash,
+  MapToArray,
+  assignValue,
+  Nullable,
+} from './types';
 import {
   IModelBase,
   ModelBaseInput,
@@ -27,6 +33,14 @@ import {
 import fold from './lib/json/fold';
 import { IField } from './field';
 import { merge } from 'lodash';
+import { SimpleFieldInput } from './simplefield';
+import {
+  IPackageBase,
+  ModelPackageBaseInput,
+  ModelPackageBaseMetaInfo,
+  ModelPackageBaseInternal,
+  ModelPackageBase,
+} from './packagebase';
 
 type FieldMap = {
   [name: string]: boolean;
@@ -83,50 +97,28 @@ export interface IModelHook {
 }
 
 export interface IModel
-  extends IModelBase<MetaModelMetaInfo, MetaModelInput, MetaModelOutput> {
-  readonly packages: Map<string, IPackage>;
-  readonly entities: Map<string, IEntity>;
-  readonly scalars: Map<string, IScalar>;
-  readonly mixins: Map<string, IMixin>;
-  readonly enums: Map<string, IEnum>;
-  readonly unions: Map<string, IUnion>;
-  readonly mutations: Map<string, IMutation>;
-  readonly queries: Map<string, IQuery>;
-  readonly directives: Map<string, IDirective>;
-}
+  extends IPackageBase<MetaModelMetaInfo, MetaModelInput, MetaModelOutput> {}
 
-export interface MetaModelInput extends ModelBaseInput<MetaModelMetaInfo> {
-  entities: EntityInput[];
-  packages?: ModelPackageInput[];
-  mutations?: MutationInput[];
-  queries?: QueryInput[];
-  scalars: ScalarInput[];
-  directives: DirectiveInput[];
-  enums?: EnumInput[];
-  unions?: UnionInput[];
-  mixins?: MixinInput[];
-  name: string;
-  title?: string;
-  description?: string;
+export interface MetaModelInput
+  extends ModelPackageBaseInput<MetaModelMetaInfo> {
+  packages?: (string | ModelPackageInput)[];
+  store?: string;
 }
 
 export interface MetaModelOutput
   extends ModelBaseOutput<MetaModelMetaInfo>,
     ModelPackageOutput {
-  entities: EntityInput[];
-  packages: ModelPackageInput[];
-  mutations: MutationInput[];
-  queries: QueryInput[];
-  scalars: ScalarInput[];
-  directives: DirectiveInput[];
-  enums: EnumInput[];
-  unions: UnionInput[];
-  mixins: MixinInput[];
+  packages: ModelPackageOutput[];
+  store: string;
 }
 
-export interface MetaModelMetaInfo extends PackageMetaInfo {}
+export interface MetaModelMetaInfo extends ModelPackageBaseMetaInfo {}
 
-export interface MetaModelInternal extends ModelPackageInternal {}
+export interface MetaModelInternal
+  extends ModelPackageBaseInternal<MetaModelMetaInfo> {
+  packages: Map<string, IPackage>;
+  store: string;
+}
 
 const defaultMetaInfo = {};
 const defaultInternal = {};
@@ -136,54 +128,33 @@ const defaultInput = {};
  * Represents meta-model store
  */
 export class MetaModel
-  extends ModelBase<
+  extends ModelPackageBase<
     MetaModelMetaInfo,
     MetaModelInput,
     MetaModelInternal,
     MetaModelOutput
   >
   implements IModel, IPackage {
-  public modelType: MetaModelType = 'model';
-  public packages: Map<string, ModelPackage> = new Map();
+  public get modelType(): MetaModelType {
+    return 'model';
+  }
+
   public store: string = 'default.json';
-  public defaultPackage: IPackage = this;
+
+  public get defaultPackage(): IPackage {
+    return this;
+  }
 
   public get metaModel() {
     return this;
   }
+
   public get abstract() {
     return false;
   }
 
-  public get entities() {
-    return this.$obj.entities;
-  }
-  public get enums() {
-    return this.$obj.enums;
-  }
-  public get scalars() {
-    return this.$obj.scalars;
-  }
-  public get directives() {
-    return this.$obj.directives;
-  }
-  public get mixins() {
-    return this.$obj.mixins;
-  }
-  public get unions() {
-    return this.$obj.unions;
-  }
-  public get mutations() {
-    return this.$obj.mutations;
-  }
-  public get queries() {
-    return this.$obj.queries;
-  }
-  public get identityFields() {
-    return this.$obj.identityFields;
-  }
-  public get relations() {
-    return this.$obj.relations;
+  public get packages() {
+    return this.$obj.packages;
   }
 
   constructor(inp: MetaModelInput) {
@@ -199,9 +170,38 @@ export class MetaModel
       this.packages.set(this.name, this);
     }
   }
+
   public toObject(): MetaModelOutput {
-    return merge({}, super.toObject(), {} as Partial<MetaModelOutput>);
+    return merge({}, super.toObject(), {
+      packages: MapToArray(this.$obj.packages).map(i => i.toObject()),
+    } as Partial<MetaModelOutput>);
   }
+
+  public updateWith(input: Nullable<MetaModelInput>) {
+    super.updateWith(input);
+
+    assignValue<MetaModelInternal, MetaModelInput, string>({
+      src: this.$obj,
+      input,
+      field: 'store',
+      effect: (src, value) => (src.store = value),
+      setDefault: src => (src.store = 'model.json'),
+      required: true,
+    });
+    assignValue<
+      MetaModelInternal,
+      MetaModelInput,
+      NonNullable<MetaModelInput['packages']>
+    >({
+      src: this.$obj,
+      input,
+      field: 'packages',
+      effect: (src, value) => (src.packages = value),
+      setDefault: src => (src.packages = new Map<string, IPackage>()),
+      required: true,
+    });
+  }
+
   public loadModel(fileName: string = this.store) {
     let txt = fs.readFileSync(fileName);
     let store = JSON.parse(txt.toString()) as MetaModelInput;
@@ -489,120 +489,15 @@ export class MetaModel
 
   public loadPackage(store: MetaModelInput, hooks?: any[]) {
     this.reset();
-
-    // must go first
-    if (store.mixins) {
-      store.mixins.forEach(q => {
-        this.addMixin(new Mixin(q));
-      });
-    }
-
-    if (store.entities) {
-      store.entities.forEach(ent => {
-        this.addEntity(new Entity(ent));
-      });
-    }
-    if (store.mutations) {
-      store.mutations.forEach(mut => {
-        this.addMutation(new Mutation(mut));
-      });
-    }
-
-    if (store.queries) {
-      store.queries.forEach(q => {
-        this.addQuery(new Query(q));
-      });
-    }
-
-    if (store.enums) {
-      store.enums.forEach(q => {
-        this.addEnum(new Enum(q));
-      });
-    }
-
-    if (store.scalars) {
-      store.scalars.forEach(q => {
-        this.addScalar(new Scalar(q));
-      });
-    }
-
-    if (store.directives) {
-      store.directives.forEach(q => {
-        this.addDirective(new Directive(q));
-      });
-    }
-
-    if (store.unions) {
-      store.unions.forEach(q => {
-        this.addUnion(new Union(q));
-      });
-    }
+    this.updateWith(store);
 
     this.ensureDefaultPackage();
 
     this.applyHooks(fold(hooks) as IModelHook[]);
-
-    if (Array.isArray(store.packages)) {
-      store.packages.forEach(this.addPackage.bind(this));
-    }
-  }
-
-  public saveModel(fileName: string = this.store) {
-    fs.writeFileSync(
-      fileName,
-      JSON.stringify({
-        entities: Array.from(this.entities.values()).map(f => f.toJSON()),
-        packages: Array.from(
-          this.packages.values(),
-        ) /*.filter(p => p.name !== 'default')*/
-          .map(f => f.toObject()),
-        mutations: Array.from(this.mutations.values()).map(f => f.toJSON()),
-        queries: Array.from(this.queries.values()).map(f => f.toJSON()),
-        enums: Array.from(this.enums.values()).map(f => f.toJSON()),
-        unions: Array.from(this.unions.values()).map(f => f.toJSON()),
-        mixins: Array.from(this.mixins.values()).map(f => f.toJSON()),
-        scalars: Array.from(this.scalars.values()).map(f => f.toJSON()),
-        directives: Array.from(this.directives.values()).map(f => f.toJSON()),
-      }),
-    );
   }
 
   public reset() {
-    this.entities.clear();
-    this.packages.clear();
-    this.mutations.clear();
-    this.queries.clear();
-    this.enums.clear();
-    this.mixins.clear();
-    this.unions.clear();
-    this.scalars.clear();
-    this.directives.clear();
-  }
-
-  public createPackage(name: string): ModelPackage {
-    if (this.packages.has(name)) {
-      throw new Error(`Package "${name}" already exists`);
-    }
-    let pack = new ModelPackage(name);
-    this.packages.set(name, pack);
-    pack.connect(this);
-    return pack;
-  }
-
-  public assignEntityToPackage(input: { entity: string; package: string }) {
-    let pack = this.packages.get(input.package);
-    if (!pack) {
-      throw new Error(`Package ${input.package} didn't exists`);
-    }
-    let ent = this.entities.get(input.entity);
-    if (!ent) {
-      throw new Error(`Package ${input.entity} didn't exists`);
-    }
-    pack.addEntity(ent);
-    pack.ensureAll();
-    return {
-      package: pack,
-      entity: ent,
-    };
+    this.updateWith({ name: this.name });
+    this.ensureDefaultPackage();
   }
 }

@@ -1,3 +1,5 @@
+import { readFileSync, writeFileSync } from 'fs';
+
 export type Nullable<T> = { [P in keyof T]: T[P] | undefined | null };
 
 /**
@@ -98,6 +100,7 @@ export type MetaModelType =
   | 'model'
   | 'query'
   | 'mutation'
+  | 'package-base'
   | 'package'
   | 'entity-base'
   | 'entity'
@@ -251,4 +254,19 @@ export function createFromMap<T, N extends INamed, I, V extends string | I>(
     }
     return result ? ([result.name, result] as [string, N]) : undefined;
   };
+}
+
+export function loadFromFile<T, I>(
+  filename: string,
+  create: new (inp: I) => T,
+) {
+  const txt = readFileSync(filename);
+  return new create(JSON.parse(txt.toString()) as I);
+}
+
+export function saveToFile<T extends { toObject: () => any }>(
+  filename: string,
+  inp: T,
+) {
+  writeFileSync(filename, inp.toObject());
 }
