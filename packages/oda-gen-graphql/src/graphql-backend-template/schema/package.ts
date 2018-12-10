@@ -61,7 +61,7 @@ export function mapper(
     name: capitalize(pack.name),
     entities: getRealEntities(pack).map(e => ({
       name: e.name,
-      adapter: e.getMetadata('storage.adapter', 'mongoose'),
+      adapter: e.getMetadata('persistence.adapter', 'mongoose'),
     })),
     scalars: getScalars(pack).map(s => ({
       name: s.name,

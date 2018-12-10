@@ -1,15 +1,16 @@
 //common queries that is used in code generation
 import {
-  Entity,
+  IEntity,
   Field,
   ModelPackage,
   MetaModel,
   Mutation,
   Query,
   FieldType,
-  Mixin,
+  IMixin,
+  Relation,
+  RelationField,
 } from 'oda-model';
-import { IMixin } from 'oda-model/dist/model/interfaces';
 
 let memoizeCache: any = {};
 
@@ -41,9 +42,9 @@ export const getMixins = (pack: ModelPackage) => [
   ...(Array.from(pack.entities.values()).filter(e => e.abstract) as IMixin[]),
 ];
 
-export const fields = (f: Field): boolean => !f.relation;
+export const fields = (f: Field): boolean => !(f as RelationField).relation;
 
-export const relations = (f: Field): boolean => !!f.relation;
+export const relations = (f: Field): boolean => !!(f as RelationField).relation;
 
 export const getMutations = (pack: ModelPackage): Mutation[] =>
   Array.from(pack.mutations.values());
@@ -66,8 +67,8 @@ export const canUpdateBy = (f: Field): boolean => {
   return result;
 };
 
-export const oneUniqueInIndex = (entity: Entity) => {
-  let indexList = entity.getMetadata('storage.indexes');
+export const oneUniqueInIndex = (entity: IEntity) => {
+  let indexList = entity.metadata.persistence.indexes;
   if (indexList !== null && typeof indexList === 'object') {
     return (f: Field) => {
       let result = false;
@@ -92,8 +93,8 @@ export const oneUniqueInIndex = (entity: Entity) => {
   }
 };
 
-export const oneFieldIndex = (entity: Entity) => {
-  let indexList = entity.getMetadata('storage.indexes');
+export const oneFieldIndex = (entity: IEntity) => {
+  let indexList = entity.getMetadata('persistence.indexes');
   if (indexList !== null && typeof indexList === 'object') {
     return (f: Field) => {
       let result = false;
@@ -115,8 +116,8 @@ export const oneFieldIndex = (entity: Entity) => {
   }
 };
 
-export const complexUniqueIndex = (entity: Entity) => {
-  let indexList = entity.getMetadata('storage.indexes');
+export const complexUniqueIndex = (entity: IEntity) => {
+  let indexList = entity.getMetadata('persistence.indexes');
   if (indexList) {
     return Object.keys(indexList)
       .filter(
@@ -135,16 +136,16 @@ export const complexUniqueIndex = (entity: Entity) => {
   }
 };
 
-export const complexUniqueFields = (entity: Entity) =>
+export const complexUniqueFields = (entity: IEntity) =>
   complexUniqueIndex(entity).reduce((result, cur) => {
     result.push(...Object.keys(cur.fields));
     return result;
   }, []);
 
-export const _getFieldNames = (entity: Entity) =>
+export const _getFieldNames = (entity: IEntity) =>
   Array.from(entity.fields.values()).map((f: { name: string }) => f.name);
 
-export const getFieldNames = (entity: Entity) => {
+export const getFieldNames = (entity: IEntity) => {
   if (!memoizeCache.hasOwnProperty('getFieldNames')) {
     memoizeCache.getFieldNames = {};
   }
@@ -155,13 +156,13 @@ export const getFieldNames = (entity: Entity) => {
   return cache[entity.name];
 };
 
-export const getOrderBy = (role: string) => (allow, entity: Entity) =>
+export const getOrderBy = (role: string) => (allow, entity: IEntity) =>
   searchParamsForAcl(allow, role, entity).filter(f => {
     const field = entity.fields.get(f);
     return field.persistent && !field.relation;
   });
 
-export const searchParamsForAcl = (allow, role: string, entity: Entity) =>
+export const searchParamsForAcl = (allow, role: string, entity: IEntity) =>
   getFieldNames(entity)
     // .filter(i => i !== 'id')
     .filter(i =>
@@ -170,7 +171,7 @@ export const searchParamsForAcl = (allow, role: string, entity: Entity) =>
 
 export const _filterForAcl = (role: string, pack: ModelPackage) => {
   const existingRel = relationFieldsExistsIn(pack);
-  return (allow, entity: Entity) => {
+  return (allow, entity: IEntity) => {
     return Object.keys(
       getFieldNames(entity)
         .concat(getRelationNames(entity))
@@ -200,17 +201,17 @@ export const filterForAcl = (role: string, pack: ModelPackage) => {
   return cache[cv];
 };
 
-export const getRelationNames = (entity: Entity) =>
+export const getRelationNames = (entity: IEntity) =>
   Array.from(entity.relations);
 
 export const derivedFields = (f: Field): boolean => fields(f) && f.derived;
 
 export const derivedFieldsAndRelations = (f: Field): boolean => f.derived;
 
-export const _getFields = (entity: Entity): Field[] =>
+export const _getFields = (entity: IEntity): Field[] =>
   Array.from(entity.fields.values());
 
-export const getFields = (entity: Entity): Field[] => {
+export const getFields = (entity: IEntity): Field[] => {
   if (!memoizeCache.hasOwnProperty('getFields')) {
     memoizeCache.getFields = {};
   }
@@ -226,7 +227,7 @@ export const idField = (f: Field): boolean =>
 
 export const _getFieldsForAcl = (role: string, pack: ModelPackage) => {
   const existingRel = relationFieldsExistsIn(pack);
-  return (allow, entity: Entity): Field[] =>
+  return (allow, entity: IEntity): Field[] =>
     getFields(entity)
       .filter(f => !relations(f) || existingRel(f))
       .filter(f => allow(role, f.getMetadata('acl.read', role)));
@@ -266,7 +267,7 @@ export const mutableFields = (f: Field): boolean =>
 export const nonIdFields = (f: Field): boolean =>
   fields(f) && !idField(f) && f.persistent;
 
-export const getUniqueFieldNames = (entity: Entity) => [
+export const getUniqueFieldNames = (entity: IEntity) => [
   'id',
   ...getFields(entity)
     .filter(oneUniqueInIndex(entity))
@@ -274,9 +275,9 @@ export const getUniqueFieldNames = (entity: Entity) => [
     .map(f => f.name),
 ];
 
-export const indexes = (e: Entity) => {
+export const indexes = (e: IEntity) => {
   let result = [];
-  let _indexes = e.getMetadata('storage.indexes', {});
+  let _indexes = e.getMetadata('persistence.indexes', {});
   let keys = Object.keys(_indexes);
   for (let i = 0, len = keys.length; i < len; i++) {
     result.push(_indexes[keys[i]]);
@@ -302,7 +303,7 @@ export const persistentRelations = (pack: ModelPackage) => f =>
   relationFieldsExistsIn(pack)(f) && f.persistent;
 
 export const memoizeEntityMapper = (name, mapper) => (
-  entity: Entity,
+  entity: IEntity,
   pack: ModelPackage,
   role: string,
   aclAllow,
@@ -310,7 +311,7 @@ export const memoizeEntityMapper = (name, mapper) => (
   defaultAdapter?: string,
 ) => {
   let adapter = entity.getMetadata(
-    'storage.adapter',
+    'persistence.adapter',
     defaultAdapter || 'mongoose',
   );
   if (!memoizeCache.hasOwnProperty(name)) {

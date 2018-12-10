@@ -31,7 +31,11 @@ export interface IQuery
   readonly payload: Map<string, FieldArgs>;
 }
 
-export interface QueryMetaInfo extends ElementMetaInfo {}
+export interface QueryMetaInfo extends ElementMetaInfo {
+  acl: {
+    execute: string[];
+  };
+}
 
 export interface QueryInternal extends ModelBaseInternal<QueryMetaInfo> {
   args: Map<string, FieldArgs>;
@@ -48,7 +52,11 @@ export interface QueryOutput extends ModelBaseOutput<QueryMetaInfo> {
   payload: NamedArray<FieldArgs>;
 }
 
-const defaultMetaInfo = {};
+const defaultMetaInfo = {
+  acl: {
+    execute: [],
+  },
+};
 const defaultInternal = {};
 const defaultInput = {};
 

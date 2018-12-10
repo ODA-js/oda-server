@@ -50,6 +50,12 @@ export interface FieldBaseMetaInfo<T extends FieldBasePersistence>
   entity: string;
   persistence: T;
   order: number;
+  acl: {
+    create: string[];
+    read: string[];
+    update: string[];
+    delete: string[];
+  };
 }
 
 export interface FieldBaseInternal<
@@ -94,7 +100,14 @@ export interface FieldBaseOutput<
   args: NamedArray<FieldArgs>;
 }
 
-const defaultMetaInfo = {};
+const defaultMetaInfo = {
+  acl: {
+    create: [],
+    read: [],
+    upadte: [],
+    delete: [],
+  },
+};
 const defaultInternal = {};
 const defaultInput = {};
 

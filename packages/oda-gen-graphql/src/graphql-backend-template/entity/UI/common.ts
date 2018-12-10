@@ -4,6 +4,7 @@ import {
   BelongsToMany,
   Field,
   FieldType,
+  RelationField,
 } from 'oda-model';
 import { capitalize, decapitalize } from '../../utils';
 import * as humanize from 'string-humanize';
@@ -116,21 +117,7 @@ function visibility(
 
   result.list = [...result.quickSearch];
 
-  // result.list.push(
-  //   ...allFields.filter(oneUniqueInIndex(entity)).map(f => f.name),
-  //   ...allFields.filter(oneFieldIndex(entity)).map(f => f.name),
-  // );
-  // result.list.push(
-  //   ...complexUniqueFields(entity)
-  //     .map(f => entity.fields.get(f))
-  //     .filter(f => aclAllow(role, f.getMetadata('acl.read', role)))
-  //     .map(f => f.name),
-  // );
-
-  // придумать как вытаскивать реляции из модели...
-  //
-
-  const UI = entity.getMetadata('UI');
+  const UI = entity.metadata.UI;
   if (UI) {
     if (UI.hidden && Array.isArray(UI.hidden)) {
       result.hidden.push(...UI.hidden);
@@ -220,7 +207,7 @@ function visibility(
         f.relation &&
         (f.relation.embedded || result.embedded.indexOf(f.name) > -1),
     )
-    .map((f: Field) => {
+    .map(f => {
       const lRes = {
         name: f.name,
         entity: f.relation.ref.entity,
@@ -243,7 +230,7 @@ function guessListLabel(
   pack: ModelPackage,
 ) {
   const entity = pack.entities.get(entityName);
-  let UI = entity.getMetadata('UI');
+  let UI = entity.metadata.UI;
   let result;
   if (UI && UI.listName) {
     result = UI.listName;
@@ -259,13 +246,13 @@ function guessListLabel(
 }
 
 function guessQuickSearch(entity: Entity, aclAllow, role, pack, aor) {
-  let UI = entity.getMetadata('UI');
+  let UI = entity.metadata.UI;
   let result = [];
   if (UI && UI.listName) {
-    const lf = entity.fields.get(UI.listName);
-    if (lf && lf.persistent) {
-      result.push(UI.listName);
-    }
+    const lf = [...entity.fields.values()].filter(
+      f => f.name in UI.listName && f.metadata.persistence.persistent,
+    );
+    result.push(...lf);
   }
   result.push(
     ...getFieldsForAcl(role, pack)(aclAllow, entity)
@@ -354,7 +341,8 @@ export function _mapper(
           .filter(
             r =>
               (current.opposite && current.opposite === r) ||
-              (refe.fields.get(r).relation instanceof BelongsToMany &&
+              ((refe.fields.get(r) as RelationField).relation instanceof
+                BelongsToMany &&
                 (refe.fields.get(r).relation as BelongsToMany).using &&
                 (refe.fields.get(r).relation as BelongsToMany).using.entity ===
                   (f.relation as BelongsToMany).using.entity),

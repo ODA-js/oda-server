@@ -27,7 +27,7 @@ export function mapper(
   return {
     entities: getRealEntities(pack).map(e => ({
       name: e.name,
-      adapter: e.getMetadata('storage.adapter', 'mongoose'),
+      adapter: e.getMetadata('persistence.adapter', 'mongoose'),
     })),
   };
 }

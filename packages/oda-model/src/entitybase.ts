@@ -71,6 +71,8 @@ export interface UIView {
   show?: string[];
   list?: string[];
   embedded?: string[];
+  enum: boolean;
+  dictionary: boolean;
 }
 
 export interface EntityBaseMetaInfo<P extends EntityBasePersistence>
@@ -82,6 +84,12 @@ export interface EntityBaseMetaInfo<P extends EntityBasePersistence>
   };
   persistence: P;
   UI: UIView;
+  acl: {
+    create: string[];
+    read: string[];
+    update: string[];
+    delete: string[];
+  };
 }
 
 export interface EntityBaseInternal<
@@ -127,6 +135,12 @@ const defaultMetaInfo = {
     show: [],
     list: [],
     embedded: [],
+  },
+  acl: {
+    create: [],
+    read: [],
+    upadte: [],
+    delete: [],
   },
 };
 const defaultInternal = {};

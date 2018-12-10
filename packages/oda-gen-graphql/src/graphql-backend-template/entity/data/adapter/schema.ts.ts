@@ -81,9 +81,9 @@ export function _mapper(
   return {
     name: entity.name,
     plural: entity.plural,
-    strict: get(entity.metadata, 'storage.schema.strict'),
+    strict: get(entity.metadata, 'persistence.schema.strict'),
     collectionName:
-      get(entity.metadata, 'storage.collectionName') ||
+      get(entity.metadata, 'persistence.collectionName') ||
       entity.plural.toLowerCase(),
     description: entity.description,
     useDefaultPK,
@@ -106,10 +106,12 @@ export function _mapper(
       };
     }),
     embedded: Object.keys(
-      embedded.map(f => f.relation.ref.entity).reduce((res, i) => {
-        res[i] = 1;
-        return res;
-      }, {}),
+      embedded
+        .map(f => f.relation.ref.entity)
+        .reduce((res, i) => {
+          res[i] = 1;
+          return res;
+        }, {}),
     ),
     relations: [
       ...getFields(entity)

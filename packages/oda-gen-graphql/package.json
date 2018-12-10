@@ -2,16 +2,6 @@
   "name": "oda-gen-graphql",
   "version": "1.0.0-56",
   "description": "",
-  "main": "dist/index.js",
-  "scripts": {
-    "test": "jest",
-    "watch": "tsc -w -p .",
-    "prepare": "npm run clean && npm run compile",
-    "compile": "tsc -p ./",
-    "wipe": "./clean.sh",
-    "clean": "rm -rf dist",
-    "lint": "tslint -c \"../../config/tslint.json\" -p tsconfig.json src/*.ts"
-  },
   "author": "Alex Vedmdedenko <vedmalex@gmail.com>",
   "license": "MIT",
   "dependencies": {
