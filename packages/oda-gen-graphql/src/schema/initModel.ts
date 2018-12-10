@@ -1,9 +1,7 @@
-import { lib } from 'oda-gen-common';
 import { MetaModel } from 'oda-model';
 import * as pathLib from 'path';
 import AclDefault from '../acl';
-
-const { get } = lib;
+import { get } from 'lodash';
 
 export interface IPackageDef {
   [security: string]: {

@@ -2,10 +2,7 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as template from '../graphql-backend-template';
 import AclDefault from '../acl';
-
-import { lib } from 'oda-gen-common';
-
-const { deepMerge } = lib;
+import { merge } from 'lodash';
 const { defaultTypeMapper, prepareMapper } = template.utils;
 
 import templateEngine from './templateEngine';
@@ -26,10 +23,7 @@ export default function generate({
   context,
   logs,
 }: GeneratorInit) {
-  const actualTypeMapper = deepMerge(
-    defaultTypeMapper,
-    context.typeMapper || {},
-  );
+  const actualTypeMapper = merge(defaultTypeMapper, context.typeMapper || {});
 
   const defaultAdapter = context.defaultAdapter;
 
@@ -63,19 +57,21 @@ export default function generate({
   } else {
     fs.ensureDirSync(rootDir);
     // generate per package
-    [...packages.values()].filter(p => !p.abstract).forEach(pkg => {
-      console.time('gql');
-      generator(
-        pkg,
-        raw,
-        rootDir,
-        pkg.name,
-        aclAllow,
-        typeMapper,
-        defaultAdapter,
-      );
-      console.timeEnd('gql');
-    });
+    [...packages.values()]
+      .filter(p => !p.abstract)
+      .forEach(pkg => {
+        console.time('gql');
+        generator(
+          pkg,
+          raw,
+          rootDir,
+          pkg.name,
+          aclAllow,
+          typeMapper,
+          defaultAdapter,
+        );
+        console.timeEnd('gql');
+      });
   }
   commit().then(() => console.log('finish'));
 }

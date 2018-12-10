@@ -1,7 +1,6 @@
 import { Entity, ModelPackage, FieldType } from 'oda-model';
 import { Factory } from 'fte.js';
-import { lib } from 'oda-gen-common';
-let get = lib.get;
+import { get } from 'lodash';
 
 export const template = {
   mongoose: 'entity/data/mongoose/schema.ts.njs',

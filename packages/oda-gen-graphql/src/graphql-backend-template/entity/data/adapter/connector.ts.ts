@@ -1,9 +1,7 @@
 import { Entity, ModelPackage, BelongsToMany, FieldType } from 'oda-model';
 import { capitalize, decapitalize } from '../../../utils';
 import { Factory } from 'fte.js';
-import { lib } from 'oda-gen-common';
-
-let get = lib.get;
+import { get } from 'lodash';
 
 export const template = {
   mongoose: 'entity/data/mongoose/connector.ts.njs',
@@ -229,10 +227,12 @@ export function _mapper(
       })),
     },
     embedded: Object.keys(
-      embedded.map(f => f.relation.ref.entity).reduce((res, i) => {
-        res[i] = 1;
-        return res;
-      }, {}),
+      embedded
+        .map(f => f.relation.ref.entity)
+        .reduce((res, i) => {
+          res[i] = 1;
+          return res;
+        }, {}),
     ),
     relations: getFields(entity)
       .filter(persistentRelation)
