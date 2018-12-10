@@ -19,8 +19,8 @@ export function writeFile(fn, data, format: boolean = true) {
             parser: fType[0].match(/js?$/)
               ? 'babylon'
               : fType[0].match(/ts?$/)
-                ? 'typescript'
-                : 'graphql',
+              ? 'typescript'
+              : 'graphql',
           })
         : data;
 

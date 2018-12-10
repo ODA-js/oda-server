@@ -58,10 +58,12 @@ export function _mapper(
     plural: entity.plural,
     description: entity.description,
     embedded: Object.keys(
-      embedded.map(f => f.relation.ref.entity).reduce((res, i) => {
-        res[i] = 1;
-        return res;
-      }, {}),
+      embedded
+        .map(f => f.relation.ref.entity)
+        .reduce((res, i) => {
+          res[i] = 1;
+          return res;
+        }, {}),
     ),
     fields: [
       ...ids,

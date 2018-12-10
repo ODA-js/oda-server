@@ -5,7 +5,6 @@
   "files": [],
   "include": [],
   "references": [
-    { "path": "./packages/oda-isomorfic/src/__tests__" },
-    { "path": "./packages/oda-gen-common/src/__tests__" }
+    { "path": "./packages/oda-model/__tests__" }
   ]
 }

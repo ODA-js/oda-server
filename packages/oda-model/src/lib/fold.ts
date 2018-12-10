@@ -1,4 +1,4 @@
-import set from './set';
+import { set } from 'lodash';
 
 export type simpleTypes = number | string | object | null | undefined;
 export type possibleTypes = (objTree | simpleTypes) | (objTree | simpleTypes)[];

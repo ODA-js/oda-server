@@ -25,8 +25,8 @@ function extractTypeName(type) {
       ? undefined
       : type
     : typeof type.name === 'string'
-      ? type.name
-      : undefined;
+    ? type.name
+    : undefined;
 }
 
 function returnType(op) {
@@ -40,12 +40,15 @@ function OperationField(attr) {
   return {
     ...Field(attr),
     type: returnType(attr),
-    args: attr.parameters.filter(p => p.direction === 'in').map(p => ({
-      name: p.name,
-      type: extractTypeName(p.type),
-      required: (p.stereotype && p.stereotype.name == 'required') || undefined,
-      defaultValue: p.defaultValue || undefined,
-    })),
+    args: attr.parameters
+      .filter(p => p.direction === 'in')
+      .map(p => ({
+        name: p.name,
+        type: extractTypeName(p.type),
+        required:
+          (p.stereotype && p.stereotype.name == 'required') || undefined,
+        defaultValue: p.defaultValue || undefined,
+      })),
   };
 }
 
@@ -66,11 +69,14 @@ function ActionField(attr) {
     ...Field(attr),
     type: returnType(attr),
     actionType: attr.stereotype.name,
-    args: attr.parameters.filter(p => p.direction === 'in').map(p => ({
-      name: p.name,
-      required: (p.stereotype && p.stereotype.name == 'required') || undefined,
-      defaultValue: p.defaultValue || undefined,
-    })),
+    args: attr.parameters
+      .filter(p => p.direction === 'in')
+      .map(p => ({
+        name: p.name,
+        required:
+          (p.stereotype && p.stereotype.name == 'required') || undefined,
+        defaultValue: p.defaultValue || undefined,
+      })),
   };
 }
 
@@ -465,12 +471,14 @@ var entities = Repository.findAll(
 
 // Discover embedded
 
-entities.filter(f => f.fields).forEach(e => {
-  e.fieldsHash = e.fields.reduce((res, f) => {
-    res[f.name] = f;
-    return res;
-  }, {});
-});
+entities
+  .filter(f => f.fields)
+  .forEach(e => {
+    e.fieldsHash = e.fields.reduce((res, f) => {
+      res[f.name] = f;
+      return res;
+    }, {});
+  });
 
 const allEntitiesHash = entities.reduce((res, cur) => {
   res[cur.name] = cur;
@@ -586,12 +594,14 @@ entities
 // чистим связи
 // удаляем все не нужные поля
 entities.forEach(e => {
-  e.fields.filter(f => f.relation).forEach(f => {
-    delete f.relation.entity;
-    f.relation.opposite = f.relation.field;
-    delete f.relation.field;
-    delete f.relation.navigable;
-  });
+  e.fields
+    .filter(f => f.relation)
+    .forEach(f => {
+      delete f.relation.entity;
+      f.relation.opposite = f.relation.field;
+      delete f.relation.field;
+      delete f.relation.navigable;
+    });
 });
 // заменяем список полей на хэш
 entities.forEach(e => {

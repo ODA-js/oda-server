@@ -62,10 +62,12 @@ export function _mapper(
     name: entity.name,
     ownerFieldName: decapitalize(entity.name),
     embedded: Object.keys(
-      embedded.map(f => f.relation.ref.entity).reduce((res, i) => {
-        res[i] = 1;
-        return res;
-      }, {}),
+      embedded
+        .map(f => f.relation.ref.entity)
+        .reduce((res, i) => {
+          res[i] = 1;
+          return res;
+        }, {}),
     ),
     connections: getFieldsForAcl(role, pack)(aclAllow, entity)
       .filter(persistentRelations(pack))

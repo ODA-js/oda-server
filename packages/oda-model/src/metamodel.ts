@@ -21,7 +21,7 @@ import {
   MapToHash,
 } from './types';
 import { ModelBaseOutput } from './modelbase';
-import fold from './lib/json/fold';
+import fold from './lib/fold';
 import { merge } from 'lodash';
 import { SimpleFieldInput } from './simplefield';
 import {
