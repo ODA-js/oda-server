@@ -1,9 +1,20 @@
-import { SimpleField, SimpleFieldInput, ISimpleField } from './simplefield';
-import { EntityField, EntityFieldInput, IEntityField } from './entityfield';
+import {
+  SimpleField,
+  SimpleFieldInput,
+  ISimpleField,
+  SimpleFieldOutput,
+} from './simplefield';
+import {
+  EntityField,
+  EntityFieldInput,
+  IEntityField,
+  EntityFieldOutput,
+} from './entityfield';
 import {
   RelationField,
   RelationFieldInput,
   IRelationField,
+  RelationFieldOutput,
 } from './relationfield';
 
 export type Field = SimpleField | EntityField | RelationField;
@@ -11,6 +22,11 @@ export type FieldInput =
   | SimpleFieldInput
   | EntityFieldInput
   | RelationFieldInput;
+
+export type FieldOutput =
+  | SimpleFieldOutput
+  | EntityFieldOutput
+  | RelationFieldOutput;
 
 export type IField = ISimpleField | IEntityField | IRelationField;
 

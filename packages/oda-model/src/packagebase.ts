@@ -18,7 +18,7 @@ import { MetaModelType, Nullable } from './types';
 import { IRelationField } from './relationfield';
 import { IModel } from './metamodel';
 import { merge } from 'lodash';
-import { MapToArray, assignValue, createFromMap } from './types';
+import { MapToArray, assignValue, createOrMergeFromMap } from './types';
 import { IField } from './field';
 
 export interface IPackageBase<
@@ -143,7 +143,11 @@ export class ModelPackageBase<
       field: 'entities',
       effect: (src, value) => {
         if (value.length > 0) {
-          const createIt = createFromMap(this, Entity, 'entities');
+          const createIt = createOrMergeFromMap(
+            this.metaModel.metaModel,
+            Entity,
+            'entities',
+          );
           src.entities = new Map(value.map(i => createIt(i)).filter(f => f) as [
             string,
             IEntity
@@ -159,7 +163,7 @@ export class ModelPackageBase<
       field: 'enums',
       effect: (src, value) => {
         if (value.length > 0) {
-          const createIt = createFromMap(this, Enum, 'enums');
+          const createIt = createOrMergeFromMap(this.metaModel, Enum, 'enums');
           src.enums = new Map(value.map(i => createIt(i)).filter(f => f) as [
             string,
             IEnum
@@ -175,7 +179,11 @@ export class ModelPackageBase<
       field: 'scalars',
       effect: (src, value) => {
         if (value.length > 0) {
-          const createIt = createFromMap(this, Scalar, 'enums');
+          const createIt = createOrMergeFromMap(
+            this.metaModel,
+            Scalar,
+            'enums',
+          );
           src.scalars = new Map(value.map(i => createIt(i)).filter(f => f) as [
             string,
             IScalar
@@ -191,7 +199,11 @@ export class ModelPackageBase<
       field: 'enums',
       effect: (src, value) => {
         if (value.length > 0) {
-          const createIt = createFromMap(this, Directive, 'directives');
+          const createIt = createOrMergeFromMap(
+            this.metaModel,
+            Directive,
+            'directives',
+          );
           src.directives = new Map(value
             .map(i => createIt(i))
             .filter(f => f) as [string, IDirective][]);
@@ -206,7 +218,11 @@ export class ModelPackageBase<
       field: 'mixins',
       effect: (src, value) => {
         if (value.length > 0) {
-          const createIt = createFromMap(this, Mixin, 'mixins');
+          const createIt = createOrMergeFromMap(
+            this.metaModel,
+            Mixin,
+            'mixins',
+          );
           src.mixins = new Map(value.map(i => createIt(i)).filter(f => f) as [
             string,
             IMixin
@@ -222,7 +238,11 @@ export class ModelPackageBase<
       field: 'unions',
       effect: (src, value) => {
         if (value.length > 0) {
-          const createIt = createFromMap(this, Union, 'unions');
+          const createIt = createOrMergeFromMap(
+            this.metaModel,
+            Union,
+            'unions',
+          );
           src.unions = new Map(value.map(i => createIt(i)).filter(f => f) as [
             string,
             IUnion
@@ -238,7 +258,11 @@ export class ModelPackageBase<
       field: 'mutations',
       effect: (src, value) => {
         if (value.length > 0) {
-          const createIt = createFromMap(this, Mutation, 'mutations');
+          const createIt = createOrMergeFromMap(
+            this.metaModel,
+            Mutation,
+            'mutations',
+          );
           src.mutations = new Map(value
             .map(i => createIt(i))
             .filter(f => f) as [string, IMutation][]);
@@ -253,7 +277,11 @@ export class ModelPackageBase<
       field: 'queries',
       effect: (src, value) => {
         if (value.length > 0) {
-          const createIt = createFromMap(this, Query, 'queries');
+          const createIt = createOrMergeFromMap(
+            this.metaModel,
+            Query,
+            'queries',
+          );
           src.queries = new Map(value.map(i => createIt(i)).filter(f => f) as [
             string,
             IQuery
@@ -287,73 +315,73 @@ export class ModelPackageBase<
     this.$obj.metaModel = metaModel;
   }
 
-  /** add entity to Package */
-  public addEntity(entity?: Entity) {
-    if (entity instanceof Entity) {
-      this.entities.set(entity.name, entity);
-      this.ensureIds(entity);
-    }
-    this.ensureEntity(entity);
-    return entity;
-  }
+  // /** add entity to Package */
+  // public addEntity(entity: IEntity) {
+  //   if (entity instanceof Entity) {
+  //     this.entities.set(entity.name, entity);
+  //     this.ensureIds(entity);
+  //   }
+  //   this.ensureEntity(entity);
+  //   return entity;
+  // }
 
-  public addMutation(mutation?: Mutation) {
-    if (mutation instanceof Mutation) {
-      this.mutations.set(mutation.name, mutation);
-    }
-    this.ensureMutation(mutation);
-    return mutation;
-  }
+  // public addMutation(mutation: Mutation) {
+  //   if (mutation instanceof Mutation) {
+  //     this.mutations.set(mutation.name, mutation);
+  //   }
+  //   this.ensureMutation(mutation);
+  //   return mutation;
+  // }
 
-  public addQuery(query?: Query) {
-    if (query instanceof Query) {
-      this.queries.set(query.name, query);
-    }
-    this.ensureQuery(query);
-    return query;
-  }
+  // public addQuery(query: IQuery) {
+  //   if (query instanceof Query) {
+  //     this.queries.set(query.name, query);
+  //   }
+  //   this.ensureQuery(query);
+  //   return query;
+  // }
 
-  public addUnion(uni?: Union) {
-    if (uni instanceof Union) {
-      this.unions.set(uni.name, uni);
-    }
-    this.ensureUnion(uni);
-    return uni;
-  }
+  // public addUnion(uni: IUnion) {
+  //   if (uni instanceof Union) {
+  //     this.unions.set(uni.name, uni);
+  //   }
+  //   this.ensureUnion(uni);
+  //   return uni;
+  // }
 
-  public addEnum(enu?: Enum) {
-    if (enu instanceof Enum) {
-      this.enums.set(enu.name, enu);
-    }
-    this.ensureEnum(enu);
-    return enu;
-  }
+  // public addEnum(enu: IEnum) {
+  //   if (enu instanceof Enum) {
+  //     this.enums.set(enu.name, enu);
+  //   }
+  //   this.ensureEnum(enu);
+  //   return enu;
+  // }
 
-  public addMixin(mix?: Mixin) {
-    if (mix instanceof Mixin) {
-      this.mixins.set(mix.name, mix);
-      // no need to do this
-      // intrf.ensureIds(this);
-    }
-    this.ensureMixin(mix);
-    return mix;
-  }
+  // public addMixin(mix: IMixin) {
+  //   if (mix instanceof Mixin) {
+  //     this.mixins.set(mix.name, mix);
+  //     // no need to do this
+  //     // intrf.ensureIds(this);
+  //   }
+  //   this.ensureMixin(mix);
+  //   return mix;
+  // }
 
-  public addScalar(scalar?: Scalar) {
-    if (scalar instanceof Scalar) {
-      this.scalars.set(scalar.name, scalar);
-    }
-    this.ensureScalar(scalar);
-    return scalar;
-  }
+  // public addScalar(scalar: IScalar) {
+  //   if (scalar instanceof Scalar) {
+  //     this.scalars.set(scalar.name, scalar);
+  //   }
+  //   this.ensureScalar(scalar);
+  //   return scalar;
+  // }
 
-  public addDirective(directive?: Directive) {
-    if (directive instanceof Directive) {
-      this.directives.set(directive.name, directive);
-    }
-    this.ensureDirective(directive);
-    return directive;
-  }
+  // public addDirective(directive: IDirective) {
+  //   if (directive instanceof Directive) {
+  //     this.directives.set(directive.name, directive);
+  //   }
+  //   this.ensureDirective(directive);
+  //   return directive;
+  // }
 
   /** ensure all foreign keys */
   public ensureAll() {
@@ -415,51 +443,51 @@ export class ModelPackageBase<
     });
   }
 
-  private ensureEntity(entity?: Entity) {
-    if (entity && !this.metaModel.entities.has(entity.name)) {
-      this.metaModel.entities.set(entity.name, entity);
-    }
-  }
+  // private ensureEntity(entity: IEntity) {
+  //   if (entity && !this.metaModel.entities.has(entity.name)) {
+  //     this.metaModel.entities.set(entity.name, entity);
+  //   }
+  // }
 
-  private ensureMutation(mutation?: Mutation) {
-    if (mutation && !this.metaModel.mutations.has(mutation.name)) {
-      this.metaModel.mutations.set(mutation.name, mutation);
-    }
-  }
+  // private ensureMutation(mutation: IMutation) {
+  //   if (mutation && !this.metaModel.mutations.has(mutation.name)) {
+  //     this.metaModel.mutations.set(mutation.name, mutation);
+  //   }
+  // }
 
-  private ensureQuery(query?: Query) {
-    if (query && !this.metaModel.queries.has(query.name)) {
-      this.metaModel.queries.set(query.name, query);
-    }
-  }
+  // private ensureQuery(query: IQuery) {
+  //   if (query && !this.metaModel.queries.has(query.name)) {
+  //     this.metaModel.queries.set(query.name, query);
+  //   }
+  // }
 
-  private ensureMixin(mixin?: Mixin) {
-    if (mixin && !this.metaModel.mixins.has(mixin.name)) {
-      this.metaModel.mixins.set(mixin.name, mixin);
-    }
-  }
+  // private ensureMixin(mixin: IMixin) {
+  //   if (mixin && !this.metaModel.mixins.has(mixin.name)) {
+  //     this.metaModel.mixins.set(mixin.name, mixin);
+  //   }
+  // }
 
-  private ensureScalar(scalar?: Scalar) {
-    if (scalar && !this.metaModel.scalars.has(scalar.name)) {
-      this.metaModel.scalars.set(scalar.name, scalar);
-    }
-  }
+  // private ensureScalar(scalar: IScalar) {
+  //   if (scalar && !this.metaModel.scalars.has(scalar.name)) {
+  //     this.metaModel.scalars.set(scalar.name, scalar);
+  //   }
+  // }
 
-  private ensureDirective(directive?: Directive) {
-    if (directive && !this.metaModel.directives.has(directive.name)) {
-      this.metaModel.directives.set(directive.name, directive);
-    }
-  }
+  // private ensureDirective(directive: IDirective) {
+  //   if (directive && !this.metaModel.directives.has(directive.name)) {
+  //     this.metaModel.directives.set(directive.name, directive);
+  //   }
+  // }
 
-  private ensureUnion(uni?: Union) {
-    if (uni && !this.metaModel.unions.has(uni.name)) {
-      this.metaModel.unions.set(uni.name, uni);
-    }
-  }
+  // private ensureUnion(uni: IUnion) {
+  //   if (uni && !this.metaModel.unions.has(uni.name)) {
+  //     this.metaModel.unions.set(uni.name, uni);
+  //   }
+  // }
 
-  private ensureEnum(enu?: Enum) {
-    if (enu && !this.metaModel.enums.has(enu.name)) {
-      this.metaModel.enums.set(enu.name, enu);
-    }
-  }
+  // private ensureEnum(enu: IEnum) {
+  //   if (enu && !this.metaModel.enums.has(enu.name)) {
+  //     this.metaModel.enums.set(enu.name, enu);
+  //   }
+  // }
 }

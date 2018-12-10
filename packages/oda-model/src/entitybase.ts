@@ -63,6 +63,16 @@ export interface EntityBasePersistence {
   };
 }
 
+export interface UIView {
+  listName: string[];
+  quickSearch: string[];
+  hidden?: string[];
+  edit?: string[];
+  show?: string[];
+  list?: string[];
+  embedded?: string[];
+}
+
 export interface EntityBaseMetaInfo<P extends EntityBasePersistence>
   extends ElementMetaInfo {
   titlePlural: string;
@@ -71,6 +81,7 @@ export interface EntityBaseMetaInfo<P extends EntityBasePersistence>
     singular: string;
   };
   persistence: P;
+  UI: UIView;
 }
 
 export interface EntityBaseInternal<
@@ -92,7 +103,7 @@ export interface EntityBaseInput<
   plural?: string;
   titlePlural?: string;
   operations?: AsHash<OperationInput> | NamedArray<OperationInput>;
-  fields: AsHash<FieldInput> | NamedArray<FieldInput>;
+  fields?: AsHash<FieldInput> | NamedArray<FieldInput>;
 }
 
 export interface EntityBaseOutput<
@@ -105,7 +116,19 @@ export interface EntityBaseOutput<
   fields: NamedArray<FieldInput>;
 }
 
-const defaultMetaInfo = { name: {}, persistence: {} };
+const defaultMetaInfo = {
+  name: {},
+  persistence: {},
+  UI: {
+    listName: [],
+    quickSearch: [],
+    hidden: [],
+    edit: [],
+    show: [],
+    list: [],
+    embedded: [],
+  },
+};
 const defaultInternal = {};
 const defaultInput = {};
 

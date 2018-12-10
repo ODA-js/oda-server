@@ -5,33 +5,23 @@ import { Entity, EntityInput, IEntity } from './entity';
 import {
   ModelPackage,
   IPackage,
-  PackageMetaInfo,
-  ModelPackageInternal,
   ModelPackageInput,
   ModelPackageOutput,
 } from './modelpackage';
-import { Mutation, MutationInput, IMutation } from './mutation';
-import { Query, QueryInput, IQuery } from './query';
-import { Mixin, MixinInput, IMixin } from './mixin';
-import { Union, UnionInput, IUnion } from './union';
-import { Enum, EnumInput, IEnum } from './enum';
-import { Scalar, ScalarInput, IScalar } from './scalar';
-import { Directive, DirectiveInput, IDirective } from './directive';
+import { MutationInput } from './mutation';
+import { QueryInput } from './query';
 import {
   MetaModelType,
   AsHash,
   MapToArray,
   assignValue,
   Nullable,
+  createOrMergeFromMap,
+  ArrayToHash,
+  MapToHash,
 } from './types';
-import {
-  IModelBase,
-  ModelBaseInput,
-  ModelBaseOutput,
-  ModelBase,
-} from './modelbase';
+import { ModelBaseOutput } from './modelbase';
 import fold from './lib/json/fold';
-import { IField } from './field';
 import { merge } from 'lodash';
 import { SimpleFieldInput } from './simplefield';
 import {
@@ -41,53 +31,12 @@ import {
   ModelPackageBaseInternal,
   ModelPackageBase,
 } from './packagebase';
+import { getFilter } from './getFilter';
+import { FieldInput, IField } from './field';
 
-type FieldMap = {
+export type FieldMap = {
   [name: string]: boolean;
 };
-
-function getFilter(
-  inp: string,
-): { filter: (f: IField) => boolean; fields: string[] } {
-  let result = {
-    filter: (f: IField) => f.name === inp,
-    fields: [inp],
-  };
-  if (inp === '*') {
-    result.filter = () => true;
-  }
-  if (inp.startsWith('^[')) {
-    let notFields = inp
-      .slice(2, inp.length - 1)
-      .split(',')
-      .map(f => f.trim())
-      .reduce(
-        (res, cur) => {
-          res[cur] = true;
-          return res;
-        },
-        {} as FieldMap,
-      );
-    result.filter = (f: IField) => !notFields[f.name];
-    result.fields = [];
-  }
-  if (inp.startsWith('[')) {
-    let onlyFields = inp
-      .slice(1, inp.length - 1)
-      .split(',')
-      .map(f => f.trim())
-      .reduce(
-        (res, cur) => {
-          res[cur] = true;
-          return res;
-        },
-        {} as FieldMap,
-      );
-    result.filter = (f: IField) => !!onlyFields[f.name];
-    result.fields = Object.keys(onlyFields);
-  }
-  return result;
-}
 
 export interface IModelHook {
   name: string;
@@ -188,6 +137,7 @@ export class MetaModel
       setDefault: src => (src.store = 'model.json'),
       required: true,
     });
+
     assignValue<
       MetaModelInternal,
       MetaModelInput,
@@ -196,9 +146,22 @@ export class MetaModel
       src: this.$obj,
       input,
       field: 'packages',
-      effect: (src, value) => (src.packages = value),
+      effect: (src, value) => {
+        if (value.length > 0) {
+          const createIt = createOrMergeFromMap(
+            this.metaModel,
+            ModelPackage,
+            'unions',
+          );
+          src.packages = new Map(value
+            .map(i => {
+              const pkg = createIt(i);
+              return pkg;
+            })
+            .filter(f => f) as [string, IPackage][]);
+        }
+      },
       setDefault: src => (src.packages = new Map<string, IPackage>()),
-      required: true,
     });
   }
 
@@ -216,7 +179,7 @@ export class MetaModel
         if (!res.hasOwnProperty(curr.name)) {
           res[curr.name] = curr;
         } else {
-          res[curr.name] = deepMerge(res[curr.name], curr);
+          res[curr.name] = merge(res[curr.name], curr);
         }
         return res;
       },
@@ -224,102 +187,37 @@ export class MetaModel
     );
   }
 
-  protected applyEntityHook(entity: Entity, hook: EntityInput): Entity {
-    let result = entity.toJSON();
-    let metadata;
-    if (hook.metadata) {
-      metadata = deepMerge(result.metadata || {}, hook.metadata);
+  protected applyEntityHook(entity: IEntity, hook: EntityInput): IEntity {
+    let result = entity.toObject();
+    if (hook.fields && Array.isArray(hook.fields)) {
+      hook.fields = ArrayToHash(hook.fields);
     }
-    let fields: {
-      [fName: string]: SimpleFieldInput;
-    };
-
-    if (Array.isArray(hook.fields)) {
-      fields = this.dedupeFields([
-        ...(result.fields as SimpleFieldInput[]),
-        ...(hook.fields as SimpleFieldInput[]),
-      ]);
-    } else {
-      fields = this.dedupeFields(result.fields || []);
-      let fNames = Object.keys(hook.fields || {});
-      for (let i = 0, len = fNames.length; i < len; i++) {
-        let fName = fNames[i];
+    const fields = MapToHash<IField, FieldInput>(entity.fields, v =>
+      v.toObject(),
+    );
+    if (hook.fields) {
+      for (let fName in hook.fields) {
         let prepare = getFilter(fName);
         let list = (result.fields || []).filter(prepare.filter);
-        if (list.length > 0 && hook.fields !== undefined) {
+        if (list.length > 0) {
           list.forEach(f => {
-            if (hook.fields) {
-              fields[f.name] = deepMerge(f, hook.fields[fName] as any);
-            }
+            fields[f.name] = merge(f, (hook.fields as AsHash<FieldInput>)[
+              fName
+            ] as any);
           });
         } else {
           // create specific items
           prepare.fields.forEach(f => {
-            fields[f] = hook.fields[fName];
+            fields[f] = (hook.fields as AsHash<FieldInput>)[fName];
           });
         }
       }
     }
+
     return new Entity({
       ...result,
-      fields: fields !== undefined ? fields : undefined,
-      metadata,
+      fields,
     });
-  }
-
-  protected applyMutationHook(
-    mutation: Mutation,
-    hook: MutationInput,
-  ): Mutation {
-    let result = mutation.toObject();
-    let metadata;
-    if (hook.metadata) {
-      metadata = deepMerge(result.metadata || {}, hook.metadata);
-    }
-
-    let args = result.args,
-      payload = result.payload;
-    if (hook.args) {
-      args = [...args, ...hook.args];
-    }
-
-    if (hook.payload) {
-      payload = [...payload, ...hook.payload];
-    }
-
-    result = {
-      ...result,
-      args,
-      payload,
-      metadata,
-    };
-    return new Mutation(result);
-  }
-
-  protected applyQueryHook(mutation: Query, hook: QueryInput): Query {
-    let result = mutation.toJSON() as MutationInput;
-    let metadata;
-    if (hook.metadata) {
-      metadata = deepMerge(result.metadata || {}, hook.metadata);
-    }
-
-    let args = result.args,
-      payload = result.payload;
-    if (hook.args) {
-      args = [...args, ...hook.args];
-    }
-
-    if (hook.payload) {
-      payload = [...payload, ...hook.payload];
-    }
-
-    result = {
-      ...result,
-      args,
-      payload,
-      metadata,
-    };
-    return new Query(result);
   }
 
   public applyHooks(hooks?: IModelHook[]) {
@@ -334,8 +232,6 @@ export class MetaModel
           for (let i = 0, len = keys.length; i < len; i++) {
             let key = keys[i];
             let current = hook.entities[key];
-            current.fields = current.fields ? current.fields : [];
-            current.metadata = current.metadata ? current.metadata : {};
             let prepare = getFilter(key);
             let list = Array.from(this.entities.values()).filter(
               prepare.filter,
@@ -359,18 +255,14 @@ export class MetaModel
           for (let i = 0, len = keys.length; i < len; i++) {
             let key = keys[i];
             let current = hook.mutations[key];
-            current.args = current.args ? current.args : [];
-            current.payload = current.payload ? current.payload : [];
-            current.metadata = current.metadata ? current.metadata : {};
-
             let prepare = getFilter(key);
             let list = Array.from(this.mutations.values()).filter(
               prepare.filter,
             );
             if (list.length > 0) {
               list.forEach(e => {
-                let result = this.applyMutationHook(e, current);
-                this.mutations.set(result.name, result);
+                e.updateWith(merge({}, e.toObject(), current));
+                this.mutations.set(e.name, e);
               });
             } else if (prepare.fields.length > 0) {
               throw new Error(
@@ -386,16 +278,12 @@ export class MetaModel
           for (let i = 0, len = keys.length; i < len; i++) {
             let key = keys[i];
             let current = hook.queries[key];
-            current.args = current.args ? current.args : [];
-            current.payload = current.payload ? current.payload : [];
-            current.metadata = current.metadata ? current.metadata : {};
-
             let prepare = getFilter(key);
             let list = Array.from(this.queries.values()).filter(prepare.filter);
             if (list.length > 0) {
               list.forEach(e => {
-                let result = this.applyQueryHook(e, current);
-                this.queries.set(result.name, result);
+                e.updateWith(merge({}, e.toObject(), current));
+                this.queries.set(e.name, e);
               });
             } else if (prepare.fields.length > 0) {
               throw new Error(
@@ -410,79 +298,17 @@ export class MetaModel
     }
   }
 
-  public addPackage(pckg: ModelPackageInput) {
+  public addPackage(pkg: ModelPackageInput) {
     let pack: ModelPackage;
-    if (pckg.name && this.packages.has(pckg.name)) {
-      pack = this.packages.get(pckg.name) as ModelPackage;
+    if (pkg.name && this.packages.has(pkg.name)) {
+      pack = this.packages.get(pkg.name) as ModelPackage;
     } else {
-      pack = new ModelPackage(pckg);
+      pack = new ModelPackage(pkg);
       pack.connect(this);
-      this.packages.set(pckg.name, pack);
+      this.packages.set(pkg.name, pack);
     }
 
-    if (pack && pckg.mixins) {
-      pckg.mixins.forEach(e => {
-        if (this.mixins.has(e) && !pack.mixins.has(e)) {
-          pack.addMixin(this.mixins.get(e));
-        }
-      });
-    }
-
-    if (pckg.entities) {
-      pckg.entities.forEach(e => {
-        if (this.entities.has(e) && !pack.entities.has(e)) {
-          pack.addEntity(this.entities.get(e));
-        }
-      });
-    }
-
-    if (pckg.mutations) {
-      pckg.mutations.forEach(m => {
-        if (this.mutations.has(m) && !pack.mutations.has(m)) {
-          pack.addMutation(this.mutations.get(m));
-        }
-      });
-    }
-
-    if (pckg.queries) {
-      pckg.queries.forEach(e => {
-        if (this.queries.has(e) && !pack.queries.has(e)) {
-          pack.addQuery(this.queries.get(e));
-        }
-      });
-    }
-
-    if (pckg.enums) {
-      pckg.enums.forEach(e => {
-        if (this.enums.has(e) && !pack.enums.has(e)) {
-          pack.addEnum(this.enums.get(e));
-        }
-      });
-    }
-
-    if (pckg.scalars) {
-      pckg.scalars.forEach(e => {
-        if (this.scalars.has(e) && !pack.scalars.has(e)) {
-          pack.addScalar(this.scalars.get(e));
-        }
-      });
-    }
-
-    if (pckg.directives) {
-      pckg.directives.forEach(e => {
-        if (this.directives.has(e) && !pack.directives.has(e)) {
-          pack.addDirective(this.directives.get(e));
-        }
-      });
-    }
-
-    if (pckg.unions) {
-      pckg.unions.forEach(e => {
-        if (this.unions.has(e) && !pack.unions.has(e)) {
-          pack.addUnion(this.unions.get(e));
-        }
-      });
-    }
+    pack.updateWith(merge({}, pack.toObject(), pkg));
 
     pack.ensureAll();
   }
@@ -492,8 +318,9 @@ export class MetaModel
     this.updateWith(store);
 
     this.ensureDefaultPackage();
-
-    this.applyHooks(fold(hooks) as IModelHook[]);
+    if (hooks) {
+      this.applyHooks(fold(hooks) as IModelHook[]);
+    }
   }
 
   public reset() {

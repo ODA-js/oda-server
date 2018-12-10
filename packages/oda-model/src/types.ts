@@ -1,4 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs';
+import { IUpdatableBase } from './element';
+import { merge } from 'lodash';
 
 export type Nullable<T> = { [P in keyof T]: T[P] | undefined | null };
 
@@ -211,7 +213,9 @@ export function HashToMap<T extends INamed>(input: AsHash<T>): Map<string, T> {
 }
 
 export function HashToArray<T extends INamed>(input: AsHash<T>): T[] {
-  return Object.values(input);
+  return Object.keys(input).map(key => {
+    return { ...input[key], name: key };
+  });
 }
 
 export function ArrayToHash<T extends INamed>(input: Array<T>): AsHash<T> {
@@ -224,13 +228,16 @@ export function ArrayToHash<T extends INamed>(input: Array<T>): AsHash<T> {
   );
 }
 
-export function MapToHash<T extends INamed>(input: Map<string, T>): AsHash<T> {
+export function MapToHash<T extends INamed, O extends INamed = T>(
+  input: Map<string, T>,
+  process?: (v: T) => O,
+): AsHash<O> {
   return [...input.entries()].reduce(
     (hash, [name, value]) => {
-      hash[name] = value;
+      hash[name] = process ? (process(value) as O) : ((value as unknown) as O);
       return hash;
     },
-    {} as AsHash<T>,
+    {} as AsHash<O>,
   );
 }
 
@@ -239,17 +246,32 @@ export function MapToArray<T extends INamed>(
 ): NamedArray<T> {
   return [...input.values()];
 }
-
-export function createFromMap<T, N extends INamed, I, V extends string | I>(
-  src: T,
-  create: new (input: I) => N,
-  prop: keyof T,
-) {
+/**
+ * create items with lookup from source
+ * @param src source for lookup data
+ * @param create constructor to create items
+ * @param prop source prop name where lookup is located
+ */
+export function createOrMergeFromMap<
+  T,
+  N extends INamed & IUpdatableBase,
+  I extends INamed,
+  V extends string | I
+>(src: T, create: new (input: I) => N, prop: keyof T) {
   return (value: V) => {
     let result: N | undefined;
+    const srcMap = (src[prop] as unknown) as Map<string, N>;
     if (typeof value === 'string') {
-      result = ((src[prop] as unknown) as Map<string, N>).get(value);
+      result = srcMap.get(value as string);
     } else {
+      const name = (value as I).name;
+      const original = srcMap.get(name);
+      if (original) {
+        const update = merge({}, original.toObject(), value);
+        original.updateWith(update);
+      } else {
+        srcMap.set(name, new create(value as I));
+      }
       result = new create(value as I);
     }
     return result ? ([result.name, result] as [string, N]) : undefined;

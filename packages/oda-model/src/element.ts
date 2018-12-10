@@ -16,6 +16,18 @@ export interface ElementOutput<T extends ElementMetaInfo> {
   metadata: T;
 }
 
+export interface IUpdatableBase {
+  /**
+   * update item with data
+   * @param payload the update payload
+   */
+  updateWith(payload: any): void;
+  /**
+   * return copy of object item that is suitable for creating new one
+   */
+  toObject(): any;
+}
+
 /**
  * updatable items
  */
@@ -23,7 +35,7 @@ export interface IUpdatable<
   T extends ElementMetaInfo,
   I extends ElementInput<T>,
   O extends ElementOutput<T>
-> {
+> extends IUpdatableBase {
   /**
    * update item with data
    * @param payload the update payload
