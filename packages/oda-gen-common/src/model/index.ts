@@ -1,7 +1,7 @@
 import { IResolvers, IEnumResolver } from 'graphql-tools';
 import { merge } from 'lodash';
 import mergeTypes from './graphql-merge-schema';
-import * as jsonUtils from '../lib';
+import { get, set } from 'lodash';
 
 import {
   parse,
@@ -23,7 +23,7 @@ export type ResolverFunction = (
 ) => Promise<any> | any;
 
 export type ResolverHookFunction = (
-  target: ResolverFunction,
+  target: ResolverFunction | IResolvers,
 ) => ResolverFunction;
 
 export type ResolverHook = { [key: string]: ResolverHookFunction };
@@ -794,11 +794,8 @@ export class Schema extends GQLType<IResolvers> implements IGQLTypeDef {
       let hookList = Object.keys(modelHooks[i]);
       for (let j = 0, jLen = hookList.length; j < jLen; j++) {
         let key = hookList[j];
-        jsonUtils.set(
-          this.resolvers,
-          key,
-          modelHooks[i][key](jsonUtils.get(this.resolvers, key)),
-        );
+        const resoler = get(this.resolvers, key);
+        set(this.resolvers, key, modelHooks[i][key](resoler as any));
       }
     }
   }

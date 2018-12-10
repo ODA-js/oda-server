@@ -610,10 +610,10 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.118.tgz#247bab39bfcc6d910d4927c6e06cbc70ec376f27"
   integrity sha512-iiJbKLZbhSa6FYRip/9ZDX6HXhayXLDGY2Fqws9cOkEQ6XeKfaxB0sC541mowZJueYyMnVUmmG+al5/4fCDrgw==
 
-"@types/node@^10.12.10":
-  version "10.12.10"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.10.tgz#4fa76e6598b7de3f0cb6ec3abacc4f59e5b3a2ce"
-  integrity sha512-8xZEYckCbUVgK8Eg7lf5Iy4COKJ5uXlnIOnePN0WUwSQggy9tolM+tDJf7wMOnT/JT/W9xDYIaYggt3mRV2O5w==
+"@types/node@^10.12.12":
+  version "10.12.12"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.12.tgz#e15a9d034d9210f00320ef718a50c4a799417c47"
+  integrity sha512-Pr+6JRiKkfsFvmU/LK68oBRCQeEg36TyAbPhc2xpez24OOZZCuoIhWGTd39VZy6nGafSbxzGouFPTFD/rR1A0A==
 
 "@types/warning@^3.0.0":
   version "3.0.0"
@@ -4650,11 +4650,31 @@ object.pick@^1.3.0:
   dependencies:
     isobject "^3.0.1"
 
+"oda-gen-common@file:packages/oda-gen-common":
+  version "1.0.0-28"
+  dependencies:
+    graphql-tag "^2.9.2"
+    graphql-tools "^3.0.4"
+    immutable "^4.0.0-rc.12"
+    invariant "^2.2.2"
+    lodash "^4.17.10"
+    oda-isomorfic "file:../../Library/Caches/Yarn/v3/npm-oda-gen-common-1.0.0-28-a7dde66a-5b37-40e2-8b52-3b7b779da065-1544440651407/node_modules/oda-isomorfic"
+    warning "^4.0.2"
+
 "oda-isomorfic@file:packages/oda-isomorfic":
   version "1.0.0-23"
   dependencies:
-    jest "^23.6.0"
     md5-hex "^2.0.0"
+
+"oda-model@file:packages/oda-model":
+  version "1.0.0-36"
+  dependencies:
+    camelcase "^5.0.0"
+    decamelize "^2.0.0"
+    global "^4.3.2"
+    inflected "^2.0.4"
+    lodash "^4.17.11"
+    oda-isomorfic "file:../../Library/Caches/Yarn/v3/npm-oda-model-1.0.0-36-85c7c706-0369-45f3-a5e8-596be8740acf-1544440651421/node_modules/oda-isomorfic"
 
 once@^1.3.0, once@^1.3.1, once@^1.4.0:
   version "1.4.0"

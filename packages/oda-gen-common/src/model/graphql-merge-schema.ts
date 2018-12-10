@@ -79,11 +79,11 @@ function nodeMerger(objValue, srcValue, key, object, source, stack) {
 
 const _makeMergedDefinitions = defs => {
   // TODO: This function can be cleaner!
-  const groupedMergableDefinitions = defs
+  const groupedMergeableDefinitions = defs
     .filter(def => isObjectTypeDefinition(def))
-    .reduce((mergableDefs, def) => {
+    .reduce((mergeableDefs, def) => {
       return _.mergeWith(
-        mergableDefs,
+        mergeableDefs,
         {
           [def.kind !== Kind.SCHEMA_DEFINITION
             ? def.name.value
@@ -93,7 +93,7 @@ const _makeMergedDefinitions = defs => {
       );
     }, {});
 
-  return Object.values(groupedMergableDefinitions).reduce(
+  return Object.values(groupedMergeableDefinitions).reduce(
     (array: {}[], def) => (def ? [...array, def] : array),
     [],
   );

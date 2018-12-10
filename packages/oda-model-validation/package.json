@@ -1,0 +1,20 @@
+{
+  "name": "oda-model-validation",
+  "version": "1.0.0-36",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Alex Vedmdedenko <vedmalex@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "camelcase": "^5.0.0",
+    "decamelize": "^2.0.0",
+    "global": "^4.3.2",
+    "inflected": "^2.0.4",
+    "lodash": "^4.17.11",
+    "oda-model": "file:../oda-model"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.118"
+  }
+}

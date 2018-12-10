@@ -1,0 +1,33 @@
+{
+  "name": "oda-gen-graphql",
+  "version": "1.0.0-56",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest",
+    "watch": "tsc -w -p .",
+    "prepare": "npm run clean && npm run compile",
+    "compile": "tsc -p ./",
+    "wipe": "./clean.sh",
+    "clean": "rm -rf dist",
+    "lint": "tslint -c \"../../config/tslint.json\" -p tsconfig.json src/*.ts"
+  },
+  "author": "Alex Vedmdedenko <vedmalex@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "fte.js": "^0.8.1",
+    "inflected": "^2.0.4",
+    "mem-fs": "^1.1.3",
+    "mem-fs-editor": "^5.1.0",
+    "oda-gen-common": "file:../oda-gen-common",
+    "oda-model": "file:../oda-model",
+    "prettier": "^1.15.2",
+    "string-humanize": "^1.0.0"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "peerDependencies": {
+    "graphql": "^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0",
+    "lodash": "^4.17.10"
+  }
+}

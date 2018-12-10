@@ -4,9 +4,11 @@
     "rootDir": "./src",
     "outDir": "./dist"
   },
-  "include": ["src/**/*"],
-  "exclude": ["**/__tests__", "**/__mocks__"],
-  "references": [
-    { "path": "../oda-isomorfic" }
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "**/__tests__",
+    "**/__mocks__"
   ]
 }

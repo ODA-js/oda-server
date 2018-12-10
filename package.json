@@ -31,8 +31,21 @@
   "engines": {
     "node": ">=8"
   },
+  "dependencies": {
+    "oda-gen-common": "file:packages/oda-gen-common",
+    "oda-isomorfic": "file:packages/oda-isomorfic",
+    "oda-model": "file:packages/oda-model"
+  },
   "devDependencies": {
-    "lerna": "^3.4.3"
+    "@types/node": "^10.12.12",
+    "lerna": "^3.4.3",
+    "@types/graphql": "^14.0.3",
+    "@types/invariant": "^2.2.29",
+    "@types/jest": "^23.3.9",
+    "@types/lodash": "^4.14.118",
+    "@types/warning": "^3.0.0",
+    "jest": "^23.6.0",
+    "typescript": "3.2.0-rc"
   },
   "workspaces": [
     "packages/*"

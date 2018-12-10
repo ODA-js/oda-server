@@ -6,14 +6,14 @@
   "editor.formatOnSave": true,
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
-  "files.exclude": {
-    "**/.git": true,
-    "**/.DS_Store": true,
-    "**/node_modules/": true,
-    "**/dist/": true,
-    "coverage": true,
-    "coverage.lcov": true
-  },
+  // "files.exclude": {
+  //   "**/.git": true,
+  //   "**/.DS_Store": true,
+  //   "**/node_modules/": true,
+  //   "**/dist/": true,
+  //   "coverage": true,
+  //   "coverage.lcov": true
+  // },
   "typescript.tsdk": "./node_modules/typescript/lib",
   "cSpell.words": [
     "FIELDNAME"
