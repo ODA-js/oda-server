@@ -1,5 +1,5 @@
 import { merge } from 'lodash';
-import { Nullable, assignValue } from './types';
+import { Nullable, assignValue, MetaModelType } from './types';
 import { RelationInput } from './relation';
 import { HasOne } from './hasone';
 import { HasMany } from './hasmany';
@@ -91,6 +91,9 @@ export class RelationField
     RelationFieldOutput
   >
   implements IRelationField {
+  public get modelType(): MetaModelType {
+    return 'relation-field';
+  }
   constructor(inp: RelationFieldInput) {
     super(merge({}, defaultInput, inp));
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);

@@ -75,6 +75,7 @@ export class HasMany extends RelationBase<
     super(merge({}, defaultInput, inp));
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
     this.$obj = merge({}, defaultInternal, this.$obj);
+    this.initNames();
   }
 
   public updateWith(input: Nullable<HasManyInput>) {

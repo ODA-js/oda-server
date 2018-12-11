@@ -84,7 +84,7 @@ export interface RelationBaseOutput<
   opposite?: string;
 }
 
-const defaultMetaInfo = { persistence: {} };
+const defaultMetaInfo = { persistence: {}, name: {} };
 const defaultInternal = {};
 const defaultInput = {};
 
@@ -105,7 +105,6 @@ export abstract class RelationBase<
     super(merge({}, defaultInput, inp));
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
     this.$obj = merge({}, defaultInternal, this.$obj);
-    this.initNames();
   }
 
   get name(): string {
@@ -166,19 +165,18 @@ export abstract class RelationBase<
         ? inflected.singularize(this.$obj.field)
         : inflected.pluralize(this.$obj.field);
 
-      this.metadata_.name.normal = `${this.$obj.entity}${
-        this.verb
-      }${inflected.camelize(ref1, true)}`;
+      this.metadata_.name.normal = `${this.$obj.entity}${inflected.camelize(
+        ref1,
+        true,
+      )}`;
 
       let ref2 = this.single
         ? inflected.singularize(this.$obj.field)
         : inflected.pluralize(this.$obj.field);
 
-      this.metadata_.name.normal = `${this.$obj.entity}${
-        this.verb
-      }${inflected.camelize(ref2, true)}`;
+      this.metadata_.name.short = `${inflected.camelize(ref2, true)}`;
     } else {
-      this.metadata_.name.normal = this.metadata_.name.normal = this.metadata_.name.short = this.name;
+      this.metadata_.name.full = this.metadata_.name.normal = this.metadata_.name.short = this.name;
     }
   }
 

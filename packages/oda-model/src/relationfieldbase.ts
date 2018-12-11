@@ -8,7 +8,7 @@ import {
   FieldBaseOutput,
 } from './fieldbase';
 import { merge } from 'lodash';
-import { Nullable } from './types';
+import { Nullable, MetaModelType } from './types';
 import { IRelation } from './relation';
 
 export interface RelationFieldBaseMetaInfo<
@@ -60,6 +60,9 @@ export abstract class RelationFieldBase<
   P extends RelationFieldBasePersistence,
   O extends FieldBaseOutput<T, P>
 > extends FieldBase<T, I, S, P, O> implements IRelationFieldBase<T, I, P, O> {
+  public get modelType(): MetaModelType {
+    return 'relation-base';
+  }
   constructor(inp: I) {
     super(merge({}, defaultInput, inp));
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);

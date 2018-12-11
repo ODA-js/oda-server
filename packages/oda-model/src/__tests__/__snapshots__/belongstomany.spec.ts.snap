@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`belongstomany  loads: raw 1`] = `
+BelongsToMany {
+  "$obj": Object {
+    "belongsToMany": EntityReference {
+      "$obj": Object {
+        "backField": "id",
+        "entity": "Name",
+        "field": "id",
+        "metadata": Object {},
+      },
+      "metadata_": Object {},
+    },
+    "entity": "user",
+    "field": "name",
+    "fields": Map {},
+    "metadata": Object {},
+    "using": EntityReference {
+      "$obj": Object {
+        "backField": "id",
+        "entity": "C",
+        "field": "id",
+        "metadata": Object {},
+      },
+      "metadata_": Object {},
+    },
+  },
+  "metadata_": Object {
+    "name": Object {
+      "full": "userBelongsToManyNames",
+      "normal": "userNames",
+      "short": "Names",
+    },
+    "persistence": Object {
+      "embedded": false,
+      "single": false,
+      "stored": false,
+    },
+    "verb": "BelongsToMany",
+  },
+}
+`;
+
+exports[`belongstomany  loads: toObject 1`] = `
+Object {
+  "belongsToMany": "id@Name#id",
+  "embedded": false,
+  "entity": "user",
+  "field": "name",
+  "fields": Array [],
+  "metadata": Object {
+    "name": Object {
+      "full": "userBelongsToManyNames",
+      "normal": "userNames",
+      "short": "Names",
+    },
+    "persistence": Object {
+      "embedded": false,
+      "single": false,
+      "stored": false,
+    },
+    "verb": "BelongsToMany",
+  },
+  "name": undefined,
+  "opposite": undefined,
+}
+`;

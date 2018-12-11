@@ -60,7 +60,9 @@ export class Entity
     EntityOutput
   >
   implements IEntity {
-  public modelType: MetaModelType = 'entity';
+  public get modelType(): MetaModelType {
+    return 'entity';
+  }
 
   constructor(inp: EntityInput) {
     super(merge({}, defaultInput, inp));

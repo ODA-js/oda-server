@@ -15,9 +15,9 @@ import {
 function StrToEntityRef(input: string): EntityRefInput {
   let res = input.match(REF_PATTERN);
   return {
-    backField: decapitalize(res ? res[1] : ''),
-    entity: inflected.classify(res ? res[2] : ''),
-    field: decapitalize(res ? res[3].trim() : DEFAULT_ID_FIELDNAME),
+    backField: decapitalize(res && res[1] ? res[1] : ''),
+    entity: inflected.classify(res && res[2] ? res[2] : ''),
+    field: decapitalize(res && res[3] ? res[3].trim() : DEFAULT_ID_FIELDNAME),
   };
 }
 
@@ -70,7 +70,9 @@ export class EntityReference
     EntityRefOutput
   >
   implements IEntityRef {
-  public modelType: MetaModelType = 'ref';
+  public get modelType(): MetaModelType {
+    return 'ref';
+  }
   /** the Entity that is referenced */
   public get entity(): string {
     return this.$obj.entity;
@@ -98,10 +100,15 @@ export class EntityReference
   }
 
   constructor(init: EntityRefInput | string) {
-    super(merge({}, defaultInput, typeof init === 'object' ? init : {}));
+    super(
+      merge(
+        {},
+        defaultInput,
+        typeof init === 'object' ? init : StrToEntityRef(init),
+      ),
+    );
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
     this.$obj = merge({}, defaultInternal, this.$obj);
-    this.updateWith(typeof init === 'object' ? init : StrToEntityRef(init));
   }
 
   public toString(): string {

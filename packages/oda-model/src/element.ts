@@ -77,7 +77,9 @@ export abstract class Element<
   S extends ElementInternal<M>,
   O extends ElementOutput<M>
 > implements IMeta<M, I, O> {
-  readonly modelType: MetaModelType = 'element';
+  public get modelType(): MetaModelType {
+    return 'element';
+  }
   protected $obj: S;
   protected metadata_: M;
   /**
@@ -92,8 +94,8 @@ export abstract class Element<
   }
 
   constructor(init: ElementInput<M>) {
-    this.metadata_ = defaultMetaInfo as M;
-    this.$obj = defaultInternal as S;
+    this.metadata_ = merge({}, defaultMetaInfo as M);
+    this.$obj = merge({}, defaultInternal as S);
     this.updateWith(merge({}, defaultInput, init));
   }
   /**

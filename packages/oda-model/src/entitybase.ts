@@ -153,7 +153,9 @@ export abstract class EntityBase<
   MP extends EntityBasePersistence,
   O extends EntityBaseOutput<M, MP>
 > extends ModelBase<M, I, P, O> implements IEntityBase<M, MP, I, O> {
-  public modelType: MetaModelType = 'entity-base';
+  public get modelType(): MetaModelType {
+    return 'entity-base';
+  }
 
   constructor(inp: I) {
     super(merge({}, defaultInput, inp));

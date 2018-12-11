@@ -11,6 +11,7 @@
     "lint": "prettier-check '**/*.{js,ts}'",
     "lint-fix": "prettier '**/*.{js,ts}' --write",
     "test": "jest --verbose",
+    "test:debug": "node --inspect-brk ./node_modules/.bin/jest --verbose --runInBand",
     "test:clean": "jest --clearCache",
     "test:watch": "jest --verbose --watchAll",
     "testonly": "npm test",

@@ -66,7 +66,9 @@ export abstract class ModelBase<
   S extends ModelBaseInternal<T>,
   O extends ModelBaseOutput<T>
 > extends Element<T, I, S, O> implements IModelBase<T, I, O> {
-  readonly modelType: MetaModelType = 'metadata';
+  public get modelType(): MetaModelType {
+    return 'metadata';
+  }
   constructor(inp: ModelBaseInput<T>) {
     super(merge({}, defaultInput, inp));
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);

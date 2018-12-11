@@ -63,7 +63,9 @@ const defaultInput = {};
 export class Query
   extends ModelBase<QueryMetaInfo, QueryInput, QueryInternal, QueryOutput>
   implements IQuery {
-  public modelType: MetaModelType = 'query';
+  public get modelType(): MetaModelType {
+    return 'query';
+  }
 
   constructor(inp: QueryInput) {
     super(merge({}, defaultInput, inp));

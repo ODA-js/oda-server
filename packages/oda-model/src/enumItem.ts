@@ -39,7 +39,9 @@ export class EnumItem
     EnumItemOutput
   >
   implements IEnumItem {
-  public modelType: MetaModelType = 'enum-item';
+  public get modelType(): MetaModelType {
+    return 'enum-item';
+  }
 
   constructor(inp: EnumItemInput) {
     super(merge({}, defaultInput, inp));

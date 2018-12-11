@@ -105,6 +105,7 @@ export class BelongsToMany
     super(merge({}, defaultInput, inp));
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
     this.$obj = merge({}, defaultInternal, this.$obj);
+    this.initNames();
   }
 
   public updateWith(input: Nullable<BelongsToManyInput>) {
@@ -130,6 +131,8 @@ export class BelongsToMany
               ] as [string, ISimpleField],
           ),
         )),
+      required: true,
+      setDefault: src => (src.fields = new Map()),
     });
 
     assignValue<BelongsToManyMetaInfo, BelongsToManyInput, boolean>({
@@ -171,7 +174,10 @@ export class BelongsToMany
   public toObject(): BelongsToManyOutput {
     return merge({}, super.toObject(), {
       belongsToMany: this.belongsToMany.toString(),
-      fields: MapToArray(this.$obj.fields).map(f => f.toObject()),
+      fields: MapToArray(this.$obj.fields, (name, value) => ({
+        ...value.toObject(),
+        name,
+      })),
     } as Partial<BelongsToManyOutput>);
   }
 }

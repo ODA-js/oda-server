@@ -8,7 +8,7 @@ import {
   RelationFieldBaseOutput,
 } from './relationfieldbase';
 import { merge } from 'lodash';
-import { EntityType, Nullable, assignValue } from './types';
+import { EntityType, Nullable, assignValue, MetaModelType } from './types';
 import { HasMany } from './hasmany';
 import { HasOne } from './hasone';
 
@@ -63,6 +63,9 @@ export class EntityField
     EntityFieldOutput
   >
   implements IEntityField {
+  public get modelType(): MetaModelType {
+    return 'entity-field';
+  }
   constructor(init: EntityFieldInput) {
     super(merge({}, defaultInput, init));
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);

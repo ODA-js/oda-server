@@ -62,7 +62,9 @@ export class Directive
     DirectiveOutput
   >
   implements IDirective {
-  public modelType: MetaModelType = 'field';
+  public get modelType(): MetaModelType {
+    return 'directive';
+  }
   protected $obj!: DirectiveInternal;
 
   get args(): Map<string, FieldArgs> {

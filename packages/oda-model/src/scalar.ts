@@ -29,7 +29,9 @@ const defaultInput = {};
 export class Scalar
   extends ModelBase<ScalarMetaInfo, ScalarInput, ScalarInternal, ScalarOutput>
   implements IScalar {
-  public modelType: MetaModelType = 'scalar';
+  public get modelType(): MetaModelType {
+    return 'scalar';
+  }
   constructor(inp: ScalarInput) {
     super(merge({}, defaultInput, inp));
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);

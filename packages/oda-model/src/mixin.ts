@@ -8,7 +8,7 @@ import {
   EntityBaseOutput,
 } from './entitybase';
 import { merge } from 'lodash';
-import { Nullable } from './types';
+import { Nullable, MetaModelType } from './types';
 
 export interface IMixin
   extends IEntityBase<
@@ -39,6 +39,9 @@ export class Mixin
     MixinOutput
   >
   implements IMixin {
+  public get modelType(): MetaModelType {
+    return 'mixin';
+  }
   constructor(inp: MixinInput) {
     super(merge({}, defaultInput, inp));
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);

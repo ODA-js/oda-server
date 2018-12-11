@@ -15,6 +15,7 @@ import {
   AsHash,
   FieldArgs,
   NamedArray,
+  MetaModelType,
 } from './types';
 
 export interface ISimpleField
@@ -72,6 +73,10 @@ export class SimpleField
     SimpleFieldOutput
   >
   implements ISimpleField {
+  public get modelType(): MetaModelType {
+    return typeof this.$obj.type === 'string' ? 'simple-field' : 'enum-field';
+  }
+
   get type(): string | EnumType {
     return this.$obj.type;
   }

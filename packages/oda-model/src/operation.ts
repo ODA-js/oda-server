@@ -77,7 +77,9 @@ export class Operation
     OperationOutput
   >
   implements IOperation {
-  public modelType: MetaModelType = 'operation';
+  public get modelType(): MetaModelType {
+    return 'operation';
+  }
 
   public get actionType(): OperationKind {
     return this.$obj.actionType;

@@ -45,7 +45,9 @@ export class ModelPackage
     ModelPackageOutput
   >
   implements IPackage {
-  public modelType: MetaModelType = 'package';
+  public get modelType(): MetaModelType {
+    return 'package';
+  }
   public get abstract() {
     return this.$obj.abstract;
   }

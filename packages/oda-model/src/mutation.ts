@@ -60,7 +60,9 @@ export class Mutation
     MutationOutput
   >
   implements IMutation {
-  public modelType: MetaModelType = 'mutation';
+  public get modelType(): MetaModelType {
+    return 'mutation';
+  }
 
   constructor(inp: MutationInput) {
     super(merge({}, defaultInput, inp));

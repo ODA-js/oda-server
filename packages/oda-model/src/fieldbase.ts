@@ -118,7 +118,9 @@ export abstract class FieldBase<
   P extends FieldBasePersistence,
   O extends FieldBaseOutput<T, P>
 > extends ModelBase<T, I, S, O> implements IFieldBase<T, I, P, O> {
-  public modelType: MetaModelType = 'field-base';
+  public get modelType(): MetaModelType {
+    return 'field-base';
+  }
   public get idKey(): IEntityRef {
     return this.$obj.idKey;
   }

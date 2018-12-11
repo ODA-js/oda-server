@@ -38,7 +38,9 @@ const defaultInput = {};
 export class Enum
   extends ModelBase<EnumMetaInfo, EnumInput, EnumInternal, EnumOutput>
   implements IEnum {
-  public modelType: MetaModelType = 'union';
+  public get modelType(): MetaModelType {
+    return 'enum';
+  }
   get items() {
     return this.$obj.items;
   }

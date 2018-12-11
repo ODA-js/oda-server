@@ -41,7 +41,9 @@ const defaultInput = {};
 export class Union
   extends ModelBase<UnionMetaInfo, UnionInput, UnionInternal, UnionOutput>
   implements IUnion {
-  public modelType: MetaModelType = 'union';
+  public get modelType(): MetaModelType {
+    return 'union';
+  }
   constructor(inp: UnionInput) {
     super(merge({}, defaultInput, inp));
     this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
