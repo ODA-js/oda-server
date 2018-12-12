@@ -39,14 +39,19 @@ export type FieldMap = {
 };
 
 export interface IModelHook {
-  name: string;
-  entities?: AsHash<EntityInput>;
-  mutations?: AsHash<MutationInput>;
-  queries?: AsHash<QueryInput>;
+  readonly name: string;
+  readonly entities?: AsHash<EntityInput>;
+  readonly mutations?: AsHash<MutationInput>;
+  readonly queries?: AsHash<QueryInput>;
 }
 
 export interface IModel
-  extends IPackageBase<MetaModelMetaInfo, MetaModelInput, MetaModelOutput> {}
+  extends IPackageBase<MetaModelMetaInfo, MetaModelInput, MetaModelOutput> {
+  readonly packages: Map<string, IPackage>;
+  readonly store: string;
+  readonly defaultPackage: IPackage;
+  readonly abstract: boolean;
+}
 
 export interface MetaModelInput
   extends ModelPackageBaseInput<MetaModelMetaInfo> {

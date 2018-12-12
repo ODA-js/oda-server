@@ -17,9 +17,9 @@ export interface IEntity
     EntityInput,
     EntityOutput
   > {
-  implements: Set<string>;
-  embedded: boolean | Set<string>;
-  abstract: boolean;
+  readonly implements: Set<string>;
+  readonly embedded: boolean | Set<string>;
+  readonly abstract: boolean;
 }
 
 export interface EntityInternal

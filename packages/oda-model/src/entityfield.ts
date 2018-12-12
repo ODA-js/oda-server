@@ -19,9 +19,9 @@ export interface IEntityField
     EntityFieldPersistence,
     EntityFieldOutput
   > {
-  type: EntityType;
-  list: boolean;
-  derived: boolean;
+  readonly type: EntityType;
+  readonly list: boolean;
+  readonly derived: boolean;
 }
 
 export interface EntityFieldPersistence extends RelationFieldBasePersistence {}

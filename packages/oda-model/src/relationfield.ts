@@ -34,10 +34,8 @@ function discoverFieldType(obj: any) {
 export interface RelationFieldMetaInfo
   extends RelationFieldBaseMetaInfo<RelationFieldPersistence> {}
 
-export interface RelationFieldPersistence extends RelationFieldBasePersistence {
-  derived: boolean;
-  persistent: boolean;
-}
+export interface RelationFieldPersistence
+  extends RelationFieldBasePersistence {}
 
 export interface RelationFieldInput
   extends RelationFieldBaseInput<

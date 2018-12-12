@@ -42,6 +42,7 @@ export interface IModelBase<
   I extends ModelBaseInput<T>,
   O extends ModelBaseOutput<T>
 > extends IMeta<T, I, O>, INamed {
+  readonly modelType: MetaModelType;
   /**
    * name of modeled item
    */

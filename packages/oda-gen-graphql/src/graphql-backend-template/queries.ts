@@ -1,14 +1,14 @@
 //common queries that is used in code generation
 import {
   IEntity,
-  Field,
-  ModelPackage,
-  MetaModel,
-  Mutation,
-  Query,
+  IField,
+  IPackage,
+  IModel,
+  IMutation,
+  IQuery,
   FieldType,
   IMixin,
-  Relation,
+  IRelation,
   RelationField,
 } from 'oda-model';
 
@@ -18,43 +18,42 @@ export const resetCache = () => {
   memoizeCache = {};
 };
 
-export const getPackages = (model: MetaModel) =>
+export const getPackages = (model: IModel) =>
   Array.from(model.packages.values());
 
-export const getRealEntities = (pack: ModelPackage) =>
+export const getRealEntities = (pack: IPackage) =>
   Array.from(pack.entities.values()).filter(f => !f.abstract);
 
-export const getUIEntities = (pack: ModelPackage) =>
+export const getUIEntities = (pack: IPackage) =>
   Array.from(pack.entities.values());
 
-export const getScalars = (pack: ModelPackage) =>
-  Array.from(pack.scalars.values());
+export const getScalars = (pack: IPackage) => Array.from(pack.scalars.values());
 
-export const getDirvectives = (pack: ModelPackage) =>
+export const getDirvectives = (pack: IPackage) =>
   Array.from(pack.directives.values());
 
-export const getEnums = (pack: ModelPackage) => Array.from(pack.enums.values());
-export const getUnions = (pack: ModelPackage) =>
-  Array.from(pack.unions.values());
+export const getEnums = (pack: IPackage) => Array.from(pack.enums.values());
+export const getUnions = (pack: IPackage) => Array.from(pack.unions.values());
 
-export const getMixins = (pack: ModelPackage) => [
+export const getMixins = (pack: IPackage) => [
   ...Array.from(pack.mixins.values()),
   ...(Array.from(pack.entities.values()).filter(e => e.abstract) as IMixin[]),
 ];
 
-export const fields = (f: Field): boolean => !(f as RelationField).relation;
+export const fields = (f: IField): boolean => !(f as RelationField).relation;
 
-export const relations = (f: Field): boolean => !!(f as RelationField).relation;
+export const relations = (f: IField): boolean =>
+  !!(f as RelationField).relation;
 
-export const getMutations = (pack: ModelPackage): Mutation[] =>
+export const getMutations = (pack: IPackage): IMutation[] =>
   Array.from(pack.mutations.values());
 
-export const getQueries = (pack: ModelPackage): Query[] =>
+export const getQueries = (pack: IPackage): IQuery[] =>
   Array.from(pack.queries.values());
 
 const falseFilter = () => false;
 
-export const canUpdateBy = (f: Field): boolean => {
+export const canUpdateBy = (f: IField): boolean => {
   let result: boolean;
   if (typeof f.type === 'string') {
     const type = f.type.toLocaleLowerCase();
@@ -70,7 +69,7 @@ export const canUpdateBy = (f: Field): boolean => {
 export const oneUniqueInIndex = (entity: IEntity) => {
   let indexList = entity.metadata.persistence.indexes;
   if (indexList !== null && typeof indexList === 'object') {
-    return (f: Field) => {
+    return (f: IField) => {
       let result = false;
       let iNames = Object.keys(indexList);
       for (let i = 0, len = iNames.length; i < len; i++) {
@@ -96,7 +95,7 @@ export const oneUniqueInIndex = (entity: IEntity) => {
 export const oneFieldIndex = (entity: IEntity) => {
   let indexList = entity.getMetadata('persistence.indexes');
   if (indexList !== null && typeof indexList === 'object') {
-    return (f: Field) => {
+    return (f: IField) => {
       let result = false;
       let iNames = Object.keys(indexList);
       for (let i = 0, len = iNames.length; i < len; i++) {
@@ -169,7 +168,7 @@ export const searchParamsForAcl = (allow, role: string, entity: IEntity) =>
       allow(role, entity.fields.get(i).getMetadata('acl.read', role)),
     );
 
-export const _filterForAcl = (role: string, pack: ModelPackage) => {
+export const _filterForAcl = (role: string, pack: IPackage) => {
   const existingRel = relationFieldsExistsIn(pack);
   return (allow, entity: IEntity) => {
     return Object.keys(
@@ -189,7 +188,7 @@ export const _filterForAcl = (role: string, pack: ModelPackage) => {
   };
 };
 
-export const filterForAcl = (role: string, pack: ModelPackage) => {
+export const filterForAcl = (role: string, pack: IPackage) => {
   if (!memoizeCache.hasOwnProperty('filterForAcl')) {
     memoizeCache.filterForAcl = {};
   }
@@ -204,14 +203,14 @@ export const filterForAcl = (role: string, pack: ModelPackage) => {
 export const getRelationNames = (entity: IEntity) =>
   Array.from(entity.relations);
 
-export const derivedFields = (f: Field): boolean => fields(f) && f.derived;
+export const derivedFields = (f: IField): boolean => fields(f) && f.derived;
 
-export const derivedFieldsAndRelations = (f: Field): boolean => f.derived;
+export const derivedFieldsAndRelations = (f: IField): boolean => f.derived;
 
-export const _getFields = (entity: IEntity): Field[] =>
+export const _getFields = (entity: IEntity): IField[] =>
   Array.from(entity.fields.values());
 
-export const getFields = (entity: IEntity): Field[] => {
+export const getFields = (entity: IEntity): IField[] => {
   if (!memoizeCache.hasOwnProperty('getFields')) {
     memoizeCache.getFields = {};
   }
@@ -222,18 +221,18 @@ export const getFields = (entity: IEntity): Field[] => {
   return cache[entity.name];
 };
 
-export const idField = (f: Field): boolean =>
+export const idField = (f: IField): boolean =>
   fields(f) && (f.name === 'id' || f.name === '_id');
 
-export const _getFieldsForAcl = (role: string, pack: ModelPackage) => {
+export const _getFieldsForAcl = (role: string, pack: IPackage) => {
   const existingRel = relationFieldsExistsIn(pack);
-  return (allow, entity: IEntity): Field[] =>
+  return (allow, entity: IEntity): IField[] =>
     getFields(entity)
       .filter(f => !relations(f) || existingRel(f))
       .filter(f => allow(role, f.getMetadata('acl.read', role)));
 };
 
-export const getFieldsForAcl = function(role: string, pack: ModelPackage) {
+export const getFieldsForAcl = function(role: string, pack: IPackage) {
   const cv = role + pack.name;
   if (!memoizeCache.hasOwnProperty('getFieldsForAcl')) {
     memoizeCache.getFieldsForAcl = {};
@@ -245,26 +244,26 @@ export const getFieldsForAcl = function(role: string, pack: ModelPackage) {
   return cache[cv];
 };
 
-export const relationFieldsExistsIn = (pack: ModelPackage) => (
-  f: Field,
+export const relationFieldsExistsIn = (pack: IPackage) => (
+  f: IField,
 ): boolean => relations(f) && pack.entities.has(f.relation.ref.entity);
 
-export const persistentFields = (f: Field): boolean =>
+export const persistentFields = (f: IField): boolean =>
   fields(f) && f.persistent;
 
-export const indexedFields = (f: Field): boolean =>
+export const indexedFields = (f: IField): boolean =>
   fields(f) && f.indexed && !idField(f);
 
-export const indexedRelations = (f: Field): boolean =>
+export const indexedRelations = (f: IField): boolean =>
   relations(f) && f.indexed && !idField(f);
 
-export const identityFields = (f: Field): boolean =>
+export const identityFields = (f: IField): boolean =>
   fields(f) && f.identity && !idField(f);
 
-export const mutableFields = (f: Field): boolean =>
+export const mutableFields = (f: IField): boolean =>
   fields(f) && !idField(f) && f.persistent;
 
-export const nonIdFields = (f: Field): boolean =>
+export const nonIdFields = (f: IField): boolean =>
   fields(f) && !idField(f) && f.persistent;
 
 export const getUniqueFieldNames = (entity: IEntity) => [
@@ -285,26 +284,26 @@ export const indexes = (e: IEntity) => {
   return result;
 };
 
-export const singleStoredRelationsExistingIn = (pack: ModelPackage) => (
-  f: Field,
+export const singleStoredRelationsExistingIn = (pack: IPackage) => (
+  f: IField,
 ): boolean =>
   relationFieldsExistsIn(pack)(f) &&
   f.relation.single &&
   f.relation.stored &&
   f.persistent;
 
-export const storedRelationsExistingIn = (pack: ModelPackage) => (
-  f: Field,
+export const storedRelationsExistingIn = (pack: IPackage) => (
+  f: IField,
 ): boolean =>
   relationFieldsExistsIn(pack)(f) && f.relation.stored && f.persistent;
 
 // get persistent fields with relations of entity in package
-export const persistentRelations = (pack: ModelPackage) => f =>
+export const persistentRelations = (pack: IPackage) => f =>
   relationFieldsExistsIn(pack)(f) && f.persistent;
 
 export const memoizeEntityMapper = (name, mapper) => (
   entity: IEntity,
-  pack: ModelPackage,
+  pack: IPackage,
   role: string,
   aclAllow,
   typeMapper: { [key: string]: (i: FieldType) => string },

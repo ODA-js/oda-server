@@ -36,14 +36,14 @@ export interface IEntityBase<
   I extends EntityBaseInput<T, P>,
   O extends EntityBaseOutput<T, P>
 > extends IModelBase<T, I, O> {
-  plural: string;
-  titlePlural: string;
-  fields: Map<string, IField>;
-  operations: Map<string, IOperation>;
-  relations: Set<string>;
-  identity: Set<string>;
-  required: Set<string>;
-  indexed: Set<string>;
+  readonly plural: string;
+  readonly titlePlural: string;
+  readonly fields: Map<string, IField>;
+  readonly operations: Map<string, IOperation>;
+  readonly relations: Set<string>;
+  readonly identity: Set<string>;
+  readonly required: Set<string>;
+  readonly indexed: Set<string>;
 }
 
 export interface IndexEntry {

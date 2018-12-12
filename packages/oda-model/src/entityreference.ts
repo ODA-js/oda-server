@@ -10,6 +10,7 @@ import {
   Element,
   ElementInput,
   ElementOutput,
+  IUpdatable,
 } from './element';
 
 function StrToEntityRef(input: string): EntityRefInput {
@@ -21,20 +22,21 @@ function StrToEntityRef(input: string): EntityRefInput {
   };
 }
 
-export interface IEntityRef {
+export interface IEntityRef
+  extends IUpdatable<EntityRefMetaInfo, EntityRefInput, EntityRefOutput> {
   /**
    * referencing entity
    */
-  entity: string;
+  readonly entity: string;
   /**
    * referencing key field
    */
-  field: string;
+  readonly field: string;
   /**
    * the backed field
    * field that in owner of the reference is storing the key
    */
-  backField?: string;
+  readonly backField?: string;
 }
 
 export interface EntityRefMetaInfo extends ElementMetaInfo {}
@@ -76,26 +78,14 @@ export class EntityReference
   public get entity(): string {
     return this.$obj.entity;
   }
-
-  public set entity(value: string) {
-    this.$obj.entity = value;
-  }
   /** the Identity field */
   public get field(): string {
     return this.$obj.field;
   }
 
-  public set field(value: string) {
-    this.$obj.field = value;
-  }
-
   /** the Identity field */
   public get backField(): string {
     return this.$obj.backField || '';
-  }
-
-  public set backField(value: string) {
-    this.$obj.backField = value;
   }
 
   constructor(init: EntityRefInput | string) {

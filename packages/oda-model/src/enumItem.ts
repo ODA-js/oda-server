@@ -11,7 +11,7 @@ import { ElementMetaInfo } from './element';
 
 export interface IEnumItem
   extends IModelBase<EnumItemMetaInfo, EnumItemInput, EnumItemOutput> {
-  value: string;
+  readonly value: string;
 }
 
 export interface EnumItemMetaInfo extends ElementMetaInfo {}

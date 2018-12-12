@@ -24,15 +24,18 @@ export interface IRelationBase<
   /**
    * the verb of relation
    */
-  verb: RelationType;
+  readonly verb: RelationType;
   /**
    * the reference to specific entity
    */
-  ref: IEntityRef | never;
+  readonly ref: IEntityRef | never;
   /**
    * the opposite field
    */
-  opposite?: string;
+  readonly opposite?: string;
+  readonly name: string;
+  readonly field: string;
+  readonly entity: string;
 }
 
 export interface RelationBasePersistence {

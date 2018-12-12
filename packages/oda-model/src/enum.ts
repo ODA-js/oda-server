@@ -14,7 +14,7 @@ export interface IEnum extends IModelBase<EnumMetaInfo, EnumInput, EnumOutput> {
   /**
    * Enum item definition
    */
-  items: Map<string, IEnumItem>;
+  readonly items: Map<string, IEnumItem>;
 }
 
 export interface EnumMetaInfo extends ElementMetaInfo {}

@@ -9,9 +9,7 @@ import templateEngine from './templateEngine';
 import initModel from './initModel';
 import generator from './generator';
 
-import { collectErrors, showLog, hasResult } from './validate';
 import { commit } from './writeFile';
-import { IValidationResult } from 'oda-model';
 import { GeneratorInit } from './init';
 
 export default function generate({
@@ -49,29 +47,22 @@ export default function generate({
     return hash;
   }, {});
 
+  fs.ensureDirSync(rootDir);
   // generate per package
-  const errors: IValidationResult[] = collectErrors(modelStore);
-  if (hasResult(errors, 'error')) {
-    console.error('please fix followings errors to proceed');
-    showLog(errors, logs);
-  } else {
-    fs.ensureDirSync(rootDir);
-    // generate per package
-    [...packages.values()]
-      .filter(p => !p.abstract)
-      .forEach(pkg => {
-        console.time('gql');
-        generator(
-          pkg,
-          raw,
-          rootDir,
-          pkg.name,
-          aclAllow,
-          typeMapper,
-          defaultAdapter,
-        );
-        console.timeEnd('gql');
-      });
-  }
+  [...packages.values()]
+    .filter(p => !p.abstract)
+    .forEach(pkg => {
+      console.time('gql');
+      generator(
+        pkg,
+        raw,
+        rootDir,
+        pkg.name,
+        aclAllow,
+        typeMapper,
+        defaultAdapter,
+      );
+      console.timeEnd('gql');
+    });
   commit().then(() => console.log('finish'));
 }

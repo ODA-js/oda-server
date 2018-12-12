@@ -27,7 +27,7 @@ export interface IBelongsToRelation
     BelongsToPersistence,
     BelongsToOutput
   > {
-  belongsTo: IEntityRef;
+  readonly belongsTo: IEntityRef;
 }
 
 export interface BelongsToMetaInfo

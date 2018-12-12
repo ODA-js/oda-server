@@ -28,13 +28,16 @@ export interface IFieldBase<
   P extends FieldBasePersistence,
   O extends FieldBaseOutput<M, P>
 > extends IModelBase<M, I, O> {
-  args: Map<string, FieldArgs>;
-  inheritedFrom?: string;
-  type?: FieldType;
-  required?: boolean;
-  indexed: boolean | string | string[];
-  identity: boolean | string | string[];
-  idKey: IEntityRef;
+  readonly idKey: IEntityRef;
+  readonly type?: FieldType;
+  readonly inheritedFrom?: string;
+  readonly order: number;
+  readonly derived: boolean;
+  readonly args: Map<string, FieldArgs>;
+  readonly persistent?: boolean;
+  readonly identity: boolean | string | string[];
+  readonly required?: boolean;
+  readonly indexed: boolean | string | string[];
 }
 
 export interface FieldBasePersistence {
@@ -105,7 +108,7 @@ const defaultMetaInfo = {
   acl: {
     create: [],
     read: [],
-    upadte: [],
+    update: [],
     delete: [],
   },
 };

@@ -9,6 +9,7 @@
     { "path": "./packages/oda-model" },
     { "path": "./packages/oda-gen-common" },
     { "path": "./packages/oda-lodash" },
-    { "path": "./packages/oda-model-graphql" }
+    { "path": "./packages/oda-gen-graphql" },
+    // { "path": "./packages/oda-model-graphql" }
   ]
 }

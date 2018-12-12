@@ -93,23 +93,14 @@ export class ModelPackageBase<
   public get modelType(): MetaModelType {
     return 'package-base';
   }
+  public get metaModel() {
+    return this.$obj.metaModel;
+  }
   public get entities() {
     return this.$obj.entities;
   }
-  public get enums() {
-    return this.$obj.enums;
-  }
-  public get scalars() {
-    return this.$obj.scalars;
-  }
-  public get directives() {
-    return this.$obj.directives;
-  }
   public get mixins() {
     return this.$obj.mixins;
-  }
-  public get unions() {
-    return this.$obj.unions;
   }
   public get mutations() {
     return this.$obj.mutations;
@@ -117,14 +108,23 @@ export class ModelPackageBase<
   public get queries() {
     return this.$obj.queries;
   }
+  public get enums() {
+    return this.$obj.enums;
+  }
+  public get scalars() {
+    return this.$obj.scalars;
+  }
+  public get unions() {
+    return this.$obj.unions;
+  }
+  public get directives() {
+    return this.$obj.directives;
+  }
   public get identityFields() {
     return this.$obj.identityFields;
   }
   public get relations() {
     return this.$obj.relations;
-  }
-  public get metaModel() {
-    return this.$obj.metaModel;
   }
 
   constructor(init: I) {

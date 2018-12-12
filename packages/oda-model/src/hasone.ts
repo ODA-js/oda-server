@@ -7,7 +7,7 @@ import {
   RelationBase,
   RelationBaseOutput,
 } from './relationbase';
-import { IEntityRef, EntityReference } from './entityreference';
+import { IEntityRef, EntityReference, EntityRefInput } from './entityreference';
 import { merge } from 'lodash';
 import { assignValue, Nullable } from './types';
 
@@ -24,7 +24,7 @@ export interface IHasOneRelation
     HasOnePersistence,
     HasOneOutput
   > {
-  hasOne: IEntityRef;
+  readonly hasOne: IEntityRef;
 }
 
 export interface HasOneMetaInfo
@@ -92,7 +92,9 @@ export class HasOne extends RelationBase<
       effect: (src, value) => {
         src.hasOne = new EntityReference(value);
         if (!src.hasOne.backField) {
-          src.hasOne.backField = 'id';
+          src.hasOne.updateWith({ backField: 'id' } as Nullable<
+            EntityRefInput
+          >);
         }
       },
     });

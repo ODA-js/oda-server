@@ -15,10 +15,7 @@ export interface RelationFieldBaseMetaInfo<
   P extends RelationFieldBasePersistence
 > extends FieldBaseMetaInfo<P> {}
 
-export interface RelationFieldBasePersistence extends FieldBasePersistence {
-  derived: boolean;
-  persistent: boolean;
-}
+export interface RelationFieldBasePersistence extends FieldBasePersistence {}
 
 export interface RelationFieldBaseInput<
   T extends RelationFieldBaseMetaInfo<P>,
@@ -39,7 +36,7 @@ export interface IRelationFieldBase<
   P extends RelationFieldBasePersistence,
   O extends FieldBaseOutput<T, P>
 > extends IFieldBase<T, I, P, O> {
-  relation: IRelation;
+  readonly relation: IRelation;
 }
 
 export interface RelationFieldBaseInternal<
@@ -62,12 +59,13 @@ export abstract class RelationFieldBase<
   public get modelType(): MetaModelType {
     return 'relation-base';
   }
-  constructor(init: I) {
-    super(merge({}, defaultInput, init));
-  }
 
   get relation(): IRelation {
     return this.$obj.relation;
+  }
+
+  constructor(init: I) {
+    super(merge({}, defaultInput, init));
   }
 
   public updateWith(obj: Nullable<I>) {

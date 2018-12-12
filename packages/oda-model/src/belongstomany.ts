@@ -7,7 +7,7 @@ import {
   RelationBase,
   RelationBaseOutput,
 } from './relationbase';
-import { IEntityRef, EntityReference } from './entityreference';
+import { IEntityRef, EntityReference, EntityRefInput } from './entityreference';
 import { merge } from 'lodash';
 import {
   assignValue,
@@ -33,9 +33,9 @@ export interface IBelongsToManyRelation
     BelongsToManyPersistence,
     BelongsToManyOutput
   > {
-  belongsToMany: IEntityRef;
-  using: IEntityRef;
-  fields: Map<string, ISimpleField>;
+  readonly belongsToMany: IEntityRef;
+  readonly using: IEntityRef;
+  readonly fields: Map<string, ISimpleField>;
 }
 
 export interface BelongsToManyMetaInfo
@@ -145,7 +145,9 @@ export class BelongsToMany
       effect: (src, value) => {
         src.belongsToMany = new EntityReference(value);
         if (!src.belongsToMany.backField) {
-          src.belongsToMany.backField = 'id';
+          src.belongsToMany.updateWith({ backField: 'id' } as Nullable<
+            EntityRefInput
+          >);
         }
       },
     });
@@ -157,10 +159,12 @@ export class BelongsToMany
       effect: (src, value) => {
         src.using = new EntityReference(value);
         if (!src.using.field) {
-          src.using.field = decapitalize(src.entity);
+          src.using.updateWith({ field: decapitalize(src.entity) } as Nullable<
+            EntityRefInput
+          >);
         }
         if (!src.using.backField) {
-          src.using.backField = 'id';
+          src.using.updateWith({ backField: 'id' } as Nullable<EntityRefInput>);
         }
       },
     });

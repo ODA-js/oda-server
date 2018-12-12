@@ -25,9 +25,9 @@ export interface ISimpleField
     SimpleFieldPersistence,
     SimpleFieldOutput
   > {
-  type: string | EnumType;
-  defaultValue?: string;
-  list?: boolean;
+  readonly type: string | EnumType;
+  readonly list?: boolean;
+  readonly defaultValue?: string;
 }
 
 export interface SimpleFieldPersistence extends FieldBasePersistence {

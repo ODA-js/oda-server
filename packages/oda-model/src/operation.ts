@@ -22,24 +22,25 @@ import { merge } from 'lodash';
 export interface IOperation
   extends IModelBase<OperationMetaInfo, OperationInput, OperationOutput> {
   /**
-   * set of arguments
-   */
-  args?: Map<string, FieldArgs>;
-  payload: Map<string, FieldArgs>;
-  /**
-   * is it field inherited from other entity and which one
-   */
-  inheritedFrom?: string;
-  /**
    * action type
    * CRUD
    */
-  actionType: OperationKind;
+  readonly actionType: OperationKind;
+  /**
+   * is it field inherited from other entity and which one
+   */
+  readonly inheritedFrom?: string;
+  /**
+   * set of arguments
+   */
+  readonly args?: Map<string, FieldArgs>;
+  readonly payload: Map<string, FieldArgs>;
+  readonly order: number;
 }
 
 export interface OperationMetaInfo extends ModelMetaInfo {
   entity: string;
-  order?: number;
+  order: number;
 }
 
 export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
@@ -48,7 +49,7 @@ export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
   payload: AsHash<FieldArgs> | NamedArray<FieldArgs>;
   entity: string;
   actionType: OperationKind;
-  order?: number;
+  order: number;
 }
 
 export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
@@ -57,7 +58,7 @@ export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
   payload: NamedArray<FieldArgs>;
   entity: string;
   actionType: OperationKind;
-  order?: number;
+  order: number;
 }
 
 export interface OperationInternal
@@ -84,10 +85,6 @@ export class Operation
     return 'operation';
   }
 
-  constructor(init: OperationInput) {
-    super(merge({}, defaultInput, init));
-  }
-
   public get actionType(): OperationKind {
     return this.$obj.actionType;
   }
@@ -104,8 +101,12 @@ export class Operation
     return this.$obj.payload;
   }
 
-  get order(): number | undefined {
+  get order(): number {
     return this.metadata_.order;
+  }
+
+  constructor(init: OperationInput) {
+    super(merge({}, defaultInput, init));
   }
 
   public updateWith(input: OperationInput) {
