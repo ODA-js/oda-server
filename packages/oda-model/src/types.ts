@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { IUpdatableBase } from './element';
-import { merge } from 'lodash';
+import { merge, get, set, has } from 'lodash';
 
 export type Nullable<T> = { [P in keyof T]: T[P] | undefined | null };
 
@@ -19,7 +19,7 @@ export type assignInput<S, I, V = any> = {
   /**
    * field from source object which is assigned
    */
-  field?: keyof S | keyof S & keyof I;
+  field?: keyof S | keyof S & keyof I | string;
   /**
    * function that will call to assign value
    */
@@ -47,7 +47,9 @@ export type assignInput<S, I, V = any> = {
  * check specified value from input and assign
  * @param options assign Options
  */
-export function assignValue<S, I, V = any>(options: assignInput<S, I, V>) {
+export function assignValue<S extends object, I extends object, V = any>(
+  options: assignInput<S, I, V>,
+) {
   let {
     src,
     input,
@@ -62,31 +64,41 @@ export function assignValue<S, I, V = any>(options: assignInput<S, I, V>) {
   if (!inputField) {
     inputField = field as keyof I;
   }
-  if (input.hasOwnProperty(inputField)) {
+  if (has(input, inputField)) {
     // update value
-    if (input[inputField] != null) {
+    if (get(input, inputField) != null) {
       if (effect) {
         if (
-          (allowEffect && allowEffect(src, input[inputField] as any)) ||
+          (allowEffect && allowEffect(src, get(input, inputField) as any)) ||
           !allowEffect
         ) {
-          effect(src, input[inputField] as any);
+          effect(src, get(input, inputField) as any);
+        } else if (
+          allowEffect &&
+          !allowEffect(src, get(input, inputField) as any) &&
+          setDefault instanceof Function
+        ) {
+          setDefault(src);
         }
       } else if (field) {
-        src[field] = input[inputField] as any;
+        set(src, field, get(input, inputField));
       }
-    } else if (inputField && input[inputField] === null && required) {
-      throw new Error("can't reset required value");
-    } else if (inputField && input[inputField] === null) {
+    } else if (inputField && get(input, inputField) === null && required) {
       if (setDefault instanceof Function) {
         setDefault(src);
       } else if (field) {
-        delete src[field];
+        throw new Error("can't reset required value");
+      }
+    } else if (inputField && get(input, inputField) === null) {
+      if (setDefault instanceof Function) {
+        setDefault(src);
+      } else if (field) {
+        set(src, field, undefined);
       }
     }
   } else {
     // set default value
-    if (field && required && src[field] == null) {
+    if (field && get(src, field) == null) {
       if (setDefault instanceof Function) {
         setDefault(src);
       }
@@ -251,7 +263,7 @@ export function MapToArray<T extends INamed, O extends INamed = T>(
   input: Map<string, T>,
   process?: (name: string, v: T) => O,
 ): NamedArray<O> {
-  return [...input].reduce(
+  return [...input.entries()].reduce(
     (r, curr) => {
       r.push(
         process
@@ -277,17 +289,17 @@ export function createOrMergeFromMap<
 >(src: T, create: new (input: I) => N, prop: keyof T) {
   return (value: V) => {
     let result: N | undefined;
-    const srcMap = (src[prop] as unknown) as Map<string, N>;
+    const srcMap = (get(src, prop) as unknown) as Map<string, N> | undefined;
     if (typeof value === 'string') {
-      result = srcMap.get(value as string);
+      result = srcMap && srcMap.get(value as string);
     } else {
       const name = (value as I).name;
-      const original = srcMap.get(name);
+      const original = srcMap && srcMap.get(name);
       if (original) {
         const update = merge({}, original.toObject(), value);
         original.updateWith(update);
       } else {
-        srcMap.set(name, new create(value as I));
+        srcMap && srcMap.set(name, new create(value as I));
       }
       result = new create(value as I);
     }

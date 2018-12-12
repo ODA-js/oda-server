@@ -1,0 +1,6 @@
+node_modules
+static/dist
+webpack-assets.json
+dist
+uploads
+*.log

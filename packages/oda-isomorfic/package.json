@@ -8,6 +8,5 @@
   "license": "MIT",
   "dependencies": {
     "md5-hex": "^2.0.0"
-  },
-  "devDependencies": {}
+  }
 }

@@ -61,8 +61,7 @@ export interface SimpleFieldOutput
 }
 
 const defaultMetaInfo = {};
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export class SimpleField
   extends FieldBase<
@@ -90,10 +89,8 @@ export class SimpleField
     return get(this.metadata_, 'defaultValue');
   }
 
-  constructor(inp: SimpleFieldInput) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: SimpleFieldInput) {
+    super(merge({}, defaultInput, init));
   }
 
   public updateWith(input: Nullable<SimpleFieldInput>) {
@@ -109,8 +106,8 @@ export class SimpleField
       src: this.$obj,
       input,
       field: 'list',
-      setDefault: src => (src.list = false),
       required: true,
+      setDefault: src => (src.list = false),
     });
 
     assignValue<SimpleFieldMeta, SimpleFieldInput, boolean>({

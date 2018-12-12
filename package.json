@@ -35,7 +35,8 @@
   "dependencies": {
     "oda-gen-common": "file:packages/oda-gen-common",
     "oda-isomorfic": "file:packages/oda-isomorfic",
-    "oda-model": "file:packages/oda-model"
+    "oda-model": "file:packages/oda-model",
+    "oda-lodash": "file:packages/oda-lodash"
   },
   "devDependencies": {
     "@types/node": "^10.12.12",

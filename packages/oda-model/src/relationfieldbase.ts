@@ -50,8 +50,7 @@ export interface RelationFieldBaseInternal<
 }
 
 const defaultMetaInfo = {};
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export abstract class RelationFieldBase<
   T extends RelationFieldBaseMetaInfo<P>,
@@ -63,10 +62,8 @@ export abstract class RelationFieldBase<
   public get modelType(): MetaModelType {
     return 'relation-base';
   }
-  constructor(inp: I) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: I) {
+    super(merge({}, defaultInput, init));
   }
 
   get relation(): IRelation {

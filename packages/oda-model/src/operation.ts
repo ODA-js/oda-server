@@ -69,6 +69,9 @@ export interface OperationInternal
   actionType: OperationKind;
 }
 
+const defaultMetaInfo = {};
+const defaultInput = { metadata: defaultMetaInfo };
+
 export class Operation
   extends ModelBase<
     OperationMetaInfo,
@@ -79,6 +82,10 @@ export class Operation
   implements IOperation {
   public get modelType(): MetaModelType {
     return 'operation';
+  }
+
+  constructor(init: OperationInput) {
+    super(merge({}, defaultInput, init));
   }
 
   public get actionType(): OperationKind {
@@ -122,6 +129,7 @@ export class Operation
         (src.args = Array.isArray(value)
           ? ArrayToMap(value)
           : HashToMap(value)),
+      required: true,
       setDefault: src => (src.args = new Map()),
     });
 
@@ -145,8 +153,14 @@ export class Operation
     return merge({}, super.toObject(), {
       actionType: this.actionType,
       inheritedFrom: this.inheritedFrom,
-      args: MapToArray(this.args),
-      payload: MapToArray(this.payload),
+      args: MapToArray(this.args, (name, value) => ({
+        ...value,
+        name,
+      })),
+      payload: MapToArray(this.payload, (name, value) => ({
+        ...value,
+        name,
+      })),
     } as Partial<OperationOutput>);
   }
 }

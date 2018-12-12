@@ -65,8 +65,7 @@ const defaultMetaInfo = {
     required: false,
   },
 };
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export class BelongsTo extends RelationBase<
   BelongsToMetaInfo,
@@ -95,10 +94,8 @@ export class BelongsTo extends RelationBase<
     return get(this.metadata_, 'persistence.indexed', false);
   }
 
-  constructor(inp: BelongsToInput) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: BelongsToInput) {
+    super(merge({}, defaultInput, init));
     this.initNames();
   }
 
@@ -110,6 +107,7 @@ export class BelongsTo extends RelationBase<
       input,
       inputField: 'embedded',
       effect: (src, value) => (src.persistence.embedded = value),
+      setDefault: src => (src.persistence.embedded = false),
     });
 
     assignValue<BelongsToInternal, BelongsToInput, string>({
@@ -117,6 +115,7 @@ export class BelongsTo extends RelationBase<
       input,
       field: 'belongsTo',
       effect: (src, value) => (src.belongsTo = new EntityReference(value)),
+      required: true,
     });
 
     assignValue<BelongsToMetaInfo, BelongsToInput, boolean>({

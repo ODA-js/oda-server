@@ -53,8 +53,7 @@ const defaultMetaInfo = {
     embedded: false,
   },
 };
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export class HasOne extends RelationBase<
   HasOneMetaInfo,
@@ -71,10 +70,8 @@ export class HasOne extends RelationBase<
     return this.$obj.hasOne;
   }
 
-  constructor(inp: HasOneInput) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: HasOneInput) {
+    super(merge({}, defaultInput, init));
     this.initNames();
   }
 

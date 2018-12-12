@@ -51,8 +51,7 @@ export interface DirectiveOutput extends ModelBaseOutput<DirectiveMetaInfo> {
 }
 
 const defaultMetaInfo = {};
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export class Directive
   extends ModelBase<
@@ -77,8 +76,6 @@ export class Directive
 
   constructor(init: DirectiveInput) {
     super(merge({}, defaultInput, init));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
   }
 
   public updateWith(input: Nullable<DirectiveInput>) {
@@ -110,7 +107,10 @@ export class Directive
   // it get fixed object
   public toObject(): DirectiveOutput {
     return merge({}, super.toObject(), {
-      args: this.$obj.args ? MapToArray(this.$obj.args) : undefined,
+      args: MapToArray(this.$obj.args, (name, value) => ({
+        ...value,
+        name,
+      })),
       on: this.$obj.on,
     } as Partial<DirectiveOutput>);
   }

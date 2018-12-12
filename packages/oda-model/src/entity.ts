@@ -48,8 +48,7 @@ export interface EntityOutput
 export interface EntityMetaInfo extends EntityBaseMetaInfo<EntityPersistence> {}
 
 const defaultMetaInfo = {};
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export class Entity
   extends EntityBase<
@@ -64,10 +63,8 @@ export class Entity
     return 'entity';
   }
 
-  constructor(inp: EntityInput) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: EntityInput) {
+    super(merge({}, defaultInput, init));
   }
 
   get implements(): Set<string> {
@@ -75,7 +72,7 @@ export class Entity
   }
 
   get abstract(): boolean {
-    return !!this.$obj.abstract;
+    return this.$obj.abstract;
   }
 
   get embedded(): boolean | Set<string> {
@@ -89,6 +86,7 @@ export class Entity
       src: this.$obj,
       input,
       field: 'abstract',
+      setDefault: src => (src.abstract = false),
     });
     assignValue<EntityInternal, EntityInput, string[]>({
       src: this.$obj,
@@ -104,13 +102,13 @@ export class Entity
       field: 'embedded',
       effect: (src, value) =>
         (src.embedded = typeof value === 'boolean' ? value : new Set(value)),
-      setDefault: src => (src.embedded = new Set()),
+      setDefault: src => (src.embedded = false),
     });
   }
 
   public toObject(): EntityOutput {
     return merge({}, super.toObject(), {
-      implements: [...this.implements],
+      implements: [...this.implements.values()],
       embedded: this.embedded,
       abstract: this.abstract,
     } as Partial<EntityOutput>);

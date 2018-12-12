@@ -51,8 +51,7 @@ export interface EntityFieldOutput
 }
 
 const defaultMetaInfo = {};
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export class EntityField
   extends RelationFieldBase<
@@ -68,8 +67,6 @@ export class EntityField
   }
   constructor(init: EntityFieldInput) {
     super(merge({}, defaultInput, init));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
   }
   get type(): EntityType {
     return this.$obj.type;

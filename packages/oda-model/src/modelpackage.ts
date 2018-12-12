@@ -33,8 +33,7 @@ export interface ModelPackageInternal
 }
 
 const defaultMetaInfo = {};
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 /** Model package is the storage place of Entities */
 export class ModelPackage
@@ -52,20 +51,18 @@ export class ModelPackage
     return this.$obj.abstract;
   }
 
-  constructor(inp: ModelPackageInput | string | undefined) {
+  constructor(init: ModelPackageInput | string | undefined) {
     super(
       merge(
         {},
         defaultInput,
-        typeof inp === 'string'
-          ? { name: inp }
-          : inp !== undefined
-          ? inp
+        typeof init === 'string'
+          ? { name: init }
+          : init !== undefined
+          ? init
           : { name: 'DefaultPackage' },
       ),
     );
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
   }
 
   public updateWith(input: Nullable<ModelPackageInput>) {

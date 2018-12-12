@@ -73,8 +73,7 @@ const defaultMetaInfo = {
     embedded: false,
   },
 };
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export class BelongsToMany
   extends RelationBase<
@@ -101,10 +100,8 @@ export class BelongsToMany
     return this.$obj.fields;
   }
 
-  constructor(inp: BelongsToManyInput) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: BelongsToManyInput) {
+    super(merge({}, defaultInput, init));
     this.initNames();
   }
 
@@ -131,7 +128,6 @@ export class BelongsToMany
               ] as [string, ISimpleField],
           ),
         )),
-      required: true,
       setDefault: src => (src.fields = new Map()),
     });
 

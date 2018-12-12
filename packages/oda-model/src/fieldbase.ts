@@ -101,6 +101,7 @@ export interface FieldBaseOutput<
 }
 
 const defaultMetaInfo = {
+  persistence: {},
   acl: {
     create: [],
     read: [],
@@ -108,8 +109,7 @@ const defaultMetaInfo = {
     delete: [],
   },
 };
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export abstract class FieldBase<
   T extends FieldBaseMetaInfo<P>,
@@ -161,10 +161,8 @@ export abstract class FieldBase<
     return get(this.metadata_, 'persistence.indexed', false);
   }
 
-  constructor(inp: I) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: I) {
+    super(merge({}, defaultInput, init));
   }
 
   public updateWith(input: Nullable<I>) {
@@ -259,7 +257,7 @@ export abstract class FieldBase<
 
   public makeIdentity() {
     this.$obj.idKey = new EntityReference({
-      entity: this.$obj.metadata.entity,
+      entity: this.metadata_.entity,
       field: this.$obj.name,
       backField: 'id',
     });

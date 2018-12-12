@@ -85,8 +85,7 @@ export interface RelationBaseOutput<
 }
 
 const defaultMetaInfo = { persistence: {}, name: {} };
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export abstract class RelationBase<
   T extends RelationBaseMetaInfo<P>,
@@ -101,10 +100,8 @@ export abstract class RelationBase<
   /**
    * construct object
    */
-  constructor(inp: RelationBaseInput<T, P>) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: RelationBaseInput<T, P>) {
+    super(merge({}, defaultInput, init));
   }
 
   get name(): string {

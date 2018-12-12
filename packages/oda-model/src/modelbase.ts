@@ -57,8 +57,7 @@ export interface IModelBase<
 }
 
 const defaultMetaInfo = {};
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export abstract class ModelBase<
   T extends ElementMetaInfo,
@@ -69,10 +68,8 @@ export abstract class ModelBase<
   public get modelType(): MetaModelType {
     return 'metadata';
   }
-  constructor(inp: ModelBaseInput<T>) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: ModelBaseInput<T>) {
+    super(merge({}, defaultInput, init));
   }
   get name(): string {
     return this.$obj.name;
@@ -107,7 +104,6 @@ export abstract class ModelBase<
       field: 'title',
       effect: (src, value) =>
         (src.title = inflected.camelize(value.trim(), false)),
-      required: true,
     });
 
     assignValue<S, I, string>({
@@ -116,7 +112,6 @@ export abstract class ModelBase<
       field: 'description',
       effect: (src, value) =>
         (src.description = inflected.camelize(value.trim(), false)),
-      required: true,
     });
   }
 

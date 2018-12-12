@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`element loads: raw 1`] = `
+Element {
+  "$obj": Object {},
+  "metadata_": Object {
+    "some": "data",
+  },
+}
+`;
+
+exports[`element loads: toObject 1`] = `
+Object {
+  "metadata": Object {
+    "some": "data",
+  },
+}
+`;

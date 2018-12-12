@@ -57,8 +57,7 @@ const defaultMetaInfo = {
     execute: [],
   },
 };
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export class Query
   extends ModelBase<QueryMetaInfo, QueryInput, QueryInternal, QueryOutput>
@@ -67,10 +66,8 @@ export class Query
     return 'query';
   }
 
-  constructor(inp: QueryInput) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: QueryInput) {
+    super(merge({}, defaultInput, init));
   }
 
   public get args(): Map<string, FieldArgs> {
@@ -117,8 +114,14 @@ export class Query
 
   public toObject(): QueryOutput {
     return merge({}, super.toObject(), {
-      args: MapToArray(this.$obj.args),
-      payload: MapToArray(this.$obj.payload),
+      args: MapToArray(this.$obj.args, (name, value) => ({
+        ...value,
+        name,
+      })),
+      payload: MapToArray(this.$obj.payload, (name, value) => ({
+        ...value,
+        name,
+      })),
     } as Partial<QueryOutput>);
   }
 }

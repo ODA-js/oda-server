@@ -27,8 +27,7 @@ export interface MixinInternal
 export interface MixinMetaInfo extends EntityBaseMetaInfo<MixinPersistence> {}
 
 const defaultMetaInfo = {};
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export class Mixin
   extends EntityBase<
@@ -42,10 +41,8 @@ export class Mixin
   public get modelType(): MetaModelType {
     return 'mixin';
   }
-  constructor(inp: MixinInput) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: MixinInput) {
+    super(merge({}, defaultInput, init));
   }
 
   public updateWith(input: Nullable<MixinInput>) {

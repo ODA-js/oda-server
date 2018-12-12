@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`model loads: packages 1`] = `
+Object {
+  "entities": Array [
+    Object {
+      "metadata": Object {
+        "UI": Object {
+          "edit": Array [],
+          "embedded": Array [],
+          "hidden": Array [],
+          "list": Array [],
+          "listName": Array [
+            "title",
+          ],
+          "quickSearch": Array [],
+          "show": Array [],
+        },
+        "acl": Object {
+          "create": Array [],
+          "delete": Array [],
+          "read": Array [],
+          "upadte": Array [],
+        },
+        "name": Object {
+          "plural": "MediaFiles",
+          "singular": "MediaFiles",
+        },
+        "persistence": Object {
+          "indexes": Object {
+            "id": Object {
+              "fields": Object {
+                "id": 1,
+              },
+              "name": "id",
+              "options": Object {
+                "unique": true,
+              },
+            },
+          },
+        },
+        "titlePlural": "MediaFiles",
+      },
+      "name": "MediaFiles",
+      "props": Array [
+        Object {
+          "name": "title",
+        },
+        Object {
+          "name": "description",
+        },
+        Object {
+          "name": "reference",
+        },
+        Object {
+          "name": "catalog",
+        },
+        Object {
+          "name": "id",
+        },
+      ],
+    },
+  ],
+  "packages": Array [],
+}
+`;

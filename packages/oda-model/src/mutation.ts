@@ -49,8 +49,7 @@ export interface MutationOutput extends ModelBaseOutput<MutationMetaInfo> {
 }
 
 const defaultMetaInfo = {};
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export class Mutation
   extends ModelBase<
@@ -64,10 +63,8 @@ export class Mutation
     return 'mutation';
   }
 
-  constructor(inp: MutationInput) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: MutationInput) {
+    super(merge({}, defaultInput, init));
   }
 
   public get args(): Map<string, FieldArgs> {
@@ -89,6 +86,7 @@ export class Mutation
           ? ArrayToMap(value)
           : HashToMap(value)),
       required: true,
+      setDefault: src => (src.args = new Map()),
     });
 
     assignValue<MutationInternal, MutationInput, MutationInput['payload']>({
@@ -105,8 +103,14 @@ export class Mutation
 
   public toObject(): MutationOutput {
     return merge({}, super.toObject(), {
-      args: MapToArray(this.$obj.args),
-      payload: MapToArray(this.$obj.payload),
+      args: MapToArray(this.$obj.args, (name, value) => ({
+        ...value,
+        name,
+      })),
+      payload: MapToArray(this.$obj.payload, (name, value) => ({
+        ...value,
+        name,
+      })),
     } as Partial<MutationOutput>);
   }
 }

@@ -126,7 +126,9 @@ export interface EntityBaseOutput<
 
 const defaultMetaInfo = {
   name: {},
-  persistence: {},
+  persistence: {
+    indexes: {},
+  },
   UI: {
     listName: [],
     quickSearch: [],
@@ -143,8 +145,7 @@ const defaultMetaInfo = {
     delete: [],
   },
 };
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export abstract class EntityBase<
   M extends EntityBaseMetaInfo<MP>,
@@ -157,10 +158,8 @@ export abstract class EntityBase<
     return 'entity-base';
   }
 
-  constructor(inp: I) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: I) {
+    super(merge({}, defaultInput, init));
   }
 
   get plural(): string {
@@ -256,6 +255,7 @@ export abstract class EntityBase<
     assignValue<M, I, string>({
       src: this.metadata_,
       input,
+      field: 'name.plural',
       inputField: 'plural',
       effect: (src, value) => {
         src.name.plural = inflected.camelize(value.trim(), true);
@@ -335,11 +335,16 @@ export abstract class EntityBase<
         let f: SimpleField;
         if (fields.has('id')) {
           f = fields.get('id') as SimpleField;
+          f.updateWith({ identity: true } as Nullable<SimpleFieldInput>);
+          this.updateIndex(f, { unique: true });
         } else if (fields.has('_id')) {
           f = fields.get('_id') as SimpleField;
+          f.updateWith({ identity: true } as Nullable<SimpleFieldInput>);
+          this.updateIndex(f, { unique: true });
         } else {
           f = new SimpleField({ ...DEFAULT_ID_FIELD, entity: result.name });
           fields.set(f.name, f);
+          this.updateIndex(f, { unique: true });
         }
 
         f.makeIdentity();
@@ -391,8 +396,14 @@ export abstract class EntityBase<
 
   public toObject(): O {
     return merge({}, super.toObject(), {
-      fields: MapToArray(this.fields).map(f => f.toObject()),
-      operations: MapToArray(this.operations).map(f => f.toObject()),
+      fields: MapToArray(this.fields, (name, value) => ({
+        ...value.toObject(),
+        name,
+      })),
+      operations: MapToArray(this.operations, (name, value) => ({
+        ...value.toObject(),
+        name,
+      })),
     } as Partial<O>);
   }
 }

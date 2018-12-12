@@ -7,6 +7,8 @@
   "references": [
     { "path": "./packages/oda-isomorfic" },
     { "path": "./packages/oda-model" },
-    { "path": "./packages/oda-gen-common" }
+    { "path": "./packages/oda-gen-common" },
+    { "path": "./packages/oda-lodash" },
+    { "path": "./packages/oda-model-graphql" }
   ]
 }

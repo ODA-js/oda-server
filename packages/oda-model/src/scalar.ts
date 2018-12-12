@@ -23,8 +23,7 @@ export interface ScalarInput extends ModelBaseInput<ScalarMetaInfo> {}
 export interface ScalarOutput extends ModelBaseOutput<ScalarMetaInfo> {}
 
 const defaultMetaInfo = {};
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export class Scalar
   extends ModelBase<ScalarMetaInfo, ScalarInput, ScalarInternal, ScalarOutput>
@@ -32,10 +31,8 @@ export class Scalar
   public get modelType(): MetaModelType {
     return 'scalar';
   }
-  constructor(inp: ScalarInput) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: ScalarInput) {
+    super(merge({}, defaultInput, init));
   }
   public updateWith(input: Nullable<ScalarInput>) {
     super.updateWith(input);

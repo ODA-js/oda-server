@@ -81,8 +81,7 @@ export interface ModelPackageBaseInternal<M extends ModelPackageBaseMetaInfo>
 }
 
 const defaultMetaInfo = {};
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 /** Model package is the storage place of Entities */
 export class ModelPackageBase<
@@ -128,10 +127,8 @@ export class ModelPackageBase<
     return this.$obj.metaModel;
   }
 
-  constructor(inp: I) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: I) {
+    super(merge({}, defaultInput, init));
   }
 
   public updateWith(input: Nullable<I>) {
@@ -141,34 +138,36 @@ export class ModelPackageBase<
       src: this.$obj,
       input,
       field: 'entities',
+      allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        if (value.length > 0) {
-          const createIt = createOrMergeFromMap(
-            this.metaModel.metaModel,
-            Entity,
-            'entities',
-          );
-          src.entities = new Map(value.map(i => createIt(i)).filter(f => f) as [
-            string,
-            IEntity
-          ][]);
-        }
+        const createIt = createOrMergeFromMap(
+          this.metaModel.metaModel,
+          Entity,
+          'entities',
+        );
+        src.entities = new Map(value.map(i => createIt(i)).filter(f => f) as [
+          string,
+          IEntity
+        ][]);
+        src.relations = new Map();
       },
-      setDefault: src => (src.entities = new Map<string, IEntity>()),
+      required: true,
+      setDefault: src => (
+        (src.entities = new Map<string, IEntity>()), (src.relations = new Map())
+      ),
     });
 
     assignValue<S, I, (EnumInput | string)[]>({
       src: this.$obj,
       input,
       field: 'enums',
+      allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        if (value.length > 0) {
-          const createIt = createOrMergeFromMap(this.metaModel, Enum, 'enums');
-          src.enums = new Map(value.map(i => createIt(i)).filter(f => f) as [
-            string,
-            IEnum
-          ][]);
-        }
+        const createIt = createOrMergeFromMap(this.metaModel, Enum, 'enums');
+        src.enums = new Map(value.map(i => createIt(i)).filter(f => f) as [
+          string,
+          IEnum
+        ][]);
       },
       setDefault: src => (src.enums = new Map<string, IEnum>()),
     });
@@ -177,18 +176,13 @@ export class ModelPackageBase<
       src: this.$obj,
       input,
       field: 'scalars',
+      allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        if (value.length > 0) {
-          const createIt = createOrMergeFromMap(
-            this.metaModel,
-            Scalar,
-            'enums',
-          );
-          src.scalars = new Map(value.map(i => createIt(i)).filter(f => f) as [
-            string,
-            IScalar
-          ][]);
-        }
+        const createIt = createOrMergeFromMap(this.metaModel, Scalar, 'enums');
+        src.scalars = new Map(value.map(i => createIt(i)).filter(f => f) as [
+          string,
+          IScalar
+        ][]);
       },
       setDefault: src => (src.scalars = new Map<string, IScalar>()),
     });
@@ -197,17 +191,17 @@ export class ModelPackageBase<
       src: this.$obj,
       input,
       field: 'enums',
+      allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        if (value.length > 0) {
-          const createIt = createOrMergeFromMap(
-            this.metaModel,
-            Directive,
-            'directives',
-          );
-          src.directives = new Map(value
-            .map(i => createIt(i))
-            .filter(f => f) as [string, IDirective][]);
-        }
+        const createIt = createOrMergeFromMap(
+          this.metaModel,
+          Directive,
+          'directives',
+        );
+        src.directives = new Map(value.map(i => createIt(i)).filter(f => f) as [
+          string,
+          IDirective
+        ][]);
       },
       setDefault: src => (src.directives = new Map<string, IDirective>()),
     });
@@ -216,18 +210,13 @@ export class ModelPackageBase<
       src: this.$obj,
       input,
       field: 'mixins',
+      allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        if (value.length > 0) {
-          const createIt = createOrMergeFromMap(
-            this.metaModel,
-            Mixin,
-            'mixins',
-          );
-          src.mixins = new Map(value.map(i => createIt(i)).filter(f => f) as [
-            string,
-            IMixin
-          ][]);
-        }
+        const createIt = createOrMergeFromMap(this.metaModel, Mixin, 'mixins');
+        src.mixins = new Map(value.map(i => createIt(i)).filter(f => f) as [
+          string,
+          IMixin
+        ][]);
       },
       setDefault: src => (src.mixins = new Map<string, IMixin>()),
     });
@@ -236,18 +225,13 @@ export class ModelPackageBase<
       src: this.$obj,
       input,
       field: 'unions',
+      allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        if (value.length > 0) {
-          const createIt = createOrMergeFromMap(
-            this.metaModel,
-            Union,
-            'unions',
-          );
-          src.unions = new Map(value.map(i => createIt(i)).filter(f => f) as [
-            string,
-            IUnion
-          ][]);
-        }
+        const createIt = createOrMergeFromMap(this.metaModel, Union, 'unions');
+        src.unions = new Map(value.map(i => createIt(i)).filter(f => f) as [
+          string,
+          IUnion
+        ][]);
       },
       setDefault: src => (src.unions = new Map<string, IUnion>()),
     });
@@ -256,17 +240,17 @@ export class ModelPackageBase<
       src: this.$obj,
       input,
       field: 'mutations',
+      allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        if (value.length > 0) {
-          const createIt = createOrMergeFromMap(
-            this.metaModel,
-            Mutation,
-            'mutations',
-          );
-          src.mutations = new Map(value
-            .map(i => createIt(i))
-            .filter(f => f) as [string, IMutation][]);
-        }
+        const createIt = createOrMergeFromMap(
+          this.metaModel,
+          Mutation,
+          'mutations',
+        );
+        src.mutations = new Map(value.map(i => createIt(i)).filter(f => f) as [
+          string,
+          IMutation
+        ][]);
       },
       setDefault: src => (src.mutations = new Map<string, IMutation>()),
     });
@@ -275,18 +259,13 @@ export class ModelPackageBase<
       src: this.$obj,
       input,
       field: 'queries',
+      allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        if (value.length > 0) {
-          const createIt = createOrMergeFromMap(
-            this.metaModel,
-            Query,
-            'queries',
-          );
-          src.queries = new Map(value.map(i => createIt(i)).filter(f => f) as [
-            string,
-            IQuery
-          ][]);
-        }
+        const createIt = createOrMergeFromMap(this.metaModel, Query, 'queries');
+        src.queries = new Map(value.map(i => createIt(i)).filter(f => f) as [
+          string,
+          IQuery
+        ][]);
       },
       setDefault: src => (src.queries = new Map<string, IQuery>()),
     });
@@ -301,87 +280,40 @@ export class ModelPackageBase<
 
   public toObject(): O {
     return merge({}, super.toObject(), {
-      directives: MapToArray(this.$obj.directives).map(i => i.toObject()),
-      enums: MapToArray(this.$obj.enums).map(i => i.toObject()),
-      queries: MapToArray(this.$obj.queries).map(i => i.toObject()),
-      unions: MapToArray(this.$obj.unions).map(i => i.toObject()),
-      mixins: MapToArray(this.$obj.mixins).map(i => i.toObject()),
-      mutations: MapToArray(this.$obj.mutations).map(i => i.toObject()),
-      entities: MapToArray(this.$obj.entities).map(i => i.toObject()),
+      directives: MapToArray(this.$obj.directives, (name, value) => ({
+        ...value.toObject(),
+        name,
+      })),
+      enums: MapToArray(this.$obj.enums, (name, value) => ({
+        ...value.toObject(),
+        name,
+      })),
+      queries: MapToArray(this.$obj.queries, (name, value) => ({
+        ...value.toObject(),
+        name,
+      })),
+      unions: MapToArray(this.$obj.unions, (name, value) => ({
+        ...value.toObject(),
+        name,
+      })),
+      mixins: MapToArray(this.$obj.mixins, (name, value) => ({
+        ...value.toObject(),
+        name,
+      })),
+      mutations: MapToArray(this.$obj.mutations, (name, value) => ({
+        ...value.toObject(),
+        name,
+      })),
+      entities: MapToArray(this.$obj.entities, (name, value) => ({
+        ...value.toObject(),
+        name,
+      })),
     } as O);
   }
 
   public connect(metaModel: IModel) {
     this.$obj.metaModel = metaModel;
   }
-
-  // /** add entity to Package */
-  // public addEntity(entity: IEntity) {
-  //   if (entity instanceof Entity) {
-  //     this.entities.set(entity.name, entity);
-  //     this.ensureIds(entity);
-  //   }
-  //   this.ensureEntity(entity);
-  //   return entity;
-  // }
-
-  // public addMutation(mutation: Mutation) {
-  //   if (mutation instanceof Mutation) {
-  //     this.mutations.set(mutation.name, mutation);
-  //   }
-  //   this.ensureMutation(mutation);
-  //   return mutation;
-  // }
-
-  // public addQuery(query: IQuery) {
-  //   if (query instanceof Query) {
-  //     this.queries.set(query.name, query);
-  //   }
-  //   this.ensureQuery(query);
-  //   return query;
-  // }
-
-  // public addUnion(uni: IUnion) {
-  //   if (uni instanceof Union) {
-  //     this.unions.set(uni.name, uni);
-  //   }
-  //   this.ensureUnion(uni);
-  //   return uni;
-  // }
-
-  // public addEnum(enu: IEnum) {
-  //   if (enu instanceof Enum) {
-  //     this.enums.set(enu.name, enu);
-  //   }
-  //   this.ensureEnum(enu);
-  //   return enu;
-  // }
-
-  // public addMixin(mix: IMixin) {
-  //   if (mix instanceof Mixin) {
-  //     this.mixins.set(mix.name, mix);
-  //     // no need to do this
-  //     // intrf.ensureIds(this);
-  //   }
-  //   this.ensureMixin(mix);
-  //   return mix;
-  // }
-
-  // public addScalar(scalar: IScalar) {
-  //   if (scalar instanceof Scalar) {
-  //     this.scalars.set(scalar.name, scalar);
-  //   }
-  //   this.ensureScalar(scalar);
-  //   return scalar;
-  // }
-
-  // public addDirective(directive: IDirective) {
-  //   if (directive instanceof Directive) {
-  //     this.directives.set(directive.name, directive);
-  //   }
-  //   this.ensureDirective(directive);
-  //   return directive;
-  // }
 
   /** ensure all foreign keys */
   public ensureAll() {
@@ -442,52 +374,4 @@ export class ModelPackageBase<
       }
     });
   }
-
-  // private ensureEntity(entity: IEntity) {
-  //   if (entity && !this.metaModel.entities.has(entity.name)) {
-  //     this.metaModel.entities.set(entity.name, entity);
-  //   }
-  // }
-
-  // private ensureMutation(mutation: IMutation) {
-  //   if (mutation && !this.metaModel.mutations.has(mutation.name)) {
-  //     this.metaModel.mutations.set(mutation.name, mutation);
-  //   }
-  // }
-
-  // private ensureQuery(query: IQuery) {
-  //   if (query && !this.metaModel.queries.has(query.name)) {
-  //     this.metaModel.queries.set(query.name, query);
-  //   }
-  // }
-
-  // private ensureMixin(mixin: IMixin) {
-  //   if (mixin && !this.metaModel.mixins.has(mixin.name)) {
-  //     this.metaModel.mixins.set(mixin.name, mixin);
-  //   }
-  // }
-
-  // private ensureScalar(scalar: IScalar) {
-  //   if (scalar && !this.metaModel.scalars.has(scalar.name)) {
-  //     this.metaModel.scalars.set(scalar.name, scalar);
-  //   }
-  // }
-
-  // private ensureDirective(directive: IDirective) {
-  //   if (directive && !this.metaModel.directives.has(directive.name)) {
-  //     this.metaModel.directives.set(directive.name, directive);
-  //   }
-  // }
-
-  // private ensureUnion(uni: IUnion) {
-  //   if (uni && !this.metaModel.unions.has(uni.name)) {
-  //     this.metaModel.unions.set(uni.name, uni);
-  //   }
-  // }
-
-  // private ensureEnum(enu: IEnum) {
-  //   if (enu && !this.metaModel.enums.has(enu.name)) {
-  //     this.metaModel.enums.set(enu.name, enu);
-  //   }
-  // }
 }

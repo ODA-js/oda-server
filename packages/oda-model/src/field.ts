@@ -33,7 +33,8 @@ export type IField = ISimpleField | IEntityField | IRelationField;
 export function isEntityFieldInput(
   input: FieldInput,
 ): input is EntityFieldInput {
-  return ((input as unknown) as EntityField).type.type === 'entity';
+  const ent = (input as unknown) as EntityField;
+  return ent.type && ent.type.type === 'entity';
 }
 
 export function isRelationFieldInput(

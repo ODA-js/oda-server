@@ -8,13 +8,11 @@ BelongsTo {
         "backField": "",
         "entity": "A",
         "field": "id",
-        "metadata": Object {},
       },
       "metadata_": Object {},
     },
     "entity": "B",
     "field": "a",
-    "metadata": Object {},
   },
   "metadata_": Object {
     "name": Object {

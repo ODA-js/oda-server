@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`directive loads: raw 1`] = `
+Directive {
+  "$obj": Object {
+    "args": Map {
+      "field" => Object {
+        "defaultValue": "default",
+        "name": "field",
+        "required": false,
+        "type": "string",
+      },
+    },
+    "name": "readOnly",
+    "on": Array [
+      "FIELD",
+    ],
+  },
+  "metadata_": Object {},
+}
+`;
+
+exports[`directive loads: toObject 1`] = `
+Object {
+  "args": Array [
+    Object {
+      "defaultValue": "default",
+      "name": "field",
+      "required": false,
+      "type": "string",
+    },
+  ],
+  "description": undefined,
+  "metadata": Object {},
+  "name": "readOnly",
+  "on": Array [
+    "FIELD",
+  ],
+  "title": undefined,
+}
+`;

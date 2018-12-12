@@ -1,0 +1,16 @@
+{
+  "name": "oda-model-graphql",
+  "version": "2.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Alex Vedmedenko <vedmalex@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "graphql": "^14.0.2",
+    "graphql-tag": "^2.10.0",
+    "oda-lodash": "file:../oda-lodash",
+    "oda-model": "file:../oda-model"
+  },
+  "devDependencies": {}
+}

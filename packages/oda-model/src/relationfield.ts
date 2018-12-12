@@ -79,8 +79,7 @@ export interface RelationFieldInternal
   > {}
 
 const defaultMetaInfo = {};
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 export class RelationField
   extends RelationFieldBase<
@@ -94,10 +93,8 @@ export class RelationField
   public get modelType(): MetaModelType {
     return 'relation-field';
   }
-  constructor(inp: RelationFieldInput) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: RelationFieldInput) {
+    super(merge({}, defaultInput, init));
   }
 
   public updateWith(input: Nullable<RelationFieldInput>) {

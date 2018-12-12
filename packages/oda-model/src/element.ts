@@ -66,12 +66,9 @@ export interface IMeta<
 }
 
 const defaultMetaInfo = {};
-const defaultInternal = {
-  metadata: {},
-};
-const defaultInput = { metadata: {} };
+const defaultInput = { metadata: defaultMetaInfo };
 
-export abstract class Element<
+export class Element<
   M extends ElementMetaInfo,
   I extends ElementInput<M>,
   S extends ElementInternal<M>,
@@ -81,7 +78,7 @@ export abstract class Element<
     return 'element';
   }
   protected $obj: S;
-  protected metadata_: M;
+  protected metadata_!: M;
   /**
    * metadata is not immutable
    */
@@ -94,8 +91,7 @@ export abstract class Element<
   }
 
   constructor(init: ElementInput<M>) {
-    this.metadata_ = merge({}, defaultMetaInfo as M);
-    this.$obj = merge({}, defaultInternal as S);
+    this.$obj = {} as S;
     this.updateWith(merge({}, defaultInput, init));
   }
   /**
@@ -107,7 +103,6 @@ export abstract class Element<
       src: this,
       input,
       field: 'metadata',
-      required: true,
       effect: (_, value) => (this.metadata_ = merge({}, this.metadata_, value)),
       setDefault: _ => (this.metadata_ = merge({}, defaultMetaInfo) as M),
     });

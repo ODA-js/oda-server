@@ -58,8 +58,7 @@ export interface EntityRefOutput extends ElementOutput<EntityRefMetaInfo> {
 }
 
 const defaultMetaInfo = {};
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 /** Entity reference implementation */
 export class EntityReference
@@ -107,8 +106,6 @@ export class EntityReference
         typeof init === 'object' ? init : StrToEntityRef(init),
       ),
     );
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
   }
 
   public toString(): string {

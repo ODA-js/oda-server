@@ -70,8 +70,7 @@ export interface MetaModelInternal
 }
 
 const defaultMetaInfo = {};
-const defaultInternal = {};
-const defaultInput = {};
+const defaultInput = { metadata: defaultMetaInfo };
 
 /**
  * Represents meta-model store
@@ -106,10 +105,8 @@ export class MetaModel
     return this.$obj.packages;
   }
 
-  constructor(inp: MetaModelInput) {
-    super(merge({}, defaultInput, inp));
-    this.metadata_ = merge({}, defaultMetaInfo, this.metadata_);
-    this.$obj = merge({}, defaultInternal, this.$obj);
+  constructor(init: MetaModelInput) {
+    super(merge({}, defaultInput, init));
     this.ensureDefaultPackage();
   }
 
@@ -121,8 +118,12 @@ export class MetaModel
   }
 
   public toObject(): MetaModelOutput {
+    this.packages.delete(this.name);
     return merge({}, super.toObject(), {
-      packages: MapToArray(this.$obj.packages).map(i => i.toObject()),
+      packages: MapToArray(this.$obj.packages, (name, value) => ({
+        ...value.toObject(),
+        name,
+      })),
     } as Partial<MetaModelOutput>);
   }
 
@@ -146,21 +147,21 @@ export class MetaModel
       src: this.$obj,
       input,
       field: 'packages',
+      allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        if (value.length > 0) {
-          const createIt = createOrMergeFromMap(
-            this.metaModel,
-            ModelPackage,
-            'unions',
-          );
-          src.packages = new Map(value
-            .map(i => {
-              const pkg = createIt(i);
-              return pkg;
-            })
-            .filter(f => f) as [string, IPackage][]);
-        }
+        const createIt = createOrMergeFromMap(
+          this.metaModel,
+          ModelPackage,
+          'packages',
+        );
+        src.packages = new Map(value
+          .map(i => {
+            const pkg = createIt(i);
+            return pkg;
+          })
+          .filter(f => f) as [string, IPackage][]);
       },
+      required: true,
       setDefault: src => (src.packages = new Map<string, IPackage>()),
     });
   }
