@@ -1,7 +1,6 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as template from '../graphql-backend-template';
-import AclDefault from '../acl';
 import { merge } from 'lodash';
 const { defaultTypeMapper, prepareMapper } = template.utils;
 
@@ -17,17 +16,13 @@ export default function generate({
   schema,
   rootDir,
   templateRoot = path.resolve(__dirname, '../../js-templates'),
-  acl,
   context,
-  logs,
 }: GeneratorInit) {
   const actualTypeMapper = merge(defaultTypeMapper, context.typeMapper || {});
 
   const defaultAdapter = context.defaultAdapter;
 
   // передавать в методы кодогенерации.
-  let secureAcl = new AclDefault(acl);
-  const aclAllow = secureAcl.allow.bind(secureAcl);
 
   let raw = templateEngine({
     root: templateRoot,
@@ -36,7 +31,6 @@ export default function generate({
   const { modelStore, packages } = initModel({
     schema,
     hooks,
-    secureAcl,
   });
 
   const systemPackage = packages.get('system');

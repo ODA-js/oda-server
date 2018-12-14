@@ -1,6 +1,7 @@
-import { ModelHook, ValidationResultType } from 'oda-model';
+import { IModelHook } from 'oda-model';
+
 export type GeneratorInit = {
-  hooks?: ModelHook[];
+  hooks?: IModelHook[];
   schema: any;
   rootDir?: string;
   templateRoot?: string;
@@ -9,5 +10,4 @@ export type GeneratorInit = {
     typeMapper?: any;
     defaultAdapter?: 'mongoose' | 'sequelize';
   };
-  logs?: ValidationResultType;
 };

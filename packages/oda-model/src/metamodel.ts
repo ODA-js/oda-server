@@ -1,5 +1,3 @@
-import * as fs from 'fs';
-
 import { Entity, EntityInput, IEntity } from './entity';
 
 import {
@@ -7,6 +5,7 @@ import {
   IPackage,
   ModelPackageInput,
   ModelPackageOutput,
+  AccessAction,
 } from './modelpackage';
 import { MutationInput } from './mutation';
 import { QueryInput } from './query';
@@ -33,6 +32,7 @@ import {
 } from './packagebase';
 import { getFilter } from './getFilter';
 import { FieldInput, IField } from './field';
+import { hasCycle } from './detectcycles';
 
 export type FieldMap = {
   [name: string]: boolean;
@@ -48,22 +48,22 @@ export interface IModelHook {
 export interface IModel
   extends IPackageBase<MetaModelMetaInfo, MetaModelInput, MetaModelOutput> {
   readonly packages: Map<string, IPackage>;
-  readonly store: string;
   readonly defaultPackage: IPackage;
   readonly abstract: boolean;
+  readonly hooks: IModelHook[];
 }
 
 export interface MetaModelInput
   extends ModelPackageBaseInput<MetaModelMetaInfo> {
   packages?: (string | ModelPackageInput)[];
-  store?: string;
+  hooks?: IModelHook | IModelHook[];
 }
 
 export interface MetaModelOutput
   extends ModelBaseOutput<MetaModelMetaInfo>,
     ModelPackageOutput {
   packages: ModelPackageOutput[];
-  store: string;
+  hooks?: IModelHook[];
 }
 
 export interface MetaModelMetaInfo extends ModelPackageBaseMetaInfo {}
@@ -72,6 +72,7 @@ export interface MetaModelInternal
   extends ModelPackageBaseInternal<MetaModelMetaInfo> {
   packages: Map<string, IPackage>;
   store: string;
+  hooks: IModelHook[];
 }
 
 const defaultMetaInfo = {};
@@ -92,7 +93,9 @@ export class MetaModel
     return 'model';
   }
 
-  public store: string = 'default.json';
+  public get defaultAccess() {
+    return 'allow' as AccessAction;
+  }
 
   public get defaultPackage(): IPackage {
     return this;
@@ -108,6 +111,14 @@ export class MetaModel
 
   public get packages() {
     return this.$obj.packages;
+  }
+
+  public get hooks() {
+    return this.$obj.hooks;
+  }
+
+  public get extends() {
+    return new Set();
   }
 
   constructor(init: MetaModelInput) {
@@ -169,12 +180,26 @@ export class MetaModel
       required: true,
       setDefault: src => (src.packages = new Map<string, IPackage>()),
     });
-  }
 
-  public loadModel(fileName: string = this.store) {
-    let txt = fs.readFileSync(fileName);
-    let store = JSON.parse(txt.toString()) as MetaModelInput;
-    this.loadPackage(store);
+    assignValue<
+      MetaModelInternal,
+      MetaModelInput,
+      NonNullable<MetaModelInput['hooks']>
+    >({
+      src: this.$obj,
+      input,
+      field: 'hooks',
+      allowEffect: (_, value) =>
+        !!(value && ((Array.isArray(value) && value.length > 0) || value)),
+      effect: (src, value) => {
+        if (!Array.isArray(value)) {
+          value = [fold(value) as IModelHook];
+        }
+        src.hooks = fold(value.filter(f => f)) as IModelHook[];
+      },
+      required: true,
+      setDefault: src => (src.hooks = []),
+    });
   }
 
   protected dedupeFields(
@@ -226,82 +251,72 @@ export class MetaModel
     });
   }
 
-  public applyHooks(hooks?: IModelHook[]) {
-    if (hooks && !Array.isArray(hooks)) {
-      hooks = [hooks];
-    }
-    if (hooks) {
-      hooks = hooks.filter(f => f);
-      hooks.forEach(hook => {
-        if (hook.entities && this.entities.size > 0) {
-          let keys = Object.keys(hook.entities);
-          for (let i = 0, len = keys.length; i < len; i++) {
-            let key = keys[i];
-            let current = hook.entities[key];
-            let prepare = getFilter(key);
-            let list = Array.from(this.entities.values()).filter(
-              prepare.filter,
+  public applyHooks() {
+    this.hooks.forEach(hook => {
+      if (hook.entities && this.entities.size > 0) {
+        let keys = Object.keys(hook.entities);
+        for (let i = 0, len = keys.length; i < len; i++) {
+          let key = keys[i];
+          let current = hook.entities[key];
+          let prepare = getFilter(key);
+          let list = Array.from(this.entities.values()).filter(prepare.filter);
+          if (list.length > 0) {
+            list.forEach(e => {
+              let result = this.applyEntityHook(e, current);
+              this.entities.set(result.name, result);
+            });
+          } else if (prepare.fields.length > 0) {
+            throw new Error(
+              `Entit${prepare.fields.length === 1 ? 'y' : 'ies'} ${
+                prepare.fields
+              } not found`,
             );
-            if (list.length > 0) {
-              list.forEach(e => {
-                let result = this.applyEntityHook(e, current);
-                this.entities.set(result.name, result);
-              });
-            } else if (prepare.fields.length > 0) {
-              throw new Error(
-                `Entit${prepare.fields.length === 1 ? 'y' : 'ies'} ${
-                  prepare.fields
-                } not found`,
-              );
-            }
           }
         }
-        if (hook.mutations && this.mutations.size > 0) {
-          let keys = Object.keys(hook.mutations);
-          for (let i = 0, len = keys.length; i < len; i++) {
-            let key = keys[i];
-            let current = hook.mutations[key];
-            let prepare = getFilter(key);
-            let list = Array.from(this.mutations.values()).filter(
-              prepare.filter,
+      }
+      if (hook.mutations && this.mutations.size > 0) {
+        let keys = Object.keys(hook.mutations);
+        for (let i = 0, len = keys.length; i < len; i++) {
+          let key = keys[i];
+          let current = hook.mutations[key];
+          let prepare = getFilter(key);
+          let list = Array.from(this.mutations.values()).filter(prepare.filter);
+          if (list.length > 0) {
+            list.forEach(e => {
+              e.updateWith(merge({}, e.toObject(), current));
+              this.mutations.set(e.name, e);
+            });
+          } else if (prepare.fields.length > 0) {
+            throw new Error(
+              `Mutation${prepare.fields.length > 1 ? 's' : ''} ${
+                prepare.fields
+              } not found`,
             );
-            if (list.length > 0) {
-              list.forEach(e => {
-                e.updateWith(merge({}, e.toObject(), current));
-                this.mutations.set(e.name, e);
-              });
-            } else if (prepare.fields.length > 0) {
-              throw new Error(
-                `Mutation${prepare.fields.length > 1 ? 's' : ''} ${
-                  prepare.fields
-                } not found`,
-              );
-            }
           }
         }
-        if (hook.queries && this.queries.size > 0) {
-          let keys = Object.keys(hook.queries);
-          for (let i = 0, len = keys.length; i < len; i++) {
-            let key = keys[i];
-            let current = hook.queries[key];
-            let prepare = getFilter(key);
-            let list = Array.from(this.queries.values()).filter(prepare.filter);
-            if (list.length > 0) {
-              list.forEach(e => {
-                e.updateWith(merge({}, e.toObject(), current));
-                this.queries.set(e.name, e);
-              });
-            } else if (prepare.fields.length > 0) {
-              throw new Error(
-                `Quer${prepare.fields.length > 1 ? 'ies' : 'y'} ${
-                  prepare.fields
-                } not found`,
-              );
-            }
+      }
+      if (hook.queries && this.queries.size > 0) {
+        let keys = Object.keys(hook.queries);
+        for (let i = 0, len = keys.length; i < len; i++) {
+          let key = keys[i];
+          let current = hook.queries[key];
+          let prepare = getFilter(key);
+          let list = Array.from(this.queries.values()).filter(prepare.filter);
+          if (list.length > 0) {
+            list.forEach(e => {
+              e.updateWith(merge({}, e.toObject(), current));
+              this.queries.set(e.name, e);
+            });
+          } else if (prepare.fields.length > 0) {
+            throw new Error(
+              `Quer${prepare.fields.length > 1 ? 'ies' : 'y'} ${
+                prepare.fields
+              } not found`,
+            );
           }
         }
-      });
-    }
+      }
+    });
   }
 
   public addPackage(pkg: ModelPackageInput) {
@@ -319,18 +334,27 @@ export class MetaModel
     pack.ensureAll();
   }
 
-  public loadPackage(store: MetaModelInput, hooks?: any[]) {
+  public loadPackage(store: MetaModelInput) {
     this.reset();
     this.updateWith(store);
-
     this.ensureDefaultPackage();
-    if (hooks) {
-      this.applyHooks(fold(hooks) as IModelHook[]);
-    }
+    this.applyHooks();
   }
 
   public reset() {
     this.updateWith({ name: this.name });
     this.ensureDefaultPackage();
+  }
+
+  public hasCycles() {
+    return (
+      hasCycle([...this.entities.values()], 'implements') ||
+      hasCycle([...this.packages.values()], 'extends')
+    );
+  }
+  public build() {
+    if (this.hasCycles) {
+      throw new Error("schema has cycles, so it can't be build");
+    }
   }
 }

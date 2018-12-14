@@ -2,6 +2,7 @@ import { MetaModel } from 'oda-model';
 import * as pathLib from 'path';
 import AclDefault from '../acl';
 import { get } from 'lodash';
+import { model } from '../graphql-backend-template';
 
 export interface IPackageDef {
   [security: string]: {
@@ -59,17 +60,16 @@ export function pushToAppropriate({
 export default function({
   schema,
   hooks,
-  secureAcl,
   packageList,
 }: {
   [keys: string]: any;
-  secureAcl: AclDefault;
 }) {
-  let modelStore = new MetaModel('system');
+  let modelStore = new MetaModel({ name: 'model' });
+  modelStore.applyHooks();
   if (typeof schema === 'string') {
     modelStore.loadModel(pathLib.resolve(__dirname, '../test.json'));
   } else {
-    modelStore.loadPackage(schema, hooks);
+    modelStore.loadPackage(schema);
     modelStore.saveModel('compiledModel.json');
   }
   let pckgs = initPackages(secureAcl);

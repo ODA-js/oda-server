@@ -1,0 +1,3671 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cycles build Graph: graph 1`] = `
+Graph {
+  "field": "implements",
+  "vertices": Map {
+    "a" => Vertex {
+      "down": Map {
+        "b" => Vertex {
+          "down": Map {
+            "e" => Vertex {
+              "down": Map {
+                "a" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => [Circular],
+                "b" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+            ],
+            "name": "b",
+          },
+          "name": "b",
+          "up": Map {
+            "a" => [Circular],
+          },
+        },
+        "d" => Vertex {
+          "down": Map {},
+          "item": Object {
+            "implements": Array [
+              "a",
+            ],
+            "name": "d",
+          },
+          "name": "d",
+          "up": Map {
+            "a" => [Circular],
+          },
+        },
+        "e" => Vertex {
+          "down": Map {
+            "a" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+              "b",
+            ],
+            "name": "e",
+          },
+          "name": "e",
+          "up": Map {
+            "a" => [Circular],
+            "b" => Vertex {
+              "down": Map {
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [
+          "e",
+        ],
+        "name": "a",
+      },
+      "name": "a",
+      "up": Map {
+        "e" => Vertex {
+          "down": Map {
+            "a" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+              "b",
+            ],
+            "name": "e",
+          },
+          "name": "e",
+          "up": Map {
+            "a" => [Circular],
+            "b" => Vertex {
+              "down": Map {
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+          },
+        },
+      },
+    },
+    "b" => Vertex {
+      "down": Map {
+        "e" => Vertex {
+          "down": Map {
+            "a" => Vertex {
+              "down": Map {
+                "b" => [Circular],
+                "d" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                    ],
+                    "name": "d",
+                  },
+                  "name": "d",
+                  "up": Map {
+                    "a" => [Circular],
+                  },
+                },
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "e",
+                ],
+                "name": "a",
+              },
+              "name": "a",
+              "up": Map {
+                "e" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+              "b",
+            ],
+            "name": "e",
+          },
+          "name": "e",
+          "up": Map {
+            "a" => Vertex {
+              "down": Map {
+                "b" => [Circular],
+                "d" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                    ],
+                    "name": "d",
+                  },
+                  "name": "d",
+                  "up": Map {
+                    "a" => [Circular],
+                  },
+                },
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "e",
+                ],
+                "name": "a",
+              },
+              "name": "a",
+              "up": Map {
+                "e" => [Circular],
+              },
+            },
+            "b" => [Circular],
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [
+          "a",
+        ],
+        "name": "b",
+      },
+      "name": "b",
+      "up": Map {
+        "a" => Vertex {
+          "down": Map {
+            "b" => [Circular],
+            "d" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "d",
+              },
+              "name": "d",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+            "e" => Vertex {
+              "down": Map {
+                "a" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => [Circular],
+                "b" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "e",
+            ],
+            "name": "a",
+          },
+          "name": "a",
+          "up": Map {
+            "e" => Vertex {
+              "down": Map {
+                "a" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => [Circular],
+                "b" => [Circular],
+              },
+            },
+          },
+        },
+      },
+    },
+    "c" => Vertex {
+      "down": Map {},
+      "item": Object {
+        "implements": Array [
+          "3",
+        ],
+        "name": "c",
+      },
+      "name": "c",
+      "up": Map {},
+    },
+    "d" => Vertex {
+      "down": Map {},
+      "item": Object {
+        "implements": Array [
+          "a",
+        ],
+        "name": "d",
+      },
+      "name": "d",
+      "up": Map {
+        "a" => Vertex {
+          "down": Map {
+            "b" => Vertex {
+              "down": Map {
+                "e" => Vertex {
+                  "down": Map {
+                    "a" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                      "b",
+                    ],
+                    "name": "e",
+                  },
+                  "name": "e",
+                  "up": Map {
+                    "a" => [Circular],
+                    "b" => [Circular],
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+            "d" => [Circular],
+            "e" => Vertex {
+              "down": Map {
+                "a" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => [Circular],
+                "b" => Vertex {
+                  "down": Map {
+                    "e" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                    ],
+                    "name": "b",
+                  },
+                  "name": "b",
+                  "up": Map {
+                    "a" => [Circular],
+                  },
+                },
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "e",
+            ],
+            "name": "a",
+          },
+          "name": "a",
+          "up": Map {
+            "e" => Vertex {
+              "down": Map {
+                "a" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => [Circular],
+                "b" => Vertex {
+                  "down": Map {
+                    "e" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                    ],
+                    "name": "b",
+                  },
+                  "name": "b",
+                  "up": Map {
+                    "a" => [Circular],
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    "e" => Vertex {
+      "down": Map {
+        "a" => Vertex {
+          "down": Map {
+            "b" => Vertex {
+              "down": Map {
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+            "d" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "d",
+              },
+              "name": "d",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+            "e" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "e",
+            ],
+            "name": "a",
+          },
+          "name": "a",
+          "up": Map {
+            "e" => [Circular],
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [
+          "a",
+          "b",
+        ],
+        "name": "e",
+      },
+      "name": "e",
+      "up": Map {
+        "a" => Vertex {
+          "down": Map {
+            "b" => Vertex {
+              "down": Map {
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+            "d" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "d",
+              },
+              "name": "d",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+            "e" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "e",
+            ],
+            "name": "a",
+          },
+          "name": "a",
+          "up": Map {
+            "e" => [Circular],
+          },
+        },
+        "b" => Vertex {
+          "down": Map {
+            "e" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+            ],
+            "name": "b",
+          },
+          "name": "b",
+          "up": Map {
+            "a" => Vertex {
+              "down": Map {
+                "b" => [Circular],
+                "d" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                    ],
+                    "name": "d",
+                  },
+                  "name": "d",
+                  "up": Map {
+                    "a" => [Circular],
+                  },
+                },
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "e",
+                ],
+                "name": "a",
+              },
+              "name": "a",
+              "up": Map {
+                "e" => [Circular],
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`cycles build Graph: graph-final 1`] = `
+Graph {
+  "field": "implements",
+  "vertices": Map {
+    "a" => Vertex {
+      "down": Map {
+        "b" => Vertex {
+          "down": Map {
+            "e" => Vertex {
+              "down": Map {
+                "a" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => [Circular],
+                "b" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+            ],
+            "name": "b",
+          },
+          "name": "b",
+          "up": Map {
+            "a" => [Circular],
+          },
+        },
+        "d" => Vertex {
+          "down": Map {},
+          "item": Object {
+            "implements": Array [
+              "a",
+            ],
+            "name": "d",
+          },
+          "name": "d",
+          "up": Map {
+            "a" => [Circular],
+          },
+        },
+        "e" => Vertex {
+          "down": Map {
+            "a" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+              "b",
+            ],
+            "name": "e",
+          },
+          "name": "e",
+          "up": Map {
+            "a" => [Circular],
+            "b" => Vertex {
+              "down": Map {
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [
+          "e",
+        ],
+        "name": "a",
+      },
+      "name": "a",
+      "up": Map {
+        "e" => Vertex {
+          "down": Map {
+            "a" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+              "b",
+            ],
+            "name": "e",
+          },
+          "name": "e",
+          "up": Map {
+            "a" => [Circular],
+            "b" => Vertex {
+              "down": Map {
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+          },
+        },
+      },
+    },
+    "b" => Vertex {
+      "down": Map {
+        "e" => Vertex {
+          "down": Map {
+            "a" => Vertex {
+              "down": Map {
+                "b" => [Circular],
+                "d" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                    ],
+                    "name": "d",
+                  },
+                  "name": "d",
+                  "up": Map {
+                    "a" => [Circular],
+                  },
+                },
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "e",
+                ],
+                "name": "a",
+              },
+              "name": "a",
+              "up": Map {
+                "e" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+              "b",
+            ],
+            "name": "e",
+          },
+          "name": "e",
+          "up": Map {
+            "a" => Vertex {
+              "down": Map {
+                "b" => [Circular],
+                "d" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                    ],
+                    "name": "d",
+                  },
+                  "name": "d",
+                  "up": Map {
+                    "a" => [Circular],
+                  },
+                },
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "e",
+                ],
+                "name": "a",
+              },
+              "name": "a",
+              "up": Map {
+                "e" => [Circular],
+              },
+            },
+            "b" => [Circular],
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [
+          "a",
+        ],
+        "name": "b",
+      },
+      "name": "b",
+      "up": Map {
+        "a" => Vertex {
+          "down": Map {
+            "b" => [Circular],
+            "d" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "d",
+              },
+              "name": "d",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+            "e" => Vertex {
+              "down": Map {
+                "a" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => [Circular],
+                "b" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "e",
+            ],
+            "name": "a",
+          },
+          "name": "a",
+          "up": Map {
+            "e" => Vertex {
+              "down": Map {
+                "a" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => [Circular],
+                "b" => [Circular],
+              },
+            },
+          },
+        },
+      },
+    },
+    "c" => Vertex {
+      "down": Map {},
+      "item": Object {
+        "implements": Array [
+          "3",
+        ],
+        "name": "c",
+      },
+      "name": "c",
+      "up": Map {},
+    },
+    "d" => Vertex {
+      "down": Map {},
+      "item": Object {
+        "implements": Array [
+          "a",
+        ],
+        "name": "d",
+      },
+      "name": "d",
+      "up": Map {
+        "a" => Vertex {
+          "down": Map {
+            "b" => Vertex {
+              "down": Map {
+                "e" => Vertex {
+                  "down": Map {
+                    "a" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                      "b",
+                    ],
+                    "name": "e",
+                  },
+                  "name": "e",
+                  "up": Map {
+                    "a" => [Circular],
+                    "b" => [Circular],
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+            "d" => [Circular],
+            "e" => Vertex {
+              "down": Map {
+                "a" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => [Circular],
+                "b" => Vertex {
+                  "down": Map {
+                    "e" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                    ],
+                    "name": "b",
+                  },
+                  "name": "b",
+                  "up": Map {
+                    "a" => [Circular],
+                  },
+                },
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "e",
+            ],
+            "name": "a",
+          },
+          "name": "a",
+          "up": Map {
+            "e" => Vertex {
+              "down": Map {
+                "a" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => [Circular],
+                "b" => Vertex {
+                  "down": Map {
+                    "e" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                    ],
+                    "name": "b",
+                  },
+                  "name": "b",
+                  "up": Map {
+                    "a" => [Circular],
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    "e" => Vertex {
+      "down": Map {
+        "a" => Vertex {
+          "down": Map {
+            "b" => Vertex {
+              "down": Map {
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+            "d" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "d",
+              },
+              "name": "d",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+            "e" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "e",
+            ],
+            "name": "a",
+          },
+          "name": "a",
+          "up": Map {
+            "e" => [Circular],
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [
+          "a",
+          "b",
+        ],
+        "name": "e",
+      },
+      "name": "e",
+      "up": Map {
+        "a" => Vertex {
+          "down": Map {
+            "b" => Vertex {
+              "down": Map {
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+            "d" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "d",
+              },
+              "name": "d",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+            "e" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "e",
+            ],
+            "name": "a",
+          },
+          "name": "a",
+          "up": Map {
+            "e" => [Circular],
+          },
+        },
+        "b" => Vertex {
+          "down": Map {
+            "e" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+            ],
+            "name": "b",
+          },
+          "name": "b",
+          "up": Map {
+            "a" => Vertex {
+              "down": Map {
+                "b" => [Circular],
+                "d" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                    ],
+                    "name": "d",
+                  },
+                  "name": "d",
+                  "up": Map {
+                    "a" => [Circular],
+                  },
+                },
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "e",
+                ],
+                "name": "a",
+              },
+              "name": "a",
+              "up": Map {
+                "e" => [Circular],
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`cycles get SubGraph: graph 1`] = `
+Graph {
+  "field": "implements",
+  "vertices": Map {
+    "a" => Vertex {
+      "down": Map {
+        "d" => Vertex {
+          "down": Map {},
+          "item": Object {
+            "implements": Array [
+              "a",
+            ],
+            "name": "d",
+          },
+          "name": "d",
+          "up": Map {
+            "a" => [Circular],
+          },
+        },
+        "e" => Vertex {
+          "down": Map {
+            "i" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "e",
+                ],
+                "name": "i",
+              },
+              "name": "i",
+              "up": Map {
+                "e" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+              "b",
+            ],
+            "name": "e",
+          },
+          "name": "e",
+          "up": Map {
+            "a" => [Circular],
+            "b" => Vertex {
+              "down": Map {
+                "e" => [Circular],
+                "f" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "b",
+                    ],
+                    "name": "f",
+                  },
+                  "name": "f",
+                  "up": Map {
+                    "b" => [Circular],
+                  },
+                },
+                "g" => Vertex {
+                  "down": Map {
+                    "j" => Vertex {
+                      "down": Map {},
+                      "item": Object {
+                        "implements": Array [
+                          "g",
+                          "h",
+                        ],
+                        "name": "j",
+                      },
+                      "name": "j",
+                      "up": Map {
+                        "g" => [Circular],
+                        "h" => Vertex {
+                          "down": Map {
+                            "j" => [Circular],
+                          },
+                          "item": Object {
+                            "implements": Array [
+                              "c",
+                            ],
+                            "name": "h",
+                          },
+                          "name": "h",
+                          "up": Map {
+                            "c" => Vertex {
+                              "down": Map {
+                                "h" => [Circular],
+                              },
+                              "item": Object {
+                                "implements": Array [],
+                                "name": "c",
+                              },
+                              "name": "c",
+                              "up": Map {},
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "b",
+                    ],
+                    "name": "g",
+                  },
+                  "name": "g",
+                  "up": Map {
+                    "b" => [Circular],
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {},
+            },
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [],
+        "name": "a",
+      },
+      "name": "a",
+      "up": Map {},
+    },
+    "b" => Vertex {
+      "down": Map {
+        "e" => Vertex {
+          "down": Map {
+            "i" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "e",
+                ],
+                "name": "i",
+              },
+              "name": "i",
+              "up": Map {
+                "e" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+              "b",
+            ],
+            "name": "e",
+          },
+          "name": "e",
+          "up": Map {
+            "a" => Vertex {
+              "down": Map {
+                "d" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                    ],
+                    "name": "d",
+                  },
+                  "name": "d",
+                  "up": Map {
+                    "a" => [Circular],
+                  },
+                },
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [],
+                "name": "a",
+              },
+              "name": "a",
+              "up": Map {},
+            },
+            "b" => [Circular],
+          },
+        },
+        "f" => Vertex {
+          "down": Map {},
+          "item": Object {
+            "implements": Array [
+              "b",
+            ],
+            "name": "f",
+          },
+          "name": "f",
+          "up": Map {
+            "b" => [Circular],
+          },
+        },
+        "g" => Vertex {
+          "down": Map {
+            "j" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "g",
+                  "h",
+                ],
+                "name": "j",
+              },
+              "name": "j",
+              "up": Map {
+                "g" => [Circular],
+                "h" => Vertex {
+                  "down": Map {
+                    "j" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "c",
+                    ],
+                    "name": "h",
+                  },
+                  "name": "h",
+                  "up": Map {
+                    "c" => Vertex {
+                      "down": Map {
+                        "h" => [Circular],
+                      },
+                      "item": Object {
+                        "implements": Array [],
+                        "name": "c",
+                      },
+                      "name": "c",
+                      "up": Map {},
+                    },
+                  },
+                },
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "b",
+            ],
+            "name": "g",
+          },
+          "name": "g",
+          "up": Map {
+            "b" => [Circular],
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [],
+        "name": "b",
+      },
+      "name": "b",
+      "up": Map {},
+    },
+    "c" => Vertex {
+      "down": Map {
+        "h" => Vertex {
+          "down": Map {
+            "j" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "g",
+                  "h",
+                ],
+                "name": "j",
+              },
+              "name": "j",
+              "up": Map {
+                "g" => Vertex {
+                  "down": Map {
+                    "j" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "b",
+                    ],
+                    "name": "g",
+                  },
+                  "name": "g",
+                  "up": Map {
+                    "b" => Vertex {
+                      "down": Map {
+                        "e" => Vertex {
+                          "down": Map {
+                            "i" => Vertex {
+                              "down": Map {},
+                              "item": Object {
+                                "implements": Array [
+                                  "e",
+                                ],
+                                "name": "i",
+                              },
+                              "name": "i",
+                              "up": Map {
+                                "e" => [Circular],
+                              },
+                            },
+                          },
+                          "item": Object {
+                            "implements": Array [
+                              "a",
+                              "b",
+                            ],
+                            "name": "e",
+                          },
+                          "name": "e",
+                          "up": Map {
+                            "a" => Vertex {
+                              "down": Map {
+                                "d" => Vertex {
+                                  "down": Map {},
+                                  "item": Object {
+                                    "implements": Array [
+                                      "a",
+                                    ],
+                                    "name": "d",
+                                  },
+                                  "name": "d",
+                                  "up": Map {
+                                    "a" => [Circular],
+                                  },
+                                },
+                                "e" => [Circular],
+                              },
+                              "item": Object {
+                                "implements": Array [],
+                                "name": "a",
+                              },
+                              "name": "a",
+                              "up": Map {},
+                            },
+                            "b" => [Circular],
+                          },
+                        },
+                        "f" => Vertex {
+                          "down": Map {},
+                          "item": Object {
+                            "implements": Array [
+                              "b",
+                            ],
+                            "name": "f",
+                          },
+                          "name": "f",
+                          "up": Map {
+                            "b" => [Circular],
+                          },
+                        },
+                        "g" => [Circular],
+                      },
+                      "item": Object {
+                        "implements": Array [],
+                        "name": "b",
+                      },
+                      "name": "b",
+                      "up": Map {},
+                    },
+                  },
+                },
+                "h" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "c",
+            ],
+            "name": "h",
+          },
+          "name": "h",
+          "up": Map {
+            "c" => [Circular],
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [],
+        "name": "c",
+      },
+      "name": "c",
+      "up": Map {},
+    },
+    "d" => Vertex {
+      "down": Map {},
+      "item": Object {
+        "implements": Array [
+          "a",
+        ],
+        "name": "d",
+      },
+      "name": "d",
+      "up": Map {
+        "a" => Vertex {
+          "down": Map {
+            "d" => [Circular],
+            "e" => Vertex {
+              "down": Map {
+                "i" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "e",
+                    ],
+                    "name": "i",
+                  },
+                  "name": "i",
+                  "up": Map {
+                    "e" => [Circular],
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => [Circular],
+                "b" => Vertex {
+                  "down": Map {
+                    "e" => [Circular],
+                    "f" => Vertex {
+                      "down": Map {},
+                      "item": Object {
+                        "implements": Array [
+                          "b",
+                        ],
+                        "name": "f",
+                      },
+                      "name": "f",
+                      "up": Map {
+                        "b" => [Circular],
+                      },
+                    },
+                    "g" => Vertex {
+                      "down": Map {
+                        "j" => Vertex {
+                          "down": Map {},
+                          "item": Object {
+                            "implements": Array [
+                              "g",
+                              "h",
+                            ],
+                            "name": "j",
+                          },
+                          "name": "j",
+                          "up": Map {
+                            "g" => [Circular],
+                            "h" => Vertex {
+                              "down": Map {
+                                "j" => [Circular],
+                              },
+                              "item": Object {
+                                "implements": Array [
+                                  "c",
+                                ],
+                                "name": "h",
+                              },
+                              "name": "h",
+                              "up": Map {
+                                "c" => Vertex {
+                                  "down": Map {
+                                    "h" => [Circular],
+                                  },
+                                  "item": Object {
+                                    "implements": Array [],
+                                    "name": "c",
+                                  },
+                                  "name": "c",
+                                  "up": Map {},
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                      "item": Object {
+                        "implements": Array [
+                          "b",
+                        ],
+                        "name": "g",
+                      },
+                      "name": "g",
+                      "up": Map {
+                        "b" => [Circular],
+                      },
+                    },
+                  },
+                  "item": Object {
+                    "implements": Array [],
+                    "name": "b",
+                  },
+                  "name": "b",
+                  "up": Map {},
+                },
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [],
+            "name": "a",
+          },
+          "name": "a",
+          "up": Map {},
+        },
+      },
+    },
+    "e" => Vertex {
+      "down": Map {
+        "i" => Vertex {
+          "down": Map {},
+          "item": Object {
+            "implements": Array [
+              "e",
+            ],
+            "name": "i",
+          },
+          "name": "i",
+          "up": Map {
+            "e" => [Circular],
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [
+          "a",
+          "b",
+        ],
+        "name": "e",
+      },
+      "name": "e",
+      "up": Map {
+        "a" => Vertex {
+          "down": Map {
+            "d" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "d",
+              },
+              "name": "d",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+            "e" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [],
+            "name": "a",
+          },
+          "name": "a",
+          "up": Map {},
+        },
+        "b" => Vertex {
+          "down": Map {
+            "e" => [Circular],
+            "f" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "b",
+                ],
+                "name": "f",
+              },
+              "name": "f",
+              "up": Map {
+                "b" => [Circular],
+              },
+            },
+            "g" => Vertex {
+              "down": Map {
+                "j" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "g",
+                      "h",
+                    ],
+                    "name": "j",
+                  },
+                  "name": "j",
+                  "up": Map {
+                    "g" => [Circular],
+                    "h" => Vertex {
+                      "down": Map {
+                        "j" => [Circular],
+                      },
+                      "item": Object {
+                        "implements": Array [
+                          "c",
+                        ],
+                        "name": "h",
+                      },
+                      "name": "h",
+                      "up": Map {
+                        "c" => Vertex {
+                          "down": Map {
+                            "h" => [Circular],
+                          },
+                          "item": Object {
+                            "implements": Array [],
+                            "name": "c",
+                          },
+                          "name": "c",
+                          "up": Map {},
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [
+                  "b",
+                ],
+                "name": "g",
+              },
+              "name": "g",
+              "up": Map {
+                "b" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [],
+            "name": "b",
+          },
+          "name": "b",
+          "up": Map {},
+        },
+      },
+    },
+    "f" => Vertex {
+      "down": Map {},
+      "item": Object {
+        "implements": Array [
+          "b",
+        ],
+        "name": "f",
+      },
+      "name": "f",
+      "up": Map {
+        "b" => Vertex {
+          "down": Map {
+            "e" => Vertex {
+              "down": Map {
+                "i" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "e",
+                    ],
+                    "name": "i",
+                  },
+                  "name": "i",
+                  "up": Map {
+                    "e" => [Circular],
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => Vertex {
+                  "down": Map {
+                    "d" => Vertex {
+                      "down": Map {},
+                      "item": Object {
+                        "implements": Array [
+                          "a",
+                        ],
+                        "name": "d",
+                      },
+                      "name": "d",
+                      "up": Map {
+                        "a" => [Circular],
+                      },
+                    },
+                    "e" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [],
+                    "name": "a",
+                  },
+                  "name": "a",
+                  "up": Map {},
+                },
+                "b" => [Circular],
+              },
+            },
+            "f" => [Circular],
+            "g" => Vertex {
+              "down": Map {
+                "j" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "g",
+                      "h",
+                    ],
+                    "name": "j",
+                  },
+                  "name": "j",
+                  "up": Map {
+                    "g" => [Circular],
+                    "h" => Vertex {
+                      "down": Map {
+                        "j" => [Circular],
+                      },
+                      "item": Object {
+                        "implements": Array [
+                          "c",
+                        ],
+                        "name": "h",
+                      },
+                      "name": "h",
+                      "up": Map {
+                        "c" => Vertex {
+                          "down": Map {
+                            "h" => [Circular],
+                          },
+                          "item": Object {
+                            "implements": Array [],
+                            "name": "c",
+                          },
+                          "name": "c",
+                          "up": Map {},
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [
+                  "b",
+                ],
+                "name": "g",
+              },
+              "name": "g",
+              "up": Map {
+                "b" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [],
+            "name": "b",
+          },
+          "name": "b",
+          "up": Map {},
+        },
+      },
+    },
+    "g" => Vertex {
+      "down": Map {
+        "j" => Vertex {
+          "down": Map {},
+          "item": Object {
+            "implements": Array [
+              "g",
+              "h",
+            ],
+            "name": "j",
+          },
+          "name": "j",
+          "up": Map {
+            "g" => [Circular],
+            "h" => Vertex {
+              "down": Map {
+                "j" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "c",
+                ],
+                "name": "h",
+              },
+              "name": "h",
+              "up": Map {
+                "c" => Vertex {
+                  "down": Map {
+                    "h" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [],
+                    "name": "c",
+                  },
+                  "name": "c",
+                  "up": Map {},
+                },
+              },
+            },
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [
+          "b",
+        ],
+        "name": "g",
+      },
+      "name": "g",
+      "up": Map {
+        "b" => Vertex {
+          "down": Map {
+            "e" => Vertex {
+              "down": Map {
+                "i" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "e",
+                    ],
+                    "name": "i",
+                  },
+                  "name": "i",
+                  "up": Map {
+                    "e" => [Circular],
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => Vertex {
+                  "down": Map {
+                    "d" => Vertex {
+                      "down": Map {},
+                      "item": Object {
+                        "implements": Array [
+                          "a",
+                        ],
+                        "name": "d",
+                      },
+                      "name": "d",
+                      "up": Map {
+                        "a" => [Circular],
+                      },
+                    },
+                    "e" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [],
+                    "name": "a",
+                  },
+                  "name": "a",
+                  "up": Map {},
+                },
+                "b" => [Circular],
+              },
+            },
+            "f" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "b",
+                ],
+                "name": "f",
+              },
+              "name": "f",
+              "up": Map {
+                "b" => [Circular],
+              },
+            },
+            "g" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [],
+            "name": "b",
+          },
+          "name": "b",
+          "up": Map {},
+        },
+      },
+    },
+    "h" => Vertex {
+      "down": Map {
+        "j" => Vertex {
+          "down": Map {},
+          "item": Object {
+            "implements": Array [
+              "g",
+              "h",
+            ],
+            "name": "j",
+          },
+          "name": "j",
+          "up": Map {
+            "g" => Vertex {
+              "down": Map {
+                "j" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "b",
+                ],
+                "name": "g",
+              },
+              "name": "g",
+              "up": Map {
+                "b" => Vertex {
+                  "down": Map {
+                    "e" => Vertex {
+                      "down": Map {
+                        "i" => Vertex {
+                          "down": Map {},
+                          "item": Object {
+                            "implements": Array [
+                              "e",
+                            ],
+                            "name": "i",
+                          },
+                          "name": "i",
+                          "up": Map {
+                            "e" => [Circular],
+                          },
+                        },
+                      },
+                      "item": Object {
+                        "implements": Array [
+                          "a",
+                          "b",
+                        ],
+                        "name": "e",
+                      },
+                      "name": "e",
+                      "up": Map {
+                        "a" => Vertex {
+                          "down": Map {
+                            "d" => Vertex {
+                              "down": Map {},
+                              "item": Object {
+                                "implements": Array [
+                                  "a",
+                                ],
+                                "name": "d",
+                              },
+                              "name": "d",
+                              "up": Map {
+                                "a" => [Circular],
+                              },
+                            },
+                            "e" => [Circular],
+                          },
+                          "item": Object {
+                            "implements": Array [],
+                            "name": "a",
+                          },
+                          "name": "a",
+                          "up": Map {},
+                        },
+                        "b" => [Circular],
+                      },
+                    },
+                    "f" => Vertex {
+                      "down": Map {},
+                      "item": Object {
+                        "implements": Array [
+                          "b",
+                        ],
+                        "name": "f",
+                      },
+                      "name": "f",
+                      "up": Map {
+                        "b" => [Circular],
+                      },
+                    },
+                    "g" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [],
+                    "name": "b",
+                  },
+                  "name": "b",
+                  "up": Map {},
+                },
+              },
+            },
+            "h" => [Circular],
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [
+          "c",
+        ],
+        "name": "h",
+      },
+      "name": "h",
+      "up": Map {
+        "c" => Vertex {
+          "down": Map {
+            "h" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [],
+            "name": "c",
+          },
+          "name": "c",
+          "up": Map {},
+        },
+      },
+    },
+    "i" => Vertex {
+      "down": Map {},
+      "item": Object {
+        "implements": Array [
+          "e",
+        ],
+        "name": "i",
+      },
+      "name": "i",
+      "up": Map {
+        "e" => Vertex {
+          "down": Map {
+            "i" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+              "b",
+            ],
+            "name": "e",
+          },
+          "name": "e",
+          "up": Map {
+            "a" => Vertex {
+              "down": Map {
+                "d" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                    ],
+                    "name": "d",
+                  },
+                  "name": "d",
+                  "up": Map {
+                    "a" => [Circular],
+                  },
+                },
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [],
+                "name": "a",
+              },
+              "name": "a",
+              "up": Map {},
+            },
+            "b" => Vertex {
+              "down": Map {
+                "e" => [Circular],
+                "f" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "b",
+                    ],
+                    "name": "f",
+                  },
+                  "name": "f",
+                  "up": Map {
+                    "b" => [Circular],
+                  },
+                },
+                "g" => Vertex {
+                  "down": Map {
+                    "j" => Vertex {
+                      "down": Map {},
+                      "item": Object {
+                        "implements": Array [
+                          "g",
+                          "h",
+                        ],
+                        "name": "j",
+                      },
+                      "name": "j",
+                      "up": Map {
+                        "g" => [Circular],
+                        "h" => Vertex {
+                          "down": Map {
+                            "j" => [Circular],
+                          },
+                          "item": Object {
+                            "implements": Array [
+                              "c",
+                            ],
+                            "name": "h",
+                          },
+                          "name": "h",
+                          "up": Map {
+                            "c" => Vertex {
+                              "down": Map {
+                                "h" => [Circular],
+                              },
+                              "item": Object {
+                                "implements": Array [],
+                                "name": "c",
+                              },
+                              "name": "c",
+                              "up": Map {},
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "b",
+                    ],
+                    "name": "g",
+                  },
+                  "name": "g",
+                  "up": Map {
+                    "b" => [Circular],
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {},
+            },
+          },
+        },
+      },
+    },
+    "j" => Vertex {
+      "down": Map {},
+      "item": Object {
+        "implements": Array [
+          "g",
+          "h",
+        ],
+        "name": "j",
+      },
+      "name": "j",
+      "up": Map {
+        "g" => Vertex {
+          "down": Map {
+            "j" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "b",
+            ],
+            "name": "g",
+          },
+          "name": "g",
+          "up": Map {
+            "b" => Vertex {
+              "down": Map {
+                "e" => Vertex {
+                  "down": Map {
+                    "i" => Vertex {
+                      "down": Map {},
+                      "item": Object {
+                        "implements": Array [
+                          "e",
+                        ],
+                        "name": "i",
+                      },
+                      "name": "i",
+                      "up": Map {
+                        "e" => [Circular],
+                      },
+                    },
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                      "b",
+                    ],
+                    "name": "e",
+                  },
+                  "name": "e",
+                  "up": Map {
+                    "a" => Vertex {
+                      "down": Map {
+                        "d" => Vertex {
+                          "down": Map {},
+                          "item": Object {
+                            "implements": Array [
+                              "a",
+                            ],
+                            "name": "d",
+                          },
+                          "name": "d",
+                          "up": Map {
+                            "a" => [Circular],
+                          },
+                        },
+                        "e" => [Circular],
+                      },
+                      "item": Object {
+                        "implements": Array [],
+                        "name": "a",
+                      },
+                      "name": "a",
+                      "up": Map {},
+                    },
+                    "b" => [Circular],
+                  },
+                },
+                "f" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "b",
+                    ],
+                    "name": "f",
+                  },
+                  "name": "f",
+                  "up": Map {
+                    "b" => [Circular],
+                  },
+                },
+                "g" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {},
+            },
+          },
+        },
+        "h" => Vertex {
+          "down": Map {
+            "j" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "c",
+            ],
+            "name": "h",
+          },
+          "name": "h",
+          "up": Map {
+            "c" => Vertex {
+              "down": Map {
+                "h" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [],
+                "name": "c",
+              },
+              "name": "c",
+              "up": Map {},
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`cycles get SubGraph: graph-final 1`] = `
+Graph {
+  "field": "implements",
+  "vertices": Map {
+    "a" => Vertex {
+      "down": Map {
+        "d" => Vertex {
+          "down": Map {},
+          "item": Object {
+            "implements": Array [
+              "a",
+            ],
+            "name": "d",
+          },
+          "name": "d",
+          "up": Map {
+            "a" => [Circular],
+          },
+        },
+        "e" => Vertex {
+          "down": Map {
+            "i" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "e",
+                ],
+                "name": "i",
+              },
+              "name": "i",
+              "up": Map {
+                "e" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+              "b",
+            ],
+            "name": "e",
+          },
+          "name": "e",
+          "up": Map {
+            "a" => [Circular],
+            "b" => Vertex {
+              "down": Map {
+                "e" => [Circular],
+                "f" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "b",
+                    ],
+                    "name": "f",
+                  },
+                  "name": "f",
+                  "up": Map {
+                    "b" => [Circular],
+                  },
+                },
+                "g" => Vertex {
+                  "down": Map {
+                    "j" => Vertex {
+                      "down": Map {},
+                      "item": Object {
+                        "implements": Array [
+                          "g",
+                          "h",
+                        ],
+                        "name": "j",
+                      },
+                      "name": "j",
+                      "up": Map {
+                        "g" => [Circular],
+                        "h" => Vertex {
+                          "down": Map {
+                            "j" => [Circular],
+                          },
+                          "item": Object {
+                            "implements": Array [
+                              "c",
+                            ],
+                            "name": "h",
+                          },
+                          "name": "h",
+                          "up": Map {
+                            "c" => Vertex {
+                              "down": Map {
+                                "h" => [Circular],
+                              },
+                              "item": Object {
+                                "implements": Array [],
+                                "name": "c",
+                              },
+                              "name": "c",
+                              "up": Map {},
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "b",
+                    ],
+                    "name": "g",
+                  },
+                  "name": "g",
+                  "up": Map {
+                    "b" => [Circular],
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {},
+            },
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [],
+        "name": "a",
+      },
+      "name": "a",
+      "up": Map {},
+    },
+    "b" => Vertex {
+      "down": Map {
+        "e" => Vertex {
+          "down": Map {
+            "i" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "e",
+                ],
+                "name": "i",
+              },
+              "name": "i",
+              "up": Map {
+                "e" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+              "b",
+            ],
+            "name": "e",
+          },
+          "name": "e",
+          "up": Map {
+            "a" => Vertex {
+              "down": Map {
+                "d" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                    ],
+                    "name": "d",
+                  },
+                  "name": "d",
+                  "up": Map {
+                    "a" => [Circular],
+                  },
+                },
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [],
+                "name": "a",
+              },
+              "name": "a",
+              "up": Map {},
+            },
+            "b" => [Circular],
+          },
+        },
+        "f" => Vertex {
+          "down": Map {},
+          "item": Object {
+            "implements": Array [
+              "b",
+            ],
+            "name": "f",
+          },
+          "name": "f",
+          "up": Map {
+            "b" => [Circular],
+          },
+        },
+        "g" => Vertex {
+          "down": Map {
+            "j" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "g",
+                  "h",
+                ],
+                "name": "j",
+              },
+              "name": "j",
+              "up": Map {
+                "g" => [Circular],
+                "h" => Vertex {
+                  "down": Map {
+                    "j" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "c",
+                    ],
+                    "name": "h",
+                  },
+                  "name": "h",
+                  "up": Map {
+                    "c" => Vertex {
+                      "down": Map {
+                        "h" => [Circular],
+                      },
+                      "item": Object {
+                        "implements": Array [],
+                        "name": "c",
+                      },
+                      "name": "c",
+                      "up": Map {},
+                    },
+                  },
+                },
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "b",
+            ],
+            "name": "g",
+          },
+          "name": "g",
+          "up": Map {
+            "b" => [Circular],
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [],
+        "name": "b",
+      },
+      "name": "b",
+      "up": Map {},
+    },
+    "c" => Vertex {
+      "down": Map {
+        "h" => Vertex {
+          "down": Map {
+            "j" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "g",
+                  "h",
+                ],
+                "name": "j",
+              },
+              "name": "j",
+              "up": Map {
+                "g" => Vertex {
+                  "down": Map {
+                    "j" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "b",
+                    ],
+                    "name": "g",
+                  },
+                  "name": "g",
+                  "up": Map {
+                    "b" => Vertex {
+                      "down": Map {
+                        "e" => Vertex {
+                          "down": Map {
+                            "i" => Vertex {
+                              "down": Map {},
+                              "item": Object {
+                                "implements": Array [
+                                  "e",
+                                ],
+                                "name": "i",
+                              },
+                              "name": "i",
+                              "up": Map {
+                                "e" => [Circular],
+                              },
+                            },
+                          },
+                          "item": Object {
+                            "implements": Array [
+                              "a",
+                              "b",
+                            ],
+                            "name": "e",
+                          },
+                          "name": "e",
+                          "up": Map {
+                            "a" => Vertex {
+                              "down": Map {
+                                "d" => Vertex {
+                                  "down": Map {},
+                                  "item": Object {
+                                    "implements": Array [
+                                      "a",
+                                    ],
+                                    "name": "d",
+                                  },
+                                  "name": "d",
+                                  "up": Map {
+                                    "a" => [Circular],
+                                  },
+                                },
+                                "e" => [Circular],
+                              },
+                              "item": Object {
+                                "implements": Array [],
+                                "name": "a",
+                              },
+                              "name": "a",
+                              "up": Map {},
+                            },
+                            "b" => [Circular],
+                          },
+                        },
+                        "f" => Vertex {
+                          "down": Map {},
+                          "item": Object {
+                            "implements": Array [
+                              "b",
+                            ],
+                            "name": "f",
+                          },
+                          "name": "f",
+                          "up": Map {
+                            "b" => [Circular],
+                          },
+                        },
+                        "g" => [Circular],
+                      },
+                      "item": Object {
+                        "implements": Array [],
+                        "name": "b",
+                      },
+                      "name": "b",
+                      "up": Map {},
+                    },
+                  },
+                },
+                "h" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [
+              "c",
+            ],
+            "name": "h",
+          },
+          "name": "h",
+          "up": Map {
+            "c" => [Circular],
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [],
+        "name": "c",
+      },
+      "name": "c",
+      "up": Map {},
+    },
+    "d" => Vertex {
+      "down": Map {},
+      "item": Object {
+        "implements": Array [
+          "a",
+        ],
+        "name": "d",
+      },
+      "name": "d",
+      "up": Map {
+        "a" => Vertex {
+          "down": Map {
+            "d" => [Circular],
+            "e" => Vertex {
+              "down": Map {
+                "i" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "e",
+                    ],
+                    "name": "i",
+                  },
+                  "name": "i",
+                  "up": Map {
+                    "e" => [Circular],
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => [Circular],
+                "b" => Vertex {
+                  "down": Map {
+                    "e" => [Circular],
+                    "f" => Vertex {
+                      "down": Map {},
+                      "item": Object {
+                        "implements": Array [
+                          "b",
+                        ],
+                        "name": "f",
+                      },
+                      "name": "f",
+                      "up": Map {
+                        "b" => [Circular],
+                      },
+                    },
+                    "g" => Vertex {
+                      "down": Map {
+                        "j" => Vertex {
+                          "down": Map {},
+                          "item": Object {
+                            "implements": Array [
+                              "g",
+                              "h",
+                            ],
+                            "name": "j",
+                          },
+                          "name": "j",
+                          "up": Map {
+                            "g" => [Circular],
+                            "h" => Vertex {
+                              "down": Map {
+                                "j" => [Circular],
+                              },
+                              "item": Object {
+                                "implements": Array [
+                                  "c",
+                                ],
+                                "name": "h",
+                              },
+                              "name": "h",
+                              "up": Map {
+                                "c" => Vertex {
+                                  "down": Map {
+                                    "h" => [Circular],
+                                  },
+                                  "item": Object {
+                                    "implements": Array [],
+                                    "name": "c",
+                                  },
+                                  "name": "c",
+                                  "up": Map {},
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                      "item": Object {
+                        "implements": Array [
+                          "b",
+                        ],
+                        "name": "g",
+                      },
+                      "name": "g",
+                      "up": Map {
+                        "b" => [Circular],
+                      },
+                    },
+                  },
+                  "item": Object {
+                    "implements": Array [],
+                    "name": "b",
+                  },
+                  "name": "b",
+                  "up": Map {},
+                },
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [],
+            "name": "a",
+          },
+          "name": "a",
+          "up": Map {},
+        },
+      },
+    },
+    "e" => Vertex {
+      "down": Map {
+        "i" => Vertex {
+          "down": Map {},
+          "item": Object {
+            "implements": Array [
+              "e",
+            ],
+            "name": "i",
+          },
+          "name": "i",
+          "up": Map {
+            "e" => [Circular],
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [
+          "a",
+          "b",
+        ],
+        "name": "e",
+      },
+      "name": "e",
+      "up": Map {
+        "a" => Vertex {
+          "down": Map {
+            "d" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "a",
+                ],
+                "name": "d",
+              },
+              "name": "d",
+              "up": Map {
+                "a" => [Circular],
+              },
+            },
+            "e" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [],
+            "name": "a",
+          },
+          "name": "a",
+          "up": Map {},
+        },
+        "b" => Vertex {
+          "down": Map {
+            "e" => [Circular],
+            "f" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "b",
+                ],
+                "name": "f",
+              },
+              "name": "f",
+              "up": Map {
+                "b" => [Circular],
+              },
+            },
+            "g" => Vertex {
+              "down": Map {
+                "j" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "g",
+                      "h",
+                    ],
+                    "name": "j",
+                  },
+                  "name": "j",
+                  "up": Map {
+                    "g" => [Circular],
+                    "h" => Vertex {
+                      "down": Map {
+                        "j" => [Circular],
+                      },
+                      "item": Object {
+                        "implements": Array [
+                          "c",
+                        ],
+                        "name": "h",
+                      },
+                      "name": "h",
+                      "up": Map {
+                        "c" => Vertex {
+                          "down": Map {
+                            "h" => [Circular],
+                          },
+                          "item": Object {
+                            "implements": Array [],
+                            "name": "c",
+                          },
+                          "name": "c",
+                          "up": Map {},
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [
+                  "b",
+                ],
+                "name": "g",
+              },
+              "name": "g",
+              "up": Map {
+                "b" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [],
+            "name": "b",
+          },
+          "name": "b",
+          "up": Map {},
+        },
+      },
+    },
+    "f" => Vertex {
+      "down": Map {},
+      "item": Object {
+        "implements": Array [
+          "b",
+        ],
+        "name": "f",
+      },
+      "name": "f",
+      "up": Map {
+        "b" => Vertex {
+          "down": Map {
+            "e" => Vertex {
+              "down": Map {
+                "i" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "e",
+                    ],
+                    "name": "i",
+                  },
+                  "name": "i",
+                  "up": Map {
+                    "e" => [Circular],
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => Vertex {
+                  "down": Map {
+                    "d" => Vertex {
+                      "down": Map {},
+                      "item": Object {
+                        "implements": Array [
+                          "a",
+                        ],
+                        "name": "d",
+                      },
+                      "name": "d",
+                      "up": Map {
+                        "a" => [Circular],
+                      },
+                    },
+                    "e" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [],
+                    "name": "a",
+                  },
+                  "name": "a",
+                  "up": Map {},
+                },
+                "b" => [Circular],
+              },
+            },
+            "f" => [Circular],
+            "g" => Vertex {
+              "down": Map {
+                "j" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "g",
+                      "h",
+                    ],
+                    "name": "j",
+                  },
+                  "name": "j",
+                  "up": Map {
+                    "g" => [Circular],
+                    "h" => Vertex {
+                      "down": Map {
+                        "j" => [Circular],
+                      },
+                      "item": Object {
+                        "implements": Array [
+                          "c",
+                        ],
+                        "name": "h",
+                      },
+                      "name": "h",
+                      "up": Map {
+                        "c" => Vertex {
+                          "down": Map {
+                            "h" => [Circular],
+                          },
+                          "item": Object {
+                            "implements": Array [],
+                            "name": "c",
+                          },
+                          "name": "c",
+                          "up": Map {},
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [
+                  "b",
+                ],
+                "name": "g",
+              },
+              "name": "g",
+              "up": Map {
+                "b" => [Circular],
+              },
+            },
+          },
+          "item": Object {
+            "implements": Array [],
+            "name": "b",
+          },
+          "name": "b",
+          "up": Map {},
+        },
+      },
+    },
+    "g" => Vertex {
+      "down": Map {
+        "j" => Vertex {
+          "down": Map {},
+          "item": Object {
+            "implements": Array [
+              "g",
+              "h",
+            ],
+            "name": "j",
+          },
+          "name": "j",
+          "up": Map {
+            "g" => [Circular],
+            "h" => Vertex {
+              "down": Map {
+                "j" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "c",
+                ],
+                "name": "h",
+              },
+              "name": "h",
+              "up": Map {
+                "c" => Vertex {
+                  "down": Map {
+                    "h" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [],
+                    "name": "c",
+                  },
+                  "name": "c",
+                  "up": Map {},
+                },
+              },
+            },
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [
+          "b",
+        ],
+        "name": "g",
+      },
+      "name": "g",
+      "up": Map {
+        "b" => Vertex {
+          "down": Map {
+            "e" => Vertex {
+              "down": Map {
+                "i" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "e",
+                    ],
+                    "name": "i",
+                  },
+                  "name": "i",
+                  "up": Map {
+                    "e" => [Circular],
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [
+                  "a",
+                  "b",
+                ],
+                "name": "e",
+              },
+              "name": "e",
+              "up": Map {
+                "a" => Vertex {
+                  "down": Map {
+                    "d" => Vertex {
+                      "down": Map {},
+                      "item": Object {
+                        "implements": Array [
+                          "a",
+                        ],
+                        "name": "d",
+                      },
+                      "name": "d",
+                      "up": Map {
+                        "a" => [Circular],
+                      },
+                    },
+                    "e" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [],
+                    "name": "a",
+                  },
+                  "name": "a",
+                  "up": Map {},
+                },
+                "b" => [Circular],
+              },
+            },
+            "f" => Vertex {
+              "down": Map {},
+              "item": Object {
+                "implements": Array [
+                  "b",
+                ],
+                "name": "f",
+              },
+              "name": "f",
+              "up": Map {
+                "b" => [Circular],
+              },
+            },
+            "g" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [],
+            "name": "b",
+          },
+          "name": "b",
+          "up": Map {},
+        },
+      },
+    },
+    "h" => Vertex {
+      "down": Map {
+        "j" => Vertex {
+          "down": Map {},
+          "item": Object {
+            "implements": Array [
+              "g",
+              "h",
+            ],
+            "name": "j",
+          },
+          "name": "j",
+          "up": Map {
+            "g" => Vertex {
+              "down": Map {
+                "j" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [
+                  "b",
+                ],
+                "name": "g",
+              },
+              "name": "g",
+              "up": Map {
+                "b" => Vertex {
+                  "down": Map {
+                    "e" => Vertex {
+                      "down": Map {
+                        "i" => Vertex {
+                          "down": Map {},
+                          "item": Object {
+                            "implements": Array [
+                              "e",
+                            ],
+                            "name": "i",
+                          },
+                          "name": "i",
+                          "up": Map {
+                            "e" => [Circular],
+                          },
+                        },
+                      },
+                      "item": Object {
+                        "implements": Array [
+                          "a",
+                          "b",
+                        ],
+                        "name": "e",
+                      },
+                      "name": "e",
+                      "up": Map {
+                        "a" => Vertex {
+                          "down": Map {
+                            "d" => Vertex {
+                              "down": Map {},
+                              "item": Object {
+                                "implements": Array [
+                                  "a",
+                                ],
+                                "name": "d",
+                              },
+                              "name": "d",
+                              "up": Map {
+                                "a" => [Circular],
+                              },
+                            },
+                            "e" => [Circular],
+                          },
+                          "item": Object {
+                            "implements": Array [],
+                            "name": "a",
+                          },
+                          "name": "a",
+                          "up": Map {},
+                        },
+                        "b" => [Circular],
+                      },
+                    },
+                    "f" => Vertex {
+                      "down": Map {},
+                      "item": Object {
+                        "implements": Array [
+                          "b",
+                        ],
+                        "name": "f",
+                      },
+                      "name": "f",
+                      "up": Map {
+                        "b" => [Circular],
+                      },
+                    },
+                    "g" => [Circular],
+                  },
+                  "item": Object {
+                    "implements": Array [],
+                    "name": "b",
+                  },
+                  "name": "b",
+                  "up": Map {},
+                },
+              },
+            },
+            "h" => [Circular],
+          },
+        },
+      },
+      "item": Object {
+        "implements": Array [
+          "c",
+        ],
+        "name": "h",
+      },
+      "name": "h",
+      "up": Map {
+        "c" => Vertex {
+          "down": Map {
+            "h" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [],
+            "name": "c",
+          },
+          "name": "c",
+          "up": Map {},
+        },
+      },
+    },
+    "i" => Vertex {
+      "down": Map {},
+      "item": Object {
+        "implements": Array [
+          "e",
+        ],
+        "name": "i",
+      },
+      "name": "i",
+      "up": Map {
+        "e" => Vertex {
+          "down": Map {
+            "i" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "a",
+              "b",
+            ],
+            "name": "e",
+          },
+          "name": "e",
+          "up": Map {
+            "a" => Vertex {
+              "down": Map {
+                "d" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                    ],
+                    "name": "d",
+                  },
+                  "name": "d",
+                  "up": Map {
+                    "a" => [Circular],
+                  },
+                },
+                "e" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [],
+                "name": "a",
+              },
+              "name": "a",
+              "up": Map {},
+            },
+            "b" => Vertex {
+              "down": Map {
+                "e" => [Circular],
+                "f" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "b",
+                    ],
+                    "name": "f",
+                  },
+                  "name": "f",
+                  "up": Map {
+                    "b" => [Circular],
+                  },
+                },
+                "g" => Vertex {
+                  "down": Map {
+                    "j" => Vertex {
+                      "down": Map {},
+                      "item": Object {
+                        "implements": Array [
+                          "g",
+                          "h",
+                        ],
+                        "name": "j",
+                      },
+                      "name": "j",
+                      "up": Map {
+                        "g" => [Circular],
+                        "h" => Vertex {
+                          "down": Map {
+                            "j" => [Circular],
+                          },
+                          "item": Object {
+                            "implements": Array [
+                              "c",
+                            ],
+                            "name": "h",
+                          },
+                          "name": "h",
+                          "up": Map {
+                            "c" => Vertex {
+                              "down": Map {
+                                "h" => [Circular],
+                              },
+                              "item": Object {
+                                "implements": Array [],
+                                "name": "c",
+                              },
+                              "name": "c",
+                              "up": Map {},
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "b",
+                    ],
+                    "name": "g",
+                  },
+                  "name": "g",
+                  "up": Map {
+                    "b" => [Circular],
+                  },
+                },
+              },
+              "item": Object {
+                "implements": Array [],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {},
+            },
+          },
+        },
+      },
+    },
+    "j" => Vertex {
+      "down": Map {},
+      "item": Object {
+        "implements": Array [
+          "g",
+          "h",
+        ],
+        "name": "j",
+      },
+      "name": "j",
+      "up": Map {
+        "g" => Vertex {
+          "down": Map {
+            "j" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "b",
+            ],
+            "name": "g",
+          },
+          "name": "g",
+          "up": Map {
+            "b" => Vertex {
+              "down": Map {
+                "e" => Vertex {
+                  "down": Map {
+                    "i" => Vertex {
+                      "down": Map {},
+                      "item": Object {
+                        "implements": Array [
+                          "e",
+                        ],
+                        "name": "i",
+                      },
+                      "name": "i",
+                      "up": Map {
+                        "e" => [Circular],
+                      },
+                    },
+                  },
+                  "item": Object {
+                    "implements": Array [
+                      "a",
+                      "b",
+                    ],
+                    "name": "e",
+                  },
+                  "name": "e",
+                  "up": Map {
+                    "a" => Vertex {
+                      "down": Map {
+                        "d" => Vertex {
+                          "down": Map {},
+                          "item": Object {
+                            "implements": Array [
+                              "a",
+                            ],
+                            "name": "d",
+                          },
+                          "name": "d",
+                          "up": Map {
+                            "a" => [Circular],
+                          },
+                        },
+                        "e" => [Circular],
+                      },
+                      "item": Object {
+                        "implements": Array [],
+                        "name": "a",
+                      },
+                      "name": "a",
+                      "up": Map {},
+                    },
+                    "b" => [Circular],
+                  },
+                },
+                "f" => Vertex {
+                  "down": Map {},
+                  "item": Object {
+                    "implements": Array [
+                      "b",
+                    ],
+                    "name": "f",
+                  },
+                  "name": "f",
+                  "up": Map {
+                    "b" => [Circular],
+                  },
+                },
+                "g" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [],
+                "name": "b",
+              },
+              "name": "b",
+              "up": Map {},
+            },
+          },
+        },
+        "h" => Vertex {
+          "down": Map {
+            "j" => [Circular],
+          },
+          "item": Object {
+            "implements": Array [
+              "c",
+            ],
+            "name": "h",
+          },
+          "name": "h",
+          "up": Map {
+            "c" => Vertex {
+              "down": Map {
+                "h" => [Circular],
+              },
+              "item": Object {
+                "implements": Array [],
+                "name": "c",
+              },
+              "name": "c",
+              "up": Map {},
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;

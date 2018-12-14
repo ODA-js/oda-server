@@ -1,7 +1,6 @@
 import 'jest';
 
 import gql from 'graphql-tag';
-import graphql from 'graphql-anywhere';
 import model from '../schema';
 import { reshape } from 'oda-lodash';
 
