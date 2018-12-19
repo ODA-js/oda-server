@@ -81,9 +81,13 @@ describe('Graph', () => {
       },
     ];
     const graph = new Graph(input, 'implements');
-    expect(graph).toMatchSnapshot('graph');
+    expect(
+      [...graph.edges].map(e => `${e.source.name}-> ${e.dest.name}`),
+    ).toMatchSnapshot('graph');
     expect(graph.hasCycle()).toBeTruthy();
-    expect(graph).toMatchSnapshot('graph-final');
+    expect(
+      [...graph.edges].map(e => `${e.source.name}-> ${e.dest.name}`),
+    ).toMatchSnapshot('graph-final');
   });
 
   it('get SubGraph', () => {
@@ -130,9 +134,16 @@ describe('Graph', () => {
       },
     ];
     const graph = new Graph(input, 'implements');
-    expect(graph).toMatchSnapshot('graph');
+    expect(
+      [...graph.edges].map(e => `${e.source.name}-> ${e.dest.name}`),
+    ).toMatchSnapshot('graph');
     expect(graph.hasCycle()).toBeFalsy();
-    expect(graph).toMatchSnapshot('graph-final');
-    // expect(graph.getSubGraphs().length).toBe(3);
+    expect(
+      [...graph.edges].map(e => `${e.source.name}-> ${e.dest.name}`),
+    ).toMatchSnapshot('graph-final');
+    debugger;
+    const sub = graph.getIsolatedSubGraphs();
+    expect(sub.length).toBe(3);
+    expect(sub.map(vl => [...vl.vertices.keys()])).toMatchSnapshot('sub-final');
   });
 });

@@ -1,0 +1,330 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`schema: schema 1`] = `
+Object {
+  "entities": Array [
+    Object {
+      "fields": Array [
+        Object {
+          "name": "title",
+        },
+        Object {
+          "name": "description",
+          "type": "RichText",
+        },
+        Object {
+          "name": "reference",
+          "type": Object {
+            "multiplicity": "one",
+            "name": "Image",
+            "type": "entity",
+          },
+        },
+        Object {
+          "name": "catalog",
+          "type": Object {
+            "multiplicity": "many",
+            "name": "Image",
+            "type": "entity",
+          },
+        },
+      ],
+      "metadata": Object {
+        "UI": Object {
+          "listName": Array [
+            "title",
+          ],
+        },
+      },
+      "name": "MediaFile",
+    },
+    Object {
+      "embedded": true,
+      "fields": Array [
+        Object {
+          "name": "width",
+          "type": "int",
+        },
+        Object {
+          "name": "height",
+          "type": "int",
+        },
+      ],
+      "implements": Array [
+        "IFile",
+      ],
+      "name": "Image",
+    },
+    Object {
+      "abstract": true,
+      "fields": Array [
+        Object {
+          "identity": true,
+          "name": "src",
+        },
+        Object {
+          "name": "type",
+        },
+        Object {
+          "name": "path",
+        },
+        Object {
+          "name": "name",
+        },
+      ],
+      "metadata": Object {
+        "UI": Object {
+          "listName": Array [
+            "src",
+          ],
+        },
+      },
+      "name": "IFile",
+    },
+    Object {
+      "description": "Person role to be user identified in the system",
+      "fields": Array [
+        Object {
+          "identity": true,
+          "name": "userName",
+        },
+        Object {
+          "name": "password",
+        },
+        Object {
+          "name": "isAdmin",
+          "type": "Boolean",
+        },
+        Object {
+          "name": "isSystem",
+          "type": "Boolean",
+        },
+        Object {
+          "name": "enabled",
+          "type": "Boolean",
+        },
+        Object {
+          "name": "socialNetworks",
+          "type": Object {
+            "multiplicity": "many",
+            "name": "SocialNetwork",
+            "type": "entity",
+          },
+        },
+        Object {
+          "name": "emails",
+          "relation": Object {
+            "hasMany": "Email#",
+          },
+        },
+        Object {
+          "name": "files",
+          "relation": Object {
+            "hasMany": "MediaFile#",
+          },
+        },
+      ],
+      "metadata": Object {
+        "UI": Object {
+          "listName": Array [
+            "userName",
+          ],
+        },
+      },
+      "name": "User",
+    },
+    Object {
+      "fields": Array [
+        Object {
+          "identity": true,
+          "name": "email",
+        },
+        Object {
+          "name": "type",
+          "type": Object {
+            "multiplicity": "one",
+            "name": "CommunicationType",
+            "type": "enum",
+          },
+        },
+        Object {
+          "indexed": true,
+          "name": "user",
+          "relation": Object {
+            "belongsTo": "User#",
+            "opposite": "emails",
+          },
+        },
+      ],
+      "name": "Email",
+    },
+    Object {
+      "embedded": true,
+      "fields": Array [
+        Object {
+          "identity": true,
+          "name": "account",
+        },
+        Object {
+          "indexed": true,
+          "name": "url",
+        },
+        Object {
+          "name": "type",
+          "type": Object {
+            "multiplicity": "one",
+            "name": "SocialNetworkType",
+            "type": "enum",
+          },
+        },
+      ],
+      "name": "SocialNetwork",
+    },
+  ],
+  "enums": Array [
+    Object {
+      "items": Array [
+        "home",
+        "office",
+        "other",
+      ],
+      "name": "CommunicationType",
+    },
+    Object {
+      "items": Array [
+        "skype",
+        "vk",
+        "tweeter",
+        "odn",
+        "whatsApp",
+      ],
+      "name": "SocialNetworkType",
+    },
+  ],
+  "mutations": Array [
+    Object {
+      "args": Array [
+        Object {
+          "name": "userName",
+          "required": true,
+        },
+        Object {
+          "name": "password",
+          "required": true,
+        },
+      ],
+      "description": "make user login",
+      "name": "loginUser",
+      "payload": Array [
+        Object {
+          "name": "token",
+        },
+        Object {
+          "name": "role",
+        },
+      ],
+    },
+  ],
+  "name": "Education",
+  "packages": Array [
+    Object {
+      "entities": Array [
+        "User",
+        "Email",
+        "SocialNetwork",
+      ],
+      "name": "Admin",
+    },
+    Object {
+      "mutations": Array [
+        Object {
+          "args": Array [
+            Object {
+              "name": "userName",
+              "required": true,
+            },
+            Object {
+              "name": "password",
+              "required": true,
+            },
+          ],
+          "description": "make user login",
+          "name": "loginUser",
+          "payload": Array [
+            Object {
+              "name": "token",
+            },
+            Object {
+              "name": "role",
+            },
+          ],
+        },
+      ],
+      "name": "public",
+    },
+    Object {
+      "entities": Array [
+        Object {
+          "description": "Person role to be user identified in the system",
+          "fields": Array [
+            Object {
+              "identity": true,
+              "name": "userName",
+            },
+            Object {
+              "name": "password",
+            },
+            Object {
+              "name": "socialNetworks",
+              "type": Object {
+                "multiplicity": "many",
+                "name": "SocialNetwork",
+                "type": "entity",
+              },
+            },
+            Object {
+              "name": "emails",
+              "relation": Object {
+                "hasMany": "Email#",
+              },
+            },
+            Object {
+              "name": "files",
+              "relation": Object {
+                "hasMany": "MediaFile#",
+              },
+            },
+          ],
+          "metadata": Object {
+            "UI": Object {
+              "listName": Array [
+                "userName",
+              ],
+            },
+          },
+          "name": "User",
+        },
+        "MediaFile",
+      ],
+      "name": "owner",
+    },
+  ],
+  "queries": Array [
+    Object {
+      "args": Array [],
+      "name": "UserInfo",
+      "payload": Array [
+        Object {
+          "name": "id",
+        },
+        Object {
+          "name": "name",
+        },
+        Object {
+          "name": "email",
+        },
+      ],
+    },
+  ],
+}
+`;

@@ -141,7 +141,7 @@ export class ModelPackageBase<
       allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
         const createIt = createOrMergeFromMap(
-          this.metaModel.metaModel,
+          this.metaModel,
           Entity,
           'entities',
         );
@@ -190,7 +190,7 @@ export class ModelPackageBase<
     assignValue<S, I, (DirectiveInput | string)[]>({
       src: this.$obj,
       input,
-      field: 'enums',
+      field: 'directives',
       allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
         const createIt = createOrMergeFromMap(

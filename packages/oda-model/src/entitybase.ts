@@ -86,7 +86,8 @@ export interface EntityBaseMetaInfo<P extends EntityBasePersistence>
   UI: UIView;
   acl: {
     create: string[];
-    read: string[];
+    readOne: string[];
+    readMany: string[];
     update: string[];
     delete: string[];
   };

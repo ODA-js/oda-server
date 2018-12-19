@@ -41,6 +41,10 @@ export interface IOperation
 export interface OperationMetaInfo extends ModelMetaInfo {
   entity: string;
   order: number;
+  acl: {
+    /** if packages allowed to execute mutation */
+    execute: string[];
+  };
 }
 
 export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
@@ -70,7 +74,7 @@ export interface OperationInternal
   actionType: OperationKind;
 }
 
-const defaultMetaInfo = {};
+const defaultMetaInfo = { acl: { execute: [] } };
 const defaultInput = { metadata: defaultMetaInfo };
 
 export class Operation

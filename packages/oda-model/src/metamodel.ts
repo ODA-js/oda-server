@@ -32,7 +32,8 @@ import {
 } from './packagebase';
 import { getFilter } from './getFilter';
 import { FieldInput, IField } from './field';
-import { hasCycle } from './detectcycles';
+import { Graph, Vertex, Edge } from './detectcyclesedges';
+import { IRelationField } from './relationfield';
 
 export type FieldMap = {
   [name: string]: boolean;
@@ -124,6 +125,8 @@ export class MetaModel
   constructor(init: MetaModelInput) {
     super(merge({}, defaultInput, init));
     this.ensureDefaultPackage();
+    this.applyHooks();
+    this.build();
   }
 
   private ensureDefaultPackage() {
@@ -319,42 +322,89 @@ export class MetaModel
     });
   }
 
-  public addPackage(pkg: ModelPackageInput) {
-    let pack: ModelPackage;
-    if (pkg.name && this.packages.has(pkg.name)) {
-      pack = this.packages.get(pkg.name) as ModelPackage;
-    } else {
-      pack = new ModelPackage(pkg);
-      pack.connect(this);
-      this.packages.set(pkg.name, pack);
-    }
+  // public addPackage(pkg: ModelPackageInput) {
+  //   let pack: ModelPackage;
+  //   if (pkg.name && this.packages.has(pkg.name)) {
+  //     pack = this.packages.get(pkg.name) as ModelPackage;
+  //   } else {
+  //     pack = new ModelPackage(pkg);
+  //     pack.connect(this);
+  //     this.packages.set(pkg.name, pack);
+  //   }
 
-    pack.updateWith(merge({}, pack.toObject(), pkg));
+  //   pack.updateWith(merge({}, pack.toObject(), pkg));
 
-    pack.ensureAll();
-  }
+  //   pack.ensureAll();
+  // }
 
-  public loadPackage(store: MetaModelInput) {
-    this.reset();
-    this.updateWith(store);
-    this.ensureDefaultPackage();
-    this.applyHooks();
-  }
+  // public loadPackage(store: MetaModelInput) {
+  //   this.reset();
+  //   this.updateWith(store);
+  //   this.applyHooks();
+  // }
 
   public reset() {
     this.updateWith({ name: this.name });
     this.ensureDefaultPackage();
+    this.isBuilt = false;
   }
+  /** stores package dependencies graph */
+  private _packageDeps!: Graph<IPackage>;
+  /** stores implementation inheritance graph */
+  private _inheritance!: Graph<IEntity>;
+  /** stores reference graph */
+  private _references!: Graph<IEntity, IRelationField>;
+  private isBuilt: boolean = false;
 
-  public hasCycles() {
-    return (
-      hasCycle([...this.entities.values()], 'implements') ||
-      hasCycle([...this.packages.values()], 'extends')
-    );
-  }
   public build() {
-    if (this.hasCycles) {
-      throw new Error("schema has cycles, so it can't be build");
+    if (!this.isBuilt) {
+      this._packageDeps = new Graph(
+        [...this.$obj.packages.values()],
+        'extends',
+      );
+      if (this._packageDeps.hasCycle()) {
+        throw new Error(
+          "package dependencies has cycles, so it can't be build",
+        );
+      }
+
+      this._inheritance = new Graph(
+        [...this.$obj.entities.values()],
+        'implements',
+      );
+      if (this._inheritance.hasCycle()) {
+        throw new Error("entity inheritance has cycles, so it can't be build");
+      }
+
+      this._references = new Graph(
+        [...this.$obj.entities.values()],
+        'relations',
+        (
+          graph: Graph<IEntity, IRelationField>,
+          source: Vertex<IEntity, IRelationField>,
+        ) => {
+          const entity = source.node;
+          entity.relations.forEach(f => {
+            if (entity.fields.has(f)) {
+              const field = entity.fields.get(f) as IRelationField;
+              const dest = graph.vertices.get(field.relation.ref.entity);
+              if (dest) {
+                const edge = new Edge<IEntity, IRelationField>(source, dest);
+                /** put it to graph edges */
+                graph.edges.add(edge);
+                /** put it to source Vertex */
+                source.edges.add(edge);
+                /** put it to des Vertex */
+                dest.edges.add(edge);
+              }
+            }
+          });
+          return [] as Iterable<Edge<IEntity, IRelationField>>;
+        },
+      );
+      //dummy
+      this._references;
+      this.isBuilt = true;
     }
   }
 }

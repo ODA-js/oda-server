@@ -13,7 +13,18 @@ import { IRelation } from './relation';
 
 export interface RelationFieldBaseMetaInfo<
   P extends RelationFieldBasePersistence
-> extends FieldBaseMetaInfo<P> {}
+> extends FieldBaseMetaInfo<P> {
+  acl: {
+    /** if package allowed to read relation */
+    read: string[];
+    /** if package allowed to update relation fields */
+    update: string[];
+    /** if package allowed to create item of relation */
+    create: string[];
+    /** if package allowed to delete item of relation */
+    delete: string[];
+  };
+}
 
 export interface RelationFieldBasePersistence extends FieldBasePersistence {}
 
@@ -46,7 +57,14 @@ export interface RelationFieldBaseInternal<
   relation: IRelation;
 }
 
-const defaultMetaInfo = {};
+const defaultMetaInfo = {
+  acl: {
+    read: [],
+    update: [],
+    create: [],
+    delete: [],
+  },
+};
 const defaultInput = { metadata: defaultMetaInfo };
 
 export abstract class RelationFieldBase<

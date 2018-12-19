@@ -9,7 +9,7 @@ export interface ElementInternal<T extends ElementMetaInfo> {
 }
 
 export interface ElementInput<T extends ElementMetaInfo> {
-  metadata?: T;
+  metadata?: Partial<T>;
 }
 
 export interface ElementOutput<T extends ElementMetaInfo> {

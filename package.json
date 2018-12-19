@@ -39,18 +39,18 @@
     "oda-lodash": "file:packages/oda-lodash"
   },
   "devDependencies": {
-    "@types/node": "^10.12.12",
-    "lerna": "^3.4.3",
     "@types/graphql": "^14.0.3",
     "@types/invariant": "^2.2.29",
-    "@types/jest": "^23.3.9",
-    "@types/lodash": "^4.14.118",
+    "@types/jest": "^23.3.10",
+    "@types/lodash": "^4.14.119",
+    "@types/node": "^10.12.17",
     "@types/warning": "^3.0.0",
     "jest": "^23.6.0",
-    "ts-jest": "23.10.5",
+    "lerna": "^3.6.0",
     "prettier": "1.15.3",
     "prettier-check": "2.0.0",
-    "typescript": "3.2.0-rc"
+    "ts-jest": "23.10.5",
+    "typescript": "^3.2.2"
   },
   "workspaces": [
     "packages/*"

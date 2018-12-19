@@ -1,6 +1,6 @@
 import { INamed } from './types';
 
-export class Graph<T extends INamed> {
+export class GraphSimple<T extends INamed> {
   public readonly vertices: Map<string, Vertex<T>>;
   public readonly field: keyof T;
   constructor(items: T[], field: keyof T) {

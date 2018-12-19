@@ -22,8 +22,6 @@ Entity {
         },
         "metadata_": Object {
           "acl": Object {
-            "create": Array [],
-            "delete": Array [],
             "read": Array [],
             "update": Array [],
           },
@@ -45,8 +43,6 @@ Entity {
         },
         "metadata_": Object {
           "acl": Object {
-            "create": Array [],
-            "delete": Array [],
             "read": Array [],
             "update": Array [],
           },
@@ -126,8 +122,6 @@ Object {
       "list": false,
       "metadata": Object {
         "acl": Object {
-          "create": Array [],
-          "delete": Array [],
           "read": Array [],
           "update": Array [],
         },
@@ -158,8 +152,6 @@ Object {
       "list": false,
       "metadata": Object {
         "acl": Object {
-          "create": Array [],
-          "delete": Array [],
           "read": Array [],
           "update": Array [],
         },
@@ -239,8 +231,6 @@ Entity {
         },
         "metadata_": Object {
           "acl": Object {
-            "create": Array [],
-            "delete": Array [],
             "read": Array [],
             "update": Array [],
           },
@@ -262,8 +252,6 @@ Entity {
         },
         "metadata_": Object {
           "acl": Object {
-            "create": Array [],
-            "delete": Array [],
             "read": Array [],
             "update": Array [],
           },
@@ -343,8 +331,6 @@ Object {
       "list": false,
       "metadata": Object {
         "acl": Object {
-          "create": Array [],
-          "delete": Array [],
           "read": Array [],
           "update": Array [],
         },
@@ -375,8 +361,6 @@ Object {
       "list": false,
       "metadata": Object {
         "acl": Object {
-          "create": Array [],
-          "delete": Array [],
           "read": Array [],
           "update": Array [],
         },
@@ -449,8 +433,6 @@ Entity {
         },
         "metadata_": Object {
           "acl": Object {
-            "create": Array [],
-            "delete": Array [],
             "read": Array [],
             "update": Array [],
           },
@@ -476,8 +458,6 @@ Entity {
         },
         "metadata_": Object {
           "acl": Object {
-            "create": Array [],
-            "delete": Array [],
             "read": Array [],
             "update": Array [],
           },
@@ -560,8 +540,6 @@ Object {
       "list": false,
       "metadata": Object {
         "acl": Object {
-          "create": Array [],
-          "delete": Array [],
           "read": Array [],
           "update": Array [],
         },
@@ -588,8 +566,6 @@ Object {
       "list": false,
       "metadata": Object {
         "acl": Object {
-          "create": Array [],
-          "delete": Array [],
           "read": Array [],
           "update": Array [],
         },

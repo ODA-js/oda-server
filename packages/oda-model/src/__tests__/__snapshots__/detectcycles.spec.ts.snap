@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`cycles build Graph: graph 1`] = `
-Graph {
+GraphSimple {
   "field": "implements",
   "vertices": Map {
     "a" => Vertex {
@@ -548,7 +548,7 @@ Graph {
 `;
 
 exports[`cycles build Graph: graph-final 1`] = `
-Graph {
+GraphSimple {
   "field": "implements",
   "vertices": Map {
     "a" => Vertex {
@@ -1095,7 +1095,7 @@ Graph {
 `;
 
 exports[`cycles get SubGraph: graph 1`] = `
-Graph {
+GraphSimple {
   "field": "implements",
   "vertices": Map {
     "a" => Vertex {
@@ -2383,7 +2383,7 @@ Graph {
 `;
 
 exports[`cycles get SubGraph: graph-final 1`] = `
-Graph {
+GraphSimple {
   "field": "implements",
   "vertices": Map {
     "a" => Vertex {

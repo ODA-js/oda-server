@@ -54,10 +54,13 @@ export interface FieldBaseMetaInfo<T extends FieldBasePersistence>
   persistence: T;
   order: number;
   acl: {
-    create: string[];
+    /** if package allowed to read property */
     read: string[];
+    /** if package allowed to update property */
     update: string[];
-    delete: string[];
+    /** not applicable */
+    // create: string[];
+    // delete: string[];
   };
 }
 
@@ -106,10 +109,10 @@ export interface FieldBaseOutput<
 const defaultMetaInfo = {
   persistence: {},
   acl: {
-    create: [],
     read: [],
     update: [],
-    delete: [],
+    // create: [],
+    // delete: [],
   },
 };
 const defaultInput = { metadata: defaultMetaInfo };

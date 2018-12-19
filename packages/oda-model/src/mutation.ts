@@ -31,7 +31,12 @@ export interface IMutation
   readonly payload: Map<string, FieldArgs>;
 }
 
-export interface MutationMetaInfo extends ElementMetaInfo {}
+export interface MutationMetaInfo extends ElementMetaInfo {
+  acl: {
+    /** if packages allowed to execute mutation */
+    execute: string[];
+  };
+}
 
 export interface MutationInternal extends ModelBaseInternal<MutationMetaInfo> {
   args: Map<string, FieldArgs>;
@@ -48,7 +53,7 @@ export interface MutationOutput extends ModelBaseOutput<MutationMetaInfo> {
   payload: NamedArray<FieldArgs>;
 }
 
-const defaultMetaInfo = {};
+const defaultMetaInfo = { acl: { execute: [] } };
 const defaultInput = { metadata: defaultMetaInfo };
 
 export class Mutation
