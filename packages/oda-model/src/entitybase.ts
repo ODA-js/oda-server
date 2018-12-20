@@ -1,4 +1,4 @@
-import { ElementMetaInfo } from './element';
+import { ElementMetaInfo, Internal } from './element';
 import {
   IModelBase,
   ModelBaseInput,
@@ -64,15 +64,15 @@ export interface EntityBasePersistence {
 }
 
 export interface UIView {
-  listName: string[];
-  quickSearch: string[];
+  listName?: string[];
+  quickSearch?: string[];
   hidden?: string[];
   edit?: string[];
   show?: string[];
   list?: string[];
   embedded?: string[];
-  enum: boolean;
-  dictionary: boolean;
+  enum?: boolean;
+  dictionary?: boolean;
 }
 
 export interface EntityBaseMetaInfo<P extends EntityBasePersistence>
@@ -164,35 +164,35 @@ export abstract class EntityBase<
   }
 
   get plural(): string {
-    return this.metadata_.name.plural;
+    return this.metadata.name.plural;
   }
 
   get titlePlural(): string {
-    return this.metadata_.titlePlural;
+    return this.metadata.titlePlural;
   }
 
   get relations(): Set<string> {
-    return this.$obj.relations;
+    return this[Internal].relations;
   }
 
   get required(): Set<string> {
-    return this.$obj.required;
+    return this[Internal].required;
   }
 
   get identity(): Set<string> {
-    return this.$obj.identity;
+    return this[Internal].identity;
   }
 
   get fields(): Map<string, IField> {
-    return this.$obj.fields;
+    return this[Internal].fields;
   }
 
   get operations(): Map<string, IOperation> {
-    return this.$obj.operations;
+    return this[Internal].operations;
   }
 
   get indexed(): Set<string> {
-    return this.$obj.indexed;
+    return this[Internal].indexed;
   }
 
   protected updateIndex(f: IField, options: IndexEntryOptions) {
@@ -224,8 +224,8 @@ export abstract class EntityBase<
   }
 
   protected mergeIndex(index: string, entry: any) {
-    const indexes = this.metadata_.persistence.indexes;
-    if (this.metadata_.persistence.indexes.hasOwnProperty(index)) {
+    const indexes = this.metadata.persistence.indexes;
+    if (this.metadata.persistence.indexes.hasOwnProperty(index)) {
       indexes[index] = merge(indexes[index], entry);
       if (Array.isArray(indexes[index].name)) {
         indexes[index].name = indexes[index].name[0];
@@ -240,21 +240,21 @@ export abstract class EntityBase<
   public updateWith(input: Nullable<I>) {
     super.updateWith(input);
 
-    const result = { ...this.$obj };
+    const result = { ...this[Internal] };
 
     assignValue<P, I, string>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'name',
       effect: (src, value) => {
         src.name = inflected.camelize(value.trim(), true);
-        this.metadata_.name.singular = src.name;
+        this.metadata.name.singular = src.name;
       },
       required: true,
     });
 
     assignValue<M, I, string>({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       field: 'name.plural',
       inputField: 'plural',
@@ -267,7 +267,7 @@ export abstract class EntityBase<
     });
 
     assignValue<M, I, string>({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       field: 'titlePlural',
       setDefault: src => {
@@ -276,7 +276,7 @@ export abstract class EntityBase<
     });
 
     assignValue<P, I, AsHash<FieldInput> | NamedArray<FieldInput>>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'fields',
       effect: (src, value) => {
@@ -363,7 +363,7 @@ export abstract class EntityBase<
     });
 
     assignValue<P, I, AsHash<OperationInput> | NamedArray<OperationInput>>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'operations',
       effect: (src, value) => {

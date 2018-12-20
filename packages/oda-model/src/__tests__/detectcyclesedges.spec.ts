@@ -1,5 +1,5 @@
 import 'jest';
-import { hasCycle, Graph } from '../detectcyclesedges';
+import { hasCycle, Graph } from '../utils/detectcyclesedges';
 
 describe('Graph', () => {
   it('detects', () => {

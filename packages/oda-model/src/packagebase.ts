@@ -20,6 +20,7 @@ import { IModel } from './metamodel';
 import { merge } from 'lodash';
 import { MapToArray, assignValue, createOrMergeFromMap } from './types';
 import { IField } from './field';
+import { Internal } from './element';
 
 export interface IPackageBase<
   M extends ModelPackageBaseMetaInfo,
@@ -94,37 +95,37 @@ export class ModelPackageBase<
     return 'package-base';
   }
   public get metaModel() {
-    return this.$obj.metaModel;
+    return this[Internal].metaModel;
   }
   public get entities() {
-    return this.$obj.entities;
+    return this[Internal].entities;
   }
   public get mixins() {
-    return this.$obj.mixins;
+    return this[Internal].mixins;
   }
   public get mutations() {
-    return this.$obj.mutations;
+    return this[Internal].mutations;
   }
   public get queries() {
-    return this.$obj.queries;
+    return this[Internal].queries;
   }
   public get enums() {
-    return this.$obj.enums;
+    return this[Internal].enums;
   }
   public get scalars() {
-    return this.$obj.scalars;
+    return this[Internal].scalars;
   }
   public get unions() {
-    return this.$obj.unions;
+    return this[Internal].unions;
   }
   public get directives() {
-    return this.$obj.directives;
+    return this[Internal].directives;
   }
   public get identityFields() {
-    return this.$obj.identityFields;
+    return this[Internal].identityFields;
   }
   public get relations() {
-    return this.$obj.relations;
+    return this[Internal].relations;
   }
 
   constructor(init: I) {
@@ -135,7 +136,7 @@ export class ModelPackageBase<
     super.updateWith(input);
 
     assignValue<S, I, (EntityInput | string)[]>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'entities',
       allowEffect: (_, value) => value.length > 0,
@@ -158,7 +159,7 @@ export class ModelPackageBase<
     });
 
     assignValue<S, I, (EnumInput | string)[]>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'enums',
       allowEffect: (_, value) => value.length > 0,
@@ -173,7 +174,7 @@ export class ModelPackageBase<
     });
 
     assignValue<S, I, (ScalarInput | string)[]>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'scalars',
       allowEffect: (_, value) => value.length > 0,
@@ -188,7 +189,7 @@ export class ModelPackageBase<
     });
 
     assignValue<S, I, (DirectiveInput | string)[]>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'directives',
       allowEffect: (_, value) => value.length > 0,
@@ -207,7 +208,7 @@ export class ModelPackageBase<
     });
 
     assignValue<S, I, (MixinInput | string)[]>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'mixins',
       allowEffect: (_, value) => value.length > 0,
@@ -222,7 +223,7 @@ export class ModelPackageBase<
     });
 
     assignValue<S, I, (UnionInput | string)[]>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'unions',
       allowEffect: (_, value) => value.length > 0,
@@ -237,7 +238,7 @@ export class ModelPackageBase<
     });
 
     assignValue<S, I, (MutationInput | string)[]>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'mutations',
       allowEffect: (_, value) => value.length > 0,
@@ -256,7 +257,7 @@ export class ModelPackageBase<
     });
 
     assignValue<S, I, (QueryInput | string)[]>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'queries',
       allowEffect: (_, value) => value.length > 0,
@@ -271,7 +272,7 @@ export class ModelPackageBase<
     });
 
     assignValue<S, I, IModel>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'metaModel',
       effect: (src, value) => (src.metaModel = value),
@@ -280,31 +281,31 @@ export class ModelPackageBase<
 
   public toObject(): O {
     return merge({}, super.toObject(), {
-      directives: MapToArray(this.$obj.directives, (name, value) => ({
+      directives: MapToArray(this[Internal].directives, (name, value) => ({
         ...value.toObject(),
         name,
       })),
-      enums: MapToArray(this.$obj.enums, (name, value) => ({
+      enums: MapToArray(this[Internal].enums, (name, value) => ({
         ...value.toObject(),
         name,
       })),
-      queries: MapToArray(this.$obj.queries, (name, value) => ({
+      queries: MapToArray(this[Internal].queries, (name, value) => ({
         ...value.toObject(),
         name,
       })),
-      unions: MapToArray(this.$obj.unions, (name, value) => ({
+      unions: MapToArray(this[Internal].unions, (name, value) => ({
         ...value.toObject(),
         name,
       })),
-      mixins: MapToArray(this.$obj.mixins, (name, value) => ({
+      mixins: MapToArray(this[Internal].mixins, (name, value) => ({
         ...value.toObject(),
         name,
       })),
-      mutations: MapToArray(this.$obj.mutations, (name, value) => ({
+      mutations: MapToArray(this[Internal].mutations, (name, value) => ({
         ...value.toObject(),
         name,
       })),
-      entities: MapToArray(this.$obj.entities, (name, value) => ({
+      entities: MapToArray(this[Internal].entities, (name, value) => ({
         ...value.toObject(),
         name,
       })),
@@ -312,7 +313,7 @@ export class ModelPackageBase<
   }
 
   public connect(metaModel: IModel) {
-    this.$obj.metaModel = metaModel;
+    this[Internal].metaModel = metaModel;
   }
 
   /** ensure all foreign keys */

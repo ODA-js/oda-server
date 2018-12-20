@@ -15,8 +15,8 @@ Directive {
     "on": Array [
       "FIELD",
     ],
+    Symbol(metadata): Object {},
   },
-  "metadata_": Object {},
 }
 `;
 

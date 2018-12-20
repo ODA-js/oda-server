@@ -18,6 +18,7 @@ import {
   MapToArray,
 } from './types';
 import { merge } from 'lodash';
+import { Internal } from './element';
 
 export interface IOperation
   extends IModelBase<OperationMetaInfo, OperationInput, OperationOutput> {
@@ -90,23 +91,23 @@ export class Operation
   }
 
   public get actionType(): OperationKind {
-    return this.$obj.actionType;
+    return this[Internal].actionType;
   }
 
   get inheritedFrom(): string | undefined {
-    return this.$obj.inheritedFrom;
+    return this[Internal].inheritedFrom;
   }
 
   get args(): Map<string, FieldArgs> {
-    return this.$obj.args;
+    return this[Internal].args;
   }
 
   get payload(): Map<string, FieldArgs> {
-    return this.$obj.payload;
+    return this[Internal].payload;
   }
 
   get order(): number {
-    return this.metadata_.order;
+    return this.metadata.order;
   }
 
   constructor(init: OperationInput) {
@@ -117,7 +118,7 @@ export class Operation
     super.updateWith(input);
 
     assignValue({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'actionType',
     });
@@ -127,7 +128,7 @@ export class Operation
       OperationInput,
       AsHash<FieldArgs> | NamedArray<FieldArgs>
     >({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'args',
       effect: (src, value) =>
@@ -143,7 +144,7 @@ export class Operation
       OperationInput,
       AsHash<FieldArgs> | NamedArray<FieldArgs>
     >({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'payload',
       effect: (src, value) =>

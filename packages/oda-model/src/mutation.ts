@@ -1,5 +1,5 @@
 import { merge } from 'lodash';
-import { ElementMetaInfo } from './element';
+import { ElementMetaInfo, Internal } from './element';
 import {
   FieldArgs,
   AsHash,
@@ -73,17 +73,17 @@ export class Mutation
   }
 
   public get args(): Map<string, FieldArgs> {
-    return this.$obj.args;
+    return this[Internal].args;
   }
 
   public get payload(): Map<string, FieldArgs> {
-    return this.$obj.payload;
+    return this[Internal].payload;
   }
 
   public updateWith(input: Nullable<MutationInput>) {
     super.updateWith(input);
     assignValue<MutationInternal, MutationInput, MutationInput['args']>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'args',
       effect: (src, value) =>
@@ -95,7 +95,7 @@ export class Mutation
     });
 
     assignValue<MutationInternal, MutationInput, MutationInput['payload']>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'payload',
       effect: (src, value) =>
@@ -108,11 +108,11 @@ export class Mutation
 
   public toObject(): MutationOutput {
     return merge({}, super.toObject(), {
-      args: MapToArray(this.$obj.args, (name, value) => ({
+      args: MapToArray(this[Internal].args, (name, value) => ({
         ...value,
         name,
       })),
-      payload: MapToArray(this.$obj.payload, (name, value) => ({
+      payload: MapToArray(this[Internal].payload, (name, value) => ({
         ...value,
         name,
       })),

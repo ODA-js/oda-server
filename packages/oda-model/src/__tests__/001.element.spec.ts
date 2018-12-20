@@ -6,7 +6,6 @@ describe('element', () => {
     const res = new Element({
       metadata: { some: 'data' },
     });
-    expect(res).toMatchSnapshot('raw');
-    expect(res.toObject()).toMatchSnapshot('toObject');
+    expect(res.hasOwnProperty);
   });
 });

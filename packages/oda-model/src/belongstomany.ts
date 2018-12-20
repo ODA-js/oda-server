@@ -19,6 +19,7 @@ import {
 } from './types';
 import { ISimpleField, SimpleFieldInput, SimpleField } from './simplefield';
 import decapitalize from './lib/decapitalize';
+import { Internal } from './element';
 
 export interface BelongsToManyPersistence extends RelationBasePersistence {
   single: boolean;
@@ -85,19 +86,19 @@ export class BelongsToMany
   >
   implements IBelongsToManyRelation {
   get belongsToMany(): IEntityRef {
-    return this.$obj.belongsToMany;
+    return this[Internal].belongsToMany;
   }
 
   get ref(): IEntityRef {
-    return this.$obj.belongsToMany;
+    return this[Internal].belongsToMany;
   }
 
   get using() {
-    return this.$obj.using;
+    return this[Internal].using;
   }
 
   get fields() {
-    return this.$obj.fields;
+    return this[Internal].fields;
   }
 
   constructor(init: BelongsToManyInput) {
@@ -112,7 +113,7 @@ export class BelongsToMany
       BelongsToManyInput,
       AsHash<SimpleFieldInput> | NamedArray<SimpleFieldInput>
     >({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'fields',
       effect: (src, value) =>
@@ -132,14 +133,14 @@ export class BelongsToMany
     });
 
     assignValue<BelongsToManyMetaInfo, BelongsToManyInput, boolean>({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'embedded',
       effect: (src, value) => (src.persistence.embedded = value),
     });
 
     assignValue<BelongsToManyInternal, BelongsToManyInput, string>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'belongsToMany',
       effect: (src, value) => {
@@ -153,7 +154,7 @@ export class BelongsToMany
     });
 
     assignValue<BelongsToManyInternal, BelongsToManyInput, string>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'using',
       effect: (src, value) => {
@@ -174,7 +175,7 @@ export class BelongsToMany
   public toObject(): BelongsToManyOutput {
     return merge({}, super.toObject(), {
       belongsToMany: this.belongsToMany.toString(),
-      fields: MapToArray(this.$obj.fields, (name, value) => ({
+      fields: MapToArray(this[Internal].fields, (name, value) => ({
         ...value.toObject(),
         name,
       })),

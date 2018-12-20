@@ -9,6 +9,7 @@ import {
 } from './entitybase';
 import { MetaModelType, Nullable, assignValue } from './types';
 import { merge } from 'lodash';
+import { Internal } from './element';
 
 export interface IEntity
   extends IEntityBase<
@@ -68,28 +69,28 @@ export class Entity
   }
 
   get implements(): Set<string> {
-    return this.$obj.implements;
+    return this[Internal].implements;
   }
 
   get abstract(): boolean {
-    return this.$obj.abstract;
+    return this[Internal].abstract;
   }
 
   get embedded(): boolean | Set<string> {
-    return this.$obj.embedded;
+    return this[Internal].embedded;
   }
 
   public updateWith(input: Nullable<EntityInput>) {
     super.updateWith(input);
 
     assignValue({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'abstract',
       setDefault: src => (src.abstract = false),
     });
     assignValue<EntityInternal, EntityInput, string[]>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'implements',
       effect: (src, value) => (src.implements = new Set(value)),
@@ -97,7 +98,7 @@ export class Entity
     });
 
     assignValue<EntityInternal, EntityInput, boolean | string[]>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'embedded',
       effect: (src, value) =>

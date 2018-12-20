@@ -11,6 +11,7 @@ import { merge } from 'lodash';
 import { EntityType, Nullable, assignValue, MetaModelType } from './types';
 import { HasMany } from './hasmany';
 import { HasOne } from './hasone';
+import { Internal } from './element';
 
 export interface IEntityField
   extends IRelationFieldBase<
@@ -69,28 +70,28 @@ export class EntityField
     super(merge({}, defaultInput, init));
   }
   get type(): EntityType {
-    return this.$obj.type;
+    return this[Internal].type;
   }
 
   get list(): boolean {
-    return this.$obj.list;
+    return this[Internal].list;
   }
 
   get derived(): boolean {
-    return this.$obj.derived;
+    return this[Internal].derived;
   }
 
   public updateWith(input: Nullable<EntityFieldInput>) {
     super.updateWith(input);
 
     assignValue({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'type',
     });
 
     assignValue<EntityFieldInternal, EntityFieldInput, boolean>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'list',
       effect: (src, value) => (src.list = value),
@@ -98,7 +99,7 @@ export class EntityField
     });
 
     assignValue<EntityFieldInternal, EntityFieldInput, boolean>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'derived',
       effect: (src, value) => (src.derived = value),
@@ -106,7 +107,7 @@ export class EntityField
     });
 
     assignValue<EntityFieldInternal, EntityFieldInput, EntityType>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'type',
       effect: (src, type) => {
@@ -114,7 +115,7 @@ export class EntityField
           case 'one': {
             src.relation = new HasOne({
               hasOne: `${type.name}#`,
-              entity: this.metadata_.entity,
+              entity: this.metadata.entity,
               field: this.name,
               embedded: true,
             });
@@ -123,7 +124,7 @@ export class EntityField
           case 'many': {
             src.relation = new HasMany({
               hasMany: `${type.name}#`,
-              entity: this.metadata_.entity,
+              entity: this.metadata.entity,
               field: this.name,
               embedded: true,
             });
@@ -139,8 +140,8 @@ export class EntityField
 
   public toObject(): EntityFieldOutput {
     return merge({}, super.toObject(), {
-      type: this.$obj.type,
-      list: this.$obj.list,
+      type: this[Internal].type,
+      list: this[Internal].list,
     } as Partial<EntityFieldOutput>);
   }
 }

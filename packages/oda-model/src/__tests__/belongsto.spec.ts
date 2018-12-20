@@ -8,7 +8,5 @@ describe('belongsto ', () => {
       entity: 'B',
       field: 'a',
     });
-    expect(bt).toMatchSnapshot();
-    expect(bt.toObject()).toMatchSnapshot();
   });
 });

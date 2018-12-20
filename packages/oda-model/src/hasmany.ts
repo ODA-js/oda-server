@@ -10,6 +10,7 @@ import {
 import { IEntityRef, EntityReference, EntityRefInput } from './entityreference';
 import { merge } from 'lodash';
 import { assignValue, Nullable } from './types';
+import { Internal } from './element';
 
 export interface HasManyPersistence extends RelationBasePersistence {
   single: boolean;
@@ -63,11 +64,11 @@ export class HasMany extends RelationBase<
   HasManyOutput
 > {
   get hasMany(): IEntityRef {
-    return this.$obj.hasMany;
+    return this[Internal].hasMany;
   }
 
   get ref(): IEntityRef {
-    return this.$obj.hasMany;
+    return this[Internal].hasMany;
   }
 
   constructor(init: HasManyInput) {
@@ -79,14 +80,14 @@ export class HasMany extends RelationBase<
     super.updateWith(input);
 
     assignValue<HasManyMetaInfo, HasManyInput, boolean>({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'embedded',
       effect: (src, value) => (src.persistence.embedded = value),
     });
 
     assignValue<HasManyInternal, HasManyInput, string>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'hasMany',
       effect: (src, value) => {

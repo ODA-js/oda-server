@@ -10,6 +10,7 @@ import {
 import { merge } from 'lodash';
 import { Nullable, MetaModelType } from './types';
 import { IRelation } from './relation';
+import { Internal } from './element';
 
 export interface RelationFieldBaseMetaInfo<
   P extends RelationFieldBasePersistence
@@ -79,7 +80,7 @@ export abstract class RelationFieldBase<
   }
 
   get relation(): IRelation {
-    return this.$obj.relation;
+    return this[Internal].relation;
   }
 
   constructor(init: I) {

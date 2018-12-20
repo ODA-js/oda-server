@@ -5,6 +5,7 @@ import {
   Element,
   ElementInternal,
   ElementOutput,
+  Internal,
 } from './element';
 import { RelationType, MetaModelType, assignValue, Nullable } from './types';
 import { IEntityRef } from './entityreference';
@@ -69,8 +70,8 @@ export interface RelationBaseInput<
   T extends RelationBaseMetaInfo<P>,
   P extends RelationBasePersistence
 > extends ElementInput<T> {
-  entity: string;
-  field: string;
+  entity?: string;
+  field?: string;
   name?: string;
   embedded?: boolean;
   opposite?: string;
@@ -108,15 +109,15 @@ export abstract class RelationBase<
   }
 
   get name(): string {
-    return this.$obj.name;
+    return this[Internal].name;
   }
 
   get field(): string {
-    return this.$obj.field;
+    return this[Internal].field;
   }
 
   get entity(): string {
-    return this.$obj.entity;
+    return this[Internal].entity;
   }
 
   get ref(): IEntityRef | never {
@@ -124,72 +125,72 @@ export abstract class RelationBase<
   }
 
   get verb(): RelationType {
-    return this.metadata_.verb;
+    return this.metadata.verb;
   }
 
   // one item per relation
   get single() {
-    return this.metadata_.persistence.single;
+    return this.metadata.persistence.single;
   }
 
   // key is storage is located in owner side of entity
   get stored() {
-    return this.metadata_.persistence.stored;
+    return this.metadata.persistence.stored;
   }
 
   // stored as members of class
   get embedded() {
-    return this.metadata_.persistence.embedded;
+    return this.metadata.persistence.embedded;
   }
 
   // opposite entity field with relation def
   get opposite() {
-    return this.$obj.opposite;
+    return this[Internal].opposite;
   }
 
   set opposite(val) {
-    this.$obj.opposite = val;
+    this[Internal].opposite = val;
   }
 
   protected initNames() {
     if (!this.name) {
       let ref = this.single
-        ? inflected.singularize(this.$obj.field)
-        : inflected.pluralize(this.$obj.field);
+        ? inflected.singularize(this[Internal].field)
+        : inflected.pluralize(this[Internal].field);
 
-      this.metadata_.name.full = `${this.$obj.entity}${
+      this.metadata.name.full = `${this[Internal].entity}${
         this.verb
       }${inflected.camelize(ref, true)}`;
 
       let ref1 = this.single
-        ? inflected.singularize(this.$obj.field)
-        : inflected.pluralize(this.$obj.field);
+        ? inflected.singularize(this[Internal].field)
+        : inflected.pluralize(this[Internal].field);
 
-      this.metadata_.name.normal = `${this.$obj.entity}${inflected.camelize(
+      this.metadata.name.normal = `${this[Internal].entity}${inflected.camelize(
         ref1,
         true,
       )}`;
 
       let ref2 = this.single
-        ? inflected.singularize(this.$obj.field)
-        : inflected.pluralize(this.$obj.field);
+        ? inflected.singularize(this[Internal].field)
+        : inflected.pluralize(this[Internal].field);
 
-      this.metadata_.name.short = `${inflected.camelize(ref2, true)}`;
+      this.metadata.name.short = `${inflected.camelize(ref2, true)}`;
     } else {
-      this.metadata_.name.full = this.metadata_.name.normal = this.metadata_.name.short = this.name;
+      this.metadata.name.full = this.metadata.name.normal = this.metadata.name.short = this.name;
     }
   }
 
   get fullName() {
-    return this.metadata_.name.full;
+    return this.metadata.name.full;
   }
 
   get normalName() {
-    return this.metadata_.name.normal;
+    return this.metadata.name.normal;
   }
 
   get shortName() {
-    return this.metadata_.name.short;
+    return this.metadata.name.short;
   }
 
   public toString() {
@@ -200,7 +201,7 @@ export abstract class RelationBase<
     super.updateWith(input);
 
     assignValue<S, RelationBaseInput<T, P>, string>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'name',
       effect: (src, value) => {
@@ -210,20 +211,20 @@ export abstract class RelationBase<
     });
 
     assignValue<S, RelationBaseInput<T, P>, string>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'opposite',
       effect: (src, value) => (src.opposite = decapitalize(value.trim())),
     });
 
     assignValue({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'entity',
     });
 
     assignValue({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'field',
     });

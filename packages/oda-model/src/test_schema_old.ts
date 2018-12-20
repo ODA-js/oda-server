@@ -1,9 +1,9 @@
-import { MetaModelInput } from '../metamodel';
-import { EntityInput, EntityMetaInfo } from '../entity';
-import { MutationInput } from '../mutation';
-import { EnumInput } from '../enum';
-import { QueryInput } from '../query';
-import { ModelPackageInput } from '../modelpackage';
+import { MetaModelInput } from './metamodel';
+import { EntityInput } from './entity';
+import { MutationInput } from './mutation';
+import { EnumInput } from './enum';
+import { QueryInput } from './query';
+import { ModelPackageInput } from './modelpackage';
 
 const MediaFile: EntityInput = {
   name: 'MediaFile',
@@ -24,7 +24,7 @@ const MediaFile: EntityInput = {
       type: { type: 'entity', name: 'Image', multiplicity: 'many' },
     },
   ],
-  metadata: { UI: { listName: ['title'] } } as Partial<EntityMetaInfo>,
+  metadata: { UI: { listName: ['title'] } },
 };
 
 const Image: EntityInput = {
@@ -52,7 +52,7 @@ const IFile: EntityInput = {
     { name: 'path' },
     { name: 'name' },
   ],
-  metadata: { UI: { listName: ['src'] } } as Partial<EntityMetaInfo>,
+  metadata: { UI: { listName: ['src'] } },
 };
 
 const User: EntityInput = {
@@ -85,7 +85,7 @@ const User: EntityInput = {
       },
     },
   ],
-  metadata: { UI: { listName: ['userName'] } } as Partial<EntityMetaInfo>,
+  metadata: { UI: { listName: ['userName'] } },
 };
 
 const Login: MutationInput = {
@@ -203,7 +203,7 @@ const UserPackage_User: EntityInput = {
       },
     },
   ],
-  metadata: { UI: { listName: ['userName'] } } as Partial<EntityMetaInfo>,
+  metadata: { UI: { listName: ['userName'] } },
 };
 
 const UserPackage: ModelPackageInput = {
@@ -221,7 +221,3 @@ const schema: MetaModelInput = {
 };
 
 export default schema;
-
-it('schema', () => {
-  expect(schema).toMatchSnapshot('schema');
-});

@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { IUpdatableBase } from './element';
-import { merge, get, set, has } from 'lodash';
+import { merge, get, set, has, mergeWith } from 'lodash';
 
 export type Nullable<T> = { [P in keyof T]: T[P] | undefined | null };
 
@@ -275,6 +275,16 @@ export function MapToArray<T extends INamed, O extends INamed = T>(
     [] as O[],
   );
 }
+
+export type Merger<I extends INamed> = (
+  objValue: any,
+  srcValue: any,
+  key: keyof I,
+  object: I,
+  source: I,
+  stack: string[],
+) => any;
+
 /**
  * create items with lookup from source
  * @param src source for lookup data
@@ -286,7 +296,7 @@ export function createOrMergeFromMap<
   N extends INamed & IUpdatableBase,
   I extends INamed,
   V extends string | I
->(src: T, create: new (input: I) => N, prop: keyof T) {
+>(src: T, create: new (input: I) => N, prop: keyof T, merger?: Merger<I>) {
   return (value: V) => {
     let result: N | undefined;
     const srcMap = (get(src, prop) as unknown) as Map<string, N> | undefined;
@@ -296,7 +306,12 @@ export function createOrMergeFromMap<
       const name = (value as I).name;
       const original = srcMap && srcMap.get(name);
       if (original) {
-        const update = merge({}, original.toObject(), value);
+        let update: any;
+        if (merger) {
+          update = mergeWith({}, original.toObject(), value, merger);
+        } else {
+          update = merge({}, original.toObject(), value);
+        }
         original.updateWith(update);
       } else {
         srcMap && srcMap.set(name, new create(value as I));

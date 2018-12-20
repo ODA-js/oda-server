@@ -1,6 +1,6 @@
 import 'jest';
-import schema from './schema';
-import { MetaModel, IModel } from '../metamodel';
+import schema from '../test_schema_old';
+import { MetaModel } from '../metamodel';
 
 describe('Metadata', () => {
   it('load model', () => {

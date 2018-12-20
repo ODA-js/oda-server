@@ -14,23 +14,23 @@ Entity {
               "backField": "id",
               "entity": "A",
               "field": "_id",
+              Symbol(metadata): Object {},
             },
-            "metadata_": Object {},
           },
           "list": false,
           "name": "_id",
-        },
-        "metadata_": Object {
-          "acl": Object {
-            "read": Array [],
-            "update": Array [],
-          },
-          "entity": "A",
-          "order": 0,
-          "persistence": Object {
-            "identity": true,
-            "indexed": true,
-            "required": true,
+          Symbol(metadata): Object {
+            "acl": Object {
+              "read": Array [],
+              "update": Array [],
+            },
+            "entity": "A",
+            "order": 0,
+            "persistence": Object {
+              "identity": true,
+              "indexed": true,
+              "required": true,
+            },
           },
         },
       },
@@ -40,15 +40,15 @@ Entity {
           "list": false,
           "name": "name",
           "type": "Number",
-        },
-        "metadata_": Object {
-          "acl": Object {
-            "read": Array [],
-            "update": Array [],
+          Symbol(metadata): Object {
+            "acl": Object {
+              "read": Array [],
+              "update": Array [],
+            },
+            "entity": "A",
+            "order": 1,
+            "persistence": Object {},
           },
-          "entity": "A",
-          "order": 1,
-          "persistence": Object {},
         },
       },
     },
@@ -65,41 +65,41 @@ Entity {
     "required": Set {
       "_id",
     },
-  },
-  "metadata_": Object {
-    "UI": Object {
-      "edit": Array [],
-      "embedded": Array [],
-      "hidden": Array [],
-      "list": Array [],
-      "listName": Array [],
-      "quickSearch": Array [],
-      "show": Array [],
-    },
-    "acl": Object {
-      "create": Array [],
-      "delete": Array [],
-      "read": Array [],
-      "upadte": Array [],
-    },
-    "name": Object {
-      "plural": "As",
-      "singular": "A",
-    },
-    "persistence": Object {
-      "indexes": Object {
-        "_id": Object {
-          "fields": Object {
-            "_id": 1,
-          },
-          "name": "_id",
-          "options": Object {
-            "unique": true,
+    Symbol(metadata): Object {
+      "UI": Object {
+        "edit": Array [],
+        "embedded": Array [],
+        "hidden": Array [],
+        "list": Array [],
+        "listName": Array [],
+        "quickSearch": Array [],
+        "show": Array [],
+      },
+      "acl": Object {
+        "create": Array [],
+        "delete": Array [],
+        "read": Array [],
+        "upadte": Array [],
+      },
+      "name": Object {
+        "plural": "As",
+        "singular": "A",
+      },
+      "persistence": Object {
+        "indexes": Object {
+          "_id": Object {
+            "fields": Object {
+              "_id": 1,
+            },
+            "name": "_id",
+            "options": Object {
+              "unique": true,
+            },
           },
         },
       },
+      "titlePlural": "As",
     },
-    "titlePlural": "As",
   },
 }
 `;
@@ -223,23 +223,23 @@ Entity {
               "backField": "id",
               "entity": "A",
               "field": "id",
+              Symbol(metadata): Object {},
             },
-            "metadata_": Object {},
           },
           "list": false,
           "name": "id",
-        },
-        "metadata_": Object {
-          "acl": Object {
-            "read": Array [],
-            "update": Array [],
-          },
-          "entity": "A",
-          "order": 0,
-          "persistence": Object {
-            "identity": true,
-            "indexed": true,
-            "required": true,
+          Symbol(metadata): Object {
+            "acl": Object {
+              "read": Array [],
+              "update": Array [],
+            },
+            "entity": "A",
+            "order": 0,
+            "persistence": Object {
+              "identity": true,
+              "indexed": true,
+              "required": true,
+            },
           },
         },
       },
@@ -249,15 +249,15 @@ Entity {
           "list": false,
           "name": "name",
           "type": "Number",
-        },
-        "metadata_": Object {
-          "acl": Object {
-            "read": Array [],
-            "update": Array [],
+          Symbol(metadata): Object {
+            "acl": Object {
+              "read": Array [],
+              "update": Array [],
+            },
+            "entity": "A",
+            "order": 1,
+            "persistence": Object {},
           },
-          "entity": "A",
-          "order": 1,
-          "persistence": Object {},
         },
       },
     },
@@ -274,41 +274,41 @@ Entity {
     "required": Set {
       "id",
     },
-  },
-  "metadata_": Object {
-    "UI": Object {
-      "edit": Array [],
-      "embedded": Array [],
-      "hidden": Array [],
-      "list": Array [],
-      "listName": Array [],
-      "quickSearch": Array [],
-      "show": Array [],
-    },
-    "acl": Object {
-      "create": Array [],
-      "delete": Array [],
-      "read": Array [],
-      "upadte": Array [],
-    },
-    "name": Object {
-      "plural": "As",
-      "singular": "A",
-    },
-    "persistence": Object {
-      "indexes": Object {
-        "id": Object {
-          "fields": Object {
-            "id": 1,
-          },
-          "name": "id",
-          "options": Object {
-            "unique": true,
+    Symbol(metadata): Object {
+      "UI": Object {
+        "edit": Array [],
+        "embedded": Array [],
+        "hidden": Array [],
+        "list": Array [],
+        "listName": Array [],
+        "quickSearch": Array [],
+        "show": Array [],
+      },
+      "acl": Object {
+        "create": Array [],
+        "delete": Array [],
+        "read": Array [],
+        "upadte": Array [],
+      },
+      "name": Object {
+        "plural": "As",
+        "singular": "A",
+      },
+      "persistence": Object {
+        "indexes": Object {
+          "id": Object {
+            "fields": Object {
+              "id": 1,
+            },
+            "name": "id",
+            "options": Object {
+              "unique": true,
+            },
           },
         },
       },
+      "titlePlural": "As",
     },
-    "titlePlural": "As",
   },
 }
 `;
@@ -430,15 +430,15 @@ Entity {
           "list": false,
           "name": "name",
           "type": "Number",
-        },
-        "metadata_": Object {
-          "acl": Object {
-            "read": Array [],
-            "update": Array [],
+          Symbol(metadata): Object {
+            "acl": Object {
+              "read": Array [],
+              "update": Array [],
+            },
+            "entity": "A",
+            "order": 0,
+            "persistence": Object {},
           },
-          "entity": "A",
-          "order": 0,
-          "persistence": Object {},
         },
       },
       "id" => SimpleField {
@@ -449,23 +449,23 @@ Entity {
               "backField": "id",
               "entity": "a",
               "field": "id",
+              Symbol(metadata): Object {},
             },
-            "metadata_": Object {},
           },
           "list": false,
           "name": "id",
           "type": "ID",
-        },
-        "metadata_": Object {
-          "acl": Object {
-            "read": Array [],
-            "update": Array [],
-          },
-          "entity": "a",
-          "persistence": Object {
-            "identity": true,
-            "indexed": true,
-            "required": true,
+          Symbol(metadata): Object {
+            "acl": Object {
+              "read": Array [],
+              "update": Array [],
+            },
+            "entity": "a",
+            "persistence": Object {
+              "identity": true,
+              "indexed": true,
+              "required": true,
+            },
           },
         },
       },
@@ -483,41 +483,41 @@ Entity {
     "required": Set {
       "id",
     },
-  },
-  "metadata_": Object {
-    "UI": Object {
-      "edit": Array [],
-      "embedded": Array [],
-      "hidden": Array [],
-      "list": Array [],
-      "listName": Array [],
-      "quickSearch": Array [],
-      "show": Array [],
-    },
-    "acl": Object {
-      "create": Array [],
-      "delete": Array [],
-      "read": Array [],
-      "upadte": Array [],
-    },
-    "name": Object {
-      "plural": "As",
-      "singular": "A",
-    },
-    "persistence": Object {
-      "indexes": Object {
-        "id": Object {
-          "fields": Object {
-            "id": 1,
-          },
-          "name": "id",
-          "options": Object {
-            "unique": true,
+    Symbol(metadata): Object {
+      "UI": Object {
+        "edit": Array [],
+        "embedded": Array [],
+        "hidden": Array [],
+        "list": Array [],
+        "listName": Array [],
+        "quickSearch": Array [],
+        "show": Array [],
+      },
+      "acl": Object {
+        "create": Array [],
+        "delete": Array [],
+        "read": Array [],
+        "upadte": Array [],
+      },
+      "name": Object {
+        "plural": "As",
+        "singular": "A",
+      },
+      "persistence": Object {
+        "indexes": Object {
+          "id": Object {
+            "fields": Object {
+              "id": 1,
+            },
+            "name": "id",
+            "options": Object {
+              "unique": true,
+            },
           },
         },
       },
+      "titlePlural": "As",
     },
-    "titlePlural": "As",
   },
 }
 `;

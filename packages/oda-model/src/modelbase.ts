@@ -6,6 +6,7 @@ import {
   Element,
   IMeta,
   ElementOutput,
+  Internal,
 } from './element';
 import { MetaModelType, INamed } from './types';
 import { merge } from 'lodash';
@@ -73,15 +74,15 @@ export abstract class ModelBase<
     super(merge({}, defaultInput, init));
   }
   get name(): string {
-    return this.$obj.name;
+    return this[Internal].name;
   }
 
   get title(): string | undefined {
-    return this.$obj.title;
+    return this[Internal].title;
   }
 
   get description(): string | undefined {
-    return this.$obj.description;
+    return this[Internal].description;
   }
 
   /**
@@ -92,7 +93,7 @@ export abstract class ModelBase<
     super.updateWith(input);
 
     assignValue<S, I, string>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'name',
       effect: (src, value) => (src.name = inflected.camelize(value, false)),
@@ -100,7 +101,7 @@ export abstract class ModelBase<
     });
 
     assignValue<S, I, string>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'title',
       effect: (src, value) =>
@@ -108,7 +109,7 @@ export abstract class ModelBase<
     });
 
     assignValue<S, I, string>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'description',
       effect: (src, value) =>

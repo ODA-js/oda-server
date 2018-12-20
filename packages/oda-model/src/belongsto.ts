@@ -10,6 +10,7 @@ import {
 import { IEntityRef, EntityReference } from './entityreference';
 import { merge, get } from 'lodash';
 import { assignValue, Nullable } from './types';
+import { Internal } from './element';
 
 export interface BelongsToPersistence extends RelationBasePersistence {
   single: boolean;
@@ -75,23 +76,23 @@ export class BelongsTo extends RelationBase<
   BelongsToOutput
 > {
   get belongsTo(): IEntityRef {
-    return this.$obj.belongsTo;
+    return this[Internal].belongsTo;
   }
 
   get ref(): IEntityRef {
-    return this.$obj.belongsTo;
+    return this[Internal].belongsTo;
   }
 
   get identity(): boolean | string | string[] {
-    return get(this.metadata_, 'persistence.identity', false);
+    return get(this.metadata, 'persistence.identity', false);
   }
 
   get required(): boolean {
-    return get(this.metadata_, 'persistence.required', false);
+    return get(this.metadata, 'persistence.required', false);
   }
 
   get indexed(): boolean | string | string[] {
-    return get(this.metadata_, 'persistence.indexed', false);
+    return get(this.metadata, 'persistence.indexed', false);
   }
 
   constructor(init: BelongsToInput) {
@@ -103,7 +104,7 @@ export class BelongsTo extends RelationBase<
     super.updateWith(input);
 
     assignValue<BelongsToMetaInfo, BelongsToInput, boolean>({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'embedded',
       effect: (src, value) => (src.persistence.embedded = value),
@@ -111,7 +112,7 @@ export class BelongsTo extends RelationBase<
     });
 
     assignValue<BelongsToInternal, BelongsToInput, string>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'belongsTo',
       effect: (src, value) => (src.belongsTo = new EntityReference(value)),
@@ -119,7 +120,7 @@ export class BelongsTo extends RelationBase<
     });
 
     assignValue<BelongsToMetaInfo, BelongsToInput, boolean>({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'indexed',
       effect: (src, value) => (src.persistence.indexed = value),
@@ -127,7 +128,7 @@ export class BelongsTo extends RelationBase<
     });
 
     assignValue<BelongsToMetaInfo, BelongsToInput, boolean>({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'identity',
       effect: (src, value) => (src.persistence.identity = value),
@@ -135,7 +136,7 @@ export class BelongsTo extends RelationBase<
     });
 
     assignValue<BelongsToMetaInfo, BelongsToInput, boolean>({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'required',
       effect: (src, value) => (src.persistence.required = value),

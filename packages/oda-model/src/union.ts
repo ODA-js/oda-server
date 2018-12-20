@@ -1,5 +1,5 @@
 import { merge } from 'lodash';
-import { ElementMetaInfo } from './element';
+import { ElementMetaInfo, Internal } from './element';
 import {
   ModelBaseInternal,
   ModelBaseInput,
@@ -47,13 +47,13 @@ export class Union
     super(merge({}, defaultInput, init));
   }
   get items(): Set<string> {
-    return this.$obj.items;
+    return this[Internal].items;
   }
 
   public updateWith(input: Nullable<UnionInput>) {
     super.updateWith(input);
     assignValue<UnionInternal, UnionInput, UnionInput['items']>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'items',
       effect: (src, value) => (src.items = new Set(value)),

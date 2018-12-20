@@ -17,6 +17,7 @@ import {
   NamedArray,
   MetaModelType,
 } from './types';
+import { Internal } from './element';
 
 export interface ISimpleField
   extends IFieldBase<
@@ -73,20 +74,22 @@ export class SimpleField
   >
   implements ISimpleField {
   public get modelType(): MetaModelType {
-    return typeof this.$obj.type === 'string' ? 'simple-field' : 'enum-field';
+    return typeof this[Internal].type === 'string'
+      ? 'simple-field'
+      : 'enum-field';
   }
 
   get type(): string | EnumType {
-    return this.$obj.type;
+    return this[Internal].type;
   }
 
   // if it is the field is List of Items i.e. String[]
   get list(): boolean {
-    return get(this.$obj, 'list', false);
+    return get(this[Internal], 'list', false);
   }
 
   get defaultValue(): string | undefined {
-    return get(this.metadata_, 'defaultValue');
+    return get(this.metadata, 'defaultValue');
   }
 
   constructor(init: SimpleFieldInput) {
@@ -97,13 +100,13 @@ export class SimpleField
     super.updateWith(input);
 
     assignValue({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'type',
     });
 
     assignValue({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'list',
       required: true,
@@ -111,20 +114,20 @@ export class SimpleField
     });
 
     assignValue<SimpleFieldMeta, SimpleFieldInput, boolean>({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'derived',
       effect: (src, value) => {
         src.persistence.derived = value;
         if (!value) {
-          this.metadata_.persistence.persistent = true;
+          this.metadata.persistence.persistent = true;
         }
       },
       setDefault: src => (src.persistence.derived = false),
     });
 
     assignValue<SimpleFieldMeta, SimpleFieldInput, boolean>({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'persistent',
       effect: (src, value) => (src.persistence.persistent = value),
@@ -136,7 +139,7 @@ export class SimpleField
       SimpleFieldInput,
       AsHash<FieldArgs> | NamedArray<FieldArgs>
     >({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'args',
       allowEffect: (_, value) =>
@@ -145,7 +148,7 @@ export class SimpleField
     });
 
     assignValue({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'defaultValue',
       allowEffect: (src, _) => src.persistence.derived,
@@ -157,10 +160,10 @@ export class SimpleField
       derived: this.derived,
       defaultValue: this.defaultValue,
       persistent: this.persistent,
-      entity: this.metadata_.entity,
+      entity: this.metadata.entity,
       type: this.type,
-      inheritedFrom: this.$obj.inheritedFrom,
-      list: this.$obj.list,
+      inheritedFrom: this[Internal].inheritedFrom,
+      list: this[Internal].list,
     } as Partial<SimpleFieldOutput>);
   }
 }

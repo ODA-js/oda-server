@@ -10,6 +10,7 @@ import {
 import { IEntityRef, EntityReference, EntityRefInput } from './entityreference';
 import { merge } from 'lodash';
 import { assignValue, Nullable } from './types';
+import { Internal } from './element';
 
 export interface HasOnePersistence extends RelationBasePersistence {
   single: boolean;
@@ -63,11 +64,11 @@ export class HasOne extends RelationBase<
   HasOneOutput
 > {
   get hasOne(): IEntityRef {
-    return this.$obj.hasOne;
+    return this[Internal].hasOne;
   }
 
   get ref(): IEntityRef {
-    return this.$obj.hasOne;
+    return this[Internal].hasOne;
   }
 
   constructor(init: HasOneInput) {
@@ -79,14 +80,14 @@ export class HasOne extends RelationBase<
     super.updateWith(input);
 
     assignValue<HasOneMetaInfo, HasOneInput, boolean>({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'embedded',
       effect: (src, value) => (src.persistence.embedded = value),
     });
 
     assignValue<HasOneInternal, HasOneInput, string>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'hasOne',
       effect: (src, value) => {

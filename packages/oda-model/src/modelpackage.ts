@@ -9,6 +9,7 @@ import {
   ModelPackageBaseInput,
   ModelPackageBaseInternal,
 } from './packagebase';
+import { Internal } from './element';
 
 export type AccessAction = 'allow' | 'prohibit';
 
@@ -58,14 +59,14 @@ export class ModelPackage
     return 'package';
   }
   public get abstract() {
-    return this.$obj.abstract;
+    return this[Internal].abstract;
   }
   public get defaultAccess() {
-    return this.$obj.defaultAccess;
+    return this[Internal].defaultAccess;
   }
 
   public get extends() {
-    return this.$obj.extends;
+    return this[Internal].extends;
   }
 
   constructor(init: ModelPackageInput | string | undefined) {
@@ -86,7 +87,7 @@ export class ModelPackage
     super.updateWith(input);
 
     assignValue<ModelPackageInternal, ModelPackageInput, boolean>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'abstract',
       effect: (src, value) => (src.abstract = value),
@@ -99,7 +100,7 @@ export class ModelPackage
       ModelPackageInput,
       NonNullable<ModelPackageInput['defaultAccess']>
     >({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'defaultAccess',
       effect: (src, value) => (src.defaultAccess = value),
@@ -112,7 +113,7 @@ export class ModelPackage
       ModelPackageInput,
       NonNullable<ModelPackageInput['extends']>
     >({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'extends',
       effect: (src, value) => (src.extends = new Set<string>(value)),
@@ -123,8 +124,8 @@ export class ModelPackage
 
   public toObject(): ModelPackageOutput {
     return merge({}, super.toObject(), {
-      abstract: this.$obj.abstract,
-      defaultAccess: this.$obj.defaultAccess,
+      abstract: this[Internal].abstract,
+      defaultAccess: this[Internal].defaultAccess,
       extends: [...this.extends],
     } as ModelPackageOutput);
   }

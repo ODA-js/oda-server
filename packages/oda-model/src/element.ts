@@ -2,10 +2,13 @@ import { IValidate, IValidator, IValidationResultInput } from './validation';
 import { merge } from 'lodash';
 import { MetaModelType, Nullable, assignValue } from './types';
 
+export const Internal = Symbol.for('internal');
+export const MetaData = Symbol.for('metadata');
+
 export interface ElementMetaInfo {}
 
 export interface ElementInternal<T extends ElementMetaInfo> {
-  metadata: T;
+  [MetaData]: T;
 }
 
 export interface ElementInput<T extends ElementMetaInfo> {
@@ -77,13 +80,12 @@ export class Element<
   public get modelType(): MetaModelType {
     return 'element';
   }
-  protected $obj: S;
-  protected metadata_!: M;
+  public [Internal]: S;
   /**
    * metadata is not immutable
    */
   public get metadata(): M {
-    return this.metadata_;
+    return this[Internal][MetaData];
   }
 
   public validate(validator: IValidator): IValidationResultInput[] {
@@ -91,7 +93,7 @@ export class Element<
   }
 
   constructor(init: ElementInput<M>) {
-    this.$obj = {} as S;
+    this[Internal] = {} as S;
     this.updateWith(merge({}, defaultInput, init));
   }
   /**
@@ -103,8 +105,10 @@ export class Element<
       src: this,
       input,
       field: 'metadata',
-      effect: (_, value) => (this.metadata_ = merge({}, this.metadata_, value)),
-      setDefault: _ => (this.metadata_ = merge({}, defaultMetaInfo) as M),
+      effect: (_, value) =>
+        (this[Internal][MetaData] = merge({}, this[Internal][MetaData], value)),
+      setDefault: _ =>
+        (this[Internal][MetaData] = merge({}, defaultMetaInfo) as M),
     });
   }
   /**
@@ -112,6 +116,6 @@ export class Element<
    * it is suitable for cloning items
    */
   public toObject(): O {
-    return merge({}, { metadata: this.metadata_ } as O);
+    return merge({}, { metadata: this.metadata } as O);
   }
 }

@@ -19,7 +19,7 @@ import {
   NamedArray,
   ArrayToMap,
 } from './types';
-import { ElementMetaInfo } from './element';
+import { ElementMetaInfo, Internal } from './element';
 import { IEntityRef, EntityReference } from './entityreference';
 
 export interface IFieldBase<
@@ -128,43 +128,43 @@ export abstract class FieldBase<
     return 'field-base';
   }
   public get idKey(): IEntityRef {
-    return this.$obj.idKey;
+    return this[Internal].idKey;
   }
 
   get type(): FieldType | undefined {
-    return this.$obj.type;
+    return this[Internal].type;
   }
 
   get inheritedFrom(): string | undefined {
-    return this.$obj.inheritedFrom;
+    return this[Internal].inheritedFrom;
   }
 
   get args(): Map<string, FieldArgs> {
-    return this.$obj.args;
+    return this[Internal].args;
   }
 
   get order(): number {
-    return this.metadata_.order;
+    return this.metadata.order;
   }
 
   get derived(): boolean {
-    return get(this.metadata_, 'persistence.derived', false);
+    return get(this.metadata, 'persistence.derived', false);
   }
 
   get persistent(): boolean {
-    return get(this.metadata_, 'persistence.persistent', false);
+    return get(this.metadata, 'persistence.persistent', false);
   }
 
   get identity(): boolean | string | string[] {
-    return get(this.metadata_, 'persistence.identity', false);
+    return get(this.metadata, 'persistence.identity', false);
   }
 
   get required(): boolean {
-    return get(this.metadata_, 'persistence.required', false);
+    return get(this.metadata, 'persistence.required', false);
   }
 
   get indexed(): boolean | string | string[] {
-    return get(this.metadata_, 'persistence.indexed', false);
+    return get(this.metadata, 'persistence.indexed', false);
   }
 
   constructor(init: I) {
@@ -175,7 +175,7 @@ export abstract class FieldBase<
     super.updateWith(input);
 
     assignValue<S, I, string>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'name',
       effect: (src, value) => {
@@ -185,13 +185,13 @@ export abstract class FieldBase<
     });
 
     assignValue({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'inheritedFrom',
     });
 
     assignValue<S, I, AsHash<FieldArgs> | NamedArray<FieldArgs>>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'args',
       effect: (src, value) =>
@@ -202,59 +202,59 @@ export abstract class FieldBase<
     });
 
     assignValue({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       field: 'entity',
       effect: (src, value) => (src.entity = value),
     });
 
     assignValue({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       field: 'order',
       effect: (src, value) => (src.order = value),
     });
 
     assignValue({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'derived',
       effect: (src, value) => (src.persistence.derived, value),
     });
 
     assignValue({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'persistent',
       effect: (src, value) => (src.persistence.persistent = value),
     });
 
     assignValue<T, I, boolean>({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'identity',
       effect: (_, value) => {
-        this.metadata_.persistence.identity = value;
+        this.metadata.persistence.identity = value;
         if (value) {
-          this.metadata_.persistence.required = true;
-          this.metadata_.persistence.indexed = true;
-          this.$obj.idKey = new EntityReference({
-            entity: this.metadata_.entity,
-            field: this.$obj.name,
+          this.metadata.persistence.required = true;
+          this.metadata.persistence.indexed = true;
+          this[Internal].idKey = new EntityReference({
+            entity: this.metadata.entity,
+            field: this[Internal].name,
           });
         }
       },
     });
 
     assignValue<T, I, boolean>({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'indexed',
       effect: (src, value) => (src.persistence.indexed = value),
     });
 
     assignValue<T, I, boolean>({
-      src: this.metadata_,
+      src: this.metadata,
       input,
       inputField: 'required',
       effect: (src, value) => (src.persistence.required = value),
@@ -262,24 +262,24 @@ export abstract class FieldBase<
   }
 
   public makeIdentity() {
-    this.$obj.idKey = new EntityReference({
-      entity: this.metadata_.entity,
-      field: this.$obj.name,
+    this[Internal].idKey = new EntityReference({
+      entity: this.metadata.entity,
+      field: this[Internal].name,
       backField: 'id',
     });
-    this.metadata_.persistence.indexed = true;
-    this.metadata_.persistence.identity = true;
-    this.metadata_.persistence.required = true;
+    this.metadata.persistence.indexed = true;
+    this.metadata.persistence.identity = true;
+    this.metadata.persistence.required = true;
   }
 
   public toObject(): O {
     return merge({}, super.toObject(), {
-      entity: this.metadata_.entity,
+      entity: this.metadata.entity,
       derived: this.derived,
       persistent: this.persistent,
-      inheritedFrom: this.$obj.inheritedFrom,
-      order: this.metadata_.order,
-      args: this.$obj.args ? MapToHash(this.$obj.args) : undefined,
+      inheritedFrom: this[Internal].inheritedFrom,
+      order: this.metadata.order,
+      args: this[Internal].args ? MapToHash(this[Internal].args) : undefined,
       required: this.required,
       indexed: this.indexed,
       identity: this.identity,

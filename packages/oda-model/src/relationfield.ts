@@ -14,6 +14,7 @@ import {
   RelationFieldBaseInput,
   RelationFieldBaseOutput,
 } from './relationfieldbase';
+import { Internal } from './element';
 
 function discoverFieldType(obj: any) {
   // сделать проверку по полю...
@@ -98,7 +99,7 @@ export class RelationField
   public updateWith(input: Nullable<RelationFieldInput>) {
     super.updateWith(input);
     assignValue<RelationFieldInternal, RelationFieldInput, RelationInput>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'relation',
       effect: (src, value) => {
@@ -106,28 +107,28 @@ export class RelationField
           case 'HasOne':
             src.relation = new HasOne({
               ...(value as { hasOne: string }),
-              entity: this.metadata_.entity,
+              entity: this.metadata.entity,
               field: this.name,
             });
             break;
           case 'HasMany':
             src.relation = new HasMany({
               ...(value as { hasMany: string }),
-              entity: this.metadata_.entity,
+              entity: this.metadata.entity,
               field: this.name,
             });
             break;
           case 'BelongsToMany':
             src.relation = new BelongsToMany({
               ...(value as { belongsToMany: string; using: string }),
-              entity: this.metadata_.entity,
+              entity: this.metadata.entity,
               field: this.name,
             });
             break;
           case 'BelongsTo':
             src.relation = new BelongsTo({
               ...(value as { belongsTo: string }),
-              entity: this.metadata_.entity,
+              entity: this.metadata.entity,
               field: this.name,
             });
             break;

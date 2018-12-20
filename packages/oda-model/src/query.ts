@@ -1,5 +1,5 @@
 import { merge } from 'lodash';
-import { ElementMetaInfo } from './element';
+import { ElementMetaInfo, Internal } from './element';
 import {
   FieldArgs,
   AsHash,
@@ -71,11 +71,11 @@ export class Query
   }
 
   public get args(): Map<string, FieldArgs> {
-    return this.$obj.args;
+    return this[Internal].args;
   }
 
   public get payload(): Map<string, FieldArgs> {
-    return this.$obj.payload;
+    return this[Internal].payload;
   }
 
   public updateWith(input: Nullable<QueryInput>) {
@@ -86,7 +86,7 @@ export class Query
       QueryInput,
       AsHash<FieldArgs> | NamedArray<FieldArgs>
     >({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'args',
       effect: (src, value) =>
@@ -101,7 +101,7 @@ export class Query
       QueryInput,
       AsHash<FieldArgs> | NamedArray<FieldArgs>
     >({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'payload',
       effect: (src, value) =>
@@ -114,11 +114,11 @@ export class Query
 
   public toObject(): QueryOutput {
     return merge({}, super.toObject(), {
-      args: MapToArray(this.$obj.args, (name, value) => ({
+      args: MapToArray(this[Internal].args, (name, value) => ({
         ...value,
         name,
       })),
-      payload: MapToArray(this.$obj.payload, (name, value) => ({
+      payload: MapToArray(this[Internal].payload, (name, value) => ({
         ...value,
         name,
       })),

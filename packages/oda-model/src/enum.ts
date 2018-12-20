@@ -7,7 +7,7 @@ import {
 } from './modelbase';
 import { EnumItem, IEnumItem, EnumItemInput } from './enumItem';
 import { merge } from 'lodash';
-import { ElementMetaInfo } from './element';
+import { ElementMetaInfo, Internal } from './element';
 import { MetaModelType, Nullable, assignValue } from './types';
 
 export interface IEnum extends IModelBase<EnumMetaInfo, EnumInput, EnumOutput> {
@@ -41,7 +41,7 @@ export class Enum
     return 'enum';
   }
   get items() {
-    return this.$obj.items;
+    return this[Internal].items;
   }
 
   constructor(init: EnumInput) {
@@ -52,7 +52,7 @@ export class Enum
     super.updateWith(input);
 
     assignValue<EnumInternal, EnumInput, EnumInput['items']>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'items',
       effect: (src, value) =>
@@ -81,7 +81,7 @@ export class Enum
 
   public toObject(): EnumOutput {
     return merge({}, super.toObject(), {
-      items: [...this.$obj.items.values()].map(i => i.toObject()),
+      items: [...this[Internal].items.values()].map(i => i.toObject()),
     } as Partial<EnumOutput>);
   }
 }

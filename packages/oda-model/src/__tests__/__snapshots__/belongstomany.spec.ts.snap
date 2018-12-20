@@ -8,8 +8,8 @@ BelongsToMany {
         "backField": "id",
         "entity": "Name",
         "field": "id",
+        Symbol(metadata): Object {},
       },
-      "metadata_": Object {},
     },
     "entity": "user",
     "field": "name",
@@ -19,22 +19,22 @@ BelongsToMany {
         "backField": "id",
         "entity": "C",
         "field": "id",
+        Symbol(metadata): Object {},
       },
-      "metadata_": Object {},
     },
-  },
-  "metadata_": Object {
-    "name": Object {
-      "full": "userBelongsToManyNames",
-      "normal": "userNames",
-      "short": "Names",
+    Symbol(metadata): Object {
+      "name": Object {
+        "full": "userBelongsToManyNames",
+        "normal": "userNames",
+        "short": "Names",
+      },
+      "persistence": Object {
+        "embedded": false,
+        "single": false,
+        "stored": false,
+      },
+      "verb": "BelongsToMany",
     },
-    "persistence": Object {
-      "embedded": false,
-      "single": false,
-      "stored": false,
-    },
-    "verb": "BelongsToMany",
   },
 }
 `;

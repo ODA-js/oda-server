@@ -1,4 +1,4 @@
-import { INamed } from './types';
+import { INamed } from '../types';
 import { merge } from 'lodash';
 
 export type BuilderGraphFunction<T extends INamed, P = any> = (

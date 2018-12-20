@@ -32,8 +32,9 @@ import {
 } from './packagebase';
 import { getFilter } from './getFilter';
 import { FieldInput, IField } from './field';
-import { Graph, Vertex, Edge } from './detectcyclesedges';
+import { Graph, Vertex, Edge } from './utils/detectcyclesedges';
 import { IRelationField } from './relationfield';
+import { Internal } from './element';
 
 export type FieldMap = {
   [name: string]: boolean;
@@ -111,11 +112,11 @@ export class MetaModel
   }
 
   public get packages() {
-    return this.$obj.packages;
+    return this[Internal].packages;
   }
 
   public get hooks() {
-    return this.$obj.hooks;
+    return this[Internal].hooks;
   }
 
   public get extends() {
@@ -139,7 +140,7 @@ export class MetaModel
   public toObject(): MetaModelOutput {
     this.packages.delete(this.name);
     return merge({}, super.toObject(), {
-      packages: MapToArray(this.$obj.packages, (name, value) => ({
+      packages: MapToArray(this[Internal].packages, (name, value) => ({
         ...value.toObject(),
         name,
       })),
@@ -150,7 +151,7 @@ export class MetaModel
     super.updateWith(input);
 
     assignValue<MetaModelInternal, MetaModelInput, string>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'store',
       effect: (src, value) => (src.store = value),
@@ -163,7 +164,7 @@ export class MetaModel
       MetaModelInput,
       NonNullable<MetaModelInput['packages']>
     >({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'packages',
       allowEffect: (_, value) => value.length > 0,
@@ -189,7 +190,7 @@ export class MetaModel
       MetaModelInput,
       NonNullable<MetaModelInput['hooks']>
     >({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'hooks',
       allowEffect: (_, value) =>
@@ -359,7 +360,7 @@ export class MetaModel
   public build() {
     if (!this.isBuilt) {
       this._packageDeps = new Graph(
-        [...this.$obj.packages.values()],
+        [...this[Internal].packages.values()],
         'extends',
       );
       if (this._packageDeps.hasCycle()) {
@@ -369,7 +370,7 @@ export class MetaModel
       }
 
       this._inheritance = new Graph(
-        [...this.$obj.entities.values()],
+        [...this[Internal].entities.values()],
         'implements',
       );
       if (this._inheritance.hasCycle()) {
@@ -377,7 +378,7 @@ export class MetaModel
       }
 
       this._references = new Graph(
-        [...this.$obj.entities.values()],
+        [...this[Internal].entities.values()],
         'relations',
         (
           graph: Graph<IEntity, IRelationField>,
@@ -403,8 +404,22 @@ export class MetaModel
         },
       );
       //dummy
+
+      // this[Internal].packages.forEach(pack => {
+      //   // pack.queries.
+      // });
+
       this._references;
       this.isBuilt = true;
     }
   }
 }
+
+// function mergeEntity(
+//   objValue: any,
+//   srcValue: any,
+//   key: keyof EntityInput,
+//   object: EntityInput,
+//   source: EntityInput,
+//   stack: string[],
+// ) {}

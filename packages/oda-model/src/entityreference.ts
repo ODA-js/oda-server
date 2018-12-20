@@ -11,6 +11,7 @@ import {
   ElementInput,
   ElementOutput,
   IUpdatable,
+  Internal,
 } from './element';
 
 function StrToEntityRef(input: string): EntityRefInput {
@@ -76,16 +77,16 @@ export class EntityReference
   }
   /** the Entity that is referenced */
   public get entity(): string {
-    return this.$obj.entity;
+    return this[Internal].entity;
   }
   /** the Identity field */
   public get field(): string {
-    return this.$obj.field;
+    return this[Internal].field;
   }
 
   /** the Identity field */
   public get backField(): string {
-    return this.$obj.backField || '';
+    return this[Internal].backField || '';
   }
 
   constructor(init: EntityRefInput | string) {
@@ -99,16 +100,16 @@ export class EntityReference
   }
 
   public toString(): string {
-    return `${this.backField ? this.backField + '@' : ''}${this.$obj.entity}#${
-      this.$obj.field
-    }`;
+    return `${this.backField ? this.backField + '@' : ''}${
+      this[Internal].entity
+    }#${this[Internal].field}`;
   }
 
   public updateWith(input: Nullable<EntityRefInput>) {
     super.updateWith(typeof input === 'object' ? input : StrToEntityRef(input));
 
     assignValue<EntityRefInternal, EntityRefInput, EntityRefInput['entity']>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'entity',
       effect: (src, value) => (src.entity = value),
@@ -116,21 +117,21 @@ export class EntityReference
     });
 
     assignValue<EntityRefInternal, EntityRefInput, EntityRefInput['field']>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'field',
     });
 
     assignValue<EntityRefInternal, EntityRefInput, EntityRefInput['backField']>(
-      { src: this.$obj, input, field: 'backField' },
+      { src: this[Internal], input, field: 'backField' },
     );
   }
 
   public toObject(): EntityRefOutput {
     return merge({}, super.toObject(), {
-      backField: this.$obj.backField,
-      entity: this.$obj.entity,
-      field: this.$obj.field,
+      backField: this[Internal].backField,
+      entity: this[Internal].entity,
+      field: this[Internal].field,
     } as Partial<EntityRefOutput>) as EntityRefOutput;
   }
 }

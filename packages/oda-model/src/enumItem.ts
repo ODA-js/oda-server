@@ -7,7 +7,7 @@ import {
 } from './modelbase';
 import { merge } from 'lodash';
 import { MetaModelType, Nullable, assignValue } from './types';
-import { ElementMetaInfo } from './element';
+import { ElementMetaInfo, Internal } from './element';
 
 export interface IEnumItem
   extends IModelBase<EnumItemMetaInfo, EnumItemInput, EnumItemOutput> {
@@ -47,13 +47,13 @@ export class EnumItem
   }
 
   get value(): string {
-    return this.$obj.value;
+    return this[Internal].value;
   }
 
   updateWith(input: Nullable<EnumItemInput>) {
     super.updateWith(input);
     assignValue<EnumItemInternal, EnumItemInput, EnumItemInput['value']>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'value',
       setDefault: src => (src.value = src.name),

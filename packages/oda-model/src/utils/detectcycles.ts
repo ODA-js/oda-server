@@ -1,4 +1,4 @@
-import { INamed } from './types';
+import { INamed } from '../types';
 
 export class GraphSimple<T extends INamed> {
   public readonly vertices: Map<string, Vertex<T>>;
