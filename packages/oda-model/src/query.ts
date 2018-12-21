@@ -37,7 +37,7 @@ export interface QueryMetaInfo extends ElementMetaInfo {
   };
 }
 
-export interface QueryInternal extends ModelBaseInternal<QueryMetaInfo> {
+export interface QueryInternal extends ModelBaseInternal {
   args: Map<string, FieldArgs>;
   payload: Map<string, FieldArgs>;
 }

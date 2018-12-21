@@ -4,6 +4,7 @@ import {
   ModelBaseInternal,
   ModelBaseInput,
   ModelBaseOutput,
+  ModelMetaInfo,
 } from './modelbase';
 import {
   DirectiveLocation,
@@ -17,7 +18,7 @@ import {
   ArrayToMap,
   MapToArray,
 } from './types';
-import { ElementMetaInfo } from './element';
+import { Internal } from './element';
 import { merge } from 'lodash';
 
 export interface IDirective
@@ -32,10 +33,9 @@ export interface IDirective
   readonly on: DirectiveLocation[];
 }
 
-export interface DirectiveMetaInfo extends ElementMetaInfo {}
+export interface DirectiveMetaInfo extends ModelMetaInfo {}
 
-export interface DirectiveInternal
-  extends ModelBaseInternal<DirectiveMetaInfo> {
+export interface DirectiveInternal extends ModelBaseInternal {
   args: Map<string, FieldArgs>;
   on: DirectiveLocation[];
 }
@@ -64,14 +64,12 @@ export class Directive
   public get modelType(): MetaModelType {
     return 'directive';
   }
-  protected $obj!: DirectiveInternal;
-
   get args(): Map<string, FieldArgs> {
-    return this.$obj.args;
+    return this[Internal].args;
   }
 
   get on(): DirectiveLocation[] {
-    return this.$obj.on;
+    return this[Internal].on;
   }
 
   constructor(init: DirectiveInput) {
@@ -86,7 +84,7 @@ export class Directive
       DirectiveInput,
       AsHash<FieldArgs> | NamedArray<FieldArgs>
     >({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'args',
       effect: (src, value) =>
@@ -97,7 +95,7 @@ export class Directive
     });
 
     assignValue<DirectiveInternal, DirectiveInput, string[]>({
-      src: this.$obj,
+      src: this[Internal],
       input,
       field: 'on',
       setDefault: src => (src.on = []),
@@ -107,11 +105,11 @@ export class Directive
   // it get fixed object
   public toObject(): DirectiveOutput {
     return merge({}, super.toObject(), {
-      args: MapToArray(this.$obj.args, (name, value) => ({
+      args: MapToArray(this[Internal].args, (name, value) => ({
         ...value,
         name,
       })),
-      on: this.$obj.on,
+      on: this[Internal].on,
     } as Partial<DirectiveOutput>);
   }
 }

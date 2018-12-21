@@ -38,7 +38,7 @@ export interface MutationMetaInfo extends ElementMetaInfo {
   };
 }
 
-export interface MutationInternal extends ModelBaseInternal<MutationMetaInfo> {
+export interface MutationInternal extends ModelBaseInternal {
   args: Map<string, FieldArgs>;
   payload: Map<string, FieldArgs>;
 }

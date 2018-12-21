@@ -1,0 +1,15 @@
+@startuml
+
+interface IMeta
+interface IUpdatable
+interface IValidate
+
+IUpdatable <|-- IMeta
+IValidate <|-- IMeta
+
+class Element
+
+IMeta <|-- Element
+
+
+@enduml

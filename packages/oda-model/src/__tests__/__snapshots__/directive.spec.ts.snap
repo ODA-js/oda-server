@@ -2,7 +2,7 @@
 
 exports[`directive loads: raw 1`] = `
 Directive {
-  "$obj": Object {
+  Symbol(internal): Object {
     "args": Map {
       "field" => Object {
         "defaultValue": "default",
@@ -15,8 +15,8 @@ Directive {
     "on": Array [
       "FIELD",
     ],
-    Symbol(metadata): Object {},
   },
+  Symbol(metadata): Object {},
 }
 `;
 

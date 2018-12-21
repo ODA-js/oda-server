@@ -17,7 +17,7 @@ export interface IScalar
 
 export interface ScalarMetaInfo extends ElementMetaInfo {}
 
-export interface ScalarInternal extends ModelBaseInternal<ScalarMetaInfo> {}
+export interface ScalarInternal extends ModelBaseInternal {}
 
 export interface ScalarInput extends ModelBaseInput<ScalarMetaInfo> {}
 export interface ScalarOutput extends ModelBaseOutput<ScalarMetaInfo> {}

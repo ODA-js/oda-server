@@ -14,12 +14,12 @@ import {
   Internal,
 } from './element';
 
-function StrToEntityRef(input: string): EntityRefInput {
+function StrToEntityRef(input: string): Partial<EntityRefInput> {
   let res = input.match(REF_PATTERN);
   return {
-    backField: decapitalize(res && res[1] ? res[1] : ''),
-    entity: inflected.classify(res && res[2] ? res[2] : ''),
-    field: decapitalize(res && res[3] ? res[3].trim() : DEFAULT_ID_FIELDNAME),
+    backField: res && res[1] ? decapitalize(res[1]) : undefined,
+    entity: res && res[2] ? inflected.classify(res[2]) : undefined,
+    field: res && res[3] ? decapitalize(res[3].trim()) : DEFAULT_ID_FIELDNAME,
   };
 }
 
@@ -42,7 +42,7 @@ export interface IEntityRef
 
 export interface EntityRefMetaInfo extends ElementMetaInfo {}
 
-export interface EntityRefInternal extends ElementInternal<EntityRefMetaInfo> {
+export interface EntityRefInternal extends ElementInternal {
   entity: string;
   field: string;
   backField?: string;
@@ -60,8 +60,11 @@ export interface EntityRefOutput extends ElementOutput<EntityRefMetaInfo> {
   field: string;
 }
 
-const defaultMetaInfo = {};
-const defaultInput = { metadata: defaultMetaInfo };
+export const entityReferenceDefaultMetaInfo = {};
+export const entityReferenceDefaultInput = {
+  metadata: entityReferenceDefaultMetaInfo,
+  entity: 'FAKE',
+};
 
 /** Entity reference implementation */
 export class EntityReference
@@ -93,7 +96,7 @@ export class EntityReference
     super(
       merge(
         {},
-        defaultInput,
+        entityReferenceDefaultInput,
         typeof init === 'object' ? init : StrToEntityRef(init),
       ),
     );
@@ -120,6 +123,8 @@ export class EntityReference
       src: this[Internal],
       input,
       field: 'field',
+      required: true,
+      setDefault: src => (src.field = 'id'),
     });
 
     assignValue<EntityRefInternal, EntityRefInput, EntityRefInput['backField']>(

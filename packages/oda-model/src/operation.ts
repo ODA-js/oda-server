@@ -19,7 +19,9 @@ import {
 } from './types';
 import { merge } from 'lodash';
 import { Internal } from './element';
-
+/**
+ * Kind of mutation which is intended to work with single entity
+ */
 export interface IOperation
   extends IModelBase<OperationMetaInfo, OperationInput, OperationOutput> {
   /**
@@ -66,8 +68,7 @@ export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
   order: number;
 }
 
-export interface OperationInternal
-  extends ModelBaseInternal<OperationMetaInfo> {
+export interface OperationInternal extends ModelBaseInternal {
   args: Map<string, FieldArgs>;
   payload: Map<string, FieldArgs>;
   inheritedFrom?: string;

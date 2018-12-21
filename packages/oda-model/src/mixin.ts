@@ -22,8 +22,7 @@ export interface MixinInput
   extends EntityBaseInput<MixinMetaInfo, MixinPersistence> {}
 export interface MixinOutput
   extends EntityBaseOutput<MixinMetaInfo, MixinPersistence> {}
-export interface MixinInternal
-  extends EntityBaseInternal<MixinMetaInfo, MixinPersistence> {}
+export interface MixinInternal extends EntityBaseInternal {}
 export interface MixinMetaInfo extends EntityBaseMetaInfo<MixinPersistence> {}
 
 const defaultMetaInfo = {};

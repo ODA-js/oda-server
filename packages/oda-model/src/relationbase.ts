@@ -56,10 +56,7 @@ export interface RelationBaseMetaInfo<T extends RelationBasePersistence>
   };
 }
 
-export interface RelationBaseInternal<
-  T extends RelationBaseMetaInfo<P>,
-  P extends RelationBasePersistence
-> extends ElementInternal<T> {
+export interface RelationBaseInternal extends ElementInternal {
   name: string;
   entity: string;
   field: string;
@@ -88,13 +85,15 @@ export interface RelationBaseOutput<
   opposite?: string;
 }
 
-const defaultMetaInfo = { persistence: {}, name: {} };
-const defaultInput = { metadata: defaultMetaInfo };
+export const relationBaseDefaultMetaInfo = { persistence: {}, name: {} };
+export const relationBaseDefaultInput = {
+  metadata: relationBaseDefaultMetaInfo,
+};
 
-export abstract class RelationBase<
+export class RelationBase<
   T extends RelationBaseMetaInfo<P>,
   I extends RelationBaseInput<T, P>,
-  S extends RelationBaseInternal<T, P>,
+  S extends RelationBaseInternal,
   P extends RelationBasePersistence,
   O extends RelationBaseOutput<T, P>
 > extends Element<T, I, S, O> implements IRelationBase<T, I, P, O> {
@@ -105,7 +104,7 @@ export abstract class RelationBase<
    * construct object
    */
   constructor(init: RelationBaseInput<T, P>) {
-    super(merge({}, defaultInput, init));
+    super(merge({}, relationBaseDefaultInput, init));
   }
 
   get name(): string {

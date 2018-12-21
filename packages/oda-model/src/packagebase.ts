@@ -66,8 +66,7 @@ export interface ModelPackageBaseOutput<M extends ModelPackageBaseMetaInfo>
   directives: (DirectiveInput)[];
 }
 
-export interface ModelPackageBaseInternal<M extends ModelPackageBaseMetaInfo>
-  extends ModelBaseInternal<M> {
+export interface ModelPackageBaseInternal extends ModelBaseInternal {
   entities: Map<string, IEntity>;
   mixins: Map<string, IMixin>;
   mutations: Map<string, IMutation>;
@@ -88,7 +87,7 @@ const defaultInput = { metadata: defaultMetaInfo };
 export class ModelPackageBase<
   M extends ModelPackageBaseMetaInfo,
   I extends ModelPackageBaseInput<M>,
-  S extends ModelPackageBaseInternal<M>,
+  S extends ModelPackageBaseInternal,
   O extends ModelPackageBaseOutput<M>
 > extends ModelBase<M, I, S, O> implements IPackageBase<M, I, O> {
   public get modelType(): MetaModelType {

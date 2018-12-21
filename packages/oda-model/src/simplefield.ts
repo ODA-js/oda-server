@@ -41,8 +41,7 @@ export interface SimpleFieldMeta
   defaultValue?: string;
 }
 
-export interface SimpleFieldInternal
-  extends FieldBaseInternal<SimpleFieldMeta, SimpleFieldPersistence> {
+export interface SimpleFieldInternal extends FieldBaseInternal {
   type: string | EnumType;
   list: boolean;
 }

@@ -2,39 +2,39 @@
 
 exports[`belongstomany  loads: raw 1`] = `
 BelongsToMany {
-  "$obj": Object {
+  Symbol(internal): Object {
     "belongsToMany": EntityReference {
-      "$obj": Object {
+      Symbol(internal): Object {
         "backField": "id",
         "entity": "Name",
         "field": "id",
-        Symbol(metadata): Object {},
       },
+      Symbol(metadata): Object {},
     },
     "entity": "user",
     "field": "name",
     "fields": Map {},
     "using": EntityReference {
-      "$obj": Object {
+      Symbol(internal): Object {
         "backField": "id",
         "entity": "C",
         "field": "id",
-        Symbol(metadata): Object {},
       },
+      Symbol(metadata): Object {},
     },
-    Symbol(metadata): Object {
-      "name": Object {
-        "full": "userBelongsToManyNames",
-        "normal": "userNames",
-        "short": "Names",
-      },
-      "persistence": Object {
-        "embedded": false,
-        "single": false,
-        "stored": false,
-      },
-      "verb": "BelongsToMany",
+  },
+  Symbol(metadata): Object {
+    "name": Object {
+      "full": "userBelongsToManyNames",
+      "normal": "userNames",
+      "short": "Names",
     },
+    "persistence": Object {
+      "embedded": false,
+      "single": false,
+      "stored": false,
+    },
+    "verb": "BelongsToMany",
   },
 }
 `;

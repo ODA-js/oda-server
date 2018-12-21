@@ -34,8 +34,7 @@ export interface IBelongsToRelation
 export interface BelongsToMetaInfo
   extends RelationBaseMetaInfo<BelongsToPersistence> {}
 
-export interface BelongsToInternal
-  extends RelationBaseInternal<BelongsToMetaInfo, BelongsToPersistence> {
+export interface BelongsToInternal extends RelationBaseInternal {
   belongsTo: IEntityRef;
 }
 

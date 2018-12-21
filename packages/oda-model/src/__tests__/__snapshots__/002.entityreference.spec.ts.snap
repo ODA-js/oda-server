@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EntityReference empty string 1`] = `
+EntityReference {
+  Symbol(internal): Object {
+    "entity": "FAKE",
+    "field": "id",
+  },
+  Symbol(metadata): Object {},
+}
+`;

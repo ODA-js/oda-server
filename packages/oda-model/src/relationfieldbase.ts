@@ -51,10 +51,7 @@ export interface IRelationFieldBase<
   readonly relation: IRelation;
 }
 
-export interface RelationFieldBaseInternal<
-  T extends RelationFieldBaseMetaInfo<P>,
-  P extends RelationFieldBasePersistence
-> extends FieldBaseInternal<T, P> {
+export interface RelationFieldBaseInternal extends FieldBaseInternal {
   relation: IRelation;
 }
 
@@ -71,7 +68,7 @@ const defaultInput = { metadata: defaultMetaInfo };
 export abstract class RelationFieldBase<
   T extends RelationFieldBaseMetaInfo<P>,
   I extends RelationFieldBaseInput<T, P>,
-  S extends RelationFieldBaseInternal<T, P>,
+  S extends RelationFieldBaseInternal,
   P extends RelationFieldBasePersistence,
   O extends FieldBaseOutput<T, P>
 > extends FieldBase<T, I, S, P, O> implements IRelationFieldBase<T, I, P, O> {

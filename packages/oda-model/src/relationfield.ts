@@ -71,11 +71,7 @@ export interface RelationFieldInput
     RelationFieldPersistence
   > {}
 
-export interface RelationFieldInternal
-  extends RelationFieldBaseInternal<
-    RelationFieldMetaInfo,
-    RelationFieldPersistence
-  > {}
+export interface RelationFieldInternal extends RelationFieldBaseInternal {}
 
 const defaultMetaInfo = {};
 const defaultInput = { metadata: defaultMetaInfo };

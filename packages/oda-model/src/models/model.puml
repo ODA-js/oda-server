@@ -1,0 +1,30 @@
+@startuml
+ModelBase ----|> Element
+EntityReference --|> Element
+RelationBase --|> Element
+BelongTo --|> RelationBase
+BelongToMany --|> RelationBase
+HasOne --|> RelationBase
+HasMany --|> RelationBase
+Directive --|> ModelBase
+Enum ---|> ModelBase
+Enum --* EnumItem
+EnumItem --|> ModelBase
+Mutation ---|> ModelBase
+Operation ---|> ModelBase
+PackageBase ----|> ModelBase
+MetaModel --|>  PackageBase
+ModelPackage --|> PackageBase
+Query --|> ModelBase
+Union --|> ModelBase
+Scalar --|> ModelBase
+EntityBase ----|> ModelBase
+Entity --|> EntityBase
+Mixin --|> EntityBase
+FieldBase -----|> ModelBase
+RelationFieldBase --|> FieldBase
+SimpleField --|> FieldBase
+RelationField --|> RelationFieldBase
+EntityField --|> RelationFieldBase
+
+@enduml

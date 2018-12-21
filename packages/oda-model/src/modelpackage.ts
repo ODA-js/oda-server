@@ -36,8 +36,7 @@ export interface ModelPackageOutput
   extends: string[];
 }
 
-export interface ModelPackageInternal
-  extends ModelPackageBaseInternal<PackageMetaInfo> {
+export interface ModelPackageInternal extends ModelPackageBaseInternal {
   abstract: boolean;
   defaultAccess: AccessAction;
   extends: Set<string>;

@@ -70,8 +70,7 @@ export interface MetaModelOutput
 
 export interface MetaModelMetaInfo extends ModelPackageBaseMetaInfo {}
 
-export interface MetaModelInternal
-  extends ModelPackageBaseInternal<MetaModelMetaInfo> {
+export interface MetaModelInternal extends ModelPackageBaseInternal {
   packages: Map<string, IPackage>;
   store: string;
   hooks: IModelHook[];

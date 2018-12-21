@@ -1,0 +1,10 @@
+@startuml
+ interface IValidatate
+ interface IUpdatable
+
+ IUpdatable <|-- IMeta
+ IValidatate <|-- IMeta
+
+
+
+@enduml

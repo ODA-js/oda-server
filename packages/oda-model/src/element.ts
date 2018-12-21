@@ -7,9 +7,7 @@ export const MetaData = Symbol.for('metadata');
 
 export interface ElementMetaInfo {}
 
-export interface ElementInternal<T extends ElementMetaInfo> {
-  [MetaData]: T;
-}
+export interface ElementInternal {}
 
 export interface ElementInput<T extends ElementMetaInfo> {
   metadata?: Partial<T>;
@@ -35,9 +33,9 @@ export interface IUpdatableBase {
  * updatable items
  */
 export interface IUpdatable<
-  T extends ElementMetaInfo,
-  I extends ElementInput<T>,
-  O extends ElementOutput<T>
+  M extends ElementMetaInfo,
+  I extends ElementInput<M>,
+  O extends ElementOutput<M>
 > extends IUpdatableBase {
   /**
    * update item with data
@@ -68,24 +66,25 @@ export interface IMeta<
   readonly metadata: Readonly<M>;
 }
 
-const defaultMetaInfo = {};
-const defaultInput = { metadata: defaultMetaInfo };
+export const elementDefaultMetaInfo = {};
+export const elementDefaultInput = { metadata: elementDefaultMetaInfo };
 
 export class Element<
   M extends ElementMetaInfo,
   I extends ElementInput<M>,
-  S extends ElementInternal<M>,
+  S extends ElementInternal,
   O extends ElementOutput<M>
 > implements IMeta<M, I, O> {
   public get modelType(): MetaModelType {
     return 'element';
   }
   public [Internal]: S;
+  public [MetaData]: M;
   /**
    * metadata is not immutable
    */
   public get metadata(): M {
-    return this[Internal][MetaData];
+    return this[MetaData];
   }
 
   public validate(validator: IValidator): IValidationResultInput[] {
@@ -94,21 +93,21 @@ export class Element<
 
   constructor(init: ElementInput<M>) {
     this[Internal] = {} as S;
-    this.updateWith(merge({}, defaultInput, init));
+    this.updateWith(merge({}, elementDefaultInput, init));
   }
   /**
    * patches metadata for entity
    * @param input metadata patch object
    */
   public updateWith(input: Nullable<ElementInput<M>>) {
-    assignValue<Element<M, I, S, O>, ElementInput<M>, ElementInternal<M>>({
+    assignValue<Element<M, I, S, O>, ElementInput<M>, ElementInternal>({
       src: this,
       input,
       field: 'metadata',
-      effect: (_, value) =>
-        (this[Internal][MetaData] = merge({}, this[Internal][MetaData], value)),
+      effect: (_, value) => (this[MetaData] = merge({}, this[MetaData], value)),
+      required: true,
       setDefault: _ =>
-        (this[Internal][MetaData] = merge({}, defaultMetaInfo) as M),
+        (this[MetaData] = merge({}, elementDefaultMetaInfo) as M),
     });
   }
   /**
@@ -116,6 +115,6 @@ export class Element<
    * it is suitable for cloning items
    */
   public toObject(): O {
-    return merge({}, { metadata: this.metadata } as O);
+    return merge({}, { metadata: this[MetaData] } as O);
   }
 }

@@ -16,7 +16,7 @@ export interface IEnumItem
 
 export interface EnumItemMetaInfo extends ElementMetaInfo {}
 
-export interface EnumItemInternal extends ModelBaseInternal<EnumItemMetaInfo> {
+export interface EnumItemInternal extends ModelBaseInternal {
   value: string;
 }
 

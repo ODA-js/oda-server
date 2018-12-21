@@ -2,53 +2,53 @@
 
 exports[`entity _id: _id=raw 1`] = `
 Entity {
-  "$obj": Object {
+  Symbol(internal): Object {
     "abstract": false,
     "embedded": false,
     "fields": Map {
       "_id" => SimpleField {
-        "$obj": Object {
+        Symbol(internal): Object {
           "args": Map {},
           "idKey": EntityReference {
-            "$obj": Object {
+            Symbol(internal): Object {
               "backField": "id",
               "entity": "A",
               "field": "_id",
-              Symbol(metadata): Object {},
             },
+            Symbol(metadata): Object {},
           },
           "list": false,
           "name": "_id",
-          Symbol(metadata): Object {
-            "acl": Object {
-              "read": Array [],
-              "update": Array [],
-            },
-            "entity": "A",
-            "order": 0,
-            "persistence": Object {
-              "identity": true,
-              "indexed": true,
-              "required": true,
-            },
+        },
+        Symbol(metadata): Object {
+          "acl": Object {
+            "read": Array [],
+            "update": Array [],
+          },
+          "entity": "A",
+          "order": 0,
+          "persistence": Object {
+            "identity": true,
+            "indexed": true,
+            "required": true,
           },
         },
       },
       "name" => SimpleField {
-        "$obj": Object {
+        Symbol(internal): Object {
           "args": Map {},
           "list": false,
           "name": "name",
           "type": "Number",
-          Symbol(metadata): Object {
-            "acl": Object {
-              "read": Array [],
-              "update": Array [],
-            },
-            "entity": "A",
-            "order": 1,
-            "persistence": Object {},
+        },
+        Symbol(metadata): Object {
+          "acl": Object {
+            "read": Array [],
+            "update": Array [],
           },
+          "entity": "A",
+          "order": 1,
+          "persistence": Object {},
         },
       },
     },
@@ -65,41 +65,41 @@ Entity {
     "required": Set {
       "_id",
     },
-    Symbol(metadata): Object {
-      "UI": Object {
-        "edit": Array [],
-        "embedded": Array [],
-        "hidden": Array [],
-        "list": Array [],
-        "listName": Array [],
-        "quickSearch": Array [],
-        "show": Array [],
-      },
-      "acl": Object {
-        "create": Array [],
-        "delete": Array [],
-        "read": Array [],
-        "upadte": Array [],
-      },
-      "name": Object {
-        "plural": "As",
-        "singular": "A",
-      },
-      "persistence": Object {
-        "indexes": Object {
-          "_id": Object {
-            "fields": Object {
-              "_id": 1,
-            },
-            "name": "_id",
-            "options": Object {
-              "unique": true,
-            },
+  },
+  Symbol(metadata): Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "upadte": Array [],
+    },
+    "name": Object {
+      "plural": "As",
+      "singular": "A",
+    },
+    "persistence": Object {
+      "indexes": Object {
+        "_id": Object {
+          "fields": Object {
+            "_id": 1,
+          },
+          "name": "_id",
+          "options": Object {
+            "unique": true,
           },
         },
       },
-      "titlePlural": "As",
     },
+    "titlePlural": "As",
   },
 }
 `;
@@ -211,53 +211,53 @@ Object {
 
 exports[`entity id: id-raw 1`] = `
 Entity {
-  "$obj": Object {
+  Symbol(internal): Object {
     "abstract": false,
     "embedded": false,
     "fields": Map {
       "id" => SimpleField {
-        "$obj": Object {
+        Symbol(internal): Object {
           "args": Map {},
           "idKey": EntityReference {
-            "$obj": Object {
+            Symbol(internal): Object {
               "backField": "id",
               "entity": "A",
               "field": "id",
-              Symbol(metadata): Object {},
             },
+            Symbol(metadata): Object {},
           },
           "list": false,
           "name": "id",
-          Symbol(metadata): Object {
-            "acl": Object {
-              "read": Array [],
-              "update": Array [],
-            },
-            "entity": "A",
-            "order": 0,
-            "persistence": Object {
-              "identity": true,
-              "indexed": true,
-              "required": true,
-            },
+        },
+        Symbol(metadata): Object {
+          "acl": Object {
+            "read": Array [],
+            "update": Array [],
+          },
+          "entity": "A",
+          "order": 0,
+          "persistence": Object {
+            "identity": true,
+            "indexed": true,
+            "required": true,
           },
         },
       },
       "name" => SimpleField {
-        "$obj": Object {
+        Symbol(internal): Object {
           "args": Map {},
           "list": false,
           "name": "name",
           "type": "Number",
-          Symbol(metadata): Object {
-            "acl": Object {
-              "read": Array [],
-              "update": Array [],
-            },
-            "entity": "A",
-            "order": 1,
-            "persistence": Object {},
+        },
+        Symbol(metadata): Object {
+          "acl": Object {
+            "read": Array [],
+            "update": Array [],
           },
+          "entity": "A",
+          "order": 1,
+          "persistence": Object {},
         },
       },
     },
@@ -274,41 +274,41 @@ Entity {
     "required": Set {
       "id",
     },
-    Symbol(metadata): Object {
-      "UI": Object {
-        "edit": Array [],
-        "embedded": Array [],
-        "hidden": Array [],
-        "list": Array [],
-        "listName": Array [],
-        "quickSearch": Array [],
-        "show": Array [],
-      },
-      "acl": Object {
-        "create": Array [],
-        "delete": Array [],
-        "read": Array [],
-        "upadte": Array [],
-      },
-      "name": Object {
-        "plural": "As",
-        "singular": "A",
-      },
-      "persistence": Object {
-        "indexes": Object {
-          "id": Object {
-            "fields": Object {
-              "id": 1,
-            },
-            "name": "id",
-            "options": Object {
-              "unique": true,
-            },
+  },
+  Symbol(metadata): Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "upadte": Array [],
+    },
+    "name": Object {
+      "plural": "As",
+      "singular": "A",
+    },
+    "persistence": Object {
+      "indexes": Object {
+        "id": Object {
+          "fields": Object {
+            "id": 1,
+          },
+          "name": "id",
+          "options": Object {
+            "unique": true,
           },
         },
       },
-      "titlePlural": "As",
     },
+    "titlePlural": "As",
   },
 }
 `;
@@ -420,52 +420,52 @@ Object {
 
 exports[`entity loads: raw 1`] = `
 Entity {
-  "$obj": Object {
+  Symbol(internal): Object {
     "abstract": false,
     "embedded": false,
     "fields": Map {
       "name" => SimpleField {
-        "$obj": Object {
+        Symbol(internal): Object {
           "args": Map {},
           "list": false,
           "name": "name",
           "type": "Number",
-          Symbol(metadata): Object {
-            "acl": Object {
-              "read": Array [],
-              "update": Array [],
-            },
-            "entity": "A",
-            "order": 0,
-            "persistence": Object {},
+        },
+        Symbol(metadata): Object {
+          "acl": Object {
+            "read": Array [],
+            "update": Array [],
           },
+          "entity": "A",
+          "order": 0,
+          "persistence": Object {},
         },
       },
       "id" => SimpleField {
-        "$obj": Object {
+        Symbol(internal): Object {
           "args": Map {},
           "idKey": EntityReference {
-            "$obj": Object {
+            Symbol(internal): Object {
               "backField": "id",
               "entity": "a",
               "field": "id",
-              Symbol(metadata): Object {},
             },
+            Symbol(metadata): Object {},
           },
           "list": false,
           "name": "id",
           "type": "ID",
-          Symbol(metadata): Object {
-            "acl": Object {
-              "read": Array [],
-              "update": Array [],
-            },
-            "entity": "a",
-            "persistence": Object {
-              "identity": true,
-              "indexed": true,
-              "required": true,
-            },
+        },
+        Symbol(metadata): Object {
+          "acl": Object {
+            "read": Array [],
+            "update": Array [],
+          },
+          "entity": "a",
+          "persistence": Object {
+            "identity": true,
+            "indexed": true,
+            "required": true,
           },
         },
       },
@@ -483,41 +483,41 @@ Entity {
     "required": Set {
       "id",
     },
-    Symbol(metadata): Object {
-      "UI": Object {
-        "edit": Array [],
-        "embedded": Array [],
-        "hidden": Array [],
-        "list": Array [],
-        "listName": Array [],
-        "quickSearch": Array [],
-        "show": Array [],
-      },
-      "acl": Object {
-        "create": Array [],
-        "delete": Array [],
-        "read": Array [],
-        "upadte": Array [],
-      },
-      "name": Object {
-        "plural": "As",
-        "singular": "A",
-      },
-      "persistence": Object {
-        "indexes": Object {
-          "id": Object {
-            "fields": Object {
-              "id": 1,
-            },
-            "name": "id",
-            "options": Object {
-              "unique": true,
-            },
+  },
+  Symbol(metadata): Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "upadte": Array [],
+    },
+    "name": Object {
+      "plural": "As",
+      "singular": "A",
+    },
+    "persistence": Object {
+      "indexes": Object {
+        "id": Object {
+          "fields": Object {
+            "id": 1,
+          },
+          "name": "id",
+          "options": Object {
+            "unique": true,
           },
         },
       },
-      "titlePlural": "As",
     },
+    "titlePlural": "As",
   },
 }
 `;

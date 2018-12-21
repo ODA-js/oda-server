@@ -64,10 +64,7 @@ export interface FieldBaseMetaInfo<T extends FieldBasePersistence>
   };
 }
 
-export interface FieldBaseInternal<
-  T extends FieldBaseMetaInfo<P>,
-  P extends FieldBasePersistence
-> extends ModelBaseInternal<T> {
+export interface FieldBaseInternal extends ModelBaseInternal {
   args: Map<string, FieldArgs>;
   inheritedFrom?: string;
   type?: FieldType;
@@ -120,7 +117,7 @@ const defaultInput = { metadata: defaultMetaInfo };
 export abstract class FieldBase<
   T extends FieldBaseMetaInfo<P>,
   I extends FieldBaseInput<T, P>,
-  S extends FieldBaseInternal<T, P>,
+  S extends FieldBaseInternal,
   P extends FieldBasePersistence,
   O extends FieldBaseOutput<T, P>
 > extends ModelBase<T, I, S, O> implements IFieldBase<T, I, P, O> {

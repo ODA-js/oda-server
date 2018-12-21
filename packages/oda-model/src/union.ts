@@ -22,7 +22,7 @@ export interface IUnion
 
 export interface UnionMetaInfo extends ElementMetaInfo {}
 
-export interface UnionInternal extends ModelBaseInternal<UnionMetaInfo> {
+export interface UnionInternal extends ModelBaseInternal {
   items: Set<string>;
 }
 

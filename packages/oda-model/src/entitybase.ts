@@ -93,10 +93,7 @@ export interface EntityBaseMetaInfo<P extends EntityBasePersistence>
   };
 }
 
-export interface EntityBaseInternal<
-  M extends EntityBaseMetaInfo<P>,
-  P extends EntityBasePersistence
-> extends ModelBaseInternal<M> {
+export interface EntityBaseInternal extends ModelBaseInternal {
   fields: Map<string, IField>;
   operations: Map<string, IOperation>;
   relations: Set<string>;
@@ -151,7 +148,7 @@ const defaultInput = { metadata: defaultMetaInfo };
 export abstract class EntityBase<
   M extends EntityBaseMetaInfo<MP>,
   I extends EntityBaseInput<M, MP>,
-  P extends EntityBaseInternal<M, MP>,
+  P extends EntityBaseInternal,
   MP extends EntityBasePersistence,
   O extends EntityBaseOutput<M, MP>
 > extends ModelBase<M, I, P, O> implements IEntityBase<M, MP, I, O> {

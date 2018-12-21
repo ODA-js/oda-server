@@ -31,8 +31,7 @@ export interface IHasOneRelation
 export interface HasOneMetaInfo
   extends RelationBaseMetaInfo<HasOnePersistence> {}
 
-export interface HasOneInternal
-  extends RelationBaseInternal<HasOneMetaInfo, HasOnePersistence> {
+export interface HasOneInternal extends RelationBaseInternal {
   hasOne: IEntityRef;
 }
 

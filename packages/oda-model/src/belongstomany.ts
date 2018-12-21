@@ -42,11 +42,7 @@ export interface IBelongsToManyRelation
 export interface BelongsToManyMetaInfo
   extends RelationBaseMetaInfo<BelongsToManyPersistence> {}
 
-export interface BelongsToManyInternal
-  extends RelationBaseInternal<
-    BelongsToManyMetaInfo,
-    BelongsToManyPersistence
-  > {
+export interface BelongsToManyInternal extends RelationBaseInternal {
   belongsToMany: IEntityRef;
   using: IEntityRef;
   fields: Map<string, ISimpleField>;

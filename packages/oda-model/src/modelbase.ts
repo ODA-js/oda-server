@@ -14,8 +14,7 @@ import { Nullable, assignValue } from './types';
 
 export interface ModelMetaInfo extends ElementMetaInfo {}
 
-export interface ModelBaseInternal<T extends ModelMetaInfo>
-  extends ElementInternal<T> {
+export interface ModelBaseInternal extends ElementInternal {
   name: string;
   title?: string;
   description?: string;
@@ -64,7 +63,7 @@ const defaultInput = { metadata: defaultMetaInfo };
 export abstract class ModelBase<
   T extends ElementMetaInfo,
   I extends ModelBaseInput<T>,
-  S extends ModelBaseInternal<T>,
+  S extends ModelBaseInternal,
   O extends ModelBaseOutput<T>
 > extends Element<T, I, S, O> implements IModelBase<T, I, O> {
   public get modelType(): MetaModelType {

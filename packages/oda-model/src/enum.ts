@@ -19,7 +19,7 @@ export interface IEnum extends IModelBase<EnumMetaInfo, EnumInput, EnumOutput> {
 
 export interface EnumMetaInfo extends ElementMetaInfo {}
 
-export interface EnumInternal extends ModelBaseInternal<EnumMetaInfo> {
+export interface EnumInternal extends ModelBaseInternal {
   items: Map<string, IEnumItem>;
 }
 

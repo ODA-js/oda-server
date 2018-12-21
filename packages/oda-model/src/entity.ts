@@ -23,8 +23,7 @@ export interface IEntity
   readonly abstract: boolean;
 }
 
-export interface EntityInternal
-  extends EntityBaseInternal<EntityMetaInfo, EntityPersistence> {
+export interface EntityInternal extends EntityBaseInternal {
   implements: Set<string>;
   embedded: boolean | Set<string>;
   abstract: boolean;

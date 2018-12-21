@@ -31,8 +31,7 @@ export interface IHasManyRelation
 export interface HasManyMetaInfo
   extends RelationBaseMetaInfo<HasManyPersistence> {}
 
-export interface HasManyInternal
-  extends RelationBaseInternal<HasManyMetaInfo, HasManyPersistence> {
+export interface HasManyInternal extends RelationBaseInternal {
   hasMany: IEntityRef;
 }
 

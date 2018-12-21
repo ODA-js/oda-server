@@ -30,8 +30,7 @@ export interface EntityFieldPersistence extends RelationFieldBasePersistence {}
 export interface EntityFieldMeta
   extends RelationFieldBaseMetaInfo<EntityFieldPersistence> {}
 
-export interface EntityFieldInternal
-  extends RelationFieldBaseInternal<EntityFieldMeta, EntityFieldPersistence> {
+export interface EntityFieldInternal extends RelationFieldBaseInternal {
   type: EntityType;
   list: boolean;
   derived: boolean;
