@@ -11,7 +11,7 @@ Directive {
         "type": "string",
       },
     },
-    "name": "readOnly",
+    "name": "ReadOnly",
     "on": Array [
       "FIELD",
     ],
@@ -32,7 +32,7 @@ Object {
   ],
   "description": undefined,
   "metadata": Object {},
-  "name": "readOnly",
+  "name": "ReadOnly",
   "on": Array [
     "FIELD",
   ],

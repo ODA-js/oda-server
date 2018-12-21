@@ -29,6 +29,7 @@ import { SimpleField, SimpleFieldInput } from './simplefield';
 import { DEFAULT_ID_FIELD } from './definitions';
 import { RelationField, RelationFieldInput } from './relationfield';
 import { EntityField, EntityFieldInput } from './entityfield';
+import capitalize from './lib/capitalize';
 
 export interface IEntityBase<
   T extends EntityBaseMetaInfo<P>,
@@ -244,7 +245,7 @@ export abstract class EntityBase<
       input,
       field: 'name',
       effect: (src, value) => {
-        src.name = inflected.camelize(value.trim(), true);
+        src.name = capitalize(value.trim());
         this.metadata.name.singular = src.name;
       },
       required: true,
@@ -256,10 +257,13 @@ export abstract class EntityBase<
       field: 'name.plural',
       inputField: 'plural',
       effect: (src, value) => {
-        src.name.plural = inflected.camelize(value.trim(), true);
+        src.name.plural = capitalize(value.trim());
       },
       setDefault: src => {
         src.name.plural = inflected.pluralize(this.name);
+        if (src.name.plural === this.name) {
+          src.name.plural = `All${this.name}`;
+        }
       },
     });
 
@@ -267,9 +271,8 @@ export abstract class EntityBase<
       src: this.metadata,
       input,
       field: 'titlePlural',
-      setDefault: src => {
-        src.titlePlural = inflected.pluralize(this.name);
-      },
+      effect: (src, value) => (src.titlePlural = value.trim()),
+      setDefault: src => (src.titlePlural = this.plural),
     });
 
     assignValue<P, I, AsHash<FieldInput> | NamedArray<FieldInput>>({

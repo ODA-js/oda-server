@@ -1,4 +1,3 @@
-import * as inflected from 'inflected';
 import {
   ElementMetaInfo,
   ElementInternal,
@@ -57,10 +56,10 @@ export interface IModelBase<
   readonly description?: string;
 }
 
-const defaultMetaInfo = {};
-const defaultInput = { metadata: defaultMetaInfo };
+export const modelBaseDefaultMetaInfo = {};
+export const modelBaseDefaultInput = { metadata: modelBaseDefaultMetaInfo };
 
-export abstract class ModelBase<
+export class ModelBase<
   T extends ElementMetaInfo,
   I extends ModelBaseInput<T>,
   S extends ModelBaseInternal,
@@ -70,7 +69,7 @@ export abstract class ModelBase<
     return 'metadata';
   }
   constructor(init: ModelBaseInput<T>) {
-    super(merge({}, defaultInput, init));
+    super(merge({}, modelBaseDefaultInput, init));
   }
   get name(): string {
     return this[Internal].name;
@@ -95,7 +94,7 @@ export abstract class ModelBase<
       src: this[Internal],
       input,
       field: 'name',
-      effect: (src, value) => (src.name = inflected.camelize(value, false)),
+      effect: (src, value) => (src.name = value.trim()),
       required: true,
     });
 
@@ -103,16 +102,14 @@ export abstract class ModelBase<
       src: this[Internal],
       input,
       field: 'title',
-      effect: (src, value) =>
-        (src.title = inflected.camelize(value.trim(), false)),
+      effect: (src, value) => (src.title = value.trim()),
     });
 
     assignValue<S, I, string>({
       src: this[Internal],
       input,
       field: 'description',
-      effect: (src, value) =>
-        (src.description = inflected.camelize(value.trim(), false)),
+      effect: (src, value) => (src.description = value.trim()),
     });
   }
 

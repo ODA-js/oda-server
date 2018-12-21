@@ -8,6 +8,7 @@ import {
   ModelBaseOutput,
 } from './modelbase';
 import { MetaModelType, Nullable, assignValue } from './types';
+import capitalize from './lib/capitalize';
 
 /**
  * union definition
@@ -52,6 +53,15 @@ export class Union
 
   public updateWith(input: Nullable<UnionInput>) {
     super.updateWith(input);
+
+    assignValue<UnionInternal, UnionInput, string>({
+      src: this[Internal],
+      input,
+      field: 'name',
+      effect: (src, value) => (src.name = capitalize(value.trim())),
+      required: true,
+    });
+
     assignValue<UnionInternal, UnionInput, UnionInput['items']>({
       src: this[Internal],
       input,

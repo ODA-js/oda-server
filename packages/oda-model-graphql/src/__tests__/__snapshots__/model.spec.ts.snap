@@ -23,7 +23,7 @@ Object {
           "upadte": Array [],
         },
         "name": Object {
-          "plural": "MediaFiles",
+          "plural": "AllMediaFiles",
           "singular": "MediaFiles",
         },
         "persistence": Object {
@@ -39,7 +39,7 @@ Object {
             },
           },
         },
-        "titlePlural": "MediaFiles",
+        "titlePlural": "AllMediaFiles",
       },
       "name": "MediaFiles",
       "props": Array [
@@ -162,7 +162,7 @@ MetaModel {
                     "idKey": EntityReference {
                       Symbol(internal): Object {
                         "backField": "id",
-                        "entity": "iFile",
+                        "entity": "IFile",
                         "field": "id",
                       },
                       Symbol(metadata): Object {},
@@ -176,7 +176,7 @@ MetaModel {
                       "read": Array [],
                       "update": Array [],
                     },
-                    "entity": "iFile",
+                    "entity": "IFile",
                     "persistence": Object {
                       "identity": true,
                       "indexed": true,
@@ -381,7 +381,7 @@ MetaModel {
                     "idKey": EntityReference {
                       Symbol(internal): Object {
                         "backField": "id",
-                        "entity": "image",
+                        "entity": "Image",
                         "field": "id",
                       },
                       Symbol(metadata): Object {},
@@ -395,7 +395,7 @@ MetaModel {
                       "read": Array [],
                       "update": Array [],
                     },
-                    "entity": "image",
+                    "entity": "Image",
                     "persistence": Object {
                       "identity": true,
                       "indexed": true,
@@ -627,7 +627,7 @@ MetaModel {
                   "idKey": EntityReference {
                     Symbol(internal): Object {
                       "backField": "id",
-                      "entity": "mediaFiles",
+                      "entity": "MediaFiles",
                       "field": "id",
                     },
                     Symbol(metadata): Object {},
@@ -641,7 +641,7 @@ MetaModel {
                     "read": Array [],
                     "update": Array [],
                   },
-                  "entity": "mediaFiles",
+                  "entity": "MediaFiles",
                   "persistence": Object {
                     "identity": true,
                     "indexed": true,
@@ -686,7 +686,7 @@ MetaModel {
               "upadte": Array [],
             },
             "name": Object {
-              "plural": "MediaFiles",
+              "plural": "AllMediaFiles",
               "singular": "MediaFiles",
             },
             "persistence": Object {
@@ -702,7 +702,7 @@ MetaModel {
                 },
               },
             },
-            "titlePlural": "MediaFiles",
+            "titlePlural": "AllMediaFiles",
           },
         },
       },
@@ -800,7 +800,7 @@ MetaModel {
                         "idKey": EntityReference {
                           Symbol(internal): Object {
                             "backField": "id",
-                            "entity": "iFile",
+                            "entity": "IFile",
                             "field": "id",
                           },
                           Symbol(metadata): Object {},
@@ -814,7 +814,7 @@ MetaModel {
                           "read": Array [],
                           "update": Array [],
                         },
-                        "entity": "iFile",
+                        "entity": "IFile",
                         "persistence": Object {
                           "identity": true,
                           "indexed": true,
@@ -1018,7 +1018,7 @@ MetaModel {
                   "idKey": EntityReference {
                     Symbol(internal): Object {
                       "backField": "id",
-                      "entity": "image",
+                      "entity": "Image",
                       "field": "id",
                     },
                     Symbol(metadata): Object {},
@@ -1032,7 +1032,7 @@ MetaModel {
                     "read": Array [],
                     "update": Array [],
                   },
-                  "entity": "image",
+                  "entity": "Image",
                   "persistence": Object {
                     "identity": true,
                     "indexed": true,
@@ -1243,7 +1243,7 @@ MetaModel {
                         "idKey": EntityReference {
                           Symbol(internal): Object {
                             "backField": "id",
-                            "entity": "image",
+                            "entity": "Image",
                             "field": "id",
                           },
                           Symbol(metadata): Object {},
@@ -1257,7 +1257,7 @@ MetaModel {
                           "read": Array [],
                           "update": Array [],
                         },
-                        "entity": "image",
+                        "entity": "Image",
                         "persistence": Object {
                           "identity": true,
                           "indexed": true,
@@ -1423,7 +1423,7 @@ MetaModel {
                   "idKey": EntityReference {
                     Symbol(internal): Object {
                       "backField": "id",
-                      "entity": "iFile",
+                      "entity": "IFile",
                       "field": "id",
                     },
                     Symbol(metadata): Object {},
@@ -1437,7 +1437,7 @@ MetaModel {
                     "read": Array [],
                     "update": Array [],
                   },
-                  "entity": "iFile",
+                  "entity": "IFile",
                   "persistence": Object {
                     "identity": true,
                     "indexed": true,
@@ -1518,7 +1518,7 @@ MetaModel {
         "node": Entity {
           Symbol(internal): Object {
             "abstract": false,
-            "description": "person role to be user identified in the system",
+            "description": "Person role to be user identified in the system",
             "embedded": false,
             "fields": Map {
               "userName" => SimpleField {
@@ -1621,7 +1621,7 @@ MetaModel {
                   "idKey": EntityReference {
                     Symbol(internal): Object {
                       "backField": "id",
-                      "entity": "user",
+                      "entity": "User",
                       "field": "id",
                     },
                     Symbol(metadata): Object {},
@@ -1635,7 +1635,7 @@ MetaModel {
                     "read": Array [],
                     "update": Array [],
                   },
-                  "entity": "user",
+                  "entity": "User",
                   "persistence": Object {
                     "identity": true,
                     "indexed": true,
@@ -1717,9 +1717,9 @@ MetaModel {
     "edges": Set {},
     "field": "extends",
     "vertices": Map {
-      "education" => Vertex {
+      "Education" => Vertex {
         "edges": Set {},
-        "name": "education",
+        "name": "Education",
         "node": [Circular],
       },
     },
@@ -1888,7 +1888,7 @@ MetaModel {
                           "idKey": EntityReference {
                             Symbol(internal): Object {
                               "backField": "id",
-                              "entity": "mediaFiles",
+                              "entity": "MediaFiles",
                               "field": "id",
                             },
                             Symbol(metadata): Object {},
@@ -1902,7 +1902,7 @@ MetaModel {
                             "read": Array [],
                             "update": Array [],
                           },
-                          "entity": "mediaFiles",
+                          "entity": "MediaFiles",
                           "persistence": Object {
                             "identity": true,
                             "indexed": true,
@@ -1947,7 +1947,7 @@ MetaModel {
                       "upadte": Array [],
                     },
                     "name": Object {
-                      "plural": "MediaFiles",
+                      "plural": "AllMediaFiles",
                       "singular": "MediaFiles",
                     },
                     "persistence": Object {
@@ -1963,7 +1963,7 @@ MetaModel {
                         },
                       },
                     },
-                    "titlePlural": "MediaFiles",
+                    "titlePlural": "AllMediaFiles",
                   },
                 },
               },
@@ -2094,7 +2094,7 @@ MetaModel {
                     "idKey": EntityReference {
                       Symbol(internal): Object {
                         "backField": "id",
-                        "entity": "image",
+                        "entity": "Image",
                         "field": "id",
                       },
                       Symbol(metadata): Object {},
@@ -2108,7 +2108,7 @@ MetaModel {
                       "read": Array [],
                       "update": Array [],
                     },
-                    "entity": "image",
+                    "entity": "Image",
                     "persistence": Object {
                       "identity": true,
                       "indexed": true,
@@ -2320,7 +2320,7 @@ MetaModel {
                           "idKey": EntityReference {
                             Symbol(internal): Object {
                               "backField": "id",
-                              "entity": "image",
+                              "entity": "Image",
                               "field": "id",
                             },
                             Symbol(metadata): Object {},
@@ -2334,7 +2334,7 @@ MetaModel {
                             "read": Array [],
                             "update": Array [],
                           },
-                          "entity": "image",
+                          "entity": "Image",
                           "persistence": Object {
                             "identity": true,
                             "indexed": true,
@@ -2564,7 +2564,7 @@ MetaModel {
                     "idKey": EntityReference {
                       Symbol(internal): Object {
                         "backField": "id",
-                        "entity": "mediaFiles",
+                        "entity": "MediaFiles",
                         "field": "id",
                       },
                       Symbol(metadata): Object {},
@@ -2578,7 +2578,7 @@ MetaModel {
                       "read": Array [],
                       "update": Array [],
                     },
-                    "entity": "mediaFiles",
+                    "entity": "MediaFiles",
                     "persistence": Object {
                       "identity": true,
                       "indexed": true,
@@ -2623,7 +2623,7 @@ MetaModel {
                 "upadte": Array [],
               },
               "name": Object {
-                "plural": "MediaFiles",
+                "plural": "AllMediaFiles",
                 "singular": "MediaFiles",
               },
               "persistence": Object {
@@ -2639,7 +2639,7 @@ MetaModel {
                   },
                 },
               },
-              "titlePlural": "MediaFiles",
+              "titlePlural": "AllMediaFiles",
             },
           },
         },
@@ -2804,7 +2804,7 @@ MetaModel {
                           "idKey": EntityReference {
                             Symbol(internal): Object {
                               "backField": "id",
-                              "entity": "mediaFiles",
+                              "entity": "MediaFiles",
                               "field": "id",
                             },
                             Symbol(metadata): Object {},
@@ -2818,7 +2818,7 @@ MetaModel {
                             "read": Array [],
                             "update": Array [],
                           },
-                          "entity": "mediaFiles",
+                          "entity": "MediaFiles",
                           "persistence": Object {
                             "identity": true,
                             "indexed": true,
@@ -2863,7 +2863,7 @@ MetaModel {
                       "upadte": Array [],
                     },
                     "name": Object {
-                      "plural": "MediaFiles",
+                      "plural": "AllMediaFiles",
                       "singular": "MediaFiles",
                     },
                     "persistence": Object {
@@ -2879,7 +2879,7 @@ MetaModel {
                         },
                       },
                     },
-                    "titlePlural": "MediaFiles",
+                    "titlePlural": "AllMediaFiles",
                   },
                 },
               },
@@ -3011,7 +3011,7 @@ MetaModel {
                     "idKey": EntityReference {
                       Symbol(internal): Object {
                         "backField": "id",
-                        "entity": "image",
+                        "entity": "Image",
                         "field": "id",
                       },
                       Symbol(metadata): Object {},
@@ -3025,7 +3025,7 @@ MetaModel {
                       "read": Array [],
                       "update": Array [],
                     },
-                    "entity": "image",
+                    "entity": "Image",
                     "persistence": Object {
                       "identity": true,
                       "indexed": true,
@@ -3236,7 +3236,7 @@ MetaModel {
                           "idKey": EntityReference {
                             Symbol(internal): Object {
                               "backField": "id",
-                              "entity": "image",
+                              "entity": "Image",
                               "field": "id",
                             },
                             Symbol(metadata): Object {},
@@ -3250,7 +3250,7 @@ MetaModel {
                             "read": Array [],
                             "update": Array [],
                           },
-                          "entity": "image",
+                          "entity": "Image",
                           "persistence": Object {
                             "identity": true,
                             "indexed": true,
@@ -3481,7 +3481,7 @@ MetaModel {
                     "idKey": EntityReference {
                       Symbol(internal): Object {
                         "backField": "id",
-                        "entity": "mediaFiles",
+                        "entity": "MediaFiles",
                         "field": "id",
                       },
                       Symbol(metadata): Object {},
@@ -3495,7 +3495,7 @@ MetaModel {
                       "read": Array [],
                       "update": Array [],
                     },
-                    "entity": "mediaFiles",
+                    "entity": "MediaFiles",
                     "persistence": Object {
                       "identity": true,
                       "indexed": true,
@@ -3540,7 +3540,7 @@ MetaModel {
                 "upadte": Array [],
               },
               "name": Object {
-                "plural": "MediaFiles",
+                "plural": "AllMediaFiles",
                 "singular": "MediaFiles",
               },
               "persistence": Object {
@@ -3556,7 +3556,7 @@ MetaModel {
                   },
                 },
               },
-              "titlePlural": "MediaFiles",
+              "titlePlural": "AllMediaFiles",
             },
           },
         },
@@ -3701,7 +3701,7 @@ MetaModel {
                         "idKey": EntityReference {
                           Symbol(internal): Object {
                             "backField": "id",
-                            "entity": "image",
+                            "entity": "Image",
                             "field": "id",
                           },
                           Symbol(metadata): Object {},
@@ -3715,7 +3715,7 @@ MetaModel {
                           "read": Array [],
                           "update": Array [],
                         },
-                        "entity": "image",
+                        "entity": "Image",
                         "persistence": Object {
                           "identity": true,
                           "indexed": true,
@@ -3930,7 +3930,7 @@ MetaModel {
                         "idKey": EntityReference {
                           Symbol(internal): Object {
                             "backField": "id",
-                            "entity": "image",
+                            "entity": "Image",
                             "field": "id",
                           },
                           Symbol(metadata): Object {},
@@ -3944,7 +3944,7 @@ MetaModel {
                           "read": Array [],
                           "update": Array [],
                         },
-                        "entity": "image",
+                        "entity": "Image",
                         "persistence": Object {
                           "identity": true,
                           "indexed": true,
@@ -4174,7 +4174,7 @@ MetaModel {
                   "idKey": EntityReference {
                     Symbol(internal): Object {
                       "backField": "id",
-                      "entity": "mediaFiles",
+                      "entity": "MediaFiles",
                       "field": "id",
                     },
                     Symbol(metadata): Object {},
@@ -4188,7 +4188,7 @@ MetaModel {
                     "read": Array [],
                     "update": Array [],
                   },
-                  "entity": "mediaFiles",
+                  "entity": "MediaFiles",
                   "persistence": Object {
                     "identity": true,
                     "indexed": true,
@@ -4233,7 +4233,7 @@ MetaModel {
               "upadte": Array [],
             },
             "name": Object {
-              "plural": "MediaFiles",
+              "plural": "AllMediaFiles",
               "singular": "MediaFiles",
             },
             "persistence": Object {
@@ -4249,7 +4249,7 @@ MetaModel {
                 },
               },
             },
-            "titlePlural": "MediaFiles",
+            "titlePlural": "AllMediaFiles",
           },
         },
       },
@@ -4416,7 +4416,7 @@ MetaModel {
                         "idKey": EntityReference {
                           Symbol(internal): Object {
                             "backField": "id",
-                            "entity": "mediaFiles",
+                            "entity": "MediaFiles",
                             "field": "id",
                           },
                           Symbol(metadata): Object {},
@@ -4430,7 +4430,7 @@ MetaModel {
                           "read": Array [],
                           "update": Array [],
                         },
-                        "entity": "mediaFiles",
+                        "entity": "MediaFiles",
                         "persistence": Object {
                           "identity": true,
                           "indexed": true,
@@ -4475,7 +4475,7 @@ MetaModel {
                     "upadte": Array [],
                   },
                   "name": Object {
-                    "plural": "MediaFiles",
+                    "plural": "AllMediaFiles",
                     "singular": "MediaFiles",
                   },
                   "persistence": Object {
@@ -4491,7 +4491,7 @@ MetaModel {
                       },
                     },
                   },
-                  "titlePlural": "MediaFiles",
+                  "titlePlural": "AllMediaFiles",
                 },
               },
             },
@@ -4657,7 +4657,7 @@ MetaModel {
                         "idKey": EntityReference {
                           Symbol(internal): Object {
                             "backField": "id",
-                            "entity": "mediaFiles",
+                            "entity": "MediaFiles",
                             "field": "id",
                           },
                           Symbol(metadata): Object {},
@@ -4671,7 +4671,7 @@ MetaModel {
                           "read": Array [],
                           "update": Array [],
                         },
-                        "entity": "mediaFiles",
+                        "entity": "MediaFiles",
                         "persistence": Object {
                           "identity": true,
                           "indexed": true,
@@ -4716,7 +4716,7 @@ MetaModel {
                     "upadte": Array [],
                   },
                   "name": Object {
-                    "plural": "MediaFiles",
+                    "plural": "AllMediaFiles",
                     "singular": "MediaFiles",
                   },
                   "persistence": Object {
@@ -4732,7 +4732,7 @@ MetaModel {
                       },
                     },
                   },
-                  "titlePlural": "MediaFiles",
+                  "titlePlural": "AllMediaFiles",
                 },
               },
             },
@@ -4863,7 +4863,7 @@ MetaModel {
                   "idKey": EntityReference {
                     Symbol(internal): Object {
                       "backField": "id",
-                      "entity": "image",
+                      "entity": "Image",
                       "field": "id",
                     },
                     Symbol(metadata): Object {},
@@ -4877,7 +4877,7 @@ MetaModel {
                     "read": Array [],
                     "update": Array [],
                   },
-                  "entity": "image",
+                  "entity": "Image",
                   "persistence": Object {
                     "identity": true,
                     "indexed": true,
@@ -5043,7 +5043,7 @@ MetaModel {
                   "idKey": EntityReference {
                     Symbol(internal): Object {
                       "backField": "id",
-                      "entity": "iFile",
+                      "entity": "IFile",
                       "field": "id",
                     },
                     Symbol(metadata): Object {},
@@ -5057,7 +5057,7 @@ MetaModel {
                     "read": Array [],
                     "update": Array [],
                   },
-                  "entity": "iFile",
+                  "entity": "IFile",
                   "persistence": Object {
                     "identity": true,
                     "indexed": true,
@@ -5138,7 +5138,7 @@ MetaModel {
         "node": Entity {
           Symbol(internal): Object {
             "abstract": false,
-            "description": "person role to be user identified in the system",
+            "description": "Person role to be user identified in the system",
             "embedded": false,
             "fields": Map {
               "userName" => SimpleField {
@@ -5241,7 +5241,7 @@ MetaModel {
                   "idKey": EntityReference {
                     Symbol(internal): Object {
                       "backField": "id",
-                      "entity": "user",
+                      "entity": "User",
                       "field": "id",
                     },
                     Symbol(metadata): Object {},
@@ -5255,7 +5255,7 @@ MetaModel {
                     "read": Array [],
                     "update": Array [],
                   },
-                  "entity": "user",
+                  "entity": "User",
                   "persistence": Object {
                     "identity": true,
                     "indexed": true,
@@ -5484,7 +5484,7 @@ MetaModel {
                 "idKey": EntityReference {
                   Symbol(internal): Object {
                     "backField": "id",
-                    "entity": "mediaFiles",
+                    "entity": "MediaFiles",
                     "field": "id",
                   },
                   Symbol(metadata): Object {},
@@ -5498,7 +5498,7 @@ MetaModel {
                   "read": Array [],
                   "update": Array [],
                 },
-                "entity": "mediaFiles",
+                "entity": "MediaFiles",
                 "persistence": Object {
                   "identity": true,
                   "indexed": true,
@@ -5543,7 +5543,7 @@ MetaModel {
             "upadte": Array [],
           },
           "name": Object {
-            "plural": "MediaFiles",
+            "plural": "AllMediaFiles",
             "singular": "MediaFiles",
           },
           "persistence": Object {
@@ -5559,7 +5559,7 @@ MetaModel {
               },
             },
           },
-          "titlePlural": "MediaFiles",
+          "titlePlural": "AllMediaFiles",
         },
       },
       "Image" => Entity {
@@ -5686,7 +5686,7 @@ MetaModel {
                 "idKey": EntityReference {
                   Symbol(internal): Object {
                     "backField": "id",
-                    "entity": "image",
+                    "entity": "Image",
                     "field": "id",
                   },
                   Symbol(metadata): Object {},
@@ -5700,7 +5700,7 @@ MetaModel {
                   "read": Array [],
                   "update": Array [],
                 },
-                "entity": "image",
+                "entity": "Image",
                 "persistence": Object {
                   "identity": true,
                   "indexed": true,
@@ -5862,7 +5862,7 @@ MetaModel {
                 "idKey": EntityReference {
                   Symbol(internal): Object {
                     "backField": "id",
-                    "entity": "iFile",
+                    "entity": "IFile",
                     "field": "id",
                   },
                   Symbol(metadata): Object {},
@@ -5876,7 +5876,7 @@ MetaModel {
                   "read": Array [],
                   "update": Array [],
                 },
-                "entity": "iFile",
+                "entity": "IFile",
                 "persistence": Object {
                   "identity": true,
                   "indexed": true,
@@ -5953,7 +5953,7 @@ MetaModel {
       "User" => Entity {
         Symbol(internal): Object {
           "abstract": false,
-          "description": "person role to be user identified in the system",
+          "description": "Person role to be user identified in the system",
           "embedded": false,
           "fields": Map {
             "userName" => SimpleField {
@@ -6056,7 +6056,7 @@ MetaModel {
                 "idKey": EntityReference {
                   Symbol(internal): Object {
                     "backField": "id",
-                    "entity": "user",
+                    "entity": "User",
                     "field": "id",
                   },
                   Symbol(metadata): Object {},
@@ -6070,7 +6070,7 @@ MetaModel {
                   "read": Array [],
                   "update": Array [],
                 },
-                "entity": "user",
+                "entity": "User",
                 "persistence": Object {
                   "identity": true,
                   "indexed": true,
@@ -6149,7 +6149,7 @@ MetaModel {
     "hooks": Array [],
     "mixins": Map {},
     "mutations": Map {},
-    "name": "education",
+    "name": "Education",
     "packages": Map {},
     "queries": Map {},
     "relations": Map {
@@ -6400,7 +6400,7 @@ Object {
           "defaultValue": undefined,
           "derived": false,
           "description": undefined,
-          "entity": "mediaFiles",
+          "entity": "MediaFiles",
           "identity": true,
           "indexed": true,
           "inheritedFrom": undefined,
@@ -6410,7 +6410,7 @@ Object {
               "read": Array [],
               "update": Array [],
             },
-            "entity": "mediaFiles",
+            "entity": "MediaFiles",
             "persistence": Object {
               "identity": true,
               "indexed": true,
@@ -6445,7 +6445,7 @@ Object {
           "upadte": Array [],
         },
         "name": Object {
-          "plural": "MediaFiles",
+          "plural": "AllMediaFiles",
           "singular": "MediaFiles",
         },
         "persistence": Object {
@@ -6461,7 +6461,7 @@ Object {
             },
           },
         },
-        "titlePlural": "MediaFiles",
+        "titlePlural": "AllMediaFiles",
       },
       "name": "MediaFiles",
       "operations": Array [],
@@ -6637,7 +6637,7 @@ Object {
           "defaultValue": undefined,
           "derived": false,
           "description": undefined,
-          "entity": "image",
+          "entity": "Image",
           "identity": true,
           "indexed": true,
           "inheritedFrom": undefined,
@@ -6647,7 +6647,7 @@ Object {
               "read": Array [],
               "update": Array [],
             },
-            "entity": "image",
+            "entity": "Image",
             "persistence": Object {
               "identity": true,
               "indexed": true,
@@ -6834,7 +6834,7 @@ Object {
           "defaultValue": undefined,
           "derived": false,
           "description": undefined,
-          "entity": "iFile",
+          "entity": "IFile",
           "identity": true,
           "indexed": true,
           "inheritedFrom": undefined,
@@ -6844,7 +6844,7 @@ Object {
               "read": Array [],
               "update": Array [],
             },
-            "entity": "iFile",
+            "entity": "IFile",
             "persistence": Object {
               "identity": true,
               "indexed": true,
@@ -6913,7 +6913,7 @@ Object {
     },
     Object {
       "abstract": false,
-      "description": "person role to be user identified in the system",
+      "description": "Person role to be user identified in the system",
       "embedded": false,
       "fields": Array [
         Object {
@@ -7055,7 +7055,7 @@ Object {
           "defaultValue": undefined,
           "derived": false,
           "description": undefined,
-          "entity": "user",
+          "entity": "User",
           "identity": true,
           "indexed": true,
           "inheritedFrom": undefined,
@@ -7065,7 +7065,7 @@ Object {
               "read": Array [],
               "update": Array [],
             },
-            "entity": "user",
+            "entity": "User",
             "persistence": Object {
               "identity": true,
               "indexed": true,
@@ -7137,7 +7137,7 @@ Object {
   "metadata": Object {},
   "mixins": Array [],
   "mutations": Array [],
-  "name": "education",
+  "name": "Education",
   "packages": Array [],
   "queries": Array [],
   "title": undefined,

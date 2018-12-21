@@ -447,7 +447,7 @@ Entity {
           "idKey": EntityReference {
             Symbol(internal): Object {
               "backField": "id",
-              "entity": "a",
+              "entity": "A",
               "field": "id",
             },
             Symbol(metadata): Object {},
@@ -461,7 +461,7 @@ Entity {
             "read": Array [],
             "update": Array [],
           },
-          "entity": "a",
+          "entity": "A",
           "persistence": Object {
             "identity": true,
             "indexed": true,
@@ -559,7 +559,7 @@ Object {
       "defaultValue": undefined,
       "derived": false,
       "description": undefined,
-      "entity": "a",
+      "entity": "A",
       "identity": true,
       "indexed": true,
       "inheritedFrom": undefined,
@@ -569,7 +569,7 @@ Object {
           "read": Array [],
           "update": Array [],
         },
-        "entity": "a",
+        "entity": "A",
         "persistence": Object {
           "identity": true,
           "indexed": true,

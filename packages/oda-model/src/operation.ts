@@ -19,6 +19,7 @@ import {
 } from './types';
 import { merge } from 'lodash';
 import { Internal } from './element';
+import decapitalize from './lib/decapitalize';
 /**
  * Kind of mutation which is intended to work with single entity
  */
@@ -117,6 +118,14 @@ export class Operation
 
   public updateWith(input: OperationInput) {
     super.updateWith(input);
+
+    assignValue<OperationInternal, OperationInput, string>({
+      src: this[Internal],
+      input,
+      field: 'name',
+      effect: (src, value) => (src.name = decapitalize(value.trim())),
+      required: true,
+    });
 
     assignValue({
       src: this[Internal],

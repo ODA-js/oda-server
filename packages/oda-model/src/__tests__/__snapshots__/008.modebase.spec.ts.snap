@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModeBase default: toObject 1`] = `
+Object {
+  "description": undefined,
+  "metadata": Object {},
+  "name": "A",
+  "title": undefined,
+}
+`;

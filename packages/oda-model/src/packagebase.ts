@@ -21,6 +21,7 @@ import { merge } from 'lodash';
 import { MapToArray, assignValue, createOrMergeFromMap } from './types';
 import { IField } from './field';
 import { Internal } from './element';
+import capitalize from './lib/capitalize';
 
 export interface IPackageBase<
   M extends ModelPackageBaseMetaInfo,
@@ -133,6 +134,14 @@ export class ModelPackageBase<
 
   public updateWith(input: Nullable<I>) {
     super.updateWith(input);
+
+    assignValue<ModelPackageBaseInternal, I, string>({
+      src: this[Internal],
+      input,
+      field: 'name',
+      effect: (src, value) => (src.name = capitalize(value)),
+      required: true,
+    });
 
     assignValue<S, I, (EntityInput | string)[]>({
       src: this[Internal],

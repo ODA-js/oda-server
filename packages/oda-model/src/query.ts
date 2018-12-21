@@ -18,6 +18,7 @@ import {
   ModelBase,
   ModelBaseOutput,
 } from './modelbase';
+import decapitalize from './lib/decapitalize';
 
 export interface IQuery
   extends IModelBase<QueryMetaInfo, QueryInput, QueryOutput> {
@@ -80,6 +81,14 @@ export class Query
 
   public updateWith(input: Nullable<QueryInput>) {
     super.updateWith(input);
+
+    assignValue<QueryInternal, QueryInput, string>({
+      src: this[Internal],
+      input,
+      field: 'name',
+      effect: (src, value) => (src.name = decapitalize(value)),
+      required: true,
+    });
 
     assignValue<
       QueryInternal,

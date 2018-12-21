@@ -18,6 +18,7 @@ import {
   ModelBase,
   ModelBaseOutput,
 } from './modelbase';
+import decapitalize from './lib/decapitalize';
 
 export interface IMutation
   extends IModelBase<MutationMetaInfo, MutationInput, MutationOutput> {
@@ -82,6 +83,15 @@ export class Mutation
 
   public updateWith(input: Nullable<MutationInput>) {
     super.updateWith(input);
+
+    assignValue<MutationInternal, MutationInput, string>({
+      src: this[Internal],
+      input,
+      field: 'name',
+      effect: (src, value) => (src.name = decapitalize(value.trim())),
+      required: true,
+    });
+
     assignValue<MutationInternal, MutationInput, MutationInput['args']>({
       src: this[Internal],
       input,

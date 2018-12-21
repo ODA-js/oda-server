@@ -175,9 +175,7 @@ export abstract class FieldBase<
       src: this[Internal],
       input,
       field: 'name',
-      effect: (src, value) => {
-        src.name = decapitalize(value);
-      },
+      effect: (src, value) => (src.name = decapitalize(value.trim())),
       required: true,
     });
 
