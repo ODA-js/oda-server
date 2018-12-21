@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RelationBase creates: toObject 1`] = `
+Object {
+  "embedded": undefined,
+  "entity": undefined,
+  "field": undefined,
+  "metadata": Object {
+    "name": Object {
+      "full": "RelatedTo",
+      "normal": "",
+      "short": "",
+    },
+    "persistence": Object {},
+    "verb": "RelatedTo",
+  },
+  "name": "RelatedTo",
+  "opposite": undefined,
+}
+`;

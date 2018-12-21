@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BelongsTo default: toObject 1`] = `
+Object {
+  "belongsTo": "A#id",
+  "embedded": false,
+  "entity": undefined,
+  "field": undefined,
+  "metadata": Object {
+    "name": Object {
+      "full": "BelongsTo",
+      "normal": "",
+      "short": "",
+    },
+    "persistence": Object {
+      "embedded": false,
+      "identity": false,
+      "indexed": true,
+      "required": false,
+      "single": true,
+      "stored": true,
+    },
+    "verb": "BelongsTo",
+  },
+  "name": "BelongsTo",
+  "opposite": undefined,
+}
+`;

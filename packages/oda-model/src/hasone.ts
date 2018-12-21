@@ -45,7 +45,7 @@ export interface HasOneOutput
   hasOne: string;
 }
 
-const defaultMetaInfo = {
+export const hasOneDefaultMetaInfo = {
   verb: 'HasOne',
   persistence: {
     single: true,
@@ -53,7 +53,7 @@ const defaultMetaInfo = {
     embedded: false,
   },
 };
-const defaultInput = { metadata: defaultMetaInfo };
+export const hasOneDefaultInput = { metadata: hasOneDefaultMetaInfo };
 
 export class HasOne extends RelationBase<
   HasOneMetaInfo,
@@ -71,8 +71,7 @@ export class HasOne extends RelationBase<
   }
 
   constructor(init: HasOneInput) {
-    super(merge({}, defaultInput, init));
-    this.initNames();
+    super(merge({}, hasOneDefaultInput, init));
   }
 
   public updateWith(input: Nullable<HasOneInput>) {

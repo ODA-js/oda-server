@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`belongsToMany default: toObject 1`] = `
+Object {
+  "belongsToMany": "id@A#id",
+  "embedded": false,
+  "entity": undefined,
+  "field": undefined,
+  "fields": Array [],
+  "metadata": Object {
+    "name": Object {
+      "full": "BelongsToMany",
+      "normal": "",
+      "short": "",
+    },
+    "persistence": Object {
+      "embedded": false,
+      "single": false,
+      "stored": false,
+    },
+    "verb": "BelongsToMany",
+  },
+  "name": "BelongsToMany",
+  "opposite": undefined,
+  "using": "id@AB#id",
+}
+`;

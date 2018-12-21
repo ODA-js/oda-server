@@ -115,8 +115,8 @@ export class EntityReference
       src: this[Internal],
       input,
       field: 'entity',
-      effect: (src, value) => (src.entity = value),
       required: true,
+      setDefault: src => (src.entity = entityReferenceDefaultInput.entity),
     });
 
     assignValue<EntityRefInternal, EntityRefInput, EntityRefInput['field']>({

@@ -12,6 +12,12 @@ describe('EntityReference', () => {
     expect(ref.entity).toBe('A');
     expect(ref.field).toBe('id');
   });
+  it('creates from full string make decapitalize of field', () => {
+    const ref = new EntityReference('me@A#Id');
+    expect(ref.backField).toBe('me');
+    expect(ref.entity).toBe('A');
+    expect(ref.field).toBe('id');
+  });
   it('creates from short string', () => {
     const ref = new EntityReference('A#');
     expect(ref.backField).toBe('');

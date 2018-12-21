@@ -376,6 +376,7 @@ MetaModel {
                         },
                         Symbol(metadata): Object {},
                       },
+                      "name": "MediaFileHasOneReference",
                     },
                     Symbol(metadata): Object {
                       "name": Object {
@@ -427,6 +428,7 @@ MetaModel {
                         },
                         Symbol(metadata): Object {},
                       },
+                      "name": "MediaFileHasManyCatalogs",
                     },
                     Symbol(metadata): Object {
                       "name": Object {
@@ -1284,6 +1286,7 @@ MetaModel {
                         },
                         Symbol(metadata): Object {},
                       },
+                      "name": "UserHasManySocialNetworks",
                     },
                     Symbol(metadata): Object {
                       "name": Object {
@@ -1333,6 +1336,7 @@ MetaModel {
                         },
                         Symbol(metadata): Object {},
                       },
+                      "name": "UserHasManyEmails",
                     },
                     Symbol(metadata): Object {
                       "name": Object {
@@ -1377,6 +1381,7 @@ MetaModel {
                         },
                         Symbol(metadata): Object {},
                       },
+                      "name": "UserHasManyFiles",
                     },
                     Symbol(metadata): Object {
                       "name": Object {
@@ -1575,6 +1580,7 @@ MetaModel {
                       },
                       "entity": "Email",
                       "field": "user",
+                      "name": "EmailBelongsToUser",
                       "opposite": "emails",
                     },
                     Symbol(metadata): Object {
@@ -2038,6 +2044,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManySocialNetworks",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -2087,6 +2094,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManyEmails",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -2131,6 +2139,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManyFiles",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -2559,6 +2568,7 @@ MetaModel {
                                           },
                                           "entity": "Email",
                                           "field": "user",
+                                          "name": "EmailBelongsToUser",
                                           "opposite": "emails",
                                         },
                                         Symbol(metadata): Object {
@@ -2773,6 +2783,7 @@ MetaModel {
                                           },
                                           "entity": "Email",
                                           "field": "user",
+                                          "name": "EmailBelongsToUser",
                                           "opposite": "emails",
                                         },
                                         Symbol(metadata): Object {
@@ -3023,6 +3034,7 @@ MetaModel {
                                       },
                                       Symbol(metadata): Object {},
                                     },
+                                    "name": "UserHasManySocialNetworks",
                                   },
                                   Symbol(metadata): Object {
                                     "name": Object {
@@ -3072,6 +3084,7 @@ MetaModel {
                                       },
                                       Symbol(metadata): Object {},
                                     },
+                                    "name": "UserHasManyEmails",
                                   },
                                   Symbol(metadata): Object {
                                     "name": Object {
@@ -3116,6 +3129,7 @@ MetaModel {
                                       },
                                       Symbol(metadata): Object {},
                                     },
+                                    "name": "UserHasManyFiles",
                                   },
                                   Symbol(metadata): Object {
                                     "name": Object {
@@ -3302,6 +3316,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "MediaFileHasOneReference",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -3353,6 +3368,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "MediaFileHasManyCatalogs",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -3997,6 +4013,7 @@ MetaModel {
                                     },
                                     "entity": "Email",
                                     "field": "user",
+                                    "name": "EmailBelongsToUser",
                                     "opposite": "emails",
                                   },
                                   Symbol(metadata): Object {
@@ -4211,6 +4228,7 @@ MetaModel {
                                     },
                                     "entity": "Email",
                                     "field": "user",
+                                    "name": "EmailBelongsToUser",
                                     "opposite": "emails",
                                   },
                                   Symbol(metadata): Object {
@@ -4461,6 +4479,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "UserHasManySocialNetworks",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -4510,6 +4529,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "UserHasManyEmails",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -4554,6 +4574,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "UserHasManyFiles",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -4740,6 +4761,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "MediaFileHasOneReference",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -4791,6 +4813,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "MediaFileHasManyCatalogs",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -5187,6 +5210,7 @@ MetaModel {
                                           },
                                           "entity": "Email",
                                           "field": "user",
+                                          "name": "EmailBelongsToUser",
                                           "opposite": "emails",
                                         },
                                         Symbol(metadata): Object {
@@ -5401,6 +5425,7 @@ MetaModel {
                                           },
                                           "entity": "Email",
                                           "field": "user",
+                                          "name": "EmailBelongsToUser",
                                           "opposite": "emails",
                                         },
                                         Symbol(metadata): Object {
@@ -5651,6 +5676,7 @@ MetaModel {
                                       },
                                       Symbol(metadata): Object {},
                                     },
+                                    "name": "UserHasManySocialNetworks",
                                   },
                                   Symbol(metadata): Object {
                                     "name": Object {
@@ -5700,6 +5726,7 @@ MetaModel {
                                       },
                                       Symbol(metadata): Object {},
                                     },
+                                    "name": "UserHasManyEmails",
                                   },
                                   Symbol(metadata): Object {
                                     "name": Object {
@@ -5744,6 +5771,7 @@ MetaModel {
                                       },
                                       Symbol(metadata): Object {},
                                     },
+                                    "name": "UserHasManyFiles",
                                   },
                                   Symbol(metadata): Object {
                                     "name": Object {
@@ -5930,6 +5958,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "MediaFileHasOneReference",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -5981,6 +6010,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "MediaFileHasManyCatalogs",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -6626,6 +6656,7 @@ MetaModel {
                                     },
                                     "entity": "Email",
                                     "field": "user",
+                                    "name": "EmailBelongsToUser",
                                     "opposite": "emails",
                                   },
                                   Symbol(metadata): Object {
@@ -6840,6 +6871,7 @@ MetaModel {
                                     },
                                     "entity": "Email",
                                     "field": "user",
+                                    "name": "EmailBelongsToUser",
                                     "opposite": "emails",
                                   },
                                   Symbol(metadata): Object {
@@ -7090,6 +7122,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "UserHasManySocialNetworks",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -7139,6 +7172,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "UserHasManyEmails",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -7183,6 +7217,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "UserHasManyFiles",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -7369,6 +7404,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "MediaFileHasOneReference",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -7420,6 +7456,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "MediaFileHasManyCatalogs",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -7802,6 +7839,7 @@ MetaModel {
                               },
                               "entity": "Email",
                               "field": "user",
+                              "name": "EmailBelongsToUser",
                               "opposite": "emails",
                             },
                             Symbol(metadata): Object {
@@ -8266,6 +8304,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "MediaFileHasOneReference",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -8317,6 +8356,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "MediaFileHasManyCatalogs",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -8519,6 +8559,7 @@ MetaModel {
                               },
                               "entity": "Email",
                               "field": "user",
+                              "name": "EmailBelongsToUser",
                               "opposite": "emails",
                             },
                             Symbol(metadata): Object {
@@ -8769,6 +8810,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "UserHasManySocialNetworks",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -8818,6 +8860,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "UserHasManyEmails",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -8862,6 +8905,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "UserHasManyFiles",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -9513,6 +9557,7 @@ MetaModel {
                                       },
                                       Symbol(metadata): Object {},
                                     },
+                                    "name": "MediaFileHasOneReference",
                                   },
                                   Symbol(metadata): Object {
                                     "name": Object {
@@ -9564,6 +9609,7 @@ MetaModel {
                                       },
                                       Symbol(metadata): Object {},
                                     },
+                                    "name": "MediaFileHasManyCatalogs",
                                   },
                                   Symbol(metadata): Object {
                                     "name": Object {
@@ -9806,6 +9852,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "UserHasManySocialNetworks",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -9855,6 +9902,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "UserHasManyEmails",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -9899,6 +9947,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "UserHasManyFiles",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -10099,6 +10148,7 @@ MetaModel {
                         },
                         "entity": "Email",
                         "field": "user",
+                        "name": "EmailBelongsToUser",
                         "opposite": "emails",
                       },
                       Symbol(metadata): Object {
@@ -10747,6 +10797,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "MediaFileHasOneReference",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -10798,6 +10849,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "MediaFileHasManyCatalogs",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -10996,6 +11048,7 @@ MetaModel {
                               },
                               "entity": "Email",
                               "field": "user",
+                              "name": "EmailBelongsToUser",
                               "opposite": "emails",
                             },
                             Symbol(metadata): Object {
@@ -11246,6 +11299,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "UserHasManySocialNetworks",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -11295,6 +11349,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "UserHasManyEmails",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -11339,6 +11394,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "UserHasManyFiles",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -11799,6 +11855,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "MediaFileHasOneReference",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -11850,6 +11907,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "MediaFileHasManyCatalogs",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -12233,6 +12291,7 @@ MetaModel {
                               },
                               "entity": "Email",
                               "field": "user",
+                              "name": "EmailBelongsToUser",
                               "opposite": "emails",
                             },
                             Symbol(metadata): Object {
@@ -12447,6 +12506,7 @@ MetaModel {
                               },
                               "entity": "Email",
                               "field": "user",
+                              "name": "EmailBelongsToUser",
                               "opposite": "emails",
                             },
                             Symbol(metadata): Object {
@@ -12697,6 +12757,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "UserHasManySocialNetworks",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -12746,6 +12807,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "UserHasManyEmails",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -12790,6 +12852,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "UserHasManyFiles",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -13179,6 +13242,7 @@ MetaModel {
                               },
                               "entity": "Email",
                               "field": "user",
+                              "name": "EmailBelongsToUser",
                               "opposite": "emails",
                             },
                             Symbol(metadata): Object {
@@ -13643,6 +13707,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "MediaFileHasOneReference",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -13694,6 +13759,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "MediaFileHasManyCatalogs",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -13936,6 +14002,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "UserHasManySocialNetworks",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -13985,6 +14052,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "UserHasManyEmails",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -14029,6 +14097,7 @@ MetaModel {
                           },
                           Symbol(metadata): Object {},
                         },
+                        "name": "UserHasManyFiles",
                       },
                       Symbol(metadata): Object {
                         "name": Object {
@@ -14680,6 +14749,7 @@ MetaModel {
                                       },
                                       Symbol(metadata): Object {},
                                     },
+                                    "name": "MediaFileHasOneReference",
                                   },
                                   Symbol(metadata): Object {
                                     "name": Object {
@@ -14731,6 +14801,7 @@ MetaModel {
                                       },
                                       Symbol(metadata): Object {},
                                     },
+                                    "name": "MediaFileHasManyCatalogs",
                                   },
                                   Symbol(metadata): Object {
                                     "name": Object {
@@ -14973,6 +15044,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "UserHasManySocialNetworks",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -15022,6 +15094,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "UserHasManyEmails",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -15066,6 +15139,7 @@ MetaModel {
                                 },
                                 Symbol(metadata): Object {},
                               },
+                              "name": "UserHasManyFiles",
                             },
                             Symbol(metadata): Object {
                               "name": Object {
@@ -15265,6 +15339,7 @@ MetaModel {
                         },
                         "entity": "Email",
                         "field": "user",
+                        "name": "EmailBelongsToUser",
                         "opposite": "emails",
                       },
                       Symbol(metadata): Object {
@@ -15937,6 +16012,7 @@ MetaModel {
                                   },
                                   "entity": "Email",
                                   "field": "user",
+                                  "name": "EmailBelongsToUser",
                                   "opposite": "emails",
                                 },
                                 Symbol(metadata): Object {
@@ -16151,6 +16227,7 @@ MetaModel {
                                   },
                                   "entity": "Email",
                                   "field": "user",
+                                  "name": "EmailBelongsToUser",
                                   "opposite": "emails",
                                 },
                                 Symbol(metadata): Object {
@@ -16401,6 +16478,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManySocialNetworks",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -16450,6 +16528,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManyEmails",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -16494,6 +16573,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManyFiles",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -16680,6 +16760,7 @@ MetaModel {
                         },
                         Symbol(metadata): Object {},
                       },
+                      "name": "MediaFileHasOneReference",
                     },
                     Symbol(metadata): Object {
                       "name": Object {
@@ -16731,6 +16812,7 @@ MetaModel {
                         },
                         Symbol(metadata): Object {},
                       },
+                      "name": "MediaFileHasManyCatalogs",
                     },
                     Symbol(metadata): Object {
                       "name": Object {
@@ -17129,6 +17211,7 @@ MetaModel {
                                         },
                                         "entity": "Email",
                                         "field": "user",
+                                        "name": "EmailBelongsToUser",
                                         "opposite": "emails",
                                       },
                                       Symbol(metadata): Object {
@@ -17343,6 +17426,7 @@ MetaModel {
                                         },
                                         "entity": "Email",
                                         "field": "user",
+                                        "name": "EmailBelongsToUser",
                                         "opposite": "emails",
                                       },
                                       Symbol(metadata): Object {
@@ -17593,6 +17677,7 @@ MetaModel {
                                     },
                                     Symbol(metadata): Object {},
                                   },
+                                  "name": "UserHasManySocialNetworks",
                                 },
                                 Symbol(metadata): Object {
                                   "name": Object {
@@ -17642,6 +17727,7 @@ MetaModel {
                                     },
                                     Symbol(metadata): Object {},
                                   },
+                                  "name": "UserHasManyEmails",
                                 },
                                 Symbol(metadata): Object {
                                   "name": Object {
@@ -17686,6 +17772,7 @@ MetaModel {
                                     },
                                     Symbol(metadata): Object {},
                                   },
+                                  "name": "UserHasManyFiles",
                                 },
                                 Symbol(metadata): Object {
                                   "name": Object {
@@ -17872,6 +17959,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "MediaFileHasOneReference",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -17923,6 +18011,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "MediaFileHasManyCatalogs",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -18320,6 +18409,7 @@ MetaModel {
                                         },
                                         "entity": "Email",
                                         "field": "user",
+                                        "name": "EmailBelongsToUser",
                                         "opposite": "emails",
                                       },
                                       Symbol(metadata): Object {
@@ -18534,6 +18624,7 @@ MetaModel {
                                         },
                                         "entity": "Email",
                                         "field": "user",
+                                        "name": "EmailBelongsToUser",
                                         "opposite": "emails",
                                       },
                                       Symbol(metadata): Object {
@@ -18784,6 +18875,7 @@ MetaModel {
                                     },
                                     Symbol(metadata): Object {},
                                   },
+                                  "name": "UserHasManySocialNetworks",
                                 },
                                 Symbol(metadata): Object {
                                   "name": Object {
@@ -18833,6 +18925,7 @@ MetaModel {
                                     },
                                     Symbol(metadata): Object {},
                                   },
+                                  "name": "UserHasManyEmails",
                                 },
                                 Symbol(metadata): Object {
                                   "name": Object {
@@ -18877,6 +18970,7 @@ MetaModel {
                                     },
                                     Symbol(metadata): Object {},
                                   },
+                                  "name": "UserHasManyFiles",
                                 },
                                 Symbol(metadata): Object {
                                   "name": Object {
@@ -19063,6 +19157,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "MediaFileHasOneReference",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -19114,6 +19209,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "MediaFileHasManyCatalogs",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -19798,6 +19894,7 @@ MetaModel {
                             },
                             "entity": "Email",
                             "field": "user",
+                            "name": "EmailBelongsToUser",
                             "opposite": "emails",
                           },
                           Symbol(metadata): Object {
@@ -20262,6 +20359,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "MediaFileHasOneReference",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -20313,6 +20411,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "MediaFileHasManyCatalogs",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -20515,6 +20614,7 @@ MetaModel {
                             },
                             "entity": "Email",
                             "field": "user",
+                            "name": "EmailBelongsToUser",
                             "opposite": "emails",
                           },
                           Symbol(metadata): Object {
@@ -20765,6 +20865,7 @@ MetaModel {
                         },
                         Symbol(metadata): Object {},
                       },
+                      "name": "UserHasManySocialNetworks",
                     },
                     Symbol(metadata): Object {
                       "name": Object {
@@ -20814,6 +20915,7 @@ MetaModel {
                         },
                         Symbol(metadata): Object {},
                       },
+                      "name": "UserHasManyEmails",
                     },
                     Symbol(metadata): Object {
                       "name": Object {
@@ -20858,6 +20960,7 @@ MetaModel {
                         },
                         Symbol(metadata): Object {},
                       },
+                      "name": "UserHasManyFiles",
                     },
                     Symbol(metadata): Object {
                       "name": Object {
@@ -21508,6 +21611,7 @@ MetaModel {
                                     },
                                     Symbol(metadata): Object {},
                                   },
+                                  "name": "MediaFileHasOneReference",
                                 },
                                 Symbol(metadata): Object {
                                   "name": Object {
@@ -21559,6 +21663,7 @@ MetaModel {
                                     },
                                     Symbol(metadata): Object {},
                                   },
+                                  "name": "MediaFileHasManyCatalogs",
                                 },
                                 Symbol(metadata): Object {
                                   "name": Object {
@@ -21805,6 +21910,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManySocialNetworks",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -21854,6 +21960,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManyEmails",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -21898,6 +22005,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManyFiles",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -22549,6 +22657,7 @@ MetaModel {
                                     },
                                     Symbol(metadata): Object {},
                                   },
+                                  "name": "MediaFileHasOneReference",
                                 },
                                 Symbol(metadata): Object {
                                   "name": Object {
@@ -22600,6 +22709,7 @@ MetaModel {
                                     },
                                     Symbol(metadata): Object {},
                                   },
+                                  "name": "MediaFileHasManyCatalogs",
                                 },
                                 Symbol(metadata): Object {
                                   "name": Object {
@@ -22842,6 +22952,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManySocialNetworks",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -22891,6 +23002,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManyEmails",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -22935,6 +23047,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManyFiles",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -23135,6 +23248,7 @@ MetaModel {
                       },
                       "entity": "Email",
                       "field": "user",
+                      "name": "EmailBelongsToUser",
                       "opposite": "emails",
                     },
                     Symbol(metadata): Object {
@@ -23351,6 +23465,7 @@ MetaModel {
                                   },
                                   "entity": "Email",
                                   "field": "user",
+                                  "name": "EmailBelongsToUser",
                                   "opposite": "emails",
                                 },
                                 Symbol(metadata): Object {
@@ -23815,6 +23930,7 @@ MetaModel {
                                     },
                                     Symbol(metadata): Object {},
                                   },
+                                  "name": "MediaFileHasOneReference",
                                 },
                                 Symbol(metadata): Object {
                                   "name": Object {
@@ -23866,6 +23982,7 @@ MetaModel {
                                     },
                                     Symbol(metadata): Object {},
                                   },
+                                  "name": "MediaFileHasManyCatalogs",
                                 },
                                 Symbol(metadata): Object {
                                   "name": Object {
@@ -24068,6 +24185,7 @@ MetaModel {
                                   },
                                   "entity": "Email",
                                   "field": "user",
+                                  "name": "EmailBelongsToUser",
                                   "opposite": "emails",
                                 },
                                 Symbol(metadata): Object {
@@ -24318,6 +24436,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManySocialNetworks",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -24367,6 +24486,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManyEmails",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -24411,6 +24531,7 @@ MetaModel {
                               },
                               Symbol(metadata): Object {},
                             },
+                            "name": "UserHasManyFiles",
                           },
                           Symbol(metadata): Object {
                             "name": Object {
@@ -24777,6 +24898,7 @@ MetaModel {
                       },
                       Symbol(metadata): Object {},
                     },
+                    "name": "MediaFileHasOneReference",
                   },
                   Symbol(metadata): Object {
                     "name": Object {
@@ -24828,6 +24950,7 @@ MetaModel {
                       },
                       Symbol(metadata): Object {},
                     },
+                    "name": "MediaFileHasManyCatalogs",
                   },
                   Symbol(metadata): Object {
                     "name": Object {
@@ -25357,6 +25480,7 @@ MetaModel {
                       },
                       Symbol(metadata): Object {},
                     },
+                    "name": "UserHasManySocialNetworks",
                   },
                   Symbol(metadata): Object {
                     "name": Object {
@@ -25406,6 +25530,7 @@ MetaModel {
                       },
                       Symbol(metadata): Object {},
                     },
+                    "name": "UserHasManyEmails",
                   },
                   Symbol(metadata): Object {
                     "name": Object {
@@ -25450,6 +25575,7 @@ MetaModel {
                       },
                       Symbol(metadata): Object {},
                     },
+                    "name": "UserHasManyFiles",
                   },
                   Symbol(metadata): Object {
                     "name": Object {
@@ -25644,6 +25770,7 @@ MetaModel {
                     },
                     "entity": "Email",
                     "field": "user",
+                    "name": "EmailBelongsToUser",
                     "opposite": "emails",
                   },
                   Symbol(metadata): Object {
@@ -26202,6 +26329,7 @@ MetaModel {
                             },
                             Symbol(metadata): Object {},
                           },
+                          "name": "UserHasManySocialNetworks",
                         },
                         Symbol(metadata): Object {
                           "name": Object {
@@ -26251,6 +26379,7 @@ MetaModel {
                             },
                             Symbol(metadata): Object {},
                           },
+                          "name": "UserHasManyEmails",
                         },
                         Symbol(metadata): Object {
                           "name": Object {
@@ -26295,6 +26424,7 @@ MetaModel {
                             },
                             Symbol(metadata): Object {},
                           },
+                          "name": "UserHasManyFiles",
                         },
                         Symbol(metadata): Object {
                           "name": Object {
@@ -26480,6 +26610,7 @@ MetaModel {
                   },
                   Symbol(metadata): Object {},
                 },
+                "name": "MediaFileHasOneReference",
               },
               Symbol(metadata): Object {
                 "name": Object {
@@ -26531,6 +26662,7 @@ MetaModel {
                   },
                   Symbol(metadata): Object {},
                 },
+                "name": "MediaFileHasManyCatalogs",
               },
               Symbol(metadata): Object {
                 "name": Object {
@@ -26586,6 +26718,7 @@ MetaModel {
                   },
                   Symbol(metadata): Object {},
                 },
+                "name": "UserHasManySocialNetworks",
               },
               Symbol(metadata): Object {
                 "name": Object {
@@ -26635,6 +26768,7 @@ MetaModel {
                   },
                   Symbol(metadata): Object {},
                 },
+                "name": "UserHasManyEmails",
               },
               Symbol(metadata): Object {
                 "name": Object {
@@ -26679,6 +26813,7 @@ MetaModel {
                   },
                   Symbol(metadata): Object {},
                 },
+                "name": "UserHasManyFiles",
               },
               Symbol(metadata): Object {
                 "name": Object {
@@ -26724,6 +26859,7 @@ MetaModel {
                 },
                 "entity": "Email",
                 "field": "user",
+                "name": "EmailBelongsToUser",
                 "opposite": "emails",
               },
               Symbol(metadata): Object {

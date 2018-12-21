@@ -62,7 +62,7 @@ export interface BelongsToManyOutput
   fields?: NamedArray<SimpleFieldInput>;
 }
 
-const defaultMetaInfo = {
+export const belongsToManyDefaultMetaInfo = {
   verb: 'BelongsToMany',
   persistence: {
     single: false,
@@ -70,7 +70,9 @@ const defaultMetaInfo = {
     embedded: false,
   },
 };
-const defaultInput = { metadata: defaultMetaInfo };
+export const belongsToManyDefaultInput = {
+  metadata: belongsToManyDefaultMetaInfo,
+};
 
 export class BelongsToMany
   extends RelationBase<
@@ -98,8 +100,7 @@ export class BelongsToMany
   }
 
   constructor(init: BelongsToManyInput) {
-    super(merge({}, defaultInput, init));
-    this.initNames();
+    super(merge({}, belongsToManyDefaultInput, init));
   }
 
   public updateWith(input: Nullable<BelongsToManyInput>) {
@@ -164,6 +165,7 @@ export class BelongsToMany
   public toObject(): BelongsToManyOutput {
     return merge({}, super.toObject(), {
       belongsToMany: this.belongsToMany.toString(),
+      using: this.using.toString(),
       fields: MapToArray(this[Internal].fields, (name, value) => ({
         ...value.toObject(),
         name,

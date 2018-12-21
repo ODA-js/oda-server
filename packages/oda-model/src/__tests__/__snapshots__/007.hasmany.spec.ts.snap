@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`haOne default: toObject 1`] = `
+Object {
+  "embedded": false,
+  "entity": undefined,
+  "field": undefined,
+  "hasMany": "id@A#id",
+  "metadata": Object {
+    "name": Object {
+      "full": "HasMany",
+      "normal": "",
+      "short": "",
+    },
+    "persistence": Object {
+      "embedded": false,
+      "single": false,
+      "stored": false,
+    },
+    "verb": "HasMany",
+  },
+  "name": "HasMany",
+  "opposite": undefined,
+}
+`;

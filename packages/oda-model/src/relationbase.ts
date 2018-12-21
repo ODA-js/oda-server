@@ -6,6 +6,7 @@ import {
   ElementInternal,
   ElementOutput,
   Internal,
+  MetaData,
 } from './element';
 import { RelationType, MetaModelType, assignValue, Nullable } from './types';
 import { IEntityRef } from './entityreference';
@@ -85,7 +86,11 @@ export interface RelationBaseOutput<
   opposite?: string;
 }
 
-export const relationBaseDefaultMetaInfo = { persistence: {}, name: {} };
+export const relationBaseDefaultMetaInfo = {
+  verb: 'RelatedTo',
+  persistence: {},
+  name: {},
+};
 export const relationBaseDefaultInput = {
   metadata: relationBaseDefaultMetaInfo,
 };
@@ -105,6 +110,7 @@ export class RelationBase<
    */
   constructor(init: RelationBaseInput<T, P>) {
     super(merge({}, relationBaseDefaultInput, init));
+    this.initNames();
   }
 
   get name(): string {
@@ -148,36 +154,35 @@ export class RelationBase<
   }
 
   set opposite(val) {
-    this[Internal].opposite = val;
+    this.updateWith({ opposite: val } as Nullable<I>);
   }
 
   protected initNames() {
-    if (!this.name) {
+    if (this.name) {
+      this.metadata.name.full = this.name;
+    } else {
       let ref = this.single
-        ? inflected.singularize(this[Internal].field)
-        : inflected.pluralize(this[Internal].field);
+        ? inflected.singularize(this[Internal].field || '')
+        : inflected.pluralize(this[Internal].field || '');
 
-      this.metadata.name.full = `${this[Internal].entity}${
+      this.metadata.name.full = `${this[Internal].entity || ''}${
         this.verb
       }${inflected.camelize(ref, true)}`;
-
-      let ref1 = this.single
-        ? inflected.singularize(this[Internal].field)
-        : inflected.pluralize(this[Internal].field);
-
-      this.metadata.name.normal = `${this[Internal].entity}${inflected.camelize(
-        ref1,
-        true,
-      )}`;
-
-      let ref2 = this.single
-        ? inflected.singularize(this[Internal].field)
-        : inflected.pluralize(this[Internal].field);
-
-      this.metadata.name.short = `${inflected.camelize(ref2, true)}`;
-    } else {
-      this.metadata.name.full = this.metadata.name.normal = this.metadata.name.short = this.name;
+      this[Internal].name = this[MetaData].name.full;
     }
+
+    let ref1 = this.single
+      ? inflected.singularize(this[Internal].field || '')
+      : inflected.pluralize(this[Internal].field || '');
+
+    this.metadata.name.normal = `${this[Internal].entity ||
+      ''}${inflected.camelize(ref1, true)}`;
+
+    let ref2 = this.single
+      ? inflected.singularize(this[Internal].field || '')
+      : inflected.pluralize(this[Internal].field || '');
+
+    this.metadata.name.short = `${inflected.camelize(ref2, true)}`;
   }
 
   get fullName() {
@@ -218,7 +223,6 @@ export class RelationBase<
       field: 'name',
       effect: (src, value) => {
         src.name = inflected.camelize(value.trim());
-        this.initNames();
       },
     });
 

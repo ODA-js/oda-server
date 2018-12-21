@@ -54,7 +54,7 @@ export interface BelongsToOutput
   indexed?: boolean | string | string[];
 }
 
-const defaultMetaInfo = {
+export const belongsToDefaultMetaInfo = {
   verb: 'BelongsTo',
   persistence: {
     single: true,
@@ -65,7 +65,7 @@ const defaultMetaInfo = {
     required: false,
   },
 };
-const defaultInput = { metadata: defaultMetaInfo };
+export const belongsToDefaultInput = { metadata: belongsToDefaultMetaInfo };
 
 export class BelongsTo extends RelationBase<
   BelongsToMetaInfo,
@@ -95,8 +95,7 @@ export class BelongsTo extends RelationBase<
   }
 
   constructor(init: BelongsToInput) {
-    super(merge({}, defaultInput, init));
-    this.initNames();
+    super(merge({}, belongsToDefaultInput, init));
   }
 
   public updateWith(input: Nullable<BelongsToInput>) {

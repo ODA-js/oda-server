@@ -45,7 +45,7 @@ export interface HasManyOutput
   hasMany: string;
 }
 
-const defaultMetaInfo = {
+export const hasManyDefaultMetaInfo = {
   verb: 'HasMany',
   persistence: {
     single: false,
@@ -53,7 +53,7 @@ const defaultMetaInfo = {
     embedded: false,
   },
 };
-const defaultInput = { metadata: defaultMetaInfo };
+export const hasManyDefaultInput = { metadata: hasManyDefaultMetaInfo };
 
 export class HasMany extends RelationBase<
   HasManyMetaInfo,
@@ -71,8 +71,7 @@ export class HasMany extends RelationBase<
   }
 
   constructor(init: HasManyInput) {
-    super(merge({}, defaultInput, init));
-    this.initNames();
+    super(merge({}, hasManyDefaultInput, init));
   }
 
   public updateWith(input: Nullable<HasManyInput>) {
