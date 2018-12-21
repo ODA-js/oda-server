@@ -102,14 +102,6 @@ export class BelongsTo extends RelationBase<
   public updateWith(input: Nullable<BelongsToInput>) {
     super.updateWith(input);
 
-    assignValue<BelongsToMetaInfo, BelongsToInput, boolean>({
-      src: this.metadata,
-      input,
-      inputField: 'embedded',
-      effect: (src, value) => (src.persistence.embedded = value),
-      setDefault: src => (src.persistence.embedded = false),
-    });
-
     assignValue<BelongsToInternal, BelongsToInput, string>({
       src: this[Internal],
       input,

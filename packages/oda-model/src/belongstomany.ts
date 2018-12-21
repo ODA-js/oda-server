@@ -128,13 +128,6 @@ export class BelongsToMany
       setDefault: src => (src.fields = new Map()),
     });
 
-    assignValue<BelongsToManyMetaInfo, BelongsToManyInput, boolean>({
-      src: this.metadata,
-      input,
-      inputField: 'embedded',
-      effect: (src, value) => (src.persistence.embedded = value),
-    });
-
     assignValue<BelongsToManyInternal, BelongsToManyInput, string>({
       src: this[Internal],
       input,

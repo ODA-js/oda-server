@@ -78,13 +78,6 @@ export class HasMany extends RelationBase<
   public updateWith(input: Nullable<HasManyInput>) {
     super.updateWith(input);
 
-    assignValue<HasManyMetaInfo, HasManyInput, boolean>({
-      src: this.metadata,
-      input,
-      inputField: 'embedded',
-      effect: (src, value) => (src.persistence.embedded = value),
-    });
-
     assignValue<HasManyInternal, HasManyInput, string>({
       src: this[Internal],
       input,

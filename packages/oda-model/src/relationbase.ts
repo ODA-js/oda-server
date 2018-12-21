@@ -199,6 +199,19 @@ export class RelationBase<
   public updateWith(input: Nullable<I>) {
     super.updateWith(input);
 
+    assignValue<
+      RelationBaseMetaInfo<RelationBasePersistence>,
+      RelationBaseInput<T, P>,
+      boolean
+    >({
+      src: this.metadata,
+      input,
+      inputField: 'embedded',
+      effect: (src, value) => (src.persistence.embedded = value),
+      required: true,
+      setDefault: src => (src.persistence.embedded = false),
+    });
+
     assignValue<S, RelationBaseInput<T, P>, string>({
       src: this[Internal],
       input,

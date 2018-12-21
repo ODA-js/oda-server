@@ -78,13 +78,6 @@ export class HasOne extends RelationBase<
   public updateWith(input: Nullable<HasOneInput>) {
     super.updateWith(input);
 
-    assignValue<HasOneMetaInfo, HasOneInput, boolean>({
-      src: this.metadata,
-      input,
-      inputField: 'embedded',
-      effect: (src, value) => (src.persistence.embedded = value),
-    });
-
     assignValue<HasOneInternal, HasOneInput, string>({
       src: this[Internal],
       input,
