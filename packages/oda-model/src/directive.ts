@@ -8,7 +8,7 @@ import {
 } from './modelbase';
 import {
   DirectiveLocation,
-  FieldArgs,
+  IFieldArgs,
   AsHash,
   MetaModelType,
   HashToMap,
@@ -26,7 +26,7 @@ export interface IDirective
   /**
    * set of arguments
    */
-  readonly args: Map<string, FieldArgs>;
+  readonly args: Map<string, IFieldArgs>;
   /**
    * where it can met
    */
@@ -36,22 +36,22 @@ export interface IDirective
 export interface DirectiveMetaInfo extends ModelMetaInfo {}
 
 export interface DirectiveInternal extends ModelBaseInternal {
-  args: Map<string, FieldArgs>;
+  args: Map<string, IFieldArgs>;
   on: DirectiveLocation[];
 }
 
 export interface DirectiveInput extends ModelBaseInput<DirectiveMetaInfo> {
-  args?: AsHash<FieldArgs> | NamedArray<FieldArgs>;
-  on?: DirectiveLocation[];
-}
-
-export interface DirectiveOutput extends ModelBaseOutput<DirectiveMetaInfo> {
-  args: NamedArray<FieldArgs>;
+  args?: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
   on: DirectiveLocation[];
 }
 
-const defaultMetaInfo = {};
-const defaultInput = { metadata: defaultMetaInfo };
+export interface DirectiveOutput extends ModelBaseOutput<DirectiveMetaInfo> {
+  args: NamedArray<IFieldArgs>;
+  on: DirectiveLocation[];
+}
+
+export const directiveDefaultMetaInfo = {};
+export const directiveDefaultInput = { metadata: directiveDefaultMetaInfo };
 
 export class Directive
   extends ModelBase<
@@ -64,7 +64,7 @@ export class Directive
   public get modelType(): MetaModelType {
     return 'directive';
   }
-  get args(): Map<string, FieldArgs> {
+  get args(): Map<string, IFieldArgs> {
     return this[Internal].args;
   }
 
@@ -73,7 +73,7 @@ export class Directive
   }
 
   constructor(init: DirectiveInput) {
-    super(merge({}, defaultInput, init));
+    super(merge({}, directiveDefaultInput, init));
   }
 
   public updateWith(input: Nullable<DirectiveInput>) {
@@ -82,7 +82,7 @@ export class Directive
     assignValue<
       DirectiveInternal,
       DirectiveInput,
-      AsHash<FieldArgs> | NamedArray<FieldArgs>
+      AsHash<IFieldArgs> | NamedArray<IFieldArgs>
     >({
       src: this[Internal],
       input,

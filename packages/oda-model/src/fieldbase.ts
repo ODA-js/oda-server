@@ -8,7 +8,7 @@ import {
 import decapitalize from './lib/decapitalize';
 import { merge, get } from 'lodash';
 import {
-  FieldArgs,
+  IFieldArgs,
   FieldType,
   AsHash,
   MetaModelType,
@@ -33,7 +33,7 @@ export interface IFieldBase<
   readonly inheritedFrom?: string;
   readonly order: number;
   readonly derived: boolean;
-  readonly args: Map<string, FieldArgs>;
+  readonly args: Map<string, IFieldArgs>;
   readonly persistent?: boolean;
   readonly identity: boolean | string | string[];
   readonly required?: boolean;
@@ -65,7 +65,7 @@ export interface FieldBaseMetaInfo<T extends FieldBasePersistence>
 }
 
 export interface FieldBaseInternal extends ModelBaseInternal {
-  args: Map<string, FieldArgs>;
+  args: Map<string, IFieldArgs>;
   inheritedFrom?: string;
   type?: FieldType;
   idKey: IEntityRef;
@@ -75,7 +75,7 @@ export interface FieldBaseInput<
   T extends FieldBaseMetaInfo<P>,
   P extends FieldBasePersistence
 > extends ModelBaseInput<T> {
-  args?: AsHash<FieldArgs> | NamedArray<FieldArgs>;
+  args?: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
   inheritedFrom?: string;
   derived?: boolean;
   persistent?: boolean;
@@ -100,7 +100,7 @@ export interface FieldBaseOutput<
   required?: boolean;
   identity?: boolean | string | string[];
   indexed?: boolean | string | string[];
-  args: NamedArray<FieldArgs>;
+  args: NamedArray<IFieldArgs>;
 }
 
 const defaultMetaInfo = {
@@ -136,7 +136,7 @@ export abstract class FieldBase<
     return this[Internal].inheritedFrom;
   }
 
-  get args(): Map<string, FieldArgs> {
+  get args(): Map<string, IFieldArgs> {
     return this[Internal].args;
   }
 
@@ -185,7 +185,7 @@ export abstract class FieldBase<
       field: 'inheritedFrom',
     });
 
-    assignValue<S, I, AsHash<FieldArgs> | NamedArray<FieldArgs>>({
+    assignValue<S, I, AsHash<IFieldArgs> | NamedArray<IFieldArgs>>({
       src: this[Internal],
       input,
       field: 'args',

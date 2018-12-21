@@ -35,8 +35,8 @@ export interface UnionOutput extends ModelBaseOutput<UnionMetaInfo> {
   items: string[];
 }
 
-const defaultMetaInfo = {};
-const defaultInput = { metadata: defaultMetaInfo };
+export const unionDefaultMetaInfo = {};
+export const unionDefaultInput = { metadata: unionDefaultMetaInfo };
 
 export class Union
   extends ModelBase<UnionMetaInfo, UnionInput, UnionInternal, UnionOutput>
@@ -45,7 +45,7 @@ export class Union
     return 'union';
   }
   constructor(init: UnionInput) {
-    super(merge({}, defaultInput, init));
+    super(merge({}, unionDefaultInput, init));
   }
   get items(): Set<string> {
     return this[Internal].items;

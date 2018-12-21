@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Args default: default 1`] = `
+Object {
+  "defaultValue": undefined,
+  "metadata": Object {},
+  "multiplicity": "one",
+  "name": "field",
+  "required": false,
+  "type": "string",
+}
+`;

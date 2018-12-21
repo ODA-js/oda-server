@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Enum default: toObject 1`] = `
+Object {
+  "description": undefined,
+  "items": Array [
+    Object {
+      "description": "HOME",
+      "metadata": Object {},
+      "name": "HOME",
+      "title": "HOME",
+      "value": undefined,
+    },
+    Object {
+      "description": "WORk",
+      "metadata": Object {},
+      "name": "WORk",
+      "title": "WORk",
+      "value": undefined,
+    },
+  ],
+  "metadata": Object {},
+  "name": "LOCATION",
+  "title": undefined,
+}
+`;

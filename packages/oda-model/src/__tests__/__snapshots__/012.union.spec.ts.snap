@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Union default: toObject 1`] = `
+Object {
+  "description": undefined,
+  "items": Array [
+    "ITEM",
+    "Item",
+    "item",
+  ],
+  "metadata": Object {},
+  "name": "UNION",
+  "title": undefined,
+}
+`;

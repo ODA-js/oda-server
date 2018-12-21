@@ -133,6 +133,7 @@ export type MetaModelType =
   | 'relation-base'
   | 'operation'
   | 'ref'
+  | 'args'
   | RelationType;
 
 export type Multiplicity = 'one' | 'many';
@@ -141,7 +142,12 @@ export type Multiplicity = 'one' | 'many';
  */
 export type ComplexTypeKind = 'enum' | 'entity';
 
-export type OperationKind = 'create' | 'read' | 'update' | 'delete';
+export type OperationKind =
+  | 'create'
+  | 'readOne'
+  | 'realMany'
+  | 'update'
+  | 'delete';
 
 export type DirectiveLocation =
   | 'QUERY'
@@ -167,13 +173,14 @@ export interface INamed {
   readonly name: string;
 }
 
-export interface FieldArgsForHash {
+export interface IFieldArgsForHash {
   type?: string;
   required?: boolean;
   defaultValue?: string;
+  multiplicity?: Multiplicity;
 }
 
-export interface FieldArgs extends INamed, FieldArgsForHash {}
+export interface IFieldArgs extends INamed, IFieldArgsForHash {}
 /**
  * Complext type can refer to existing type system
  */

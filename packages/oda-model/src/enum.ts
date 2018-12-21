@@ -31,8 +31,8 @@ export interface EnumOutput extends ModelBaseOutput<EnumMetaInfo> {
   items: EnumItemInput[];
 }
 
-const defaultMetaInfo = {};
-const defaultInput = { metadata: defaultMetaInfo };
+const enumDefaultMetaInfo = {};
+const enumDefaultInput = { metadata: enumDefaultMetaInfo };
 
 export class Enum
   extends ModelBase<EnumMetaInfo, EnumInput, EnumInternal, EnumOutput>
@@ -45,7 +45,7 @@ export class Enum
   }
 
   constructor(init: EnumInput) {
-    super(merge({}, defaultInput, init));
+    super(merge({}, enumDefaultInput, init));
   }
 
   public updateWith(input: Nullable<EnumInput>) {

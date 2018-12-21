@@ -22,8 +22,8 @@ export interface ScalarInternal extends ModelBaseInternal {}
 export interface ScalarInput extends ModelBaseInput<ScalarMetaInfo> {}
 export interface ScalarOutput extends ModelBaseOutput<ScalarMetaInfo> {}
 
-const defaultMetaInfo = {};
-const defaultInput = { metadata: defaultMetaInfo };
+export const scalarDefaultMetaInfo = {};
+export const scalarDefaultInput = { metadata: scalarDefaultMetaInfo };
 
 export class Scalar
   extends ModelBase<ScalarMetaInfo, ScalarInput, ScalarInternal, ScalarOutput>
@@ -32,7 +32,7 @@ export class Scalar
     return 'scalar';
   }
   constructor(init: ScalarInput) {
-    super(merge({}, defaultInput, init));
+    super(merge({}, scalarDefaultInput, init));
   }
   public updateWith(input: Nullable<ScalarInput>) {
     super.updateWith(input);

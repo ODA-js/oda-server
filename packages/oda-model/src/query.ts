@@ -1,7 +1,7 @@
 import { merge } from 'lodash';
 import { ElementMetaInfo, Internal } from './element';
 import {
-  FieldArgs,
+  IFieldArgs,
   AsHash,
   MetaModelType,
   HashToMap,
@@ -25,11 +25,11 @@ export interface IQuery
   /**
    * set of arguments
    */
-  readonly args: Map<string, FieldArgs>;
+  readonly args: Map<string, IFieldArgs>;
   /**
    * set of output fields
    */
-  readonly payload: Map<string, FieldArgs>;
+  readonly payload: Map<string, IFieldArgs>;
 }
 
 export interface QueryMetaInfo extends ElementMetaInfo {
@@ -39,26 +39,26 @@ export interface QueryMetaInfo extends ElementMetaInfo {
 }
 
 export interface QueryInternal extends ModelBaseInternal {
-  args: Map<string, FieldArgs>;
-  payload: Map<string, FieldArgs>;
+  args: Map<string, IFieldArgs>;
+  payload: Map<string, IFieldArgs>;
 }
 
 export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
-  args: AsHash<FieldArgs> | NamedArray<FieldArgs>;
-  payload: AsHash<FieldArgs> | NamedArray<FieldArgs>;
+  args: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
+  payload: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
 }
 
 export interface QueryOutput extends ModelBaseOutput<QueryMetaInfo> {
-  args: NamedArray<FieldArgs>;
-  payload: NamedArray<FieldArgs>;
+  args: NamedArray<IFieldArgs>;
+  payload: NamedArray<IFieldArgs>;
 }
 
-const defaultMetaInfo = {
+export const queryDefaultMetaInfo = {
   acl: {
     execute: [],
   },
 };
-const defaultInput = { metadata: defaultMetaInfo };
+export const queryDefaultInput = { metadata: queryDefaultMetaInfo };
 
 export class Query
   extends ModelBase<QueryMetaInfo, QueryInput, QueryInternal, QueryOutput>
@@ -68,14 +68,14 @@ export class Query
   }
 
   constructor(init: QueryInput) {
-    super(merge({}, defaultInput, init));
+    super(merge({}, queryDefaultInput, init));
   }
 
-  public get args(): Map<string, FieldArgs> {
+  public get args(): Map<string, IFieldArgs> {
     return this[Internal].args;
   }
 
-  public get payload(): Map<string, FieldArgs> {
+  public get payload(): Map<string, IFieldArgs> {
     return this[Internal].payload;
   }
 
@@ -93,7 +93,7 @@ export class Query
     assignValue<
       QueryInternal,
       QueryInput,
-      AsHash<FieldArgs> | NamedArray<FieldArgs>
+      AsHash<IFieldArgs> | NamedArray<IFieldArgs>
     >({
       src: this[Internal],
       input,
@@ -108,7 +108,7 @@ export class Query
     assignValue<
       QueryInternal,
       QueryInput,
-      AsHash<FieldArgs> | NamedArray<FieldArgs>
+      AsHash<IFieldArgs> | NamedArray<IFieldArgs>
     >({
       src: this[Internal],
       input,

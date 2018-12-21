@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Query default: toObject 1`] = `
+Object {
+  "args": Array [
+    Object {
+      "multiplicity": "one",
+      "name": "disabled",
+      "type": "boolean",
+    },
+  ],
+  "description": undefined,
+  "metadata": Object {
+    "acl": Object {
+      "execute": Array [],
+    },
+  },
+  "name": "getAllUsersThat",
+  "payload": Array [
+    Object {
+      "multiplicity": "many",
+      "name": "id",
+      "required": true,
+    },
+  ],
+  "title": undefined,
+}
+`;

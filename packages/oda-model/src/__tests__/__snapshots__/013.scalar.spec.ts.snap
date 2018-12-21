@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Scalar default: toObject 1`] = `
+Object {
+  "description": undefined,
+  "metadata": Object {},
+  "name": "JSON",
+  "title": undefined,
+}
+`;

@@ -1916,9 +1916,9 @@ MetaModel {
           Symbol(metadata): Object {},
         },
       },
-      "public" => Vertex {
+      "Public" => Vertex {
         "edges": Set {},
-        "name": "public",
+        "name": "Public",
         "node": ModelPackage {
           Symbol(internal): Object {
             "abstract": false,
@@ -1959,7 +1959,7 @@ MetaModel {
                 },
               },
             },
-            "name": "public",
+            "name": "Public",
             "queries": Map {},
             "relations": Map {},
             "scalars": Map {},
@@ -1968,9 +1968,9 @@ MetaModel {
           Symbol(metadata): Object {},
         },
       },
-      "owner" => Vertex {
+      "Owner" => Vertex {
         "edges": Set {},
-        "name": "owner",
+        "name": "Owner",
         "node": ModelPackage {
           Symbol(internal): Object {
             "abstract": false,
@@ -2271,7 +2271,7 @@ MetaModel {
             "extends": Set {},
             "mixins": Map {},
             "mutations": Map {},
-            "name": "owner",
+            "name": "Owner",
             "queries": Map {},
             "relations": Map {},
             "scalars": Map {},
@@ -26208,7 +26208,7 @@ MetaModel {
         },
         Symbol(metadata): Object {},
       },
-      "public" => ModelPackage {
+      "Public" => ModelPackage {
         Symbol(internal): Object {
           "abstract": false,
           "defaultAccess": "allow",
@@ -26248,7 +26248,7 @@ MetaModel {
               },
             },
           },
-          "name": "public",
+          "name": "Public",
           "queries": Map {},
           "relations": Map {},
           "scalars": Map {},
@@ -26256,7 +26256,7 @@ MetaModel {
         },
         Symbol(metadata): Object {},
       },
-      "owner" => ModelPackage {
+      "Owner" => ModelPackage {
         Symbol(internal): Object {
           "abstract": false,
           "defaultAccess": "allow",
@@ -26556,7 +26556,7 @@ MetaModel {
           "extends": Set {},
           "mixins": Map {},
           "mutations": Map {},
-          "name": "owner",
+          "name": "Owner",
           "queries": Map {},
           "relations": Map {},
           "scalars": Map {},

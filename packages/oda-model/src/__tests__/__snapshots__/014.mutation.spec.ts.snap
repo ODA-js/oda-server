@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mutation default: toObject 1`] = `
+Object {
+  "args": Array [
+    Object {
+      "name": "login",
+    },
+    Object {
+      "name": "password",
+    },
+  ],
+  "description": undefined,
+  "metadata": Object {
+    "acl": Object {
+      "execute": Array [],
+    },
+  },
+  "name": "loginUser",
+  "payload": Array [
+    Object {
+      "name": "token",
+    },
+  ],
+  "title": undefined,
+}
+`;

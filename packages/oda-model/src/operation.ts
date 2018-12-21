@@ -7,7 +7,7 @@ import {
   ModelBaseOutput,
 } from './modelbase';
 import {
-  FieldArgs,
+  IFieldArgs,
   OperationKind,
   AsHash,
   MetaModelType,
@@ -37,8 +37,8 @@ export interface IOperation
   /**
    * set of arguments
    */
-  readonly args?: Map<string, FieldArgs>;
-  readonly payload: Map<string, FieldArgs>;
+  readonly args?: Map<string, IFieldArgs>;
+  readonly payload: Map<string, IFieldArgs>;
   readonly order: number;
 }
 
@@ -52,33 +52,33 @@ export interface OperationMetaInfo extends ModelMetaInfo {
 }
 
 export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
-  args?: AsHash<FieldArgs> | NamedArray<FieldArgs>;
+  args: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
+  payload: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
   inheritedFrom?: string;
-  payload: AsHash<FieldArgs> | NamedArray<FieldArgs>;
   entity: string;
   actionType: OperationKind;
-  order: number;
+  order?: number;
 }
 
 export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
-  args?: NamedArray<FieldArgs>;
+  args?: NamedArray<IFieldArgs>;
   inheritedFrom?: string;
-  payload: NamedArray<FieldArgs>;
+  payload: NamedArray<IFieldArgs>;
   entity: string;
   actionType: OperationKind;
   order: number;
 }
 
 export interface OperationInternal extends ModelBaseInternal {
-  args: Map<string, FieldArgs>;
-  payload: Map<string, FieldArgs>;
+  args: Map<string, IFieldArgs>;
+  payload: Map<string, IFieldArgs>;
   inheritedFrom?: string;
   entity: string;
   actionType: OperationKind;
 }
 
-const defaultMetaInfo = { acl: { execute: [] } };
-const defaultInput = { metadata: defaultMetaInfo };
+export const operationDefaultMetaInfo = { acl: { execute: [] } };
+export const operationDefaultInput = { metadata: operationDefaultMetaInfo };
 
 export class Operation
   extends ModelBase<
@@ -100,11 +100,11 @@ export class Operation
     return this[Internal].inheritedFrom;
   }
 
-  get args(): Map<string, FieldArgs> {
+  get args(): Map<string, IFieldArgs> {
     return this[Internal].args;
   }
 
-  get payload(): Map<string, FieldArgs> {
+  get payload(): Map<string, IFieldArgs> {
     return this[Internal].payload;
   }
 
@@ -113,7 +113,7 @@ export class Operation
   }
 
   constructor(init: OperationInput) {
-    super(merge({}, defaultInput, init));
+    super(merge({}, operationDefaultInput, init));
   }
 
   public updateWith(input: OperationInput) {
@@ -136,7 +136,7 @@ export class Operation
     assignValue<
       OperationInternal,
       OperationInput,
-      AsHash<FieldArgs> | NamedArray<FieldArgs>
+      AsHash<IFieldArgs> | NamedArray<IFieldArgs>
     >({
       src: this[Internal],
       input,
@@ -152,7 +152,7 @@ export class Operation
     assignValue<
       OperationInternal,
       OperationInput,
-      AsHash<FieldArgs> | NamedArray<FieldArgs>
+      AsHash<IFieldArgs> | NamedArray<IFieldArgs>
     >({
       src: this[Internal],
       input,

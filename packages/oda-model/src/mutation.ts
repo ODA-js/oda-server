@@ -1,7 +1,7 @@
 import { merge } from 'lodash';
 import { ElementMetaInfo, Internal } from './element';
 import {
-  FieldArgs,
+  IFieldArgs,
   AsHash,
   MetaModelType,
   HashToMap,
@@ -25,11 +25,11 @@ export interface IMutation
   /**
    * set of arguments
    */
-  readonly args: Map<string, FieldArgs>;
+  readonly args: Map<string, IFieldArgs>;
   /**
    * set of output fields
    */
-  readonly payload: Map<string, FieldArgs>;
+  readonly payload: Map<string, IFieldArgs>;
 }
 
 export interface MutationMetaInfo extends ElementMetaInfo {
@@ -40,22 +40,22 @@ export interface MutationMetaInfo extends ElementMetaInfo {
 }
 
 export interface MutationInternal extends ModelBaseInternal {
-  args: Map<string, FieldArgs>;
-  payload: Map<string, FieldArgs>;
+  args: Map<string, IFieldArgs>;
+  payload: Map<string, IFieldArgs>;
 }
 
 export interface MutationInput extends ModelBaseInput<MutationMetaInfo> {
-  args: AsHash<FieldArgs> | NamedArray<FieldArgs>;
-  payload: AsHash<FieldArgs> | NamedArray<FieldArgs>;
+  args: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
+  payload: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
 }
 
 export interface MutationOutput extends ModelBaseOutput<MutationMetaInfo> {
-  args: NamedArray<FieldArgs>;
-  payload: NamedArray<FieldArgs>;
+  args: NamedArray<IFieldArgs>;
+  payload: NamedArray<IFieldArgs>;
 }
 
-const defaultMetaInfo = { acl: { execute: [] } };
-const defaultInput = { metadata: defaultMetaInfo };
+export const mutationDefaultMetaInfo = { acl: { execute: [] } };
+export const mutationDefaultInput = { metadata: mutationDefaultMetaInfo };
 
 export class Mutation
   extends ModelBase<
@@ -70,14 +70,14 @@ export class Mutation
   }
 
   constructor(init: MutationInput) {
-    super(merge({}, defaultInput, init));
+    super(merge({}, mutationDefaultInput, init));
   }
 
-  public get args(): Map<string, FieldArgs> {
+  public get args(): Map<string, IFieldArgs> {
     return this[Internal].args;
   }
 
-  public get payload(): Map<string, FieldArgs> {
+  public get payload(): Map<string, IFieldArgs> {
     return this[Internal].payload;
   }
 

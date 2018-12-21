@@ -13,7 +13,7 @@ import {
   Nullable,
   assignValue,
   AsHash,
-  FieldArgs,
+  IFieldArgs,
   NamedArray,
   MetaModelType,
 } from './types';
@@ -136,7 +136,7 @@ export class SimpleField
     assignValue<
       SimpleFieldMeta,
       SimpleFieldInput,
-      AsHash<FieldArgs> | NamedArray<FieldArgs>
+      AsHash<IFieldArgs> | NamedArray<IFieldArgs>
     >({
       src: this.metadata,
       input,

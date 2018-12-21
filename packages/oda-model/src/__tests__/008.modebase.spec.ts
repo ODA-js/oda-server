@@ -16,6 +16,7 @@ describe('ModeBase', () => {
       merge({ name: 'A' }, modelBaseDefaultInput),
     );
   });
+
   it('do not change input name, title and descriptions start letters, but only trim it', () => {
     const res = new ModelBase({
       name: ' A ',

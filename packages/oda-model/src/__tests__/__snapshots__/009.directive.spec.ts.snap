@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Directive default: toObject 1`] = `
+Object {
+  "args": Array [
+    Object {
+      "defaultValue": "THIS PROP IS READ ONLY",
+      "name": "message",
+      "required": false,
+    },
+  ],
+  "description": undefined,
+  "metadata": Object {},
+  "name": "readOnly",
+  "on": Array [
+    "ENUM",
+  ],
+  "title": undefined,
+}
+`;
