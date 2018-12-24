@@ -1,8 +1,8 @@
 import 'jest';
-import { Entity } from '..';
-import { AsHash } from '../types';
-import { FieldInput } from '../field';
-import { SimpleFieldInput } from '../simplefield';
+// import { Entity } from '..';
+// import { AsHash } from '../types';
+// import { FieldInput } from '../field';
+// import { SimpleFieldInput } from '../simplefield';
 
 describe('entity', () => {
   it('loads', () => {

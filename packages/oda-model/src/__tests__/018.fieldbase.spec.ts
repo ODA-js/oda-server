@@ -20,4 +20,14 @@ describe('FieldBase', () => {
     expect(res.toObject()).toMatchSnapshot('toObject clean');
     expect(res).toMatchSnapshot('internal');
   });
+
+  it('identity make indexed', () => {
+    const res = new FieldBase({ name: 'field', identity: true });
+    expect(res).toMatchSnapshot('identity');
+    expect(res.toObject()).toMatchObject({
+      name: 'field',
+      indexed: true,
+      identity: true,
+    });
+  });
 });

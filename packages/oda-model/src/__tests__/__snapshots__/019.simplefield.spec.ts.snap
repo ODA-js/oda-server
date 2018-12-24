@@ -1,0 +1,188 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SimpleField default enum multiplicity == one: default 1`] = `
+SimpleField {
+  Symbol(internal): Object {
+    "args": Map {},
+    "list": false,
+    "name": "a",
+    "type": Object {
+      "multiplicity": "one",
+      "name": "ENUM1",
+      "type": "enum",
+    },
+  },
+  Symbol(metadata): Object {
+    "acl": Object {
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": true,
+      "required": false,
+    },
+  },
+}
+`;
+
+exports[`SimpleField default enum multiplicity == one: toObject 1`] = `
+Object {
+  "args": Object {},
+  "defaultValue": undefined,
+  "derived": false,
+  "description": undefined,
+  "entity": undefined,
+  "identity": false,
+  "indexed": false,
+  "inheritedFrom": undefined,
+  "list": false,
+  "metadata": Object {
+    "acl": Object {
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": true,
+      "required": false,
+    },
+  },
+  "name": "a",
+  "order": undefined,
+  "persistent": true,
+  "required": false,
+  "title": undefined,
+  "type": Object {
+    "multiplicity": "one",
+    "name": "ENUM1",
+    "type": "enum",
+  },
+}
+`;
+
+exports[`SimpleField default enum: default 1`] = `
+SimpleField {
+  Symbol(internal): Object {
+    "args": Map {},
+    "list": true,
+    "name": "a",
+    "type": Object {
+      "multiplicity": "many",
+      "name": "ENUM1",
+      "type": "enum",
+    },
+  },
+  Symbol(metadata): Object {
+    "acl": Object {
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": true,
+      "required": false,
+    },
+  },
+}
+`;
+
+exports[`SimpleField default enum: toObject 1`] = `
+Object {
+  "args": Object {},
+  "defaultValue": undefined,
+  "derived": false,
+  "description": undefined,
+  "entity": undefined,
+  "identity": false,
+  "indexed": false,
+  "inheritedFrom": undefined,
+  "list": true,
+  "metadata": Object {
+    "acl": Object {
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": true,
+      "required": false,
+    },
+  },
+  "name": "a",
+  "order": undefined,
+  "persistent": true,
+  "required": false,
+  "title": undefined,
+  "type": Object {
+    "multiplicity": "many",
+    "name": "ENUM1",
+    "type": "enum",
+  },
+}
+`;
+
+exports[`SimpleField default: default 1`] = `
+SimpleField {
+  Symbol(internal): Object {
+    "args": Map {},
+    "list": false,
+    "name": "a",
+    "type": "string",
+  },
+  Symbol(metadata): Object {
+    "acl": Object {
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": true,
+      "required": false,
+    },
+  },
+}
+`;
+
+exports[`SimpleField default: toObject 1`] = `
+Object {
+  "args": Object {},
+  "defaultValue": undefined,
+  "derived": false,
+  "description": undefined,
+  "entity": undefined,
+  "identity": false,
+  "indexed": false,
+  "inheritedFrom": undefined,
+  "list": false,
+  "metadata": Object {
+    "acl": Object {
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": true,
+      "required": false,
+    },
+  },
+  "name": "a",
+  "order": undefined,
+  "persistent": true,
+  "required": false,
+  "title": undefined,
+  "type": "string",
+}
+`;

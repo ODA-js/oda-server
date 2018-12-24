@@ -211,7 +211,7 @@ export type EnumType = {
   /**
    * multiplicity of it
    */
-  multiplicity: Multiplicity;
+  multiplicity?: Multiplicity;
 };
 
 export type FieldType = string | EnumType | EntityType;

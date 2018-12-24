@@ -98,18 +98,46 @@ export class SimpleField
   public updateWith(input: Nullable<SimpleFieldInput>) {
     super.updateWith(input);
 
-    assignValue({
+    assignValue<
+      SimpleFieldInternal,
+      SimpleFieldInput,
+      NonNullable<SimpleFieldInput['type']>
+    >({
       src: this[Internal],
       input,
       field: 'type',
+      effect: (src, value) => {
+        if (typeof value !== 'string' && !value.multiplicity) {
+          value.multiplicity = 'one';
+        }
+        src.type = value;
+      },
+      setDefault: src => (src.type = 'string'),
     });
 
-    assignValue({
+    assignValue<
+      SimpleFieldInternal,
+      SimpleFieldInput,
+      NonNullable<SimpleFieldInput['list']>
+    >({
       src: this[Internal],
       input,
       field: 'list',
       required: true,
-      setDefault: src => (src.list = false),
+      effect: (src, value) => {
+        if (this.modelType === 'enum-field') {
+          (src.type as EnumType).multiplicity = value ? 'many' : 'one';
+        }
+        src.list = value;
+      },
+      setDefault: src => {
+        if (this.modelType === 'enum-field') {
+          src.list =
+            (src.type as EnumType).multiplicity === 'many' ? true : false;
+        } else {
+          src.list = false;
+        }
+      },
     });
 
     assignValue<SimpleFieldMeta, SimpleFieldInput, boolean>({
@@ -150,7 +178,10 @@ export class SimpleField
       src: this.metadata,
       input,
       inputField: 'defaultValue',
-      allowEffect: (src, _) => src.persistence.derived,
+      effect: (src, value) => {
+        src.defaultValue = value;
+      },
+      allowEffect: (src, _) => !src.persistence.derived,
     });
   }
 

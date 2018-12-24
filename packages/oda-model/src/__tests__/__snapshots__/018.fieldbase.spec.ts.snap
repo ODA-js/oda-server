@@ -82,3 +82,32 @@ Object {
   "title": undefined,
 }
 `;
+
+exports[`FieldBase identity make indexed: identity 1`] = `
+FieldBase {
+  Symbol(internal): Object {
+    "args": Map {},
+    "idKey": EntityReference {
+      Symbol(internal): Object {
+        "entity": "FAKE",
+        "field": "field",
+      },
+      Symbol(metadata): Object {},
+    },
+    "name": "field",
+  },
+  Symbol(metadata): Object {
+    "acl": Object {
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": true,
+      "indexed": true,
+      "persistent": true,
+      "required": true,
+    },
+  },
+}
+`;
