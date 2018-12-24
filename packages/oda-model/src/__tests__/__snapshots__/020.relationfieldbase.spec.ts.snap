@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RelationFieldBase default: default 1`] = `
+Object {
+  "args": Object {},
+  "derived": false,
+  "description": undefined,
+  "entity": undefined,
+  "identity": false,
+  "indexed": false,
+  "inheritedFrom": undefined,
+  "metadata": Object {
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": true,
+      "required": false,
+    },
+  },
+  "name": "defaultField",
+  "order": undefined,
+  "persistent": true,
+  "required": false,
+  "title": undefined,
+}
+`;

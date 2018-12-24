@@ -65,7 +65,7 @@ const defaultMetaInfo = {
 };
 const defaultInput = { metadata: defaultMetaInfo };
 
-export abstract class RelationFieldBase<
+export class RelationFieldBase<
   T extends RelationFieldBaseMetaInfo<P>,
   I extends RelationFieldBaseInput<T, P>,
   S extends RelationFieldBaseInternal,

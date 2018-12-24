@@ -11,7 +11,7 @@ import { merge } from 'lodash';
 import { EntityType, Nullable, assignValue, MetaModelType } from './types';
 import { HasMany } from './hasmany';
 import { HasOne } from './hasone';
-import { Internal } from './element';
+import { Internal, MetaData } from './element';
 
 export interface IEntityField
   extends IRelationFieldBase<
@@ -22,7 +22,6 @@ export interface IEntityField
   > {
   readonly type: EntityType;
   readonly list: boolean;
-  readonly derived: boolean;
 }
 
 export interface EntityFieldPersistence extends RelationFieldBasePersistence {}
@@ -33,24 +32,21 @@ export interface EntityFieldMeta
 export interface EntityFieldInternal extends RelationFieldBaseInternal {
   type: EntityType;
   list: boolean;
-  derived: boolean;
 }
 
 export interface EntityFieldInput
   extends RelationFieldBaseInput<EntityFieldMeta, EntityFieldPersistence> {
   type: EntityType;
   list?: boolean;
-  derived?: boolean;
 }
 
 export interface EntityFieldOutput
   extends RelationFieldBaseOutput<EntityFieldMeta, EntityFieldPersistence> {
   type: EntityType;
   list?: boolean;
-  derived?: boolean;
 }
 
-const defaultMetaInfo = {};
+const defaultMetaInfo = { persistence: { derived: false, persistent: true } };
 const defaultInput = { metadata: defaultMetaInfo };
 
 export class EntityField
@@ -77,33 +73,11 @@ export class EntityField
   }
 
   get derived(): boolean {
-    return this[Internal].derived;
+    return this[MetaData].persistence.derived;
   }
 
   public updateWith(input: Nullable<EntityFieldInput>) {
     super.updateWith(input);
-
-    assignValue({
-      src: this[Internal],
-      input,
-      field: 'type',
-    });
-
-    assignValue<EntityFieldInternal, EntityFieldInput, boolean>({
-      src: this[Internal],
-      input,
-      field: 'list',
-      effect: (src, value) => (src.list = value),
-      setDefault: src => (src.list = false),
-    });
-
-    assignValue<EntityFieldInternal, EntityFieldInput, boolean>({
-      src: this[Internal],
-      input,
-      field: 'derived',
-      effect: (src, value) => (src.derived = value),
-      setDefault: src => (src.derived = false),
-    });
 
     assignValue<EntityFieldInternal, EntityFieldInput, EntityType>({
       src: this[Internal],
@@ -118,6 +92,7 @@ export class EntityField
               field: this.name,
               embedded: true,
             });
+            src.list = false;
             break;
           }
           case 'many': {
@@ -127,6 +102,7 @@ export class EntityField
               field: this.name,
               embedded: true,
             });
+            src.list = true;
             break;
           }
           default:
@@ -134,6 +110,44 @@ export class EntityField
         src.type = type;
       },
       required: true,
+    });
+
+    assignValue<EntityFieldInternal, EntityFieldInput, boolean>({
+      src: this[Internal],
+      input,
+      field: 'list',
+      effect: (src, _value) => {
+        src.list = src.type.multiplicity === 'many';
+      },
+      required: true,
+      setDefault: src => (src.list = false),
+    });
+
+    assignValue<EntityFieldMeta, EntityFieldInput, boolean>({
+      src: this[MetaData],
+      input,
+      field: 'identity',
+      allowEffect: () => false,
+      required: true,
+      setDefault: src => (src.persistence.identity = false),
+    });
+
+    assignValue<EntityFieldMeta, EntityFieldInput, boolean>({
+      src: this[MetaData],
+      input,
+      field: 'derived',
+      effect: (src, value) => (src.persistence.derived = value),
+      required: true,
+      setDefault: src => (src.persistence.derived = false),
+    });
+
+    assignValue<EntityFieldMeta, EntityFieldInput, boolean>({
+      src: this[MetaData],
+      input,
+      field: 'persistent',
+      effect: (src, value) => (src.persistence.persistent = value),
+      required: true,
+      setDefault: src => (src.persistence.persistent = false),
     });
   }
 

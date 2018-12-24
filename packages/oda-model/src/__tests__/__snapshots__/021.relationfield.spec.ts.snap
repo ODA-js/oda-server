@@ -1,0 +1,427 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Relationfield belongsTo: belongsTo 1`] = `
+RelationField {
+  Symbol(internal): Object {
+    "args": Map {},
+    "name": "ref",
+    "relation": BelongsTo {
+      Symbol(internal): Object {
+        "belongsTo": EntityReference {
+          Symbol(internal): Object {
+            "entity": "A",
+            "field": "id",
+          },
+          Symbol(metadata): Object {},
+        },
+        "field": "ref",
+        "name": "BelongsToRef",
+      },
+      Symbol(metadata): Object {
+        "name": Object {
+          "full": "BelongsToRef",
+          "normal": "Ref",
+          "short": "Ref",
+        },
+        "persistence": Object {
+          "embedded": false,
+          "single": true,
+          "stored": true,
+        },
+        "verb": "BelongsTo",
+      },
+    },
+  },
+  Symbol(metadata): Object {
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": false,
+      "required": false,
+    },
+  },
+}
+`;
+
+exports[`Relationfield belongsTo: belongsTo to Object 1`] = `
+Object {
+  "args": Object {},
+  "derived": false,
+  "description": undefined,
+  "entity": undefined,
+  "identity": false,
+  "indexed": false,
+  "inheritedFrom": undefined,
+  "metadata": Object {
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": false,
+      "required": false,
+    },
+  },
+  "name": "ref",
+  "order": undefined,
+  "persistent": false,
+  "relation": Object {
+    "belongsTo": "A#id",
+    "embedded": false,
+    "entity": undefined,
+    "field": "ref",
+    "metadata": Object {
+      "name": Object {
+        "full": "BelongsToRef",
+        "normal": "Ref",
+        "short": "Ref",
+      },
+      "persistence": Object {
+        "embedded": false,
+        "single": true,
+        "stored": true,
+      },
+      "verb": "BelongsTo",
+    },
+    "name": "BelongsToRef",
+    "opposite": undefined,
+  },
+  "required": false,
+  "title": undefined,
+}
+`;
+
+exports[`Relationfield belongsToMany: belongsToMany 1`] = `
+RelationField {
+  Symbol(internal): Object {
+    "args": Map {},
+    "name": "ref",
+    "relation": BelongsToMany {
+      Symbol(internal): Object {
+        "belongsToMany": EntityReference {
+          Symbol(internal): Object {
+            "backField": "id",
+            "entity": "A",
+            "field": "id",
+          },
+          Symbol(metadata): Object {},
+        },
+        "field": "ref",
+        "fields": Map {},
+        "name": "BelongsToManyRefs",
+        "using": EntityReference {
+          Symbol(internal): Object {
+            "backField": "id",
+            "entity": "B",
+            "field": "id",
+          },
+          Symbol(metadata): Object {},
+        },
+      },
+      Symbol(metadata): Object {
+        "name": Object {
+          "full": "BelongsToManyRefs",
+          "normal": "Refs",
+          "short": "Refs",
+        },
+        "persistence": Object {
+          "embedded": false,
+          "single": false,
+          "stored": false,
+        },
+        "verb": "BelongsToMany",
+      },
+    },
+  },
+  Symbol(metadata): Object {
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": false,
+      "required": false,
+    },
+  },
+}
+`;
+
+exports[`Relationfield belongsToMany: belongsToMany to Object 1`] = `
+Object {
+  "args": Object {},
+  "derived": false,
+  "description": undefined,
+  "entity": undefined,
+  "identity": false,
+  "indexed": false,
+  "inheritedFrom": undefined,
+  "metadata": Object {
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": false,
+      "required": false,
+    },
+  },
+  "name": "ref",
+  "order": undefined,
+  "persistent": false,
+  "relation": Object {
+    "belongsToMany": "id@A#id",
+    "embedded": false,
+    "entity": undefined,
+    "field": "ref",
+    "fields": Array [],
+    "metadata": Object {
+      "name": Object {
+        "full": "BelongsToManyRefs",
+        "normal": "Refs",
+        "short": "Refs",
+      },
+      "persistence": Object {
+        "embedded": false,
+        "single": false,
+        "stored": false,
+      },
+      "verb": "BelongsToMany",
+    },
+    "name": "BelongsToManyRefs",
+    "opposite": undefined,
+    "using": "id@B#id",
+  },
+  "required": false,
+  "title": undefined,
+}
+`;
+
+exports[`Relationfield hasMany: hasMany 1`] = `
+RelationField {
+  Symbol(internal): Object {
+    "args": Map {},
+    "name": "ref",
+    "relation": HasMany {
+      Symbol(internal): Object {
+        "field": "ref",
+        "hasMany": EntityReference {
+          Symbol(internal): Object {
+            "backField": "id",
+            "entity": "A",
+            "field": "id",
+          },
+          Symbol(metadata): Object {},
+        },
+        "name": "HasManyRefs",
+      },
+      Symbol(metadata): Object {
+        "name": Object {
+          "full": "HasManyRefs",
+          "normal": "Refs",
+          "short": "Refs",
+        },
+        "persistence": Object {
+          "embedded": false,
+          "single": false,
+          "stored": false,
+        },
+        "verb": "HasMany",
+      },
+    },
+  },
+  Symbol(metadata): Object {
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": false,
+      "required": false,
+    },
+  },
+}
+`;
+
+exports[`Relationfield hasMany: hasMany to Object 1`] = `
+Object {
+  "args": Object {},
+  "derived": false,
+  "description": undefined,
+  "entity": undefined,
+  "identity": false,
+  "indexed": false,
+  "inheritedFrom": undefined,
+  "metadata": Object {
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": false,
+      "required": false,
+    },
+  },
+  "name": "ref",
+  "order": undefined,
+  "persistent": false,
+  "relation": Object {
+    "embedded": false,
+    "entity": undefined,
+    "field": "ref",
+    "hasMany": "id@A#id",
+    "metadata": Object {
+      "name": Object {
+        "full": "HasManyRefs",
+        "normal": "Refs",
+        "short": "Refs",
+      },
+      "persistence": Object {
+        "embedded": false,
+        "single": false,
+        "stored": false,
+      },
+      "verb": "HasMany",
+    },
+    "name": "HasManyRefs",
+    "opposite": undefined,
+  },
+  "required": false,
+  "title": undefined,
+}
+`;
+
+exports[`Relationfield hasOne: hasOne 1`] = `
+RelationField {
+  Symbol(internal): Object {
+    "args": Map {},
+    "name": "ref",
+    "relation": HasOne {
+      Symbol(internal): Object {
+        "field": "ref",
+        "hasOne": EntityReference {
+          Symbol(internal): Object {
+            "backField": "id",
+            "entity": "A",
+            "field": "id",
+          },
+          Symbol(metadata): Object {},
+        },
+        "name": "HasOneRef",
+      },
+      Symbol(metadata): Object {
+        "name": Object {
+          "full": "HasOneRef",
+          "normal": "Ref",
+          "short": "Ref",
+        },
+        "persistence": Object {
+          "embedded": false,
+          "single": true,
+          "stored": false,
+        },
+        "verb": "HasOne",
+      },
+    },
+  },
+  Symbol(metadata): Object {
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": false,
+      "required": false,
+    },
+  },
+}
+`;
+
+exports[`Relationfield hasOne: hasOne to Object 1`] = `
+Object {
+  "args": Object {},
+  "derived": false,
+  "description": undefined,
+  "entity": undefined,
+  "identity": false,
+  "indexed": false,
+  "inheritedFrom": undefined,
+  "metadata": Object {
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": false,
+      "required": false,
+    },
+  },
+  "name": "ref",
+  "order": undefined,
+  "persistent": false,
+  "relation": Object {
+    "embedded": false,
+    "entity": undefined,
+    "field": "ref",
+    "hasOne": "id@A#id",
+    "metadata": Object {
+      "name": Object {
+        "full": "HasOneRef",
+        "normal": "Ref",
+        "short": "Ref",
+      },
+      "persistence": Object {
+        "embedded": false,
+        "single": true,
+        "stored": false,
+      },
+      "verb": "HasOne",
+    },
+    "name": "HasOneRef",
+    "opposite": undefined,
+  },
+  "required": false,
+  "title": undefined,
+}
+`;

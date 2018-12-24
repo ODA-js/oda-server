@@ -74,7 +74,14 @@ export interface RelationFieldInput
 export interface RelationFieldInternal extends RelationFieldBaseInternal {}
 
 const defaultMetaInfo = {};
-const defaultInput = { metadata: defaultMetaInfo };
+const defaultInput = {
+  metadata: defaultMetaInfo,
+  persistent: false,
+  derived: false,
+  identity: false,
+  indexed: false,
+  required: false,
+};
 
 export class RelationField
   extends RelationFieldBase<
@@ -94,6 +101,7 @@ export class RelationField
 
   public updateWith(input: Nullable<RelationFieldInput>) {
     super.updateWith(input);
+
     assignValue<RelationFieldInternal, RelationFieldInput, RelationInput>({
       src: this[Internal],
       input,
@@ -132,6 +140,84 @@ export class RelationField
             throw new Error('undefined type');
         }
       },
+    });
+
+    assignValue({
+      src: this.metadata,
+      input,
+      inputField: 'derived',
+      effect: (src, value) => {
+        if (
+          this.relation.verb === 'HasOne' ||
+          this.relation.verb === 'HasMany'
+        ) {
+          src.persistence.derived = value;
+        } else {
+          src.persistence.derived = false;
+        }
+      },
+      required: true,
+      setDefault: src => (src.persistence.derived = defaultInput.derived),
+    });
+
+    assignValue({
+      src: this.metadata,
+      input,
+      inputField: 'persistent',
+      effect: (src, value) => {
+        if (this.relation.verb === 'BelongsTo') {
+          src.persistence.persistent = value;
+        } else {
+          src.persistence.persistent = false;
+        }
+      },
+      required: true,
+      setDefault: src => (src.persistence.persistent = defaultInput.persistent),
+    });
+
+    assignValue<RelationFieldMetaInfo, RelationFieldInput, boolean>({
+      src: this.metadata,
+      input,
+      inputField: 'identity',
+      effect: (src, value) => {
+        if (this.relation.verb === 'BelongsTo') {
+          src.persistence.identity = value;
+        } else {
+          src.persistence.identity = false;
+        }
+      },
+      required: true,
+      setDefault: src => (src.persistence.identity = defaultInput.identity),
+    });
+
+    assignValue<RelationFieldMetaInfo, RelationFieldInput, boolean>({
+      src: this.metadata,
+      input,
+      inputField: 'indexed',
+      effect: (src, value) => {
+        if (this.relation.verb === 'BelongsTo') {
+          src.persistence.indexed = value;
+        } else {
+          src.persistence.indexed = false;
+        }
+      },
+      required: true,
+      setDefault: src => (src.persistence.indexed = defaultInput.indexed),
+    });
+
+    assignValue<RelationFieldMetaInfo, RelationFieldInput, boolean>({
+      src: this.metadata,
+      input,
+      inputField: 'required',
+      effect: (src, value) => {
+        if (this.relation.verb === 'BelongsTo') {
+          src.persistence.required = value;
+        } else {
+          src.persistence.required = false;
+        }
+      },
+      required: true,
+      setDefault: src => (src.persistence.required = defaultInput.required),
     });
   }
 

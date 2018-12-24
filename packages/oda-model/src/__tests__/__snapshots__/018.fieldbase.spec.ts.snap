@@ -32,7 +32,7 @@ FieldBase {
     "entity": "B",
     "order": 1,
     "persistence": Object {
-      "derived": false,
+      "derived": true,
       "identity": true,
       "indexed": true,
       "persistent": true,
@@ -54,7 +54,7 @@ Object {
       "type": "string",
     },
   },
-  "derived": false,
+  "derived": true,
   "description": undefined,
   "entity": "B",
   "identity": true,
@@ -68,7 +68,7 @@ Object {
     "entity": "B",
     "order": 1,
     "persistence": Object {
-      "derived": false,
+      "derived": true,
       "identity": true,
       "indexed": true,
       "persistent": true,

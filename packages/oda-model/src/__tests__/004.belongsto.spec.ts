@@ -23,17 +23,11 @@ describe('BelongsTo', () => {
       entity: 'AA',
       field: 'a',
       belongsTo: 'A#id',
-      required: true,
-      identity: true,
-      indexed: true,
     });
     expect(res.verb).toBe('BelongsTo');
     expect(res.ref).toMatchObject({ entity: 'A', field: 'id' });
     expect(res.entity).toBe('AA');
     expect(res.field).toBe('a');
-    expect(res.required).toBe(true);
-    expect(res.identity).toBe(true);
-    expect(res.indexed).toBe(true);
     expect(res.metadata.persistence.single).toBe(true);
     expect(res.metadata.persistence.stored).toBe(true);
     expect(res.name).toBe('AABelongsToA');

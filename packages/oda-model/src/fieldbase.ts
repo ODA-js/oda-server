@@ -30,14 +30,14 @@ export interface IFieldBase<
   O extends FieldBaseOutput<M, P>
 > extends IModelBase<M, I, O> {
   readonly idKey: IEntityRef;
-  readonly type?: FieldType;
+  readonly type: FieldType;
   readonly inheritedFrom?: string;
   readonly order: number;
   readonly derived: boolean;
   readonly args: Map<string, IArgs>;
-  readonly persistent?: boolean;
+  readonly persistent: boolean;
   readonly identity: boolean | string | string[];
-  readonly required?: boolean;
+  readonly required: boolean;
   readonly indexed: boolean | string | string[];
 }
 
@@ -68,7 +68,7 @@ export interface FieldBaseMetaInfo<T extends FieldBasePersistence>
 export interface FieldBaseInternal extends ModelBaseInternal {
   args: Map<string, IArgs>;
   inheritedFrom?: string;
-  type?: FieldType;
+  type: FieldType;
   idKey: IEntityRef;
 }
 
@@ -135,7 +135,7 @@ export class FieldBase<
     return this[Internal].idKey;
   }
 
-  get type(): FieldType | undefined {
+  get type(): FieldType {
     return this[Internal].type;
   }
 
@@ -221,7 +221,7 @@ export class FieldBase<
       src: this.metadata,
       input,
       inputField: 'derived',
-      effect: (src, value) => (src.persistence.derived, value),
+      effect: (src, value) => (src.persistence.derived = value),
     });
 
     assignValue({
