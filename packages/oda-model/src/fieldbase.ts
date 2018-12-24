@@ -6,7 +6,7 @@ import {
   ModelBaseOutput,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
-import { merge, get } from 'lodash';
+import { merge } from 'lodash';
 import {
   IFieldArgs,
   FieldType,
@@ -19,7 +19,7 @@ import {
   NamedArray,
   ArrayToMap,
 } from './types';
-import { ElementMetaInfo, Internal } from './element';
+import { ElementMetaInfo, Internal, MetaData } from './element';
 import { IEntityRef, EntityReference } from './entityreference';
 import { IArgs, Args } from './args';
 
@@ -105,7 +105,13 @@ export interface FieldBaseOutput<
 }
 
 const defaultMetaInfo = {
-  persistence: {},
+  persistence: {
+    derived: false,
+    persistent: true,
+    identity: false,
+    required: false,
+    indexed: false,
+  },
   acl: {
     read: [],
     update: [],
@@ -115,7 +121,7 @@ const defaultMetaInfo = {
 };
 const defaultInput = { metadata: defaultMetaInfo };
 
-export abstract class FieldBase<
+export class FieldBase<
   T extends FieldBaseMetaInfo<P>,
   I extends FieldBaseInput<T, P>,
   S extends FieldBaseInternal,
@@ -146,23 +152,23 @@ export abstract class FieldBase<
   }
 
   get derived(): boolean {
-    return get(this.metadata, 'persistence.derived', false);
+    return this[MetaData].persistence.derived;
   }
 
   get persistent(): boolean {
-    return get(this.metadata, 'persistence.persistent', false);
+    return this[MetaData].persistence.persistent;
   }
 
   get identity(): boolean | string | string[] {
-    return get(this.metadata, 'persistence.identity', false);
+    return this[MetaData].persistence.identity;
   }
 
   get required(): boolean {
-    return get(this.metadata, 'persistence.required', false);
+    return this[MetaData].persistence.required;
   }
 
   get indexed(): boolean | string | string[] {
-    return get(this.metadata, 'persistence.indexed', false);
+    return this[MetaData].persistence.indexed;
   }
 
   constructor(init: I) {

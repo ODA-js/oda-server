@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FieldBase default: internal 1`] = `
+FieldBase {
+  Symbol(internal): Object {
+    "args": Map {
+      "demoARG" => Args {
+        Symbol(internal): Object {
+          "multiplicity": "one",
+          "name": "demoARG",
+          "required": false,
+          "type": "string",
+        },
+        Symbol(metadata): Object {},
+      },
+    },
+    "idKey": EntityReference {
+      Symbol(internal): Object {
+        "entity": "B",
+        "field": "fieldName",
+      },
+      Symbol(metadata): Object {},
+    },
+    "inheritedFrom": "_B",
+    "name": "fieldName",
+  },
+  Symbol(metadata): Object {
+    "acl": Object {
+      "read": Array [],
+      "update": Array [],
+    },
+    "entity": "B",
+    "order": 1,
+    "persistence": Object {
+      "derived": false,
+      "identity": true,
+      "indexed": true,
+      "persistent": true,
+      "required": true,
+    },
+  },
+}
+`;
+
+exports[`FieldBase default: toObject clean 1`] = `
+Object {
+  "args": Object {
+    "demoARG": Object {
+      "defaultValue": undefined,
+      "metadata": Object {},
+      "multiplicity": "one",
+      "name": "demoARG",
+      "required": false,
+      "type": "string",
+    },
+  },
+  "derived": false,
+  "description": undefined,
+  "entity": "B",
+  "identity": true,
+  "indexed": true,
+  "inheritedFrom": "_B",
+  "metadata": Object {
+    "acl": Object {
+      "read": Array [],
+      "update": Array [],
+    },
+    "entity": "B",
+    "order": 1,
+    "persistence": Object {
+      "derived": false,
+      "identity": true,
+      "indexed": true,
+      "persistent": true,
+      "required": true,
+    },
+  },
+  "name": "fieldName",
+  "order": 1,
+  "persistent": true,
+  "required": true,
+  "title": undefined,
+}
+`;
