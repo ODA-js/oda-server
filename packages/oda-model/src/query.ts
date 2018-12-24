@@ -19,17 +19,18 @@ import {
   ModelBaseOutput,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
+import { IArgs, Args } from './args';
 
 export interface IQuery
   extends IModelBase<QueryMetaInfo, QueryInput, QueryOutput> {
   /**
    * set of arguments
    */
-  readonly args: Map<string, IFieldArgs>;
+  readonly args: Map<string, IArgs>;
   /**
    * set of output fields
    */
-  readonly payload: Map<string, IFieldArgs>;
+  readonly payload: Map<string, IArgs>;
 }
 
 export interface QueryMetaInfo extends ElementMetaInfo {
@@ -39,8 +40,8 @@ export interface QueryMetaInfo extends ElementMetaInfo {
 }
 
 export interface QueryInternal extends ModelBaseInternal {
-  args: Map<string, IFieldArgs>;
-  payload: Map<string, IFieldArgs>;
+  args: Map<string, IArgs>;
+  payload: Map<string, IArgs>;
 }
 
 export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
@@ -71,11 +72,11 @@ export class Query
     super(merge({}, queryDefaultInput, init));
   }
 
-  public get args(): Map<string, IFieldArgs> {
+  public get args(): Map<string, IArgs> {
     return this[Internal].args;
   }
 
-  public get payload(): Map<string, IFieldArgs> {
+  public get payload(): Map<string, IArgs> {
     return this[Internal].payload;
   }
 
@@ -100,8 +101,8 @@ export class Query
       field: 'args',
       effect: (src, value) =>
         (src.args = Array.isArray(value)
-          ? ArrayToMap(value)
-          : HashToMap(value)),
+          ? ArrayToMap(value, v => new Args(v))
+          : HashToMap(value, (name, v) => new Args({ name, ...v }))),
       required: true,
     });
 
@@ -115,22 +116,18 @@ export class Query
       field: 'payload',
       effect: (src, value) =>
         (src.payload = Array.isArray(value)
-          ? ArrayToMap(value)
-          : HashToMap(value)),
+          ? ArrayToMap(value, v => new Args(v))
+          : HashToMap(value, (name, v) => new Args({ name, ...v }))),
       required: true,
     });
   }
 
   public toObject(): QueryOutput {
     return merge({}, super.toObject(), {
-      args: MapToArray(this[Internal].args, (name, value) => ({
-        ...value,
-        name,
-      })),
-      payload: MapToArray(this[Internal].payload, (name, value) => ({
-        ...value,
-        name,
-      })),
+      args: MapToArray(this[Internal].args, (_name, value) => value.toObject()),
+      payload: MapToArray(this[Internal].payload, (_name, value) =>
+        value.toObject(),
+      ),
     } as Partial<QueryOutput>);
   }
 }

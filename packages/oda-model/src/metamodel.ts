@@ -226,7 +226,7 @@ export class MetaModel
     if (hook.fields && Array.isArray(hook.fields)) {
       hook.fields = ArrayToHash(hook.fields);
     }
-    const fields = MapToHash<IField, FieldInput>(entity.fields, v =>
+    const fields = MapToHash<IField, FieldInput>(entity.fields, (_name, v) =>
       v.toObject(),
     );
     if (hook.fields) {

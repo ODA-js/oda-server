@@ -19,17 +19,18 @@ import {
   ModelBaseOutput,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
+import { IArgs, Args } from './args';
 
 export interface IMutation
   extends IModelBase<MutationMetaInfo, MutationInput, MutationOutput> {
   /**
    * set of arguments
    */
-  readonly args: Map<string, IFieldArgs>;
+  readonly args: Map<string, IArgs>;
   /**
    * set of output fields
    */
-  readonly payload: Map<string, IFieldArgs>;
+  readonly payload: Map<string, IArgs>;
 }
 
 export interface MutationMetaInfo extends ElementMetaInfo {
@@ -40,8 +41,8 @@ export interface MutationMetaInfo extends ElementMetaInfo {
 }
 
 export interface MutationInternal extends ModelBaseInternal {
-  args: Map<string, IFieldArgs>;
-  payload: Map<string, IFieldArgs>;
+  args: Map<string, IArgs>;
+  payload: Map<string, IArgs>;
 }
 
 export interface MutationInput extends ModelBaseInput<MutationMetaInfo> {
@@ -73,11 +74,11 @@ export class Mutation
     super(merge({}, mutationDefaultInput, init));
   }
 
-  public get args(): Map<string, IFieldArgs> {
+  public get args(): Map<string, IArgs> {
     return this[Internal].args;
   }
 
-  public get payload(): Map<string, IFieldArgs> {
+  public get payload(): Map<string, IArgs> {
     return this[Internal].payload;
   }
 
@@ -98,8 +99,8 @@ export class Mutation
       field: 'args',
       effect: (src, value) =>
         (src.args = Array.isArray(value)
-          ? ArrayToMap(value)
-          : HashToMap(value)),
+          ? ArrayToMap(value, v => new Args(v))
+          : HashToMap(value, (name, v) => new Args({ name, ...v }))),
       required: true,
       setDefault: src => (src.args = new Map()),
     });
@@ -110,22 +111,18 @@ export class Mutation
       field: 'payload',
       effect: (src, value) =>
         (src.payload = Array.isArray(value)
-          ? ArrayToMap(value)
-          : HashToMap(value)),
+          ? ArrayToMap(value, v => new Args(v))
+          : HashToMap(value, (name, v) => new Args({ name, ...v }))),
       required: true,
     });
   }
 
   public toObject(): MutationOutput {
     return merge({}, super.toObject(), {
-      args: MapToArray(this[Internal].args, (name, value) => ({
-        ...value,
-        name,
-      })),
-      payload: MapToArray(this[Internal].payload, (name, value) => ({
-        ...value,
-        name,
-      })),
+      args: MapToArray(this[Internal].args, (_name, value) => value.toObject()),
+      payload: MapToArray(this[Internal].payload, (_name, value) =>
+        value.toObject(),
+      ),
     } as Partial<MutationOutput>);
   }
 }

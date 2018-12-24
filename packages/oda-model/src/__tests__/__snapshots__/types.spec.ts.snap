@@ -26,6 +26,21 @@ Map {
 }
 `;
 
+exports[`helpers ArrayToMap: ArrayToMap with process 1`] = `
+Map {
+  "1" => Object {
+    "key": "1",
+    "name": "1",
+    "other": "2",
+  },
+  "2" => Object {
+    "key": "2",
+    "name": "2",
+    "other": "2",
+  },
+}
+`;
+
 exports[`helpers HashToArray: HashToArray 1`] = `
 Array [
   Object {
@@ -39,7 +54,33 @@ Array [
 ]
 `;
 
+exports[`helpers HashToArray: HashToArray with process 1`] = `
+Array [
+  Object {
+    "name": "1",
+    "other": 1,
+  },
+  Object {
+    "name": "2",
+    "other": 2,
+  },
+]
+`;
+
 exports[`helpers HashToMap: HashToMap 1`] = `
+Map {
+  "1" => Object {
+    "name": "1",
+    "other": 1,
+  },
+  "2" => Object {
+    "name": "2",
+    "other": 2,
+  },
+}
+`;
+
+exports[`helpers HashToMap: HashToMap with process 1`] = `
 Map {
   "1" => Object {
     "name": "1",
@@ -92,6 +133,19 @@ Object {
 `;
 
 exports[`helpers MapToHash: MapToHash-Values 1`] = `
+Object {
+  "key 1": Object {
+    "name": "2",
+    "other": "1",
+  },
+  "key 2": Object {
+    "name": "3",
+    "other": 3,
+  },
+}
+`;
+
+exports[`helpers MapToHash: MapToHash-Values with process 1`] = `
 Object {
   "key 1": Object {
     "name": "2",

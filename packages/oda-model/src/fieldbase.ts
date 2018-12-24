@@ -21,6 +21,7 @@ import {
 } from './types';
 import { ElementMetaInfo, Internal } from './element';
 import { IEntityRef, EntityReference } from './entityreference';
+import { IArgs, Args } from './args';
 
 export interface IFieldBase<
   M extends FieldBaseMetaInfo<P>,
@@ -33,7 +34,7 @@ export interface IFieldBase<
   readonly inheritedFrom?: string;
   readonly order: number;
   readonly derived: boolean;
-  readonly args: Map<string, IFieldArgs>;
+  readonly args: Map<string, IArgs>;
   readonly persistent?: boolean;
   readonly identity: boolean | string | string[];
   readonly required?: boolean;
@@ -65,7 +66,7 @@ export interface FieldBaseMetaInfo<T extends FieldBasePersistence>
 }
 
 export interface FieldBaseInternal extends ModelBaseInternal {
-  args: Map<string, IFieldArgs>;
+  args: Map<string, IArgs>;
   inheritedFrom?: string;
   type?: FieldType;
   idKey: IEntityRef;
@@ -136,7 +137,7 @@ export abstract class FieldBase<
     return this[Internal].inheritedFrom;
   }
 
-  get args(): Map<string, IFieldArgs> {
+  get args(): Map<string, IArgs> {
     return this[Internal].args;
   }
 
@@ -191,8 +192,8 @@ export abstract class FieldBase<
       field: 'args',
       effect: (src, value) =>
         (src.args = Array.isArray(value)
-          ? ArrayToMap(value)
-          : HashToMap(value)),
+          ? ArrayToMap(value, v => new Args(v))
+          : HashToMap(value, (name, v) => new Args({ name, ...v }))),
       setDefault: src => (src.args = new Map()),
     });
 
@@ -274,7 +275,9 @@ export abstract class FieldBase<
       persistent: this.persistent,
       inheritedFrom: this[Internal].inheritedFrom,
       order: this.metadata.order,
-      args: this[Internal].args ? MapToHash(this[Internal].args) : undefined,
+      args: this[Internal].args
+        ? MapToHash(this[Internal].args, (_name, v) => v.toObject())
+        : undefined,
       required: this.required,
       indexed: this.indexed,
       identity: this.identity,

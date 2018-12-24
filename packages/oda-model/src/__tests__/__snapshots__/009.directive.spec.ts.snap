@@ -5,8 +5,11 @@ Object {
   "args": Array [
     Object {
       "defaultValue": "THIS PROP IS READ ONLY",
+      "metadata": Object {},
+      "multiplicity": "one",
       "name": "message",
       "required": false,
+      "type": "string",
     },
   ],
   "description": undefined,

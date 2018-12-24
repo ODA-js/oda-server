@@ -20,6 +20,7 @@ import {
 import { merge } from 'lodash';
 import { Internal } from './element';
 import decapitalize from './lib/decapitalize';
+import { IArgs, Args } from './args';
 /**
  * Kind of mutation which is intended to work with single entity
  */
@@ -37,8 +38,8 @@ export interface IOperation
   /**
    * set of arguments
    */
-  readonly args?: Map<string, IFieldArgs>;
-  readonly payload: Map<string, IFieldArgs>;
+  readonly args?: Map<string, IArgs>;
+  readonly payload: Map<string, IArgs>;
   readonly order: number;
 }
 
@@ -70,8 +71,8 @@ export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
 }
 
 export interface OperationInternal extends ModelBaseInternal {
-  args: Map<string, IFieldArgs>;
-  payload: Map<string, IFieldArgs>;
+  args: Map<string, IArgs>;
+  payload: Map<string, IArgs>;
   inheritedFrom?: string;
   entity: string;
   actionType: OperationKind;
@@ -100,11 +101,11 @@ export class Operation
     return this[Internal].inheritedFrom;
   }
 
-  get args(): Map<string, IFieldArgs> {
+  get args(): Map<string, IArgs> {
     return this[Internal].args;
   }
 
-  get payload(): Map<string, IFieldArgs> {
+  get payload(): Map<string, IArgs> {
     return this[Internal].payload;
   }
 
@@ -143,8 +144,8 @@ export class Operation
       field: 'args',
       effect: (src, value) =>
         (src.args = Array.isArray(value)
-          ? ArrayToMap(value)
-          : HashToMap(value)),
+          ? ArrayToMap(value, v => new Args(v))
+          : HashToMap(value, (name, v) => new Args({ name, ...v }))),
       required: true,
       setDefault: src => (src.args = new Map()),
     });
@@ -159,8 +160,8 @@ export class Operation
       field: 'payload',
       effect: (src, value) =>
         (src.payload = Array.isArray(value)
-          ? ArrayToMap(value)
-          : HashToMap(value)),
+          ? ArrayToMap(value, v => new Args(v))
+          : HashToMap(value, (name, v) => new Args({ name, ...v }))),
       required: true,
     });
   }
@@ -169,14 +170,10 @@ export class Operation
     return merge({}, super.toObject(), {
       actionType: this.actionType,
       inheritedFrom: this.inheritedFrom,
-      args: MapToArray(this.args, (name, value) => ({
-        ...value,
-        name,
-      })),
-      payload: MapToArray(this.payload, (name, value) => ({
-        ...value,
-        name,
-      })),
+      args: MapToArray(this[Internal].args, (_name, value) => value.toObject()),
+      payload: MapToArray(this[Internal].payload, (_name, value) =>
+        value.toObject(),
+      ),
     } as Partial<OperationOutput>);
   }
 }

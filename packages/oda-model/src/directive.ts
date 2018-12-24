@@ -20,13 +20,14 @@ import {
 } from './types';
 import { Internal } from './element';
 import { merge } from 'lodash';
+import { Args, IArgs } from './args';
 
 export interface IDirective
   extends IModelBase<DirectiveMetaInfo, DirectiveInput, DirectiveOutput> {
   /**
    * set of arguments
    */
-  readonly args: Map<string, IFieldArgs>;
+  readonly args: Map<string, IArgs>;
   /**
    * where it can met
    */
@@ -36,7 +37,7 @@ export interface IDirective
 export interface DirectiveMetaInfo extends ModelMetaInfo {}
 
 export interface DirectiveInternal extends ModelBaseInternal {
-  args: Map<string, IFieldArgs>;
+  args: Map<string, IArgs>;
   on: DirectiveLocation[];
 }
 
@@ -64,7 +65,7 @@ export class Directive
   public get modelType(): MetaModelType {
     return 'directive';
   }
-  get args(): Map<string, IFieldArgs> {
+  get args(): Map<string, IArgs> {
     return this[Internal].args;
   }
 
@@ -82,15 +83,15 @@ export class Directive
     assignValue<
       DirectiveInternal,
       DirectiveInput,
-      AsHash<IFieldArgs> | NamedArray<IFieldArgs>
+      NonNullable<DirectiveInput['args']>
     >({
       src: this[Internal],
       input,
       field: 'args',
       effect: (src, value) =>
         (src.args = Array.isArray(value)
-          ? ArrayToMap(value)
-          : HashToMap(value)),
+          ? ArrayToMap(value, v => new Args(v))
+          : HashToMap(value, (name, v) => new Args({ name, ...v }))),
       setDefault: src => (src.args = new Map()),
     });
 
@@ -105,10 +106,7 @@ export class Directive
   // it get fixed object
   public toObject(): DirectiveOutput {
     return merge({}, super.toObject(), {
-      args: MapToArray(this[Internal].args, (name, value) => ({
-        ...value,
-        name,
-      })),
+      args: MapToArray(this[Internal].args, (_name, value) => value.toObject()),
       on: this[Internal].on,
     } as Partial<DirectiveOutput>);
   }

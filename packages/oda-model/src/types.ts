@@ -222,31 +222,65 @@ export interface AsHash<T extends Partial<INamed> & object> {
 
 export type NamedArray<T extends INamed> = Array<T>;
 
-export function ArrayToMap<T extends INamed>(input: NamedArray<T>) {
-  return new Map<string, T>(input.map(f => [f.name, f] as [string, T]));
+export function ArrayToMap<T extends INamed, O extends INamed = T>(
+  input: NamedArray<T>,
+  process?: (v: T) => O,
+) {
+  return new Map<string, O>(
+    input.map(f => {
+      let result: O = (f as unknown) as O;
+      if (process) {
+        result = (process(f) as unknown) as O;
+      }
+      return [result.name, result] as [string, O];
+    }),
+  );
 }
 
-export function HashToMap<T extends Partial<INamed> & object>(
-  input: AsHash<T>,
-): Map<string, T> {
-  const res = Object.keys(input).map(name => {
-    return [name, { name, ...input[name] } as T] as [string, T];
+export function HashToMap<
+  T extends Partial<INamed> & object,
+  O extends Partial<INamed> & object = T
+>(input: AsHash<T>, process?: (name: string, v: T) => O): Map<string, O> {
+  const res = Object.keys(input).map(key => {
+    let result: O | T = (input[key] as unknown) as O;
+    if (process) {
+      result = process(key, (result as unknown) as T);
+    } else {
+      result = {
+        name: key,
+        ...result,
+      };
+    }
+    return [result.name, result] as [string, O];
   });
   return new Map(res);
 }
 
 export function HashToArray<T extends Partial<INamed> & object>(
   input: AsHash<T>,
+  process?: (name: string, v: T) => T,
 ): T[] {
   return Object.keys(input).map(key => {
-    return { ...input[key], name: key } as T;
+    let result = input[key];
+    if (process) {
+      result = process(key, result);
+    } else {
+      result = {
+        ...result,
+        name: key,
+      };
+    }
+    return result;
   });
 }
 
-export function ArrayToHash<T extends INamed>(input: Array<T>): AsHash<T> {
+export function ArrayToHash<T extends INamed>(
+  input: Array<T>,
+  process?: (v: T) => T,
+): AsHash<T> {
   return input.reduce(
     (result, item) => {
-      result[item.name] = item;
+      result[item.name] = process ? process(item) : item;
       return result;
     },
     {} as AsHash<T>,
@@ -255,11 +289,13 @@ export function ArrayToHash<T extends INamed>(input: Array<T>): AsHash<T> {
 
 export function MapToHash<T extends INamed, O extends INamed = T>(
   input: Map<string, T>,
-  process?: (v: T) => Partial<O> & object,
+  process?: (name: string, v: T) => O,
 ): AsHash<O> {
   return [...input.entries()].reduce(
     (hash, [name, value]) => {
-      hash[name] = process ? (process(value) as O) : ((value as unknown) as O);
+      hash[name] = process
+        ? (process(name, value) as O)
+        : ((value as unknown) as O);
       return hash;
     },
     {} as AsHash<O>,

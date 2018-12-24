@@ -1,6 +1,5 @@
 import 'jest';
 import { Directive, directiveDefaultMetaInfo } from '../directive';
-import { merge } from 'lodash';
 
 describe('Directive', () => {
   it('default', () => {

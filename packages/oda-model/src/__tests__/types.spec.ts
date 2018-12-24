@@ -7,6 +7,7 @@ import {
   HashToMap,
   MapToArray,
   MapToHash,
+  INamed,
 } from '../types';
 
 describe('helpers', () => {
@@ -14,6 +15,12 @@ describe('helpers', () => {
     expect(
       ArrayToMap([{ name: '1', other: '2' }, { name: '2', other: '2' }]),
     ).toMatchSnapshot('ArrayToMap');
+    expect(
+      ArrayToMap<INamed>(
+        [{ key: '1', other: '2' } as any, { key: '2', other: '2' } as any],
+        (value: any) => ({ name: value.key, ...value }),
+      ),
+    ).toMatchSnapshot('ArrayToMap with process');
   });
   it('HashToMap', () => {
     expect(
@@ -26,6 +33,19 @@ describe('helpers', () => {
         },
       }),
     ).toMatchSnapshot('HashToMap');
+    expect(
+      HashToMap(
+        {
+          1: {
+            other: 1,
+          },
+          2: {
+            other: 2,
+          },
+        },
+        (key, value) => ({ name: key, ...value }),
+      ),
+    ).toMatchSnapshot('HashToMap with process');
   });
   it('HashToArray', () => {
     expect(
@@ -38,6 +58,20 @@ describe('helpers', () => {
         },
       }),
     ).toMatchSnapshot('HashToArray');
+
+    expect(
+      HashToArray(
+        {
+          1: {
+            other: 1,
+          },
+          2: {
+            other: 2,
+          },
+        },
+        (name, value) => ({ ...value, name }),
+      ),
+    ).toMatchSnapshot('HashToArray with process');
   });
   it('ArrayToHash', () => {
     expect(
@@ -51,7 +85,7 @@ describe('helpers', () => {
           ['1', { name: '2', other: '1' }],
           ['3', { name: '3', other: 3 }],
         ]),
-        value => ({ ...value, name: undefined }),
+        (_name, value) => ({ ...value, name: undefined } as any),
       ),
     ).toMatchSnapshot('MapToHash');
     expect(
@@ -62,6 +96,15 @@ describe('helpers', () => {
         ]),
       ),
     ).toMatchSnapshot('MapToHash-Values');
+    expect(
+      MapToHash(
+        new Map([
+          ['key 1', { name: '2', other: '1' } as any],
+          ['key 2', { name: '3', other: 3 } as any],
+        ]),
+        (name, value) => ({ name, ...value }),
+      ),
+    ).toMatchSnapshot('MapToHash-Values with process');
   });
   it('MapToArray', () => {
     expect(
