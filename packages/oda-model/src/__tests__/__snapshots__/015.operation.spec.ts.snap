@@ -5,11 +5,20 @@ Object {
   "actionType": "create",
   "args": Array [
     Object {
+      "defaultValue": undefined,
+      "metadata": Object {},
+      "multiplicity": "one",
       "name": "id",
+      "required": false,
+      "type": "string",
     },
     Object {
+      "defaultValue": undefined,
+      "metadata": Object {},
       "multiplicity": "many",
       "name": "fields",
+      "required": false,
+      "type": "string",
     },
   ],
   "description": undefined,
@@ -22,8 +31,12 @@ Object {
   "name": "updateUser",
   "payload": Array [
     Object {
+      "defaultValue": undefined,
+      "metadata": Object {},
       "multiplicity": "many",
       "name": "result",
+      "required": false,
+      "type": "string",
     },
   ],
   "title": undefined,

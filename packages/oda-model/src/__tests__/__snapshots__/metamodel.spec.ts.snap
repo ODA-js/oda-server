@@ -1932,23 +1932,45 @@ MetaModel {
               "loginUser" => Mutation {
                 Symbol(internal): Object {
                   "args": Map {
-                    "userName" => Object {
-                      "name": "userName",
-                      "required": true,
+                    "userName" => Args {
+                      Symbol(internal): Object {
+                        "multiplicity": "one",
+                        "name": "userName",
+                        "required": true,
+                        "type": "string",
+                      },
+                      Symbol(metadata): Object {},
                     },
-                    "password" => Object {
-                      "name": "password",
-                      "required": true,
+                    "password" => Args {
+                      Symbol(internal): Object {
+                        "multiplicity": "one",
+                        "name": "password",
+                        "required": true,
+                        "type": "string",
+                      },
+                      Symbol(metadata): Object {},
                     },
                   },
                   "description": "make user login",
                   "name": "loginUser",
                   "payload": Map {
-                    "token" => Object {
-                      "name": "token",
+                    "token" => Args {
+                      Symbol(internal): Object {
+                        "multiplicity": "one",
+                        "name": "token",
+                        "required": false,
+                        "type": "string",
+                      },
+                      Symbol(metadata): Object {},
                     },
-                    "role" => Object {
-                      "name": "role",
+                    "role" => Args {
+                      Symbol(internal): Object {
+                        "multiplicity": "one",
+                        "name": "role",
+                        "required": false,
+                        "type": "string",
+                      },
+                      Symbol(metadata): Object {},
                     },
                   },
                 },
@@ -26161,23 +26183,45 @@ MetaModel {
       "loginUser" => Mutation {
         Symbol(internal): Object {
           "args": Map {
-            "userName" => Object {
-              "name": "userName",
-              "required": true,
+            "userName" => Args {
+              Symbol(internal): Object {
+                "multiplicity": "one",
+                "name": "userName",
+                "required": true,
+                "type": "string",
+              },
+              Symbol(metadata): Object {},
             },
-            "password" => Object {
-              "name": "password",
-              "required": true,
+            "password" => Args {
+              Symbol(internal): Object {
+                "multiplicity": "one",
+                "name": "password",
+                "required": true,
+                "type": "string",
+              },
+              Symbol(metadata): Object {},
             },
           },
           "description": "make user login",
           "name": "loginUser",
           "payload": Map {
-            "token" => Object {
-              "name": "token",
+            "token" => Args {
+              Symbol(internal): Object {
+                "multiplicity": "one",
+                "name": "token",
+                "required": false,
+                "type": "string",
+              },
+              Symbol(metadata): Object {},
             },
-            "role" => Object {
-              "name": "role",
+            "role" => Args {
+              Symbol(internal): Object {
+                "multiplicity": "one",
+                "name": "role",
+                "required": false,
+                "type": "string",
+              },
+              Symbol(metadata): Object {},
             },
           },
         },
@@ -26221,23 +26265,45 @@ MetaModel {
             "loginUser" => Mutation {
               Symbol(internal): Object {
                 "args": Map {
-                  "userName" => Object {
-                    "name": "userName",
-                    "required": true,
+                  "userName" => Args {
+                    Symbol(internal): Object {
+                      "multiplicity": "one",
+                      "name": "userName",
+                      "required": true,
+                      "type": "string",
+                    },
+                    Symbol(metadata): Object {},
                   },
-                  "password" => Object {
-                    "name": "password",
-                    "required": true,
+                  "password" => Args {
+                    Symbol(internal): Object {
+                      "multiplicity": "one",
+                      "name": "password",
+                      "required": true,
+                      "type": "string",
+                    },
+                    Symbol(metadata): Object {},
                   },
                 },
                 "description": "make user login",
                 "name": "loginUser",
                 "payload": Map {
-                  "token" => Object {
-                    "name": "token",
+                  "token" => Args {
+                    Symbol(internal): Object {
+                      "multiplicity": "one",
+                      "name": "token",
+                      "required": false,
+                      "type": "string",
+                    },
+                    Symbol(metadata): Object {},
                   },
-                  "role" => Object {
-                    "name": "role",
+                  "role" => Args {
+                    Symbol(internal): Object {
+                      "multiplicity": "one",
+                      "name": "role",
+                      "required": false,
+                      "type": "string",
+                    },
+                    Symbol(metadata): Object {},
                   },
                 },
               },
@@ -26572,14 +26638,32 @@ MetaModel {
           "args": Map {},
           "name": "userInfo",
           "payload": Map {
-            "id" => Object {
-              "name": "id",
+            "id" => Args {
+              Symbol(internal): Object {
+                "multiplicity": "one",
+                "name": "id",
+                "required": false,
+                "type": "string",
+              },
+              Symbol(metadata): Object {},
             },
-            "name" => Object {
-              "name": "name",
+            "name" => Args {
+              Symbol(internal): Object {
+                "multiplicity": "one",
+                "name": "name",
+                "required": false,
+                "type": "string",
+              },
+              Symbol(metadata): Object {},
             },
-            "email" => Object {
-              "name": "email",
+            "email" => Args {
+              Symbol(internal): Object {
+                "multiplicity": "one",
+                "name": "email",
+                "required": false,
+                "type": "string",
+              },
+              Symbol(metadata): Object {},
             },
           },
         },

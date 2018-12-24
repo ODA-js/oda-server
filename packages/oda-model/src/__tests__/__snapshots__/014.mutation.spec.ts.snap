@@ -4,10 +4,20 @@ exports[`Mutation default: toObject 1`] = `
 Object {
   "args": Array [
     Object {
+      "defaultValue": undefined,
+      "metadata": Object {},
+      "multiplicity": "one",
       "name": "login",
+      "required": false,
+      "type": "string",
     },
     Object {
+      "defaultValue": undefined,
+      "metadata": Object {},
+      "multiplicity": "one",
       "name": "password",
+      "required": false,
+      "type": "string",
     },
   ],
   "description": undefined,
@@ -19,7 +29,12 @@ Object {
   "name": "loginUser",
   "payload": Array [
     Object {
+      "defaultValue": undefined,
+      "metadata": Object {},
+      "multiplicity": "one",
       "name": "token",
+      "required": false,
+      "type": "string",
     },
   ],
   "title": undefined,

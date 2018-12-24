@@ -4,8 +4,11 @@ exports[`Query default: toObject 1`] = `
 Object {
   "args": Array [
     Object {
+      "defaultValue": undefined,
+      "metadata": Object {},
       "multiplicity": "one",
       "name": "disabled",
+      "required": false,
       "type": "boolean",
     },
   ],
@@ -18,9 +21,12 @@ Object {
   "name": "getAllUsersThat",
   "payload": Array [
     Object {
+      "defaultValue": undefined,
+      "metadata": Object {},
       "multiplicity": "many",
       "name": "id",
       "required": true,
+      "type": "string",
     },
   ],
   "title": undefined,
