@@ -14,9 +14,6 @@ Object {
     },
     "persistence": Object {
       "embedded": false,
-      "identity": false,
-      "indexed": true,
-      "required": false,
       "single": true,
       "stored": true,
     },

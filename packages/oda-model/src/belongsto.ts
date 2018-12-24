@@ -8,7 +8,7 @@ import {
   RelationBaseOutput,
 } from './relationbase';
 import { IEntityRef, EntityReference } from './entityreference';
-import { merge, get } from 'lodash';
+import { merge } from 'lodash';
 import { assignValue, Nullable } from './types';
 import { Internal } from './element';
 
@@ -41,17 +41,11 @@ export interface BelongsToInternal extends RelationBaseInternal {
 export interface BelongsToInput
   extends RelationBaseInput<BelongsToMetaInfo, BelongsToPersistence> {
   belongsTo: string;
-  required?: boolean;
-  identity?: boolean | string | string[];
-  indexed?: boolean | string | string[];
 }
 
 export interface BelongsToOutput
   extends RelationBaseOutput<BelongsToMetaInfo, BelongsToPersistence> {
   belongsTo: string;
-  required?: boolean;
-  identity?: boolean | string | string[];
-  indexed?: boolean | string | string[];
 }
 
 export const belongsToDefaultMetaInfo = {
@@ -60,9 +54,6 @@ export const belongsToDefaultMetaInfo = {
     single: true,
     stored: true,
     embedded: false,
-    indexed: true,
-    identity: false,
-    required: false,
   },
 };
 export const belongsToDefaultInput = { metadata: belongsToDefaultMetaInfo };
@@ -82,18 +73,6 @@ export class BelongsTo extends RelationBase<
     return this[Internal].belongsTo;
   }
 
-  get identity(): boolean | string | string[] {
-    return get(this.metadata, 'persistence.identity', false);
-  }
-
-  get required(): boolean {
-    return get(this.metadata, 'persistence.required', false);
-  }
-
-  get indexed(): boolean | string | string[] {
-    return get(this.metadata, 'persistence.indexed', false);
-  }
-
   constructor(init: BelongsToInput) {
     super(merge({}, belongsToDefaultInput, init));
   }
@@ -107,30 +86,6 @@ export class BelongsTo extends RelationBase<
       field: 'belongsTo',
       effect: (src, value) => (src.belongsTo = new EntityReference(value)),
       required: true,
-    });
-
-    assignValue<BelongsToMetaInfo, BelongsToInput, boolean>({
-      src: this.metadata,
-      input,
-      inputField: 'indexed',
-      effect: (src, value) => (src.persistence.indexed = value),
-      setDefault: src => (src.persistence.indexed = false),
-    });
-
-    assignValue<BelongsToMetaInfo, BelongsToInput, boolean>({
-      src: this.metadata,
-      input,
-      inputField: 'identity',
-      effect: (src, value) => (src.persistence.identity = value),
-      setDefault: src => (src.persistence.identity = false),
-    });
-
-    assignValue<BelongsToMetaInfo, BelongsToInput, boolean>({
-      src: this.metadata,
-      input,
-      inputField: 'required',
-      effect: (src, value) => (src.persistence.required = value),
-      setDefault: src => (src.persistence.required = false),
     });
   }
 
