@@ -194,30 +194,29 @@ export class EntityBase<
   }
 
   protected updateIndex(f: IField, options: IndexEntryOptions) {
-    // let indexes = this.getMetadata('storage.indexes', {});
     let indexName: string | string[];
-    if (typeof f.indexed === 'boolean') {
+    const key: 'indexed' | 'identity' = options.unique ? 'identity' : 'indexed';
+
+    if (typeof f[key] === 'boolean') {
       indexName = f.name;
-    } else if (Array.isArray(f.indexed)) {
-      indexName = f.indexed;
+    } else if (Array.isArray(f[key])) {
+      indexName = f[key] as string[];
     } else {
-      indexName = f.indexed.split(' ');
+      indexName = (f[key] as string).split(' ');
       indexName = indexName.length > 1 ? indexName : indexName[0];
     }
     let entry = {
-      name: indexName,
       fields: {
         [f.name]: 1,
       },
       options,
     };
     if (typeof indexName === 'string') {
-      this.mergeIndex(indexName, entry);
+      this.mergeIndex(indexName, { name: indexName, ...entry });
     } else {
-      for (let i = 0, len = indexName.length; i < len; i++) {
-        let index = indexName[i];
-        this.mergeIndex(index, entry);
-      }
+      indexName.forEach(index => {
+        this.mergeIndex(index, { name: index, entry });
+      });
     }
   }
 
@@ -344,7 +343,11 @@ export class EntityBase<
           f.updateWith({ identity: true } as Nullable<SimpleFieldInput>);
           this.updateIndex(f, { unique: true });
         } else {
-          f = new SimpleField({ ...DEFAULT_ID_FIELD, entity: this.name });
+          f = new SimpleField({
+            ...DEFAULT_ID_FIELD,
+            entity: this.name,
+            order: -1,
+          });
           fields.set(f.name, f);
           this.updateIndex(f, { unique: true });
         }
@@ -364,7 +367,11 @@ export class EntityBase<
         (src.fields = new Map([
           [
             DEFAULT_ID_FIELD.name,
-            new SimpleField({ ...DEFAULT_ID_FIELD, entity: this.name }),
+            new SimpleField({
+              ...DEFAULT_ID_FIELD,
+              entity: this.name,
+              order: -1,
+            }),
           ],
         ] as [string, SimpleField][])),
     });

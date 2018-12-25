@@ -183,6 +183,7 @@ EntityBase {
             "update": Array [],
           },
           "entity": "A",
+          "order": -1,
           "persistence": Object {
             "derived": false,
             "identity": true,
@@ -424,6 +425,7 @@ Object {
           "update": Array [],
         },
         "entity": "A",
+        "order": -1,
         "persistence": Object {
           "derived": false,
           "identity": true,
@@ -433,7 +435,7 @@ Object {
         },
       },
       "name": "id",
-      "order": undefined,
+      "order": -1,
       "persistent": true,
       "required": true,
       "title": undefined,
@@ -501,6 +503,7 @@ Object {
           "update": Array [],
         },
         "entity": "Species",
+        "order": -1,
         "persistence": Object {
           "derived": false,
           "identity": true,
@@ -510,7 +513,7 @@ Object {
         },
       },
       "name": "id",
-      "order": undefined,
+      "order": -1,
       "persistent": true,
       "required": true,
       "title": undefined,
@@ -568,6 +571,7 @@ Object {
           "update": Array [],
         },
         "entity": "A",
+        "order": -1,
         "persistence": Object {
           "derived": false,
           "identity": true,
@@ -577,7 +581,7 @@ Object {
         },
       },
       "name": "id",
-      "order": undefined,
+      "order": -1,
       "persistent": true,
       "required": true,
       "title": undefined,
@@ -615,7 +619,42 @@ Object {
 }
 `;
 
-exports[`EntityBase should accept non default identity field: non default id fields 1`] = `
+exports[`EntityBase should accept non default identity field "_id": non default _id fields 1`] = `
+Object {
+  "args": Object {},
+  "defaultValue": undefined,
+  "derived": false,
+  "description": undefined,
+  "entity": "A",
+  "identity": true,
+  "indexed": true,
+  "inheritedFrom": undefined,
+  "list": false,
+  "metadata": Object {
+    "acl": Object {
+      "read": Array [],
+      "update": Array [],
+    },
+    "entity": "A",
+    "order": 0,
+    "persistence": Object {
+      "derived": false,
+      "identity": true,
+      "indexed": true,
+      "persistent": true,
+      "required": true,
+    },
+  },
+  "name": "_id",
+  "order": 0,
+  "persistent": true,
+  "required": true,
+  "title": undefined,
+  "type": "string",
+}
+`;
+
+exports[`EntityBase should accept non default identity field "id": non default id fields 1`] = `
 Object {
   "args": Object {},
   "defaultValue": undefined,
@@ -670,6 +709,7 @@ Object {
           "update": Array [],
         },
         "entity": "A",
+        "order": -1,
         "persistence": Object {
           "derived": false,
           "identity": true,
@@ -679,7 +719,7 @@ Object {
         },
       },
       "name": "id",
-      "order": undefined,
+      "order": -1,
       "persistent": true,
       "required": true,
       "title": undefined,
@@ -739,6 +779,8 @@ Object {
         "acl": Object {
           "execute": Array [],
         },
+        "entity": "A",
+        "order": 0,
       },
       "name": "updateUser",
       "payload": Array [
@@ -754,6 +796,524 @@ Object {
       "title": undefined,
     },
   ],
+  "title": undefined,
+}
+`;
+
+exports[`Indexing should create complex index entry: complex index text 1`] = `
+Object {
+  "description": undefined,
+  "fields": Array [
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": false,
+      "indexed": "text",
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": 0,
+        "persistence": Object {
+          "derived": false,
+          "identity": false,
+          "indexed": "text",
+          "persistent": true,
+          "required": false,
+        },
+      },
+      "name": "a",
+      "order": 0,
+      "persistent": true,
+      "required": false,
+      "title": undefined,
+      "type": "string",
+    },
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": false,
+      "indexed": "text",
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": 1,
+        "persistence": Object {
+          "derived": false,
+          "identity": false,
+          "indexed": "text",
+          "persistent": true,
+          "required": false,
+        },
+      },
+      "name": "b",
+      "order": 1,
+      "persistent": true,
+      "required": false,
+      "title": undefined,
+      "type": "string",
+    },
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": true,
+      "indexed": true,
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": -1,
+        "persistence": Object {
+          "derived": false,
+          "identity": true,
+          "indexed": true,
+          "persistent": true,
+          "required": true,
+        },
+      },
+      "name": "id",
+      "order": -1,
+      "persistent": true,
+      "required": true,
+      "title": undefined,
+      "type": "ID",
+    },
+  ],
+  "metadata": Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "name": Object {
+      "plural": "As",
+      "singular": "A",
+    },
+    "persistence": Object {
+      "indexes": Object {
+        "id": Object {
+          "fields": Object {
+            "id": 1,
+          },
+          "name": "id",
+          "options": Object {
+            "unique": true,
+          },
+        },
+        "text": Object {
+          "fields": Object {
+            "a": 1,
+            "b": 1,
+          },
+          "name": "text",
+          "options": Object {
+            "sparse": true,
+          },
+        },
+      },
+    },
+    "titlePlural": "As",
+  },
+  "name": "A",
+  "operations": Array [],
+  "title": undefined,
+}
+`;
+
+exports[`Indexing should create complex unique index entry: complex identity index text 1`] = `
+Object {
+  "description": undefined,
+  "fields": Array [
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": "ab",
+      "indexed": true,
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": 0,
+        "persistence": Object {
+          "derived": false,
+          "identity": "ab",
+          "indexed": true,
+          "persistent": true,
+          "required": true,
+        },
+      },
+      "name": "a",
+      "order": 0,
+      "persistent": true,
+      "required": true,
+      "title": undefined,
+      "type": "string",
+    },
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": "ab",
+      "indexed": true,
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": 1,
+        "persistence": Object {
+          "derived": false,
+          "identity": "ab",
+          "indexed": true,
+          "persistent": true,
+          "required": true,
+        },
+      },
+      "name": "b",
+      "order": 1,
+      "persistent": true,
+      "required": true,
+      "title": undefined,
+      "type": "string",
+    },
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": true,
+      "indexed": true,
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": -1,
+        "persistence": Object {
+          "derived": false,
+          "identity": true,
+          "indexed": true,
+          "persistent": true,
+          "required": true,
+        },
+      },
+      "name": "id",
+      "order": -1,
+      "persistent": true,
+      "required": true,
+      "title": undefined,
+      "type": "ID",
+    },
+  ],
+  "metadata": Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "name": Object {
+      "plural": "As",
+      "singular": "A",
+    },
+    "persistence": Object {
+      "indexes": Object {
+        "a": Object {
+          "fields": Object {
+            "a": 1,
+          },
+          "name": "a",
+          "options": Object {
+            "sparse": true,
+          },
+        },
+        "ab": Object {
+          "fields": Object {
+            "a": 1,
+            "b": 1,
+          },
+          "name": "ab",
+          "options": Object {
+            "sparse": true,
+            "unique": true,
+          },
+        },
+        "b": Object {
+          "fields": Object {
+            "b": 1,
+          },
+          "name": "b",
+          "options": Object {
+            "sparse": true,
+          },
+        },
+        "id": Object {
+          "fields": Object {
+            "id": 1,
+          },
+          "name": "id",
+          "options": Object {
+            "unique": true,
+          },
+        },
+      },
+    },
+    "titlePlural": "As",
+  },
+  "name": "A",
+  "operations": Array [],
+  "title": undefined,
+}
+`;
+
+exports[`Indexing should create complex unique index entry: complex identity index text 2`] = `
+Object {
+  "description": undefined,
+  "fields": Array [
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": "ab",
+      "indexed": "text",
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": 0,
+        "persistence": Object {
+          "derived": false,
+          "identity": "ab",
+          "indexed": "text",
+          "persistent": true,
+          "required": true,
+        },
+      },
+      "name": "a",
+      "order": 0,
+      "persistent": true,
+      "required": true,
+      "title": undefined,
+      "type": "string",
+    },
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": false,
+      "indexed": "ab",
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": 1,
+        "persistence": Object {
+          "derived": false,
+          "identity": false,
+          "indexed": "ab",
+          "persistent": true,
+          "required": false,
+        },
+      },
+      "name": "b",
+      "order": 1,
+      "persistent": true,
+      "required": false,
+      "title": undefined,
+      "type": "string",
+    },
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": false,
+      "indexed": "text",
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": 2,
+        "persistence": Object {
+          "derived": false,
+          "identity": false,
+          "indexed": "text",
+          "persistent": true,
+          "required": false,
+        },
+      },
+      "name": "c",
+      "order": 2,
+      "persistent": true,
+      "required": false,
+      "title": undefined,
+      "type": "string",
+    },
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": true,
+      "indexed": true,
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": -1,
+        "persistence": Object {
+          "derived": false,
+          "identity": true,
+          "indexed": true,
+          "persistent": true,
+          "required": true,
+        },
+      },
+      "name": "id",
+      "order": -1,
+      "persistent": true,
+      "required": true,
+      "title": undefined,
+      "type": "ID",
+    },
+  ],
+  "metadata": Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "name": Object {
+      "plural": "As",
+      "singular": "A",
+    },
+    "persistence": Object {
+      "indexes": Object {
+        "ab": Object {
+          "fields": Object {
+            "a": 1,
+            "b": 1,
+          },
+          "name": "ab",
+          "options": Object {
+            "sparse": true,
+            "unique": true,
+          },
+        },
+        "id": Object {
+          "fields": Object {
+            "id": 1,
+          },
+          "name": "id",
+          "options": Object {
+            "unique": true,
+          },
+        },
+        "text": Object {
+          "fields": Object {
+            "a": 1,
+            "c": 1,
+          },
+          "name": "text",
+          "options": Object {
+            "sparse": true,
+          },
+        },
+      },
+    },
+    "titlePlural": "As",
+  },
+  "name": "A",
+  "operations": Array [],
   "title": undefined,
 }
 `;

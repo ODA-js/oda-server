@@ -8,7 +8,6 @@ import { merge } from 'lodash';
 
 describe('BelongsTo', () => {
   it('default', () => {
-    debugger;
     const res = new BelongsTo({ belongsTo: 'A#' });
     expect(res.metadata.persistence).toMatchObject(
       belongsToDefaultMetaInfo.persistence,
@@ -24,6 +23,7 @@ describe('BelongsTo', () => {
       field: 'a',
       belongsTo: 'A#id',
     });
+    expect(res.modelType).toBe('BelongsTo');
     expect(res.verb).toBe('BelongsTo');
     expect(res.ref).toMatchObject({ entity: 'A', field: 'id' });
     expect(res.entity).toBe('AA');

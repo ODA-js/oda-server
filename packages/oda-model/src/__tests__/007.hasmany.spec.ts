@@ -13,6 +13,8 @@ describe('haOne', () => {
     expect(res.toObject()).toMatchObject(
       merge({ hasMany: 'id@A#id' }, hasManyDefaultInput),
     );
+    expect(res.modelType).toBe('HasMany');
+    expect(res.verb).toBe('HasMany');
     expect(res.toObject()).toMatchSnapshot('toObject');
   });
 });

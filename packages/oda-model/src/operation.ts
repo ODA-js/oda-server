@@ -41,6 +41,7 @@ export interface IOperation
   readonly args?: Map<string, IArgs>;
   readonly payload: Map<string, IArgs>;
   readonly order: number;
+  readonly entity?: string;
 }
 
 export interface OperationMetaInfo extends ModelMetaInfo {
@@ -56,7 +57,7 @@ export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
   args: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
   payload: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
   inheritedFrom?: string;
-  entity: string;
+  entity?: string;
   actionType: OperationKind;
   order?: number;
 }
@@ -113,6 +114,10 @@ export class Operation
     return this.metadata.order;
   }
 
+  get entity(): string {
+    return this.metadata.entity;
+  }
+
   constructor(init: OperationInput) {
     super(merge({}, operationDefaultInput, init));
   }
@@ -129,9 +134,23 @@ export class Operation
     });
 
     assignValue({
+      src: this.metadata,
+      input,
+      field: 'entity',
+      effect: (src, value) => (src.entity = value),
+    });
+
+    assignValue({
       src: this[Internal],
       input,
       field: 'actionType',
+    });
+
+    assignValue({
+      src: this.metadata,
+      input,
+      field: 'order',
+      effect: (src, value) => (src.order = value),
     });
 
     assignValue<

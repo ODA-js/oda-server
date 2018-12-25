@@ -38,7 +38,6 @@ describe('EntityBase', () => {
       operations: [
         {
           name: 'updateUser',
-          entity: 'User',
           actionType: 'create',
           payload: [{ name: 'result', multiplicity: 'many' }],
           args: [{ name: 'id' }, { name: 'fields', multiplicity: 'many' }],
@@ -47,7 +46,10 @@ describe('EntityBase', () => {
     });
     expect(res.fields.size).toBe(1);
     expect(res.fields.get('id')).not.toBeUndefined();
-
+    const id = res.fields.get('id');
+    if (id) {
+      expect(id.order).not.toBeUndefined();
+    }
     expect(res.operations.size).toBe(1);
     expect(res.toObject()).toMatchSnapshot('toObject with operations');
   });
@@ -78,9 +80,25 @@ describe('EntityBase', () => {
     expect(res.fields.size).toBe(5);
     expect(res.fields.get('id')).not.toBeUndefined();
     expect(res.fields.get('a')).not.toBeUndefined();
+    const a = res.fields.get('a');
+    if (a) {
+      expect(a.modelType).toBe('simple-field');
+    }
     expect(res.fields.get('b')).not.toBeUndefined();
+    const b = res.fields.get('b');
+    if (b) {
+      expect(b.modelType).toBe('enum-field');
+    }
     expect(res.fields.get('c')).not.toBeUndefined();
+    const c = res.fields.get('c');
+    if (c) {
+      expect(c.modelType).toBe('entity-field');
+    }
     expect(res.fields.get('d')).not.toBeUndefined();
+    const d = res.fields.get('d');
+    if (d) {
+      expect(d.modelType).toBe('relation-field');
+    }
     expect(res).toMatchSnapshot('object with fields');
     expect(res.toObject()).toMatchSnapshot('toObject with fields');
   });
@@ -100,5 +118,107 @@ describe('EntityBase', () => {
     expect((res.fields.get('_id') as Field).toObject()).toMatchSnapshot(
       'non default _id fields',
     );
+  });
+  it('should pass entity name to children "operations" && "fields"', () => {
+    const res = new EntityBase({
+      name: 'A',
+      fields: [{ name: 'a' }],
+      operations: [{ name: 'op', args: [], payload: [], actionType: 'update' }],
+    });
+    const op = res.operations.get('op');
+    const a = res.fields.get('a');
+    if (op) {
+      expect(op.metadata.entity).toBe('A');
+      expect(op.metadata.order).toBe(0);
+    }
+    if (a) {
+      expect(a.metadata.entity).toBe('A');
+      expect(a.metadata.order).toBe(0);
+    }
+  });
+
+  it('should store relation-fields names in relations prop', () => {
+    const res = new EntityBase({
+      name: 'A',
+      fields: [
+        {
+          name: 'a',
+          relation: {
+            hasOne: 'AAA#',
+          },
+        },
+      ],
+    });
+    expect(res.relations.has('a')).toBeTruthy();
+  });
+});
+
+describe('Indexing', () => {
+  it('should create index entry', () => {
+    const res = new EntityBase({
+      name: 'A',
+      fields: [{ name: 'a', indexed: true }],
+    });
+    expect(res.metadata.persistence.indexes['a']).toMatchObject({
+      name: 'a',
+      fields: { a: 1 },
+      options: { sparse: true },
+    });
+  });
+  it('should create unique index entry', () => {
+    const res = new EntityBase({
+      name: 'A',
+      fields: [{ name: 'a', identity: true }],
+    });
+    expect(res.metadata.persistence.indexes['a']).toMatchObject({
+      name: 'a',
+      fields: { a: 1 },
+      options: { sparse: true, unique: true },
+    });
+  });
+  it('should create complex index entry', () => {
+    const res = new EntityBase({
+      name: 'A',
+      fields: [{ name: 'a', indexed: 'text' }, { name: 'b', indexed: 'text' }],
+    });
+    expect(res.toObject()).toMatchSnapshot('complex index text');
+    expect(res.metadata.persistence.indexes['text']).toMatchObject({
+      name: 'text',
+      fields: { a: 1, b: 1 },
+      options: { sparse: true },
+    });
+  });
+  it('should create complex unique index entry', () => {
+    const res = new EntityBase({
+      name: 'A',
+      fields: [{ name: 'a', identity: 'ab ' }, { name: 'b', identity: 'ab' }],
+    });
+    expect(res.toObject()).toMatchSnapshot('complex identity index text');
+    expect(res.metadata.persistence.indexes['ab']).toMatchObject({
+      name: 'ab',
+      fields: { a: 1, b: 1 },
+      options: { sparse: true, unique: true },
+    });
+  });
+  it('should create complex unique index entry', () => {
+    const res = new EntityBase({
+      name: 'A',
+      fields: [
+        { name: 'a', identity: 'ab', indexed: 'text' },
+        { name: 'b', indexed: 'ab' }, // not mentioned as identity
+        { name: 'c', indexed: 'text' },
+      ],
+    });
+    expect(res.toObject()).toMatchSnapshot('complex identity index text');
+    expect(res.metadata.persistence.indexes['ab']).toMatchObject({
+      name: 'ab',
+      fields: { a: 1, b: 1 },
+      options: { sparse: true, unique: true },
+    });
+    expect(res.metadata.persistence.indexes['text']).toMatchObject({
+      name: 'text',
+      fields: { a: 1, c: 1 },
+      options: { sparse: true },
+    });
   });
 });

@@ -27,6 +27,7 @@ Object {
     "acl": Object {
       "execute": Array [],
     },
+    "entity": "User",
   },
   "name": "updateUser",
   "payload": Array [

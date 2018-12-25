@@ -18,6 +18,8 @@ describe('belongsToMany', () => {
         belongsToManyDefaultInput,
       ),
     );
+    expect(res.modelType).toBe('BelongsToMany');
+    expect(res.verb).toBe('BelongsToMany');
     expect(res.toObject()).toMatchSnapshot('toObject');
   });
 });

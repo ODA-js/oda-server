@@ -231,11 +231,17 @@ export class FieldBase<
       effect: (src, value) => (src.persistence.persistent = value),
     });
 
-    assignValue<T, I, boolean>({
+    assignValue<T, I, boolean | string | string[]>({
       src: this.metadata,
       input,
       inputField: 'identity',
       effect: (_, value) => {
+        if (typeof value === 'string') {
+          value = value.trim();
+        }
+        if (Array.isArray(value)) {
+          value = value.map(v => v.trim());
+        }
         this.metadata.persistence.identity = value;
         if (value) {
           this.metadata.persistence.required = true;
@@ -248,11 +254,19 @@ export class FieldBase<
       },
     });
 
-    assignValue<T, I, boolean>({
+    assignValue<T, I, boolean | string | string[]>({
       src: this.metadata,
       input,
       inputField: 'indexed',
-      effect: (src, value) => (src.persistence.indexed = value),
+      effect: (src, value) => {
+        if (typeof value === 'string') {
+          value = value.trim();
+        }
+        if (Array.isArray(value)) {
+          value = value.map(v => v.trim());
+        }
+        src.persistence.indexed = value;
+      },
     });
 
     assignValue<T, I, boolean>({

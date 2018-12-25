@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mixin default: default 1`] = `
+Object {
+  "description": undefined,
+  "fields": Array [
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "IMix",
+      "identity": true,
+      "indexed": true,
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "IMix",
+        "order": 0,
+        "persistence": Object {
+          "derived": false,
+          "identity": true,
+          "indexed": true,
+          "persistent": true,
+          "required": true,
+        },
+      },
+      "name": "id",
+      "order": 0,
+      "persistent": true,
+      "required": true,
+      "title": undefined,
+      "type": "string",
+    },
+  ],
+  "metadata": Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "name": Object {
+      "plural": "IMixes",
+      "singular": "IMix",
+    },
+    "persistence": Object {
+      "indexes": Object {
+        "id": Object {
+          "fields": Object {
+            "id": 1,
+          },
+          "name": "id",
+          "options": Object {
+            "unique": true,
+          },
+        },
+      },
+    },
+    "titlePlural": "IMixes",
+  },
+  "name": "IMix",
+  "operations": Array [],
+  "title": undefined,
+}
+`;

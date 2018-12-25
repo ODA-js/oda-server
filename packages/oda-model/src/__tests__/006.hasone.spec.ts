@@ -9,6 +9,8 @@ describe('hasOne', () => {
     expect(res.toObject()).toMatchObject(
       merge({ hasOne: 'id@A#id' }, hasOneDefaultInput),
     );
+    expect(res.modelType).toBe('HasOne');
+    expect(res.verb).toBe('HasOne');
     expect(res.toObject()).toMatchSnapshot('toObject');
   });
 });
