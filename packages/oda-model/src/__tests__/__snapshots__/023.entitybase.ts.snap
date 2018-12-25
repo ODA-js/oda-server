@@ -1229,6 +1229,38 @@ Object {
       "derived": false,
       "description": undefined,
       "entity": "A",
+      "identity": false,
+      "indexed": "text ab",
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": 3,
+        "persistence": Object {
+          "derived": false,
+          "identity": false,
+          "indexed": "text ab",
+          "persistent": true,
+          "required": false,
+        },
+      },
+      "name": "d",
+      "order": 3,
+      "persistent": true,
+      "required": false,
+      "title": undefined,
+      "type": "string",
+    },
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
       "identity": true,
       "indexed": true,
       "inheritedFrom": undefined,
@@ -1282,6 +1314,7 @@ Object {
           "fields": Object {
             "a": 1,
             "b": 1,
+            "d": 1,
           },
           "name": "ab",
           "options": Object {
@@ -1302,6 +1335,7 @@ Object {
           "fields": Object {
             "a": 1,
             "c": 1,
+            "d": 1,
           },
           "name": "text",
           "options": Object {

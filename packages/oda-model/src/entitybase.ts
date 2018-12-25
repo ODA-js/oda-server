@@ -215,7 +215,7 @@ export class EntityBase<
       this.mergeIndex(indexName, { name: indexName, ...entry });
     } else {
       indexName.forEach(index => {
-        this.mergeIndex(index, { name: index, entry });
+        this.mergeIndex(index, { name: index, ...entry });
       });
     }
   }

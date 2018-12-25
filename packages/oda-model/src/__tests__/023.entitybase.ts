@@ -207,17 +207,18 @@ describe('Indexing', () => {
         { name: 'a', identity: 'ab', indexed: 'text' },
         { name: 'b', indexed: 'ab' }, // not mentioned as identity
         { name: 'c', indexed: 'text' },
+        { name: 'd', indexed: 'text ab' }, //
       ],
     });
     expect(res.toObject()).toMatchSnapshot('complex identity index text');
     expect(res.metadata.persistence.indexes['ab']).toMatchObject({
       name: 'ab',
-      fields: { a: 1, b: 1 },
+      fields: { a: 1, b: 1, d: 1 },
       options: { sparse: true, unique: true },
     });
     expect(res.metadata.persistence.indexes['text']).toMatchObject({
       name: 'text',
-      fields: { a: 1, c: 1 },
+      fields: { a: 1, c: 1, d: 1 },
       options: { sparse: true },
     });
   });
