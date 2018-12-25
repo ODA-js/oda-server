@@ -1,7 +1,7 @@
 import 'jest';
 import { RelationField } from '../relationfield';
 
-describe('Relationfield', () => {
+describe('RelationField', () => {
   it('derived & persistent & required & indexed & identity', () => {
     const notRelated = new RelationField({
       name: 'PD',

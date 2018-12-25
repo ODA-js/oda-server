@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Relationfield belongsTo: belongsTo 1`] = `
+exports[`RelationField belongsTo: belongsTo 1`] = `
 RelationField {
   Symbol(internal): Object {
     "args": Map {},
@@ -50,7 +50,7 @@ RelationField {
 }
 `;
 
-exports[`Relationfield belongsTo: belongsTo to Object 1`] = `
+exports[`RelationField belongsTo: belongsTo to Object 1`] = `
 Object {
   "args": Object {},
   "derived": false,
@@ -103,7 +103,7 @@ Object {
 }
 `;
 
-exports[`Relationfield belongsToMany: belongsToMany 1`] = `
+exports[`RelationField belongsToMany: belongsToMany 1`] = `
 RelationField {
   Symbol(internal): Object {
     "args": Map {},
@@ -163,7 +163,7 @@ RelationField {
 }
 `;
 
-exports[`Relationfield belongsToMany: belongsToMany to Object 1`] = `
+exports[`RelationField belongsToMany: belongsToMany to Object 1`] = `
 Object {
   "args": Object {},
   "derived": false,
@@ -218,7 +218,7 @@ Object {
 }
 `;
 
-exports[`Relationfield hasMany: hasMany 1`] = `
+exports[`RelationField hasMany: hasMany 1`] = `
 RelationField {
   Symbol(internal): Object {
     "args": Map {},
@@ -269,7 +269,7 @@ RelationField {
 }
 `;
 
-exports[`Relationfield hasMany: hasMany to Object 1`] = `
+exports[`RelationField hasMany: hasMany to Object 1`] = `
 Object {
   "args": Object {},
   "derived": false,
@@ -322,7 +322,7 @@ Object {
 }
 `;
 
-exports[`Relationfield hasOne: hasOne 1`] = `
+exports[`RelationField hasOne: hasOne 1`] = `
 RelationField {
   Symbol(internal): Object {
     "args": Map {},
@@ -373,7 +373,7 @@ RelationField {
 }
 `;
 
-exports[`Relationfield hasOne: hasOne to Object 1`] = `
+exports[`RelationField hasOne: hasOne to Object 1`] = `
 Object {
   "args": Object {},
   "derived": false,

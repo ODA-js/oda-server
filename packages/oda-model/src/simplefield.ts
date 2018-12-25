@@ -60,8 +60,8 @@ export interface SimpleFieldOutput
   list?: boolean;
 }
 
-const defaultMetaInfo = {};
-const defaultInput = { metadata: defaultMetaInfo };
+export const simpleFieldDefaultMetaInfo = {};
+export const simpleFieldDefaultInput = { metadata: simpleFieldDefaultMetaInfo };
 
 export class SimpleField
   extends FieldBase<
@@ -92,7 +92,7 @@ export class SimpleField
   }
 
   constructor(init: SimpleFieldInput) {
-    super(merge({}, defaultInput, init));
+    super(merge({}, simpleFieldDefaultInput, init));
   }
 
   public updateWith(input: Nullable<SimpleFieldInput>) {

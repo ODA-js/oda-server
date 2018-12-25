@@ -79,11 +79,34 @@ export class EntityField
   public updateWith(input: Nullable<EntityFieldInput>) {
     super.updateWith(input);
 
+    assignValue<EntityFieldInternal, EntityFieldInput, boolean>({
+      src: this[Internal],
+      input,
+      field: 'list',
+      effect: (src, value) => {
+        if (src.type) {
+          src.type.multiplicity = value ? 'many' : 'one';
+        } else {
+          if (input.type) {
+            input.type.multiplicity = value ? 'many' : 'one';
+          }
+        }
+        src.list = value;
+      },
+      required: true,
+      setDefault: src => {
+        src.list = src.type ? src.type.multiplicity === 'many' : false;
+      },
+    });
+
     assignValue<EntityFieldInternal, EntityFieldInput, EntityType>({
       src: this[Internal],
       input,
       field: 'type',
       effect: (src, type) => {
+        if (!type.multiplicity) {
+          type.multiplicity = 'one';
+        }
         switch (type.multiplicity) {
           case 'one': {
             src.relation = new HasOne({
@@ -110,17 +133,6 @@ export class EntityField
         src.type = type;
       },
       required: true,
-    });
-
-    assignValue<EntityFieldInternal, EntityFieldInput, boolean>({
-      src: this[Internal],
-      input,
-      field: 'list',
-      effect: (src, _value) => {
-        src.list = src.type.multiplicity === 'many';
-      },
-      required: true,
-      setDefault: src => (src.list = false),
     });
 
     assignValue<EntityFieldMeta, EntityFieldInput, boolean>({

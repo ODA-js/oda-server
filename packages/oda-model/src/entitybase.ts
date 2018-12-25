@@ -123,7 +123,7 @@ export interface EntityBaseOutput<
   fields: NamedArray<FieldInput>;
 }
 
-const defaultMetaInfo = {
+export const entityBaseDefaultMetaInfo = {
   name: {},
   persistence: {
     indexes: {},
@@ -140,13 +140,13 @@ const defaultMetaInfo = {
   acl: {
     create: [],
     read: [],
-    upadte: [],
+    update: [],
     delete: [],
   },
 };
-const defaultInput = { metadata: defaultMetaInfo };
+export const entityBaseDefaultInput = { metadata: entityBaseDefaultMetaInfo };
 
-export abstract class EntityBase<
+export class EntityBase<
   M extends EntityBaseMetaInfo<MP>,
   I extends EntityBaseInput<M, MP>,
   P extends EntityBaseInternal,
@@ -158,7 +158,7 @@ export abstract class EntityBase<
   }
 
   constructor(init: I) {
-    super(merge({}, defaultInput, init));
+    super(merge({}, entityBaseDefaultInput, init));
   }
 
   get plural(): string {
@@ -238,8 +238,6 @@ export abstract class EntityBase<
   public updateWith(input: Nullable<I>) {
     super.updateWith(input);
 
-    const result = { ...this[Internal] };
-
     assignValue<P, I, string>({
       src: this[Internal],
       input,
@@ -258,6 +256,9 @@ export abstract class EntityBase<
       inputField: 'plural',
       effect: (src, value) => {
         src.name.plural = capitalize(value.trim());
+        if (src.name.plural === this.name) {
+          src.name.plural = `All${this.name}`;
+        }
       },
       setDefault: src => {
         src.name.plural = inflected.pluralize(this.name);
@@ -343,7 +344,7 @@ export abstract class EntityBase<
           f.updateWith({ identity: true } as Nullable<SimpleFieldInput>);
           this.updateIndex(f, { unique: true });
         } else {
-          f = new SimpleField({ ...DEFAULT_ID_FIELD, entity: result.name });
+          f = new SimpleField({ ...DEFAULT_ID_FIELD, entity: this.name });
           fields.set(f.name, f);
           this.updateIndex(f, { unique: true });
         }
@@ -359,7 +360,13 @@ export abstract class EntityBase<
         src.indexed = indexed;
         src.fields = fields;
       },
-      setDefault: src => (src.fields = new Map()),
+      setDefault: src =>
+        (src.fields = new Map([
+          [
+            DEFAULT_ID_FIELD.name,
+            new SimpleField({ ...DEFAULT_ID_FIELD, entity: this.name }),
+          ],
+        ] as [string, SimpleField][])),
     });
 
     assignValue<P, I, AsHash<OperationInput> | NamedArray<OperationInput>>({

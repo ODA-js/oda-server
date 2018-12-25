@@ -196,7 +196,7 @@ export type EntityType = {
   /**
    * multiplicity of it
    */
-  multiplicity: Multiplicity;
+  multiplicity?: Multiplicity;
 };
 
 export type EnumType = {

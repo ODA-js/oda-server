@@ -1,7 +1,19 @@
 import 'jest';
-import { FieldBase } from '../fieldbase';
+import {
+  FieldBase,
+  fieldBaseDefaultMetaInfo,
+  fieldBaseDefaultInput,
+} from '../fieldbase';
+import { merge } from 'lodash';
 
 describe('FieldBase', () => {
+  it('default 0', () => {
+    const res = new FieldBase({ name: 'a' });
+    expect(res.metadata).toMatchObject(fieldBaseDefaultMetaInfo);
+    expect(res.toObject()).toMatchObject(
+      merge({ name: 'a' }, fieldBaseDefaultInput),
+    );
+  });
   it('default', () => {
     const res = new FieldBase({
       name: 'FieldName',

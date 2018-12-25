@@ -104,7 +104,7 @@ export interface FieldBaseOutput<
   args: NamedArray<IFieldArgs>;
 }
 
-const defaultMetaInfo = {
+export const fieldBaseDefaultMetaInfo = {
   persistence: {
     derived: false,
     persistent: true,
@@ -119,7 +119,7 @@ const defaultMetaInfo = {
     // delete: [],
   },
 };
-const defaultInput = { metadata: defaultMetaInfo };
+export const fieldBaseDefaultInput = { metadata: fieldBaseDefaultMetaInfo };
 
 export class FieldBase<
   T extends FieldBaseMetaInfo<P>,
@@ -172,7 +172,7 @@ export class FieldBase<
   }
 
   constructor(init: I) {
-    super(merge({}, defaultInput, init));
+    super(merge({}, fieldBaseDefaultInput, init));
   }
 
   public updateWith(input: Nullable<I>) {

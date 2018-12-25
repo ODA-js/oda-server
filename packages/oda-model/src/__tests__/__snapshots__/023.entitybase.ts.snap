@@ -1,0 +1,759 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EntityBase creates specified field with specified types: object with fields 1`] = `
+EntityBase {
+  Symbol(internal): Object {
+    "fields": Map {
+      "a" => SimpleField {
+        Symbol(internal): Object {
+          "args": Map {},
+          "list": false,
+          "name": "a",
+          "type": "string",
+        },
+        Symbol(metadata): Object {
+          "acl": Object {
+            "read": Array [],
+            "update": Array [],
+          },
+          "entity": "A",
+          "order": 0,
+          "persistence": Object {
+            "derived": false,
+            "identity": false,
+            "indexed": false,
+            "persistent": true,
+            "required": false,
+          },
+        },
+      },
+      "b" => SimpleField {
+        Symbol(internal): Object {
+          "args": Map {},
+          "list": false,
+          "name": "b",
+          "type": Object {
+            "multiplicity": "one",
+            "name": "BBB",
+            "type": "enum",
+          },
+        },
+        Symbol(metadata): Object {
+          "acl": Object {
+            "read": Array [],
+            "update": Array [],
+          },
+          "entity": "A",
+          "order": 1,
+          "persistence": Object {
+            "derived": false,
+            "identity": false,
+            "indexed": false,
+            "persistent": true,
+            "required": false,
+          },
+        },
+      },
+      "c" => EntityField {
+        Symbol(internal): Object {
+          "args": Map {},
+          "list": false,
+          "name": "c",
+          "relation": HasOne {
+            Symbol(internal): Object {
+              "entity": "A",
+              "field": "c",
+              "hasOne": EntityReference {
+                Symbol(internal): Object {
+                  "backField": "id",
+                  "entity": "CCC",
+                  "field": "id",
+                },
+                Symbol(metadata): Object {},
+              },
+              "name": "AHasOneC",
+            },
+            Symbol(metadata): Object {
+              "name": Object {
+                "full": "AHasOneC",
+                "normal": "AC",
+                "short": "C",
+              },
+              "persistence": Object {
+                "embedded": true,
+                "single": true,
+                "stored": false,
+              },
+              "verb": "HasOne",
+            },
+          },
+          "type": Object {
+            "multiplicity": "one",
+            "name": "CCC",
+            "type": "entity",
+          },
+        },
+        Symbol(metadata): Object {
+          "acl": Object {
+            "create": Array [],
+            "delete": Array [],
+            "read": Array [],
+            "update": Array [],
+          },
+          "entity": "A",
+          "order": 2,
+          "persistence": Object {
+            "derived": false,
+            "identity": false,
+            "indexed": false,
+            "persistent": false,
+            "required": false,
+          },
+        },
+      },
+      "d" => RelationField {
+        Symbol(internal): Object {
+          "args": Map {},
+          "name": "d",
+          "relation": HasOne {
+            Symbol(internal): Object {
+              "entity": "A",
+              "field": "d",
+              "hasOne": EntityReference {
+                Symbol(internal): Object {
+                  "backField": "id",
+                  "entity": "CCC",
+                  "field": "id",
+                },
+                Symbol(metadata): Object {},
+              },
+              "name": "AHasOneD",
+            },
+            Symbol(metadata): Object {
+              "name": Object {
+                "full": "AHasOneD",
+                "normal": "AD",
+                "short": "D",
+              },
+              "persistence": Object {
+                "embedded": false,
+                "single": true,
+                "stored": false,
+              },
+              "verb": "HasOne",
+            },
+          },
+        },
+        Symbol(metadata): Object {
+          "acl": Object {
+            "create": Array [],
+            "delete": Array [],
+            "read": Array [],
+            "update": Array [],
+          },
+          "entity": "A",
+          "order": 3,
+          "persistence": Object {
+            "derived": false,
+            "identity": false,
+            "indexed": false,
+            "persistent": false,
+            "required": false,
+          },
+        },
+      },
+      "id" => SimpleField {
+        Symbol(internal): Object {
+          "args": Map {},
+          "idKey": EntityReference {
+            Symbol(internal): Object {
+              "backField": "id",
+              "entity": "A",
+              "field": "id",
+            },
+            Symbol(metadata): Object {},
+          },
+          "list": false,
+          "name": "id",
+          "type": "ID",
+        },
+        Symbol(metadata): Object {
+          "acl": Object {
+            "read": Array [],
+            "update": Array [],
+          },
+          "entity": "A",
+          "persistence": Object {
+            "derived": false,
+            "identity": true,
+            "indexed": true,
+            "persistent": true,
+            "required": true,
+          },
+        },
+      },
+    },
+    "identity": Set {
+      "id",
+    },
+    "indexed": Set {
+      "id",
+    },
+    "name": "A",
+    "operations": Map {},
+    "relations": Set {
+      "c",
+      "d",
+    },
+    "required": Set {
+      "id",
+    },
+  },
+  Symbol(metadata): Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "name": Object {
+      "plural": "As",
+      "singular": "A",
+    },
+    "persistence": Object {
+      "indexes": Object {
+        "id": Object {
+          "fields": Object {
+            "id": 1,
+          },
+          "name": "id",
+          "options": Object {
+            "unique": true,
+          },
+        },
+      },
+    },
+    "titlePlural": "As",
+  },
+}
+`;
+
+exports[`EntityBase creates specified field with specified types: toObject with fields 1`] = `
+Object {
+  "description": undefined,
+  "fields": Array [
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": false,
+      "indexed": false,
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": 0,
+        "persistence": Object {
+          "derived": false,
+          "identity": false,
+          "indexed": false,
+          "persistent": true,
+          "required": false,
+        },
+      },
+      "name": "a",
+      "order": 0,
+      "persistent": true,
+      "required": false,
+      "title": undefined,
+      "type": "string",
+    },
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": false,
+      "indexed": false,
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": 1,
+        "persistence": Object {
+          "derived": false,
+          "identity": false,
+          "indexed": false,
+          "persistent": true,
+          "required": false,
+        },
+      },
+      "name": "b",
+      "order": 1,
+      "persistent": true,
+      "required": false,
+      "title": undefined,
+      "type": Object {
+        "multiplicity": "one",
+        "name": "BBB",
+        "type": "enum",
+      },
+    },
+    Object {
+      "args": Object {},
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": false,
+      "indexed": false,
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "create": Array [],
+          "delete": Array [],
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": 2,
+        "persistence": Object {
+          "derived": false,
+          "identity": false,
+          "indexed": false,
+          "persistent": false,
+          "required": false,
+        },
+      },
+      "name": "c",
+      "order": 2,
+      "persistent": false,
+      "required": false,
+      "title": undefined,
+      "type": Object {
+        "multiplicity": "one",
+        "name": "CCC",
+        "type": "entity",
+      },
+    },
+    Object {
+      "args": Object {},
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": false,
+      "indexed": false,
+      "inheritedFrom": undefined,
+      "metadata": Object {
+        "acl": Object {
+          "create": Array [],
+          "delete": Array [],
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "order": 3,
+        "persistence": Object {
+          "derived": false,
+          "identity": false,
+          "indexed": false,
+          "persistent": false,
+          "required": false,
+        },
+      },
+      "name": "d",
+      "order": 3,
+      "persistent": false,
+      "relation": Object {
+        "embedded": false,
+        "entity": "A",
+        "field": "d",
+        "hasOne": "id@CCC#id",
+        "metadata": Object {
+          "name": Object {
+            "full": "AHasOneD",
+            "normal": "AD",
+            "short": "D",
+          },
+          "persistence": Object {
+            "embedded": false,
+            "single": true,
+            "stored": false,
+          },
+          "verb": "HasOne",
+        },
+        "name": "AHasOneD",
+        "opposite": undefined,
+      },
+      "required": false,
+      "title": undefined,
+    },
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": true,
+      "indexed": true,
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "persistence": Object {
+          "derived": false,
+          "identity": true,
+          "indexed": true,
+          "persistent": true,
+          "required": true,
+        },
+      },
+      "name": "id",
+      "order": undefined,
+      "persistent": true,
+      "required": true,
+      "title": undefined,
+      "type": "ID",
+    },
+  ],
+  "metadata": Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "name": Object {
+      "plural": "As",
+      "singular": "A",
+    },
+    "persistence": Object {
+      "indexes": Object {
+        "id": Object {
+          "fields": Object {
+            "id": 1,
+          },
+          "name": "id",
+          "options": Object {
+            "unique": true,
+          },
+        },
+      },
+    },
+    "titlePlural": "As",
+  },
+  "name": "A",
+  "operations": Array [],
+  "title": undefined,
+}
+`;
+
+exports[`EntityBase default has no Singular: toObject 1`] = `
+Object {
+  "description": undefined,
+  "fields": Array [
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "Species",
+      "identity": true,
+      "indexed": true,
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "Species",
+        "persistence": Object {
+          "derived": false,
+          "identity": true,
+          "indexed": true,
+          "persistent": true,
+          "required": true,
+        },
+      },
+      "name": "id",
+      "order": undefined,
+      "persistent": true,
+      "required": true,
+      "title": undefined,
+      "type": "ID",
+    },
+  ],
+  "metadata": Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "name": Object {
+      "plural": "AllSpecies",
+      "singular": "Species",
+    },
+    "persistence": Object {
+      "indexes": Object {},
+    },
+    "titlePlural": "AllSpecies",
+  },
+  "name": "Species",
+  "operations": Array [],
+  "title": undefined,
+}
+`;
+
+exports[`EntityBase default: toObject 1`] = `
+Object {
+  "description": undefined,
+  "fields": Array [
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": true,
+      "indexed": true,
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "persistence": Object {
+          "derived": false,
+          "identity": true,
+          "indexed": true,
+          "persistent": true,
+          "required": true,
+        },
+      },
+      "name": "id",
+      "order": undefined,
+      "persistent": true,
+      "required": true,
+      "title": undefined,
+      "type": "ID",
+    },
+  ],
+  "metadata": Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "name": Object {
+      "plural": "As",
+      "singular": "A",
+    },
+    "persistence": Object {
+      "indexes": Object {},
+    },
+    "titlePlural": "As",
+  },
+  "name": "A",
+  "operations": Array [],
+  "title": undefined,
+}
+`;
+
+exports[`EntityBase should accept non default identity field: non default id fields 1`] = `
+Object {
+  "args": Object {},
+  "defaultValue": undefined,
+  "derived": false,
+  "description": undefined,
+  "entity": "A",
+  "identity": true,
+  "indexed": true,
+  "inheritedFrom": undefined,
+  "list": false,
+  "metadata": Object {
+    "acl": Object {
+      "read": Array [],
+      "update": Array [],
+    },
+    "entity": "A",
+    "order": 0,
+    "persistence": Object {
+      "derived": false,
+      "identity": true,
+      "indexed": true,
+      "persistent": true,
+      "required": true,
+    },
+  },
+  "name": "id",
+  "order": 0,
+  "persistent": true,
+  "required": true,
+  "title": undefined,
+  "type": "string",
+}
+`;
+
+exports[`EntityBase should take operations: toObject with operations 1`] = `
+Object {
+  "description": undefined,
+  "fields": Array [
+    Object {
+      "args": Object {},
+      "defaultValue": undefined,
+      "derived": false,
+      "description": undefined,
+      "entity": "A",
+      "identity": true,
+      "indexed": true,
+      "inheritedFrom": undefined,
+      "list": false,
+      "metadata": Object {
+        "acl": Object {
+          "read": Array [],
+          "update": Array [],
+        },
+        "entity": "A",
+        "persistence": Object {
+          "derived": false,
+          "identity": true,
+          "indexed": true,
+          "persistent": true,
+          "required": true,
+        },
+      },
+      "name": "id",
+      "order": undefined,
+      "persistent": true,
+      "required": true,
+      "title": undefined,
+      "type": "ID",
+    },
+  ],
+  "metadata": Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "name": Object {
+      "plural": "As",
+      "singular": "A",
+    },
+    "persistence": Object {
+      "indexes": Object {},
+    },
+    "titlePlural": "As",
+  },
+  "name": "A",
+  "operations": Array [
+    Object {
+      "actionType": "create",
+      "args": Array [
+        Object {
+          "defaultValue": undefined,
+          "metadata": Object {},
+          "multiplicity": "one",
+          "name": "id",
+          "required": false,
+          "type": "string",
+        },
+        Object {
+          "defaultValue": undefined,
+          "metadata": Object {},
+          "multiplicity": "many",
+          "name": "fields",
+          "required": false,
+          "type": "string",
+        },
+      ],
+      "description": undefined,
+      "inheritedFrom": undefined,
+      "metadata": Object {
+        "acl": Object {
+          "execute": Array [],
+        },
+      },
+      "name": "updateUser",
+      "payload": Array [
+        Object {
+          "defaultValue": undefined,
+          "metadata": Object {},
+          "multiplicity": "many",
+          "name": "result",
+          "required": false,
+          "type": "string",
+        },
+      ],
+      "title": undefined,
+    },
+  ],
+  "title": undefined,
+}
+`;

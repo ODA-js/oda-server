@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EntityField default many: default 1`] = `
+Object {
+  "args": Object {},
+  "derived": false,
+  "description": undefined,
+  "entity": undefined,
+  "identity": false,
+  "indexed": false,
+  "inheritedFrom": undefined,
+  "list": true,
+  "metadata": Object {
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": false,
+      "required": false,
+    },
+  },
+  "name": "a",
+  "order": undefined,
+  "persistent": false,
+  "required": false,
+  "title": undefined,
+  "type": Object {
+    "multiplicity": "many",
+    "name": "b",
+    "type": "entity",
+  },
+}
+`;
+
+exports[`EntityField default many: default 2`] = `
+EntityField {
+  Symbol(internal): Object {
+    "args": Map {},
+    "list": true,
+    "name": "a",
+    "relation": HasMany {
+      Symbol(internal): Object {
+        "field": "a",
+        "hasMany": EntityReference {
+          Symbol(internal): Object {
+            "backField": "id",
+            "entity": "B",
+            "field": "id",
+          },
+          Symbol(metadata): Object {},
+        },
+        "name": "HasManyAs",
+      },
+      Symbol(metadata): Object {
+        "name": Object {
+          "full": "HasManyAs",
+          "normal": "As",
+          "short": "As",
+        },
+        "persistence": Object {
+          "embedded": true,
+          "single": false,
+          "stored": false,
+        },
+        "verb": "HasMany",
+      },
+    },
+    "type": Object {
+      "multiplicity": "many",
+      "name": "b",
+      "type": "entity",
+    },
+  },
+  Symbol(metadata): Object {
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": false,
+      "required": false,
+    },
+  },
+}
+`;
+
+exports[`EntityField default: default 1`] = `
+Object {
+  "args": Object {},
+  "derived": false,
+  "description": undefined,
+  "entity": undefined,
+  "identity": false,
+  "indexed": false,
+  "inheritedFrom": undefined,
+  "list": false,
+  "metadata": Object {
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": false,
+      "required": false,
+    },
+  },
+  "name": "a",
+  "order": undefined,
+  "persistent": false,
+  "required": false,
+  "title": undefined,
+  "type": Object {
+    "multiplicity": "one",
+    "name": "b",
+    "type": "entity",
+  },
+}
+`;
+
+exports[`EntityField default: default 2`] = `
+EntityField {
+  Symbol(internal): Object {
+    "args": Map {},
+    "list": false,
+    "name": "a",
+    "relation": HasOne {
+      Symbol(internal): Object {
+        "field": "a",
+        "hasOne": EntityReference {
+          Symbol(internal): Object {
+            "backField": "id",
+            "entity": "B",
+            "field": "id",
+          },
+          Symbol(metadata): Object {},
+        },
+        "name": "HasOneA",
+      },
+      Symbol(metadata): Object {
+        "name": Object {
+          "full": "HasOneA",
+          "normal": "A",
+          "short": "A",
+        },
+        "persistence": Object {
+          "embedded": true,
+          "single": true,
+          "stored": false,
+        },
+        "verb": "HasOne",
+      },
+    },
+    "type": Object {
+      "multiplicity": "one",
+      "name": "b",
+      "type": "entity",
+    },
+  },
+  Symbol(metadata): Object {
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "read": Array [],
+      "update": Array [],
+    },
+    "persistence": Object {
+      "derived": false,
+      "identity": false,
+      "indexed": false,
+      "persistent": false,
+      "required": false,
+    },
+  },
+}
+`;
