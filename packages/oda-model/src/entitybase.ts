@@ -224,11 +224,7 @@ export class EntityBase<
     const indexes = this.metadata.persistence.indexes;
     if (this.metadata.persistence.indexes.hasOwnProperty(index)) {
       indexes[index] = merge(indexes[index], entry);
-      if (Array.isArray(indexes[index].name)) {
-        indexes[index].name = indexes[index].name[0];
-      } else {
-        indexes[index].name = indexes[index].name;
-      }
+      indexes[index].name = indexes[index].name;
     } else {
       indexes[index] = entry;
     }
@@ -280,11 +276,6 @@ export class EntityBase<
       input,
       field: 'fields',
       effect: (src, value) => {
-        const relations = new Set();
-        const identity = new Set();
-        const required = new Set();
-        const indexed = new Set();
-
         const fields = new Map(
           (Array.isArray(value) ? value : HashToArray(value))
             .map((fld, order) => {
@@ -297,15 +288,10 @@ export class EntityBase<
                   } as Partial<SimpleFieldInput>),
                 );
                 if (field.identity) {
-                  identity.add(field.name);
                   this.updateIndex(field, { unique: true, sparse: true });
                 }
 
-                if (field.required) {
-                  required.add(field.name);
-                }
                 if (field.indexed) {
-                  indexed.add(field.name);
                   this.updateIndex(field, { sparse: true });
                 }
               } else if (isRelationFieldInput(fld)) {
@@ -315,9 +301,6 @@ export class EntityBase<
                     entity: this.name,
                   } as Partial<RelationFieldInput>),
                 );
-                if (field.relation) {
-                  relations.add(field.name);
-                }
               } else {
                 field = new EntityField(
                   merge({}, fld, {
@@ -325,9 +308,6 @@ export class EntityBase<
                     entity: this.name,
                   } as Partial<EntityFieldInput>),
                 );
-                if (field.relation) {
-                  relations.add(field.name);
-                }
               }
               return field;
             })
@@ -353,14 +333,6 @@ export class EntityBase<
         }
 
         f.makeIdentity();
-        indexed.add(f.name);
-        identity.add(f.name);
-        required.add(f.name);
-
-        src.relations = relations;
-        src.identity = identity;
-        src.required = required;
-        src.indexed = indexed;
         src.fields = fields;
       },
       setDefault: src =>
@@ -397,17 +369,46 @@ export class EntityBase<
       },
       setDefault: src => (src.operations = new Map<string, Operation>()),
     });
+    this.updateSummary();
   }
 
-  public ensureIndexes() {
+  public updateSummary() {
+    const internal = this[Internal];
+    const relations = new Set();
+    const identity = new Set();
+    const required = new Set();
+    const indexed = new Set();
+
     this.fields.forEach(f => {
       if (f.identity) {
-        this.updateIndex(f, {});
-      } else if (f.indexed) {
-        this.updateIndex(f, {});
+        identity.add(f.name);
+      }
+      if (f.required) {
+        required.add(f.name);
+      }
+      if (f.indexed) {
+        indexed.add(f.name);
+      }
+      if (f.modelType === 'relation-field') {
+        relations.add(f.name);
       }
     });
+
+    internal.relations = relations;
+    internal.identity = identity;
+    internal.required = required;
+    internal.indexed = indexed;
   }
+
+  // public ensureIndexes() {
+  //   this.fields.forEach(f => {
+  //     if (f.identity) {
+  //       this.updateIndex(f, {});
+  //     } else if (f.indexed) {
+  //       this.updateIndex(f, {});
+  //     }
+  //   });
+  // }
 
   public toObject(): O {
     return merge({}, super.toObject(), {

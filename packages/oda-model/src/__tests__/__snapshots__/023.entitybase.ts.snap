@@ -203,7 +203,6 @@ EntityBase {
     "name": "A",
     "operations": Map {},
     "relations": Set {
-      "c",
       "d",
     },
     "required": Set {
