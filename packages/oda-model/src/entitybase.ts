@@ -49,6 +49,7 @@ export interface IEntityBase<
   readonly identity: Set<string>;
   readonly required: Set<string>;
   readonly indexed: Set<string>;
+  readonly exact: boolean;
 }
 
 export interface IndexEntry {
@@ -105,6 +106,8 @@ export interface EntityBaseInternal extends ModelBaseInternal {
   identity: Set<string>;
   required: Set<string>;
   indexed: Set<string>;
+  /** not applies anything */
+  exact: boolean;
 }
 
 export interface EntityBaseInput<
@@ -115,6 +118,8 @@ export interface EntityBaseInput<
   titlePlural?: string;
   operations?: AsHash<OperationInput> | NamedArray<OperationInput>;
   fields?: AsHash<FieldInput> | NamedArray<FieldInput>;
+  /** not applies anything */
+  exact?: boolean;
 }
 
 export interface EntityBaseOutput<
@@ -143,12 +148,16 @@ export const entityBaseDefaultMetaInfo = {
   },
   acl: {
     create: [],
-    read: [],
+    readOne: [],
+    readMany: [],
     update: [],
     delete: [],
   },
 };
-export const entityBaseDefaultInput = { metadata: entityBaseDefaultMetaInfo };
+export const entityBaseDefaultInput = {
+  metadata: entityBaseDefaultMetaInfo,
+  exact: false,
+};
 
 export class EntityBase<
   M extends EntityBaseMetaInfo<MP>,
@@ -163,6 +172,9 @@ export class EntityBase<
 
   constructor(init: I) {
     super(merge({}, entityBaseDefaultInput, init));
+  }
+  get exact(): boolean {
+    return this[Internal].exact;
   }
 
   get plural(): string {
@@ -248,6 +260,16 @@ export class EntityBase<
       required: true,
     });
 
+    assignValue<P, I, boolean>({
+      src: this[Internal],
+      input,
+      field: 'exact',
+      effect: (src, value) => {
+        src.exact = value;
+      },
+      required: true,
+    });
+
     assignValue<M, I, string>({
       src: this.metadata,
       input,
@@ -317,26 +339,28 @@ export class EntityBase<
             })
             .map(f => [f.name, f] as [string, Field]),
         );
-        let f: SimpleField;
-        if (fields.has('id')) {
-          f = fields.get('id') as SimpleField;
-          f.updateWith({ identity: true } as Nullable<SimpleFieldInput>);
-          this.updateIndex(f, { unique: true });
-        } else if (fields.has('_id')) {
-          f = fields.get('_id') as SimpleField;
-          f.updateWith({ identity: true } as Nullable<SimpleFieldInput>);
-          this.updateIndex(f, { unique: true });
-        } else {
-          f = new SimpleField({
-            ...DEFAULT_ID_FIELD,
-            entity: this.name,
-            order: -1,
-          });
-          fields.set(f.name, f);
-          this.updateIndex(f, { unique: true });
-        }
+        if (!this[Internal].exact) {
+          let f: SimpleField;
+          if (fields.has('id')) {
+            f = fields.get('id') as SimpleField;
+            f.updateWith({ identity: true } as Nullable<SimpleFieldInput>);
+            this.updateIndex(f, { unique: true });
+          } else if (fields.has('_id')) {
+            f = fields.get('_id') as SimpleField;
+            f.updateWith({ identity: true } as Nullable<SimpleFieldInput>);
+            this.updateIndex(f, { unique: true });
+          } else {
+            f = new SimpleField({
+              ...DEFAULT_ID_FIELD,
+              entity: this.name,
+              order: -1,
+            });
+            fields.set(f.name, f);
+            this.updateIndex(f, { unique: true });
+          }
 
-        f.makeIdentity();
+          f.makeIdentity();
+        }
         src.fields = fields;
       },
       setDefault: src =>

@@ -11,7 +11,7 @@ import { MetaModelType, INamed } from './types';
 import { merge } from 'lodash';
 import { Nullable, assignValue } from './types';
 
-export interface ModelMetaInfo extends ElementMetaInfo {}
+export interface ModelBaseMetaInfo extends ElementMetaInfo {}
 
 export interface ModelBaseInternal extends ElementInternal {
   name: string;
@@ -19,14 +19,14 @@ export interface ModelBaseInternal extends ElementInternal {
   description?: string;
 }
 
-export interface ModelBaseInput<T extends ModelMetaInfo>
+export interface ModelBaseInput<T extends ModelBaseMetaInfo>
   extends ElementInput<T> {
   name: string;
   title?: string;
   description?: string;
 }
 
-export interface ModelBaseOutput<T extends ModelMetaInfo>
+export interface ModelBaseOutput<T extends ModelBaseMetaInfo>
   extends ElementOutput<T> {
   name: string;
   title?: string;
@@ -37,7 +37,7 @@ export interface ModelBaseOutput<T extends ModelMetaInfo>
  * the base model item
  */
 export interface IModelBase<
-  T extends ModelMetaInfo,
+  T extends ModelBaseMetaInfo,
   I extends ModelBaseInput<T>,
   O extends ModelBaseOutput<T>
 > extends IMeta<T, I, O>, INamed {

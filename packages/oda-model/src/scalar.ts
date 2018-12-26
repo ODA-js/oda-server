@@ -6,8 +6,8 @@ import {
   ModelBaseInternal,
   IModelBase,
   ModelBaseOutput,
+  ModelBaseMetaInfo,
 } from './modelbase';
-import { ElementMetaInfo } from './element';
 
 /**
  * scalar item
@@ -15,7 +15,7 @@ import { ElementMetaInfo } from './element';
 export interface IScalar
   extends IModelBase<ScalarMetaInfo, ScalarInput, ScalarOutput> {}
 
-export interface ScalarMetaInfo extends ElementMetaInfo {}
+export interface ScalarMetaInfo extends ModelBaseMetaInfo {}
 
 export interface ScalarInternal extends ModelBaseInternal {}
 

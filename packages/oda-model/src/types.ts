@@ -134,6 +134,7 @@ export type MetaModelType =
   | 'operation'
   | 'ref'
   | 'args'
+  | 'model-hook'
   | RelationType;
 
 export type Multiplicity = 'one' | 'many';

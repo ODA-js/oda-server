@@ -50,7 +50,8 @@ Object {
     "acl": Object {
       "create": Array [],
       "delete": Array [],
-      "read": Array [],
+      "readMany": Array [],
+      "readOne": Array [],
       "update": Array [],
     },
     "name": Object {

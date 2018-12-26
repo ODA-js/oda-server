@@ -5,10 +5,12 @@ Object {
   "args": Array [
     Object {
       "defaultValue": undefined,
+      "description": undefined,
       "metadata": Object {},
       "multiplicity": "one",
       "name": "disabled",
       "required": false,
+      "title": undefined,
       "type": "boolean",
     },
   ],
@@ -22,10 +24,12 @@ Object {
   "payload": Array [
     Object {
       "defaultValue": undefined,
+      "description": undefined,
       "metadata": Object {},
       "multiplicity": "many",
       "name": "id",
       "required": true,
+      "title": undefined,
       "type": "string",
     },
   ],

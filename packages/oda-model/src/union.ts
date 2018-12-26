@@ -1,11 +1,12 @@
 import { merge } from 'lodash';
-import { ElementMetaInfo, Internal } from './element';
+import { Internal } from './element';
 import {
   ModelBaseInternal,
   ModelBaseInput,
   ModelBase,
   IModelBase,
   ModelBaseOutput,
+  ModelBaseMetaInfo,
 } from './modelbase';
 import { MetaModelType, Nullable, assignValue } from './types';
 import capitalize from './lib/capitalize';
@@ -21,7 +22,7 @@ export interface IUnion
   readonly items: Set<string>;
 }
 
-export interface UnionMetaInfo extends ElementMetaInfo {}
+export interface UnionMetaInfo extends ModelBaseMetaInfo {}
 
 export interface UnionInternal extends ModelBaseInternal {
   items: Set<string>;

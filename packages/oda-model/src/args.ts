@@ -8,17 +8,16 @@ import {
   IFieldArgs,
   IFieldArgsForHash,
 } from './types';
+import { Internal } from './element';
 import {
-  ElementMetaInfo,
-  ElementInternal,
-  Element,
-  ElementInput,
-  ElementOutput,
-  IUpdatable,
-  Internal,
-} from './element';
-
-export interface IArgs extends IUpdatable<ArgsMetaInfo, ArgsInput, ArgsOutput> {
+  ModelBase,
+  IModelBase,
+  ModelBaseInternal,
+  ModelBaseInput,
+  ModelBaseOutput,
+  ModelBaseMetaInfo,
+} from './modelbase';
+export interface IArgs extends IModelBase<ArgsMetaInfo, ArgsInput, ArgsOutput> {
   readonly name: string;
   readonly type: string;
   readonly required: boolean;
@@ -26,26 +25,23 @@ export interface IArgs extends IUpdatable<ArgsMetaInfo, ArgsInput, ArgsOutput> {
   readonly multiplicity: Multiplicity;
 }
 
-export interface ArgsMetaInfo extends ElementMetaInfo {}
+export interface ArgsMetaInfo extends ModelBaseMetaInfo {}
 
-export interface ArgsInternal extends ElementInternal {
-  name: string;
+export interface ArgsInternal extends ModelBaseInternal {
   type: string;
   required: boolean;
   defaultValue?: string;
   multiplicity: Multiplicity;
 }
 
-export interface ArgsInput extends ElementInput<ArgsMetaInfo> {
-  name: string;
+export interface ArgsInput extends ModelBaseInput<ArgsMetaInfo> {
   type?: string;
   required?: boolean;
   defaultValue?: string;
   multiplicity?: Multiplicity;
 }
 
-export interface ArgsOutput extends ElementOutput<ArgsMetaInfo> {
-  name: string;
+export interface ArgsOutput extends ModelBaseOutput<ArgsMetaInfo> {
   type: string;
   required: boolean;
   defaultValue?: string;
@@ -58,14 +54,12 @@ export const argsDefaultInput = {
 };
 
 export class Args
-  extends Element<ArgsMetaInfo, ArgsInput, ArgsInternal, ArgsOutput>
+  extends ModelBase<ArgsMetaInfo, ArgsInput, ArgsInternal, ArgsOutput>
   implements IArgs, IFieldArgs, IFieldArgsForHash {
   public get modelType(): MetaModelType {
     return 'args';
   }
-  public get name(): string {
-    return this[Internal].name;
-  }
+
   public get type(): string {
     return this[Internal].type;
   }
@@ -88,13 +82,6 @@ export class Args
 
   public updateWith(input: Nullable<ArgsInput>) {
     super.updateWith(input);
-
-    assignValue<ArgsInternal, ArgsInput, ArgsInput['name']>({
-      src: this[Internal],
-      input,
-      field: 'name',
-      required: true,
-    });
 
     assignValue<ArgsInternal, ArgsInput, ArgsInput['type']>({
       src: this[Internal],

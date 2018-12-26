@@ -1,5 +1,5 @@
 import { merge } from 'lodash';
-import { ElementMetaInfo, Internal } from './element';
+import { Internal } from './element';
 import {
   IFieldArgs,
   AsHash,
@@ -17,6 +17,7 @@ import {
   ModelBaseInput,
   ModelBase,
   ModelBaseOutput,
+  ModelBaseMetaInfo,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
 import { IArgs, Args } from './args';
@@ -33,7 +34,7 @@ export interface IMutation
   readonly payload: Map<string, IArgs>;
 }
 
-export interface MutationMetaInfo extends ElementMetaInfo {
+export interface MutationMetaInfo extends ModelBaseMetaInfo {
   acl: {
     /** if packages allowed to execute mutation */
     execute: string[];

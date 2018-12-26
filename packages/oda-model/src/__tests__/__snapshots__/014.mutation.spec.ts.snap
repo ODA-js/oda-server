@@ -5,18 +5,22 @@ Object {
   "args": Array [
     Object {
       "defaultValue": undefined,
+      "description": undefined,
       "metadata": Object {},
       "multiplicity": "one",
       "name": "login",
       "required": false,
+      "title": undefined,
       "type": "string",
     },
     Object {
       "defaultValue": undefined,
+      "description": undefined,
       "metadata": Object {},
       "multiplicity": "one",
       "name": "password",
       "required": false,
+      "title": undefined,
       "type": "string",
     },
   ],
@@ -30,10 +34,12 @@ Object {
   "payload": Array [
     Object {
       "defaultValue": undefined,
+      "description": undefined,
       "metadata": Object {},
       "multiplicity": "one",
       "name": "token",
       "required": false,
+      "title": undefined,
       "type": "string",
     },
   ],

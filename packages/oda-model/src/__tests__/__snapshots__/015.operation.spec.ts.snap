@@ -6,18 +6,22 @@ Object {
   "args": Array [
     Object {
       "defaultValue": undefined,
+      "description": undefined,
       "metadata": Object {},
       "multiplicity": "one",
       "name": "id",
       "required": false,
+      "title": undefined,
       "type": "string",
     },
     Object {
       "defaultValue": undefined,
+      "description": undefined,
       "metadata": Object {},
       "multiplicity": "many",
       "name": "fields",
       "required": false,
+      "title": undefined,
       "type": "string",
     },
   ],
@@ -33,10 +37,12 @@ Object {
   "payload": Array [
     Object {
       "defaultValue": undefined,
+      "description": undefined,
       "metadata": Object {},
       "multiplicity": "many",
       "name": "result",
       "required": false,
+      "title": undefined,
       "type": "string",
     },
   ],

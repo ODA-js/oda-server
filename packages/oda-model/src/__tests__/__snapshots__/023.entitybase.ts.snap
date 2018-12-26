@@ -3,6 +3,7 @@
 exports[`EntityBase creates specified field with specified types: object with fields 1`] = `
 EntityBase {
   Symbol(internal): Object {
+    "exact": false,
     "fields": Map {
       "a" => SimpleField {
         Symbol(internal): Object {
@@ -221,7 +222,8 @@ EntityBase {
     "acl": Object {
       "create": Array [],
       "delete": Array [],
-      "read": Array [],
+      "readMany": Array [],
+      "readOne": Array [],
       "update": Array [],
     },
     "name": Object {
@@ -453,7 +455,8 @@ Object {
     "acl": Object {
       "create": Array [],
       "delete": Array [],
-      "read": Array [],
+      "readMany": Array [],
+      "readOne": Array [],
       "update": Array [],
     },
     "name": Object {
@@ -531,7 +534,8 @@ Object {
     "acl": Object {
       "create": Array [],
       "delete": Array [],
-      "read": Array [],
+      "readMany": Array [],
+      "readOne": Array [],
       "update": Array [],
     },
     "name": Object {
@@ -599,7 +603,8 @@ Object {
     "acl": Object {
       "create": Array [],
       "delete": Array [],
-      "read": Array [],
+      "readMany": Array [],
+      "readOne": Array [],
       "update": Array [],
     },
     "name": Object {
@@ -737,7 +742,8 @@ Object {
     "acl": Object {
       "create": Array [],
       "delete": Array [],
-      "read": Array [],
+      "readMany": Array [],
+      "readOne": Array [],
       "update": Array [],
     },
     "name": Object {
@@ -756,18 +762,22 @@ Object {
       "args": Array [
         Object {
           "defaultValue": undefined,
+          "description": undefined,
           "metadata": Object {},
           "multiplicity": "one",
           "name": "id",
           "required": false,
+          "title": undefined,
           "type": "string",
         },
         Object {
           "defaultValue": undefined,
+          "description": undefined,
           "metadata": Object {},
           "multiplicity": "many",
           "name": "fields",
           "required": false,
+          "title": undefined,
           "type": "string",
         },
       ],
@@ -784,10 +794,12 @@ Object {
       "payload": Array [
         Object {
           "defaultValue": undefined,
+          "description": undefined,
           "metadata": Object {},
           "multiplicity": "many",
           "name": "result",
           "required": false,
+          "title": undefined,
           "type": "string",
         },
       ],
@@ -912,7 +924,8 @@ Object {
     "acl": Object {
       "create": Array [],
       "delete": Array [],
-      "read": Array [],
+      "readMany": Array [],
+      "readOne": Array [],
       "update": Array [],
     },
     "name": Object {
@@ -1064,7 +1077,8 @@ Object {
     "acl": Object {
       "create": Array [],
       "delete": Array [],
-      "read": Array [],
+      "readMany": Array [],
+      "readOne": Array [],
       "update": Array [],
     },
     "name": Object {
@@ -1305,7 +1319,8 @@ Object {
     "acl": Object {
       "create": Array [],
       "delete": Array [],
-      "read": Array [],
+      "readMany": Array [],
+      "readOne": Array [],
       "update": Array [],
     },
     "name": Object {

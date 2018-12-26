@@ -3,10 +3,12 @@
 exports[`Args default: default 1`] = `
 Object {
   "defaultValue": undefined,
+  "description": undefined,
   "metadata": Object {},
   "multiplicity": "one",
   "name": "field",
   "required": false,
+  "title": undefined,
   "type": "string",
 }
 `;

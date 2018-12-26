@@ -4,7 +4,7 @@ import {
   ModelBaseInternal,
   ModelBaseInput,
   ModelBaseOutput,
-  ModelMetaInfo,
+  ModelBaseMetaInfo,
 } from './modelbase';
 import {
   DirectiveLocation,
@@ -34,7 +34,7 @@ export interface IDirective
   readonly on: DirectiveLocation[];
 }
 
-export interface DirectiveMetaInfo extends ModelMetaInfo {}
+export interface DirectiveMetaInfo extends ModelBaseMetaInfo {}
 
 export interface DirectiveInternal extends ModelBaseInternal {
   args: Map<string, IArgs>;

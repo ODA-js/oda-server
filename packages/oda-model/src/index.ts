@@ -32,3 +32,4 @@ export * from './entityreference';
 export * from './getFilter';
 export * from './validation';
 export * from './args';
+export * from './modelhooks';

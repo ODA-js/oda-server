@@ -4,10 +4,11 @@ import {
   ModelBaseInternal,
   ModelBaseInput,
   ModelBaseOutput,
+  ModelBaseMetaInfo,
 } from './modelbase';
 import { EnumItem, IEnumItem, EnumItemInput } from './enumItem';
 import { merge } from 'lodash';
-import { ElementMetaInfo, Internal } from './element';
+import { Internal } from './element';
 import { MetaModelType, Nullable, assignValue } from './types';
 
 export interface IEnum extends IModelBase<EnumMetaInfo, EnumInput, EnumOutput> {
@@ -17,7 +18,7 @@ export interface IEnum extends IModelBase<EnumMetaInfo, EnumInput, EnumOutput> {
   readonly items: Map<string, IEnumItem>;
 }
 
-export interface EnumMetaInfo extends ElementMetaInfo {}
+export interface EnumMetaInfo extends ModelBaseMetaInfo {}
 
 export interface EnumInternal extends ModelBaseInternal {
   items: Map<string, IEnumItem>;

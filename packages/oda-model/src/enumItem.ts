@@ -4,17 +4,18 @@ import {
   ModelBaseInternal,
   IModelBase,
   ModelBaseOutput,
+  ModelBaseMetaInfo,
 } from './modelbase';
 import { merge } from 'lodash';
 import { MetaModelType, Nullable, assignValue } from './types';
-import { ElementMetaInfo, Internal } from './element';
+import { Internal } from './element';
 
 export interface IEnumItem
   extends IModelBase<EnumItemMetaInfo, EnumItemInput, EnumItemOutput> {
   readonly value: string;
 }
 
-export interface EnumItemMetaInfo extends ElementMetaInfo {}
+export interface EnumItemMetaInfo extends ModelBaseMetaInfo {}
 
 export interface EnumItemInternal extends ModelBaseInternal {
   value: string;

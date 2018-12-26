@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MetaModel default: default 1`] = `
+Object {
+  "description": undefined,
+  "directives": Array [],
+  "entities": Array [],
+  "enums": Array [],
+  "metadata": Object {},
+  "mixins": Array [],
+  "mutations": Array [],
+  "name": "A",
+  "packages": Array [],
+  "queries": Array [],
+  "title": undefined,
+  "unions": Array [],
+}
+`;
+
+exports[`MetaModel discovers packages: packages 1`] = `
+Object {
+  "01": true,
+  "02": false,
+  "03": false,
+  "04": false,
+  "05": false,
+  "06": false,
+  "07": false,
+  "08": false,
+  "09": false,
+  "10": false,
+  "11": false,
+  "12": false,
+  "13": false,
+  "14": false,
+  "15": false,
+  "16": false,
+  "17": false,
+  "18": false,
+  "19": false,
+  "20": false,
+  "21": false,
+  "22": false,
+  "23": false,
+  "24": false,
+  "25": false,
+  "26": false,
+  "27": false,
+  "A": true,
+}
+`;

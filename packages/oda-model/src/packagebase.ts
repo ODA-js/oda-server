@@ -1,6 +1,6 @@
 import {
   IModelBase,
-  ModelMetaInfo,
+  ModelBaseMetaInfo,
   ModelBaseInput,
   ModelBase,
   ModelBaseInternal,
@@ -37,7 +37,7 @@ export interface IPackageBase<
   readonly directives: Map<string, IDirective>;
 }
 
-export interface ModelPackageBaseMetaInfo extends ModelMetaInfo {}
+export interface ModelPackageBaseMetaInfo extends ModelBaseMetaInfo {}
 
 export interface ModelPackageBaseInput<M extends ModelPackageBaseMetaInfo>
   extends ModelBaseInput<M> {

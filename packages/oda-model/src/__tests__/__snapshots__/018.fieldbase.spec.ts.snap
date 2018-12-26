@@ -47,10 +47,12 @@ Object {
   "args": Object {
     "demoARG": Object {
       "defaultValue": undefined,
+      "description": undefined,
       "metadata": Object {},
       "multiplicity": "one",
       "name": "demoARG",
       "required": false,
+      "title": undefined,
       "type": "string",
     },
   },

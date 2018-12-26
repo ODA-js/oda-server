@@ -7,73 +7,62 @@ import {
   ModelPackageOutput,
   AccessAction,
 } from './modelpackage';
-import { MutationInput } from './mutation';
-import { QueryInput } from './query';
 import {
   MetaModelType,
   AsHash,
   MapToArray,
   assignValue,
   Nullable,
-  createOrMergeFromMap,
   ArrayToHash,
   MapToHash,
 } from './types';
-import { ModelBaseOutput } from './modelbase';
 import fold from './lib/fold';
 import { merge } from 'lodash';
-import { SimpleFieldInput } from './simplefield';
 import {
   IPackageBase,
   ModelPackageBaseInput,
   ModelPackageBaseMetaInfo,
   ModelPackageBaseInternal,
   ModelPackageBase,
+  ModelPackageBaseOutput,
 } from './packagebase';
 import { getFilter } from './getFilter';
-import { FieldInput, IField } from './field';
+import { FieldInput, IField, isIRelationField } from './field';
 import { Graph, Vertex, Edge } from './utils/detectcyclesedges';
 import { IRelationField } from './relationfield';
 import { Internal } from './element';
+import { ModelHookInput } from './modelhooks';
 
 export type FieldMap = {
   [name: string]: boolean;
 };
-
-export interface IModelHook {
-  readonly name: string;
-  readonly entities?: AsHash<EntityInput>;
-  readonly mutations?: AsHash<MutationInput>;
-  readonly queries?: AsHash<QueryInput>;
-}
 
 export interface IModel
   extends IPackageBase<MetaModelMetaInfo, MetaModelInput, MetaModelOutput> {
   readonly packages: Map<string, IPackage>;
   readonly defaultPackage: IPackage;
   readonly abstract: boolean;
-  readonly hooks: IModelHook[];
+  readonly hooks: ModelHookInput[];
 }
 
 export interface MetaModelInput
   extends ModelPackageBaseInput<MetaModelMetaInfo> {
   packages?: (string | ModelPackageInput)[];
-  hooks?: IModelHook | IModelHook[];
+  hooks?: ModelHookInput | ModelHookInput[];
 }
 
 export interface MetaModelOutput
-  extends ModelBaseOutput<MetaModelMetaInfo>,
+  extends ModelPackageBaseOutput<MetaModelMetaInfo>,
     ModelPackageOutput {
   packages: ModelPackageOutput[];
-  hooks?: IModelHook[];
+  hooks?: ModelHookInput[];
 }
 
 export interface MetaModelMetaInfo extends ModelPackageBaseMetaInfo {}
 
 export interface MetaModelInternal extends ModelPackageBaseInternal {
   packages: Map<string, IPackage>;
-  store: string;
-  hooks: IModelHook[];
+  hooks: ModelHookInput[];
 }
 
 const defaultMetaInfo = {};
@@ -144,18 +133,62 @@ export class MetaModel
       })),
     } as Partial<MetaModelOutput>);
   }
+  // extracts packages from loaded model
+  public discoverPackages() {
+    const packages: { [key: string]: boolean } = {};
+    this.packages.forEach(p => {
+      packages[p.name] = true;
+    });
+
+    this.entities.forEach(e => {
+      extract(e.metadata.acl.create, packages);
+      extract(e.metadata.acl.delete, packages);
+      extract(e.metadata.acl.readMany, packages);
+      extract(e.metadata.acl.readOne, packages);
+      extract(e.metadata.acl.update, packages);
+      e.fields.forEach(f => {
+        extract(f.metadata.acl.read, packages);
+        extract(f.metadata.acl.update, packages);
+        if (isIRelationField(f)) {
+          extract(f.metadata.acl.create, packages);
+          extract(f.metadata.acl.delete, packages);
+        }
+      });
+      e.operations.forEach(o => {
+        extract(o.metadata.acl.execute, packages);
+      });
+    });
+
+    this.mixins.forEach(mix => {
+      extract(mix.metadata.acl.create, packages);
+      extract(mix.metadata.acl.delete, packages);
+      extract(mix.metadata.acl.readMany, packages);
+      extract(mix.metadata.acl.readOne, packages);
+      extract(mix.metadata.acl.update, packages);
+      mix.fields.forEach(f => {
+        extract(f.metadata.acl.read, packages);
+        extract(f.metadata.acl.update, packages);
+        if (isIRelationField(f)) {
+          extract(f.metadata.acl.create, packages);
+          extract(f.metadata.acl.delete, packages);
+        }
+      });
+      mix.operations.forEach(o => {
+        extract(o.metadata.acl.execute, packages);
+      });
+    });
+
+    this.mutations.forEach(e => {
+      extract(e.metadata.acl.execute, packages);
+    });
+    this.queries.forEach(e => {
+      extract(e.metadata.acl.execute, packages);
+    });
+    return packages;
+  }
 
   public updateWith(input: Nullable<MetaModelInput>) {
     super.updateWith(input);
-
-    assignValue<MetaModelInternal, MetaModelInput, string>({
-      src: this[Internal],
-      input,
-      field: 'store',
-      effect: (src, value) => (src.store = value),
-      setDefault: src => (src.store = 'model.json'),
-      required: true,
-    });
 
     assignValue<
       MetaModelInternal,
@@ -167,15 +200,15 @@ export class MetaModel
       field: 'packages',
       allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        const createIt = createOrMergeFromMap(
-          this.metaModel,
-          ModelPackage,
-          'packages',
-        );
         src.packages = new Map(value
           .map(i => {
-            const pkg = createIt(i);
-            return pkg;
+            let res: IPackage;
+            if (typeof i === 'string') {
+              res = new ModelPackage({ name: i });
+            } else {
+              res = new ModelPackage(i);
+            }
+            return [res.name, res];
           })
           .filter(f => f) as [string, IPackage][]);
       },
@@ -195,29 +228,13 @@ export class MetaModel
         !!(value && ((Array.isArray(value) && value.length > 0) || value)),
       effect: (src, value) => {
         if (!Array.isArray(value)) {
-          value = [fold(value) as IModelHook];
+          value = [fold(value) as ModelHookInput];
         }
-        src.hooks = fold(value.filter(f => f)) as IModelHook[];
+        src.hooks = fold(value.filter(f => f)) as ModelHookInput[];
       },
       required: true,
       setDefault: src => (src.hooks = []),
     });
-  }
-
-  protected dedupeFields(
-    src: SimpleFieldInput[],
-  ): { [key: string]: SimpleFieldInput } {
-    return src.reduce(
-      (res, curr) => {
-        if (!res.hasOwnProperty(curr.name)) {
-          res[curr.name] = curr;
-        } else {
-          res[curr.name] = merge(res[curr.name], curr);
-        }
-        return res;
-      },
-      {} as { [key: string]: SimpleFieldInput },
-    );
   }
 
   protected applyEntityHook(entity: IEntity, hook: EntityInput): IEntity {
@@ -321,27 +338,6 @@ export class MetaModel
     });
   }
 
-  // public addPackage(pkg: ModelPackageInput) {
-  //   let pack: ModelPackage;
-  //   if (pkg.name && this.packages.has(pkg.name)) {
-  //     pack = this.packages.get(pkg.name) as ModelPackage;
-  //   } else {
-  //     pack = new ModelPackage(pkg);
-  //     pack.connect(this);
-  //     this.packages.set(pkg.name, pack);
-  //   }
-
-  //   pack.updateWith(merge({}, pack.toObject(), pkg));
-
-  //   pack.ensureAll();
-  // }
-
-  // public loadPackage(store: MetaModelInput) {
-  //   this.reset();
-  //   this.updateWith(store);
-  //   this.applyHooks();
-  // }
-
   public reset() {
     this.updateWith({ name: this.name });
     this.ensureDefaultPackage();
@@ -411,6 +407,14 @@ export class MetaModel
       this.isBuilt = true;
     }
   }
+}
+
+function extract(src: string[], p: { [key: string]: boolean }) {
+  src.forEach(s => {
+    if (!p.hasOwnProperty(s)) {
+      p[s] = false;
+    }
+  });
 }
 
 // function mergeEntity(

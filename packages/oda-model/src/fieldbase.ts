@@ -4,6 +4,7 @@ import {
   ModelBaseInternal,
   ModelBaseInput,
   ModelBaseOutput,
+  ModelBaseMetaInfo,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
 import { merge } from 'lodash';
@@ -19,7 +20,7 @@ import {
   NamedArray,
   ArrayToMap,
 } from './types';
-import { ElementMetaInfo, Internal, MetaData } from './element';
+import { Internal, MetaData } from './element';
 import { IEntityRef, EntityReference } from './entityreference';
 import { IArgs, Args } from './args';
 
@@ -50,7 +51,7 @@ export interface FieldBasePersistence {
 }
 
 export interface FieldBaseMetaInfo<T extends FieldBasePersistence>
-  extends ElementMetaInfo {
+  extends ModelBaseMetaInfo {
   entity: string;
   persistence: T;
   order: number;

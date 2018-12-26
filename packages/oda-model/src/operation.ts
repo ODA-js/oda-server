@@ -2,7 +2,7 @@ import {
   ModelBaseInternal,
   IModelBase,
   ModelBaseInput,
-  ModelMetaInfo,
+  ModelBaseMetaInfo,
   ModelBase,
   ModelBaseOutput,
 } from './modelbase';
@@ -44,7 +44,7 @@ export interface IOperation
   readonly entity?: string;
 }
 
-export interface OperationMetaInfo extends ModelMetaInfo {
+export interface OperationMetaInfo extends ModelBaseMetaInfo {
   entity: string;
   order: number;
   acl: {
