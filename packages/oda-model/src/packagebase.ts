@@ -15,11 +15,9 @@ import { IMutation, MutationInput, Mutation } from './mutation';
 import { IQuery, QueryInput, Query } from './query';
 import { IDirective, DirectiveInput, Directive } from './directive';
 import { MetaModelType, Nullable } from './types';
-import { IRelationField } from './relationfield';
 import { IModel } from './metamodel';
 import { merge } from 'lodash';
 import { MapToArray, assignValue, createOrMergeFromMap } from './types';
-import { IField } from './field';
 import { Internal } from './element';
 import capitalize from './lib/capitalize';
 
@@ -37,8 +35,6 @@ export interface IPackageBase<
   readonly scalars: Map<string, IScalar>;
   readonly unions: Map<string, IUnion>;
   readonly directives: Map<string, IDirective>;
-  readonly identityFields: Map<string, IEntity>;
-  readonly relations: Map<string, Map<string, IRelationField>>;
 }
 
 export interface ModelPackageBaseMetaInfo extends ModelMetaInfo {}
@@ -76,8 +72,6 @@ export interface ModelPackageBaseInternal extends ModelBaseInternal {
   scalars: Map<string, IScalar>;
   unions: Map<string, IUnion>;
   directives: Map<string, IDirective>;
-  identityFields: Map<string, IEntity>;
-  relations: Map<string, Map<string, IRelationField>>;
   metaModel: IModel;
 }
 
@@ -121,12 +115,6 @@ export class ModelPackageBase<
   public get directives() {
     return this[Internal].directives;
   }
-  public get identityFields() {
-    return this[Internal].identityFields;
-  }
-  public get relations() {
-    return this[Internal].relations;
-  }
 
   constructor(init: I) {
     super(merge({}, defaultInput, init));
@@ -158,12 +146,9 @@ export class ModelPackageBase<
           string,
           IEntity
         ][]);
-        src.relations = new Map();
       },
       required: true,
-      setDefault: src => (
-        (src.entities = new Map<string, IEntity>()), (src.relations = new Map())
-      ),
+      setDefault: src => (src.entities = new Map<string, IEntity>()),
     });
 
     assignValue<S, I, (EnumInput | string)[]>({
@@ -318,69 +303,5 @@ export class ModelPackageBase<
         name,
       })),
     } as O);
-  }
-
-  public connect(metaModel: IModel) {
-    this[Internal].metaModel = metaModel;
-  }
-
-  /** ensure all foreign keys */
-  public ensureAll() {
-    this.entities.forEach(e => {
-      this.ensureMixins(e);
-      this.ensureFKs(e);
-    });
-  }
-
-  private ensureFKs(e: IEntity) {
-    let modelRelations = this.relations.get(e.name);
-    if (!modelRelations) {
-      modelRelations = new Map();
-      this.relations.set(e.name, modelRelations);
-    }
-
-    e.relations.forEach(value => {
-      let ref = e.fields.get(value) as IRelationField;
-      if (ref && modelRelations) {
-        modelRelations.set(ref.name, ref);
-      }
-    });
-  }
-
-  private ensureMixins(e: IEntity) {
-    const fields = new Map<string, IField>();
-    e.implements.forEach(i => {
-      const impl = this.mixins.get(i);
-      if (impl) {
-        impl.fields.forEach(f => {
-          if (!e.fields.has(f.name)) {
-            fields.set(f.name, f);
-          }
-        });
-      }
-    });
-    if (fields.size) {
-      const update = e.toObject();
-      update.fields.push(...[...fields.values()].map(f => f.toObject()));
-      e.updateWith({ fields: update.fields } as Nullable<EntityInput>);
-    }
-  }
-
-  public ensureIds(entity: IEntity) {
-    entity.identity.forEach(value => {
-      let ids = entity.fields.get(value);
-      if (ids) {
-        this.identityFields.set(ids.idKey.toString(), entity);
-      }
-    });
-  }
-
-  public removeIds(entity: IEntity) {
-    entity.identity.forEach(value => {
-      let ids = entity.fields.get(value);
-      if (ids) {
-        this.identityFields.delete(ids.idKey.toString());
-      }
-    });
   }
 }

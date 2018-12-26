@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModePackage default: default 1`] = `
+Object {
+  "abstract": false,
+  "defaultAccess": "allow",
+  "description": undefined,
+  "directives": Array [],
+  "entities": Array [],
+  "enums": Array [],
+  "extends": Array [],
+  "metadata": Object {},
+  "mixins": Array [],
+  "mutations": Array [],
+  "name": "A",
+  "queries": Array [],
+  "title": undefined,
+  "unions": Array [],
+}
+`;
+
+exports[`ModePackage should setup all features well: all features default 1`] = `
+Object {
+  "abstract": true,
+  "defaultAccess": "prohibit",
+  "description": undefined,
+  "directives": Array [],
+  "entities": Array [],
+  "enums": Array [],
+  "extends": Array [
+    "B",
+  ],
+  "metadata": Object {},
+  "mixins": Array [],
+  "mutations": Array [],
+  "name": "A",
+  "queries": Array [],
+  "title": undefined,
+  "unions": Array [],
+}
+`;

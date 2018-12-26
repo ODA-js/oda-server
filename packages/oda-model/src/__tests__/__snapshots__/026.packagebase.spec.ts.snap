@@ -1,0 +1,252 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PackageBase should update package with all the things: toObject 1`] = `
+Object {
+  "description": undefined,
+  "directives": Array [
+    Object {
+      "args": Array [],
+      "description": undefined,
+      "metadata": Object {},
+      "name": "directive",
+      "on": Array [
+        "FIELD",
+      ],
+      "title": undefined,
+    },
+  ],
+  "entities": Array [
+    Object {
+      "abstract": false,
+      "description": undefined,
+      "embedded": false,
+      "fields": Array [
+        Object {
+          "args": Object {},
+          "defaultValue": undefined,
+          "derived": false,
+          "description": undefined,
+          "entity": "Entity",
+          "identity": true,
+          "indexed": true,
+          "inheritedFrom": undefined,
+          "list": false,
+          "metadata": Object {
+            "acl": Object {
+              "read": Array [],
+              "update": Array [],
+            },
+            "entity": "Entity",
+            "order": -1,
+            "persistence": Object {
+              "derived": false,
+              "identity": true,
+              "indexed": true,
+              "persistent": true,
+              "required": true,
+            },
+          },
+          "name": "id",
+          "order": -1,
+          "persistent": true,
+          "required": true,
+          "title": undefined,
+          "type": "ID",
+        },
+      ],
+      "implements": Array [],
+      "metadata": Object {
+        "UI": Object {
+          "edit": Array [],
+          "embedded": Array [],
+          "hidden": Array [],
+          "list": Array [],
+          "listName": Array [],
+          "quickSearch": Array [],
+          "show": Array [],
+        },
+        "acl": Object {
+          "create": Array [],
+          "delete": Array [],
+          "read": Array [],
+          "update": Array [],
+        },
+        "name": Object {
+          "plural": "Entities",
+          "singular": "Entity",
+        },
+        "persistence": Object {
+          "indexes": Object {},
+        },
+        "titlePlural": "Entities",
+      },
+      "name": "Entity",
+      "operations": Array [],
+      "title": undefined,
+    },
+  ],
+  "enums": Array [
+    Object {
+      "description": undefined,
+      "items": Array [
+        Object {
+          "description": "value",
+          "metadata": Object {},
+          "name": "value",
+          "title": "value",
+          "value": undefined,
+        },
+      ],
+      "metadata": Object {},
+      "name": "enum",
+      "title": undefined,
+    },
+  ],
+  "metadata": Object {},
+  "mixins": Array [
+    Object {
+      "description": undefined,
+      "fields": Array [
+        Object {
+          "args": Object {},
+          "defaultValue": undefined,
+          "derived": false,
+          "description": undefined,
+          "entity": "Mixin",
+          "identity": true,
+          "indexed": true,
+          "inheritedFrom": undefined,
+          "list": false,
+          "metadata": Object {
+            "acl": Object {
+              "read": Array [],
+              "update": Array [],
+            },
+            "entity": "Mixin",
+            "order": -1,
+            "persistence": Object {
+              "derived": false,
+              "identity": true,
+              "indexed": true,
+              "persistent": true,
+              "required": true,
+            },
+          },
+          "name": "id",
+          "order": -1,
+          "persistent": true,
+          "required": true,
+          "title": undefined,
+          "type": "ID",
+        },
+      ],
+      "metadata": Object {
+        "UI": Object {
+          "edit": Array [],
+          "embedded": Array [],
+          "hidden": Array [],
+          "list": Array [],
+          "listName": Array [],
+          "quickSearch": Array [],
+          "show": Array [],
+        },
+        "acl": Object {
+          "create": Array [],
+          "delete": Array [],
+          "read": Array [],
+          "update": Array [],
+        },
+        "name": Object {
+          "plural": "Mixins",
+          "singular": "Mixin",
+        },
+        "persistence": Object {
+          "indexes": Object {},
+        },
+        "titlePlural": "Mixins",
+      },
+      "name": "Mixin",
+      "operations": Array [],
+      "title": undefined,
+    },
+  ],
+  "mutations": Array [
+    Object {
+      "args": Array [
+        Object {
+          "defaultValue": undefined,
+          "metadata": Object {},
+          "multiplicity": "one",
+          "name": "arg",
+          "required": false,
+          "type": "string",
+        },
+      ],
+      "description": undefined,
+      "metadata": Object {
+        "acl": Object {
+          "execute": Array [],
+        },
+      },
+      "name": "mutation",
+      "payload": Array [
+        Object {
+          "defaultValue": undefined,
+          "metadata": Object {},
+          "multiplicity": "one",
+          "name": "payload",
+          "required": false,
+          "type": "string",
+        },
+      ],
+      "title": undefined,
+    },
+  ],
+  "name": "A",
+  "queries": Array [
+    Object {
+      "args": Array [
+        Object {
+          "defaultValue": undefined,
+          "metadata": Object {},
+          "multiplicity": "one",
+          "name": "arg",
+          "required": false,
+          "type": "string",
+        },
+      ],
+      "description": undefined,
+      "metadata": Object {
+        "acl": Object {
+          "execute": Array [],
+        },
+      },
+      "name": "mutation",
+      "payload": Array [
+        Object {
+          "defaultValue": undefined,
+          "metadata": Object {},
+          "multiplicity": "one",
+          "name": "payload",
+          "required": false,
+          "type": "string",
+        },
+      ],
+      "title": undefined,
+    },
+  ],
+  "title": undefined,
+  "unions": Array [
+    Object {
+      "description": undefined,
+      "items": Array [
+        "enum",
+        "entity",
+      ],
+      "metadata": Object {},
+      "name": "Union",
+      "title": undefined,
+    },
+  ],
+}
+`;

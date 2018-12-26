@@ -131,7 +131,6 @@ export class MetaModel
 
   private ensureDefaultPackage() {
     if (!this.packages.has(this.name)) {
-      this.ensureAll();
       this.packages.set(this.name, this);
     }
   }

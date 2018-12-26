@@ -10,6 +10,7 @@ import {
   ModelPackageBaseInternal,
 } from './packagebase';
 import { Internal } from './element';
+import capitalize from './lib/capitalize';
 
 export type AccessAction = 'allow' | 'prohibit';
 
@@ -26,7 +27,7 @@ export interface ModelPackageInput
   extends ModelPackageBaseInput<PackageMetaInfo> {
   abstract?: boolean;
   defaultAccess?: AccessAction;
-  extends?: string[];
+  extends?: string[] | string;
 }
 
 export interface ModelPackageOutput
@@ -115,7 +116,12 @@ export class ModelPackage
       src: this[Internal],
       input,
       field: 'extends',
-      effect: (src, value) => (src.extends = new Set<string>(value)),
+      effect: (src, value) => {
+        if (!Array.isArray(value)) {
+          value = [value];
+        }
+        src.extends = new Set<string>(value.map(v => capitalize(v)));
+      },
       required: true,
       setDefault: src => (src.extends = new Set<string>()),
     });
