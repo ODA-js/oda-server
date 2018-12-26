@@ -21,4 +21,8 @@ describe('Directive', () => {
     const res = new Directive({ name: 'AbT', on: ['ENUM'] });
     expect(res.name).toBe('AbT');
   });
+  it('not duplicates on field', () => {
+    const res = new Directive({ name: 'Dedupes', on: ['FIELD', 'FIELD'] });
+    expect(res.on.size).toBe(1);
+  });
 });

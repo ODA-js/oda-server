@@ -31,14 +31,14 @@ export interface IDirective
   /**
    * where it can met
    */
-  readonly on: DirectiveLocation[];
+  readonly on: Set<DirectiveLocation>;
 }
 
 export interface DirectiveMetaInfo extends ModelBaseMetaInfo {}
 
 export interface DirectiveInternal extends ModelBaseInternal {
   args: Map<string, IArgs>;
-  on: DirectiveLocation[];
+  on: Set<DirectiveLocation>;
 }
 
 export interface DirectiveInput extends ModelBaseInput<DirectiveMetaInfo> {
@@ -69,7 +69,7 @@ export class Directive
     return this[Internal].args;
   }
 
-  get on(): DirectiveLocation[] {
+  get on(): Set<DirectiveLocation> {
     return this[Internal].on;
   }
 
@@ -95,11 +95,14 @@ export class Directive
       setDefault: src => (src.args = new Map()),
     });
 
-    assignValue<DirectiveInternal, DirectiveInput, string[]>({
+    assignValue<DirectiveInternal, DirectiveInput, DirectiveLocation[]>({
       src: this[Internal],
       input,
       field: 'on',
-      setDefault: src => (src.on = []),
+      effect: (src, value) => {
+        src.on = new Set<DirectiveLocation>(value);
+      },
+      setDefault: src => (src.on = new Set<DirectiveLocation>()),
     });
   }
 
@@ -107,7 +110,7 @@ export class Directive
   public toObject(): DirectiveOutput {
     return merge({}, super.toObject(), {
       args: MapToArray(this[Internal].args, (_name, value) => value.toObject()),
-      on: this[Internal].on,
+      on: [...this[Internal].on],
     } as Partial<DirectiveOutput>);
   }
 }
