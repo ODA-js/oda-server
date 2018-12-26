@@ -210,7 +210,28 @@ describe('Indexing', () => {
         { name: 'd', indexed: 'text ab d' }, //
       ],
     });
+    const a = res.fields.get('a');
+    if (a) {
+      expect(a.identity).toBe('ab');
+      expect(a.indexed).toBe('text');
+    }
+    const b = res.fields.get('b');
+    if (b) {
+      expect(b.identity).toBe('ab');
+      expect(b.indexed).toBe(true);
+    }
+    const c = res.fields.get('c');
+    if (c) {
+      expect(c.identity).toBe(false);
+      expect(c.indexed).toBe('text');
+    }
+    const d = res.fields.get('d');
+    if (d) {
+      expect(d.identity).toBe('ab');
+      expect(d.indexed).toMatchObject(['text', 'd']);
+    }
     expect(res.toObject()).toMatchSnapshot('complex identity index text');
+
     expect(res.metadata.persistence.indexes['ab']).toMatchObject({
       name: 'ab',
       fields: { a: 1, b: 1, d: 1 },
@@ -219,6 +240,11 @@ describe('Indexing', () => {
     expect(res.metadata.persistence.indexes['text']).toMatchObject({
       name: 'text',
       fields: { a: 1, c: 1, d: 1 },
+      options: { sparse: true },
+    });
+    expect(res.metadata.persistence.indexes['d']).toMatchObject({
+      name: 'd',
+      fields: { d: 1 },
       options: { sparse: true },
     });
   });
