@@ -25,7 +25,7 @@ export interface EnumItemInput extends ModelBaseInput<EnumItemMetaInfo> {
   value?: string;
 }
 export interface EnumItemOutput extends ModelBaseOutput<EnumItemMetaInfo> {
-  value: string;
+  value?: string;
 }
 
 export const enumItemDefaultMetaInfo = {};
@@ -48,7 +48,7 @@ export class EnumItem
   }
 
   get value(): string {
-    return this[Internal].value;
+    return this[Internal].value || this[Internal].name;
   }
 
   updateWith(input: Nullable<EnumItemInput>) {
@@ -57,13 +57,15 @@ export class EnumItem
       src: this[Internal],
       input,
       field: 'value',
-      setDefault: src => (src.value = src.name),
     });
   }
 
   toObject(): EnumItemOutput {
-    return merge({}, super.toObject(), { value: this.value } as Partial<
-      EnumItemOutput
-    >);
+    return merge({}, super.toObject(), {
+      value: this[Internal].value,
+    } as Partial<EnumItemOutput>);
+  }
+  mergeWith(payload: EnumItem) {
+    super.mergeWith(payload.toObject());
   }
 }

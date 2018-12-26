@@ -268,6 +268,7 @@ export class EntityBase<
         src.exact = value;
       },
       required: true,
+      setDefault: src => (src.exact = false),
     });
 
     assignValue<M, I, string>({
@@ -472,16 +473,6 @@ export class EntityBase<
     internal.required = required;
     internal.indexed = indexed;
   }
-
-  // public ensureIndexes() {
-  //   this.fields.forEach(f => {
-  //     if (f.identity) {
-  //       this.updateIndex(f, {});
-  //     } else if (f.indexed) {
-  //       this.updateIndex(f, {});
-  //     }
-  //   });
-  // }
 
   public toObject(): O {
     return merge({}, super.toObject(), {

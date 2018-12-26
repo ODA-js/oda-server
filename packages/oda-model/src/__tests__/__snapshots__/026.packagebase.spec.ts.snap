@@ -91,10 +91,10 @@ Object {
       "description": undefined,
       "items": Array [
         Object {
-          "description": "value",
+          "description": undefined,
           "metadata": Object {},
           "name": "value",
-          "title": "value",
+          "title": undefined,
           "value": undefined,
         },
       ],

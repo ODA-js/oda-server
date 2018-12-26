@@ -27,6 +27,7 @@ export interface IUpdatableBase {
    * return copy of object item that is suitable for creating new one
    */
   toObject(): any;
+  mergeWith(payload: any): void;
 }
 
 /**
@@ -46,6 +47,7 @@ export interface IUpdatable<
    * return copy of object item that is suitable for creating new one
    */
   toObject(): O;
+  mergeWith(payload: Nullable<I>): void;
 }
 
 /**
@@ -116,5 +118,8 @@ export class Element<
    */
   public toObject(): O {
     return merge({}, { metadata: this[MetaData] } as O);
+  }
+  public mergeWith(payload: Nullable<I>) {
+    this.updateWith(merge({}, this.toObject(), payload));
   }
 }

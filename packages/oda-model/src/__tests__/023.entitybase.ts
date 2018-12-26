@@ -9,6 +9,11 @@ describe('EntityBase', () => {
     expect(res[MetaData]).toMatchObject(entityBaseDefaultMetaInfo);
     expect(res.toObject()).toMatchSnapshot('toObject');
   });
+  it('not serialize exact property', () => {
+    const res = new EntityBase({ name: 'A', exact: true });
+    expect(res.exact).toBeTruthy();
+    expect((res.toObject() as any).exact).toBeUndefined();
+  });
   it('default has no Singular', () => {
     const res = new EntityBase({ name: 'Species' });
     expect(res.plural).toBe('AllSpecies');

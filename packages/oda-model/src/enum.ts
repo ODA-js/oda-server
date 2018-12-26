@@ -56,26 +56,34 @@ export class Enum
       src: this[Internal],
       input,
       field: 'items',
-      effect: (src, value) =>
-        (src.items = new Map(
-          value
-            .map(i =>
-              typeof i === 'string' ? ({ name: i } as EnumItemInput) : i,
-            )
-            .map(
-              i =>
-                [
-                  i.name,
-                  new EnumItem({
-                    name: i.name,
-                    title: i.title || i.name,
-                    description: i.description || i.title || i.name,
-                    value: i.value,
-                    metadata: i.metadata,
-                  }),
-                ] as [string, IEnumItem],
-            ),
-        )),
+      effect: (src, value) => {
+        src.items = new Map();
+        value
+          .map(i =>
+            typeof i === 'string' ? ({ name: i } as EnumItemInput) : i,
+          )
+          .map(
+            i =>
+              [
+                i.name,
+                new EnumItem({
+                  name: i.name,
+                  title: i.title,
+                  description: i.description,
+                  value: i.value,
+                  metadata: i.metadata,
+                }),
+              ] as [string, IEnumItem],
+          )
+          .forEach(item => {
+            const dupe = src.items.get(item[0]);
+            if (dupe) {
+              dupe.mergeWith(item[1]);
+            } else {
+              src.items.set(item[0], item[1]);
+            }
+          });
+      },
       required: true,
     });
   }

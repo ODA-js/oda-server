@@ -5,17 +5,17 @@ Object {
   "description": undefined,
   "items": Array [
     Object {
-      "description": "HOME",
+      "description": undefined,
       "metadata": Object {},
       "name": "HOME",
-      "title": "HOME",
+      "title": undefined,
       "value": undefined,
     },
     Object {
-      "description": "WORk",
+      "description": undefined,
       "metadata": Object {},
       "name": "WORk",
-      "title": "WORk",
+      "title": undefined,
       "value": undefined,
     },
   ],
