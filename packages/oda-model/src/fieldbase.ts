@@ -245,7 +245,8 @@ export class FieldBase<
         this.metadata.persistence.identity = value;
         if (value) {
           this.metadata.persistence.required = true;
-          this.metadata.persistence.indexed = true;
+          this.metadata.persistence.indexed =
+            this.metadata.persistence.indexed || true;
           this[Internal].idKey = new EntityReference({
             entity: this.metadata.entity,
             field: this[Internal].name,

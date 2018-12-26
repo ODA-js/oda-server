@@ -22,6 +22,10 @@ import {
   isSimpleInput,
   Field,
   isRelationFieldInput,
+  isISimpleField,
+  isIEntityField,
+  isIRelationField,
+  mergeStringArray,
 } from './field';
 import { merge } from 'lodash';
 import * as inflected from 'inflected';
@@ -379,15 +383,60 @@ export class EntityBase<
     const required = new Set();
     const indexed = new Set();
 
+    const initialized = {
+      identity: new Set<string>(),
+      indexed: new Set<string>(),
+    };
+
+    Object.keys(this.metadata.persistence.indexes).forEach(name => {
+      const index = this.metadata.persistence.indexes[name];
+      const fields = Object.keys(index.fields);
+      const isUnique = index.options.unique;
+      const indexType = isUnique ? 'identity' : 'indexed';
+      fields.forEach(f => {
+        const field = this.fields.get(f);
+        if (field) {
+          const res = field.toObject();
+          let value: string[];
+          if (initialized[indexType].has(field.name)) {
+            const indexed = res[indexType] as string[];
+            value = mergeStringArray(indexed, index.name);
+          } else {
+            value = [index.name];
+            initialized[indexType].add(field.name);
+          }
+
+          updateFieldWithIndex(field, indexType, value);
+        }
+      });
+    });
+
     this.fields.forEach(f => {
       if (f.identity) {
+        if (Array.isArray(f.identity) && f.identity.length === 1) {
+          if (f.identity[0] === f.name) {
+            updateFieldWithIndex(f, 'identity', true);
+          } else {
+            updateFieldWithIndex(f, 'identity', f.identity[0]);
+          }
+        }
         identity.add(f.name);
       }
       if (f.required) {
         required.add(f.name);
       }
       if (f.indexed) {
+        if (Array.isArray(f.indexed) && f.indexed.length === 1) {
+          if (f.indexed[0] === f.name) {
+            updateFieldWithIndex(f, 'indexed', true);
+          } else {
+            updateFieldWithIndex(f, 'indexed', f.indexed[0]);
+          }
+        }
         indexed.add(f.name);
+      }
+      if (f.indexed === f.identity) {
+        updateFieldWithIndex(f, 'indexed', true);
       }
       if (f.modelType === 'relation-field') {
         relations.add(f.name);
@@ -421,5 +470,27 @@ export class EntityBase<
         name,
       })),
     } as Partial<O>);
+  }
+}
+function updateFieldWithIndex(
+  field: IField,
+  indexType: string,
+  value: string[] | string | boolean,
+) {
+  if (isISimpleField(field)) {
+    field.updateWith({
+      [indexType]: value,
+    } as any);
+  } else if (isIEntityField(field)) {
+    field.updateWith({
+      [indexType]: value,
+    } as any);
+  } else if (
+    isIRelationField(field) &&
+    field.relation.modelType === 'BelongsTo'
+  ) {
+    field.updateWith({
+      [indexType]: value,
+    } as any);
   }
 }

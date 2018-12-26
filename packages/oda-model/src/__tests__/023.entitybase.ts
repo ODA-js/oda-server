@@ -207,7 +207,7 @@ describe('Indexing', () => {
         { name: 'a', identity: 'ab', indexed: 'text' },
         { name: 'b', indexed: 'ab' }, // not mentioned as identity
         { name: 'c', indexed: 'text' },
-        { name: 'd', indexed: 'text ab' }, //
+        { name: 'd', indexed: 'text ab d' }, //
       ],
     });
     expect(res.toObject()).toMatchSnapshot('complex identity index text');

@@ -21,7 +21,7 @@ EntityBase {
           "persistence": Object {
             "derived": false,
             "identity": false,
-            "indexed": false,
+            "indexed": true,
             "persistent": true,
             "required": false,
           },
@@ -105,7 +105,7 @@ EntityBase {
           "persistence": Object {
             "derived": false,
             "identity": false,
-            "indexed": false,
+            "indexed": true,
             "persistent": false,
             "required": false,
           },
@@ -167,7 +167,6 @@ EntityBase {
           "args": Map {},
           "idKey": EntityReference {
             Symbol(internal): Object {
-              "backField": "id",
               "entity": "A",
               "field": "id",
             },
@@ -258,7 +257,7 @@ Object {
       "description": undefined,
       "entity": "A",
       "identity": false,
-      "indexed": false,
+      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -271,7 +270,7 @@ Object {
         "persistence": Object {
           "derived": false,
           "identity": false,
-          "indexed": false,
+          "indexed": true,
           "persistent": true,
           "required": false,
         },
@@ -325,7 +324,7 @@ Object {
       "description": undefined,
       "entity": "A",
       "identity": false,
-      "indexed": false,
+      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -340,7 +339,7 @@ Object {
         "persistence": Object {
           "derived": false,
           "identity": false,
-          "indexed": false,
+          "indexed": true,
           "persistent": false,
           "required": false,
         },
@@ -1164,8 +1163,8 @@ Object {
       "derived": false,
       "description": undefined,
       "entity": "A",
-      "identity": false,
-      "indexed": "ab",
+      "identity": "ab",
+      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -1177,16 +1176,16 @@ Object {
         "order": 1,
         "persistence": Object {
           "derived": false,
-          "identity": false,
-          "indexed": "ab",
+          "identity": "ab",
+          "indexed": true,
           "persistent": true,
-          "required": false,
+          "required": true,
         },
       },
       "name": "b",
       "order": 1,
       "persistent": true,
-      "required": false,
+      "required": true,
       "title": undefined,
       "type": "string",
     },
@@ -1228,8 +1227,11 @@ Object {
       "derived": false,
       "description": undefined,
       "entity": "A",
-      "identity": false,
-      "indexed": "text ab",
+      "identity": "ab",
+      "indexed": Array [
+        "text",
+        "d",
+      ],
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -1241,16 +1243,19 @@ Object {
         "order": 3,
         "persistence": Object {
           "derived": false,
-          "identity": false,
-          "indexed": "text ab",
+          "identity": "ab",
+          "indexed": Array [
+            "text",
+            "d",
+          ],
           "persistent": true,
-          "required": false,
+          "required": true,
         },
       },
       "name": "d",
       "order": 3,
       "persistent": true,
-      "required": false,
+      "required": true,
       "title": undefined,
       "type": "string",
     },
@@ -1319,6 +1324,15 @@ Object {
           "options": Object {
             "sparse": true,
             "unique": true,
+          },
+        },
+        "d": Object {
+          "fields": Object {
+            "d": 1,
+          },
+          "name": "d",
+          "options": Object {
+            "sparse": true,
           },
         },
         "id": Object {
