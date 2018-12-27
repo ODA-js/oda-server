@@ -305,4 +305,7 @@ export class FieldBase<
       identity: this.identity,
     } as Partial<O>);
   }
+  public mergeWith(payload: Nullable<I>) {
+    super.mergeWith(payload);
+  }
 }

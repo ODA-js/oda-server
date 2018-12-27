@@ -486,7 +486,12 @@ export class EntityBase<
       })),
     } as Partial<O>);
   }
+
+  public mergeWith(payload: Nullable<I>) {
+    super.mergeWith(payload);
+  }
 }
+
 function updateFieldWithIndex(
   field: IField,
   indexType: string,

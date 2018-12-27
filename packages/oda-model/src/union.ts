@@ -78,4 +78,7 @@ export class Union
       UnionOutput
     >);
   }
+  mergeWith(payload: Nullable<UnionInput>) {
+    super.mergeWith(payload);
+  }
 }

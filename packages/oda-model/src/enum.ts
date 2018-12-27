@@ -78,7 +78,7 @@ export class Enum
           .forEach(item => {
             const dupe = src.items.get(item[0]);
             if (dupe) {
-              dupe.mergeWith(item[1]);
+              dupe.mergeWith(item[1].toObject());
             } else {
               src.items.set(item[0], item[1]);
             }
@@ -92,5 +92,9 @@ export class Enum
     return merge({}, super.toObject(), {
       items: [...this[Internal].items.values()].map(i => i.toObject()),
     } as Partial<EnumOutput>);
+  }
+
+  public mergeWith(payload: Nullable<EnumInput>) {
+    super.mergeWith(payload);
   }
 }

@@ -113,4 +113,7 @@ export class Entity
       abstract: this.abstract,
     } as Partial<EntityOutput>);
   }
+  public mergeWith(payload: Nullable<EntityInput>) {
+    super.mergeWith(payload);
+  }
 }

@@ -65,7 +65,7 @@ export class EnumItem
       value: this[Internal].value,
     } as Partial<EnumItemOutput>);
   }
-  mergeWith(payload: EnumItem) {
-    super.mergeWith(payload.toObject());
+  mergeWith(payload: Nullable<EnumItemInput>) {
+    super.mergeWith(payload);
   }
 }

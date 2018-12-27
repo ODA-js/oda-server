@@ -16,6 +16,7 @@ import {
   NamedArray,
   ArrayToMap,
   MapToArray,
+  Nullable,
 } from './types';
 import { merge } from 'lodash';
 import { Internal } from './element';
@@ -122,7 +123,7 @@ export class Operation
     super(merge({}, operationDefaultInput, init));
   }
 
-  public updateWith(input: OperationInput) {
+  public updateWith(input: Nullable<OperationInput>) {
     super.updateWith(input);
 
     assignValue<OperationInternal, OperationInput, string>({
@@ -194,5 +195,9 @@ export class Operation
         value.toObject(),
       ),
     } as Partial<OperationOutput>);
+  }
+
+  public mergeWith(payload: Nullable<OperationInput>) {
+    super.mergeWith(payload);
   }
 }

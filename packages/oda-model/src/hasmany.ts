@@ -98,4 +98,8 @@ export class HasMany extends RelationBase<
       hasMany: this.hasMany.toString(),
     });
   }
+
+  public mergeWith(payload: Nullable<HasManyInput>) {
+    super.mergeWith(payload);
+  }
 }

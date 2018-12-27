@@ -304,4 +304,8 @@ export class ModelPackageBase<
       })),
     } as O);
   }
+
+  public mergeWith(payload: Nullable<I>) {
+    super.mergeWith(payload);
+  }
 }

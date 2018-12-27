@@ -133,6 +133,7 @@ export class MetaModel
       })),
     } as Partial<MetaModelOutput>);
   }
+
   // extracts packages from loaded model
   public discoverPackages() {
     const packages: { [key: string]: boolean } = {};
@@ -235,6 +236,10 @@ export class MetaModel
       required: true,
       setDefault: src => (src.hooks = []),
     });
+  }
+
+  public mergeWith(_payload: Nullable<MetaModelInput>) {
+    // super.mergeWith(payload);
   }
 
   protected applyEntityHook(entity: IEntity, hook: EntityInput): IEntity {

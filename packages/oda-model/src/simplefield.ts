@@ -196,4 +196,8 @@ export class SimpleField
       list: this[Internal].list,
     } as Partial<SimpleFieldOutput>);
   }
+
+  public mergeWith(payload: Nullable<SimpleFieldInput>) {
+    super.mergeWith(payload);
+  }
 }

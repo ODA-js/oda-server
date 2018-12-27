@@ -139,4 +139,8 @@ export class EntityReference
       field: this[Internal].field,
     } as Partial<EntityRefOutput>) as EntityRefOutput;
   }
+
+  public mergeWith(payload: Nullable<EntityRefInput>) {
+    super.mergeWith(payload);
+  }
 }

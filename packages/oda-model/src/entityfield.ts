@@ -169,4 +169,8 @@ export class EntityField
       list: this[Internal].list,
     } as Partial<EntityFieldOutput>);
   }
+
+  public mergeWith(payload: Nullable<EntityFieldInput>) {
+    super.mergeWith(payload);
+  }
 }

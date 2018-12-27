@@ -98,4 +98,8 @@ export class HasOne extends RelationBase<
       hasOne: this.hasOne.toString(),
     } as Partial<HasOneOutput>);
   }
+
+  public mergeWith(payload: Nullable<HasOneInput>) {
+    super.mergeWith(payload);
+  }
 }

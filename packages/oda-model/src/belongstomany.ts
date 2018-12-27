@@ -172,4 +172,7 @@ export class BelongsToMany
       })),
     } as Partial<BelongsToManyOutput>);
   }
+  public mergeWith(payload: Nullable<BelongsToManyInput>) {
+    super.mergeWith(payload);
+  }
 }

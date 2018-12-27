@@ -91,4 +91,7 @@ export class RelationFieldBase<
   public toObject(): O {
     return merge({}, super.toObject(), {} as Partial<O>);
   }
+  public mergeWith(payload: Nullable<I>) {
+    super.mergeWith(payload);
+  }
 }

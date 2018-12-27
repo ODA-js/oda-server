@@ -69,4 +69,7 @@ export class ModelHook
   public toObject(): ModelHookOutput {
     return merge({}, super.toObject(), {} as Partial<ModelHookOutput>);
   }
+  public mergeWith(_payload: Nullable<ModelHookInput>) {
+    // super.mergeWith(payload);
+  }
 }

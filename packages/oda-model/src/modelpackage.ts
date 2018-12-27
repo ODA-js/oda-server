@@ -134,4 +134,8 @@ export class ModelPackage
       extends: [...this.extends],
     } as ModelPackageOutput);
   }
+
+  public mergeWith(_payload: Nullable<ModelPackageInput>) {
+    // super.mergeWith(payload);
+  }
 }

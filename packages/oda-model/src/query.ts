@@ -131,4 +131,7 @@ export class Query
       ),
     } as Partial<QueryOutput>);
   }
+  public mergeWith(payload: Nullable<QueryInput>) {
+    super.mergeWith(payload);
+  }
 }

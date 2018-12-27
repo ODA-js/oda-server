@@ -255,4 +255,7 @@ export class RelationBase<
       embedded: this.embedded,
     } as Partial<O>);
   }
+  public mergeWith(payload: Nullable<I>) {
+    super.mergeWith(payload);
+  }
 }

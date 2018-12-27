@@ -40,4 +40,7 @@ export class Scalar
   public toObject(): ScalarOutput {
     return merge({}, super.toObject(), {} as Partial<ScalarOutput>);
   }
+  public mergeWith(input: Nullable<ScalarInput>) {
+    super.mergeWith(input);
+  }
 }

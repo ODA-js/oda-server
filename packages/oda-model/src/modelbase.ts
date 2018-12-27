@@ -120,4 +120,8 @@ export class ModelBase<
       description: this.description,
     } as Partial<O>);
   }
+
+  public mergeWith(payload: Nullable<I>) {
+    super.mergeWith(payload);
+  }
 }

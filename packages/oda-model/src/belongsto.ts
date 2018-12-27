@@ -95,4 +95,7 @@ export class BelongsTo extends RelationBase<
       belongsTo: this.belongsTo.toString(),
     } as Partial<BelongsToOutput>);
   }
+  public mergeWith(payload: Nullable<BelongsToInput>) {
+    super.mergeWith(payload);
+  }
 }

@@ -227,4 +227,8 @@ export class RelationField
       relation: this.relation.toObject(),
     } as Partial<RelationFieldOutput>);
   }
+
+  public mergeWith(payload: Nullable<RelationFieldInput>) {
+    super.mergeWith(payload);
+  }
 }

@@ -113,4 +113,8 @@ export class Directive
       on: [...this[Internal].on],
     } as Partial<DirectiveOutput>);
   }
+
+  public mergeWith(payload: Nullable<DirectiveInput>) {
+    super.mergeWith(payload);
+  }
 }

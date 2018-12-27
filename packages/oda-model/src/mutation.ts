@@ -126,4 +126,8 @@ export class Mutation
       ),
     } as Partial<MutationOutput>);
   }
+
+  public mergeWith(payload: Nullable<MutationInput>) {
+    super.mergeWith(payload);
+  }
 }

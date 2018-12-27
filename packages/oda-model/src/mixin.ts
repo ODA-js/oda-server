@@ -51,4 +51,8 @@ export class Mixin
   public toObject(): MixinOutput {
     return merge({}, super.toObject(), {} as Partial<MixinOutput>);
   }
+
+  public mergeWith(payload: Nullable<MixinInput>) {
+    super.mergeWith(payload);
+  }
 }
