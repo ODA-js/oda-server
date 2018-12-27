@@ -8,14 +8,15 @@ import {
   RelationBaseOutput,
 } from './relationbase';
 import { IEntityRef, EntityReference, EntityRefInput } from './entityreference';
-import { merge } from 'lodash';
+import { merge, mergeWith } from 'lodash';
 import {
   assignValue,
   AsHash,
-  HashToArray,
   Nullable,
   NamedArray,
   MapToArray,
+  HashToArray,
+  ArrayToMap,
 } from './types';
 import { ISimpleField, SimpleFieldInput, SimpleField } from './simplefield';
 import decapitalize from './lib/decapitalize';
@@ -114,17 +115,10 @@ export class BelongsToMany
       input,
       field: 'fields',
       effect: (src, value) =>
-        (src.fields = new Map<string, ISimpleField>(
-          (Array.isArray(value) ? value : HashToArray(value)).map(
-            i =>
-              [
-                i.name,
-                new SimpleField({
-                  name: i.name,
-                  ...i,
-                }),
-              ] as [string, ISimpleField],
-          ),
+        (src.fields = ArrayToMap(
+          Array.isArray(value) ? value : HashToArray(value),
+          i => new SimpleField(i),
+          (obj, src) => obj.mergeWith(src.toObject()),
         )),
       setDefault: src => (src.fields = new Map()),
     });
@@ -173,6 +167,26 @@ export class BelongsToMany
     } as Partial<BelongsToManyOutput>);
   }
   public mergeWith(payload: Nullable<BelongsToManyInput>) {
-    super.mergeWith(payload);
+    const update = mergeWith(
+      this.toObject(),
+      payload,
+      (
+        o: any,
+        s: any,
+        key: string,
+        _obj: any,
+        _source: any,
+        _stack: string[],
+      ) => {
+        if (key === 'fields') {
+          return [...o, ...s];
+        }
+        if (key == 'name') {
+          return o;
+        }
+        return;
+      },
+    );
+    this.updateWith(update);
   }
 }

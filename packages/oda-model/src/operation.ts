@@ -64,9 +64,9 @@ export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
 }
 
 export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
-  args?: NamedArray<IFieldArgs>;
-  inheritedFrom?: string;
+  args: NamedArray<IFieldArgs>;
   payload: NamedArray<IFieldArgs>;
+  inheritedFrom?: string;
   entity: string;
   actionType: OperationKind;
   order: number;
@@ -183,6 +183,7 @@ export class Operation
           ? ArrayToMap(value, v => new Args(v))
           : HashToMap(value, (name, v) => new Args({ name, ...v }))),
       required: true,
+      setDefault: src => (src.payload = new Map()),
     });
   }
 

@@ -14,6 +14,7 @@ import {
   HashToArray,
   NamedArray,
   MapToArray,
+  ArrayToMap,
 } from './types';
 import { OperationInput, IOperation, Operation } from './operation';
 import {
@@ -381,21 +382,13 @@ export class EntityBase<
       src: this[Internal],
       input,
       field: 'operations',
-      effect: (src, value) => {
-        src.operations = new Map(
-          (Array.isArray(value) ? value : HashToArray(value))
-            .map(
-              (fld, order) =>
-                new Operation(
-                  merge({}, fld, {
-                    entity: this.name,
-                    order,
-                  } as Partial<OperationInput>),
-                ),
-            )
-            .map(f => [f.name, f] as [string, Operation]),
-        );
-      },
+      effect: (src, value) =>
+        (src.operations = ArrayToMap(
+          Array.isArray(value) ? value : HashToArray(value),
+          (i, order) =>
+            new Operation(merge({}, i, { entity: this.name, order })),
+          (obj, src) => obj.mergeWith(src.toObject()),
+        )),
       setDefault: src => (src.operations = new Map<string, Operation>()),
     });
     this.updateSummary();

@@ -9,7 +9,7 @@ import {
 import { EnumItem, IEnumItem, EnumItemInput } from './enumItem';
 import { merge, mergeWith } from 'lodash';
 import { Internal } from './element';
-import { MetaModelType, Nullable, assignValue } from './types';
+import { MetaModelType, Nullable, assignValue, ArrayToMap } from './types';
 
 export interface IEnum extends IModelBase<EnumMetaInfo, EnumInput, EnumOutput> {
   /**
@@ -52,39 +52,21 @@ export class Enum
   public updateWith(input: Nullable<EnumInput>) {
     super.updateWith(input);
 
-    assignValue<EnumInternal, EnumInput, EnumInput['items']>({
+    assignValue<EnumInternal, EnumInput, any>({
       src: this[Internal],
       input,
       field: 'items',
-      effect: (src, value) => {
-        src.items = new Map();
-        value
-          .map(i =>
-            typeof i === 'string' ? ({ name: i } as EnumItemInput) : i,
-          )
-          .map(
-            i =>
-              [
-                i.name,
-                new EnumItem({
-                  name: i.name,
-                  title: i.title,
-                  description: i.description,
-                  value: i.value,
-                  metadata: i.metadata,
-                }),
-              ] as [string, IEnumItem],
-          )
-          .forEach(item => {
-            const dupe = src.items.get(item[0]);
-            if (dupe) {
-              dupe.mergeWith(item[1].toObject());
-            } else {
-              src.items.set(item[0], item[1]);
-            }
-          });
-      },
+      effect: (src, value) =>
+        (src.items = ArrayToMap<any, IEnumItem>(
+          value,
+          (i: EnumItemInput | string) =>
+            new EnumItem(
+              typeof i === 'string' ? ({ name: i } as EnumItemInput) : i,
+            ),
+          (obj, src) => obj.mergeWith(src.toObject()),
+        )),
       required: true,
+      setDefault: src => (src.items = new Map()),
     });
   }
 

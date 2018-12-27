@@ -244,16 +244,16 @@ function mergeDupes<O extends Partial<INamed> & object>(
 
 export function ArrayToMap<T extends INamed, O extends INamed = T>(
   input: NamedArray<T>,
-  process?: (v: T) => O,
+  process?: (v: T, index: number) => O,
   killDupes?: (obj: O, src: O) => void,
 ) {
   const res = new Map<string, O>();
   mergeDupes(
     res,
-    input.map(f => {
+    input.map((f, index) => {
       let result: O = (f as unknown) as O;
       if (process) {
-        result = (process(f) as unknown) as O;
+        result = (process(f, index) as unknown) as O;
       }
       return [result.name, result] as [string, O];
     }),

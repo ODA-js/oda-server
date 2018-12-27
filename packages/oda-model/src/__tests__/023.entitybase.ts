@@ -156,6 +156,23 @@ describe('EntityBase', () => {
     });
     expect(res.relations.has('a')).toBeTruthy();
   });
+
+  it('should deduplicates operations', () => {
+    const res = new EntityBase({
+      name: 'A',
+      fields: [{ name: 'a', indexed: true }],
+      operations: [
+        {
+          name: 'op1',
+          args: [{ name: '1' }],
+          payload: [{ name: 'result' }],
+          actionType: 'readOne',
+        },
+        { name: 'op1', description: 'this is for description' } as any,
+      ],
+    });
+    expect(res.operations.size).toBe(1);
+  });
 });
 
 describe('Indexing', () => {

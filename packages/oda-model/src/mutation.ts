@@ -115,6 +115,7 @@ export class Mutation
           ? ArrayToMap(value, v => new Args(v))
           : HashToMap(value, (name, v) => new Args({ name, ...v }))),
       required: true,
+      setDefault: src => (src.payload = new Map()),
     });
   }
 
