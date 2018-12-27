@@ -174,14 +174,6 @@ export interface INamed {
   readonly name: string;
 }
 
-export interface IFieldArgsForHash {
-  type?: string;
-  required?: boolean;
-  defaultValue?: string;
-  multiplicity?: Multiplicity;
-}
-
-export interface IFieldArgs extends INamed, IFieldArgsForHash {}
 /**
  * Complext type can refer to existing type system
  */

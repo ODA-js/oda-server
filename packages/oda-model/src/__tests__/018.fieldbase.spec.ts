@@ -42,4 +42,15 @@ describe('FieldBase', () => {
       identity: true,
     });
   });
+
+  it('should kill dupes by merging them', () => {
+    const res = new FieldBase({
+      name: 'FieldName',
+      args: [
+        { name: 'demoARG' },
+        { name: 'demoARG', description: 'description for args' },
+      ],
+    });
+    expect(res.args.size).toBe(1);
+  });
 });

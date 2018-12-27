@@ -13,11 +13,11 @@ import {
   Nullable,
   assignValue,
   AsHash,
-  IFieldArgs,
   NamedArray,
   MetaModelType,
 } from './types';
 import { Internal } from './element';
+import { ArgsInput } from './args';
 
 export interface ISimpleField
   extends IFieldBase<
@@ -164,7 +164,7 @@ export class SimpleField
     assignValue<
       SimpleFieldMeta,
       SimpleFieldInput,
-      AsHash<IFieldArgs> | NamedArray<IFieldArgs>
+      AsHash<ArgsInput> | NamedArray<ArgsInput>
     >({
       src: this.metadata,
       input,

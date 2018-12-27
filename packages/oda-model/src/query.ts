@@ -1,15 +1,14 @@
 import { merge } from 'lodash';
 import { Internal } from './element';
 import {
-  IFieldArgs,
   AsHash,
   MetaModelType,
-  HashToMap,
   Nullable,
   assignValue,
   NamedArray,
   ArrayToMap,
   MapToArray,
+  HashToArray,
 } from './types';
 import {
   IModelBase,
@@ -20,7 +19,7 @@ import {
   ModelBaseMetaInfo,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
-import { IArgs, Args } from './args';
+import { IArgs, Args, ArgsInput } from './args';
 
 export interface IQuery
   extends IModelBase<QueryMetaInfo, QueryInput, QueryOutput> {
@@ -46,13 +45,13 @@ export interface QueryInternal extends ModelBaseInternal {
 }
 
 export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
-  args: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
-  payload: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
+  args: AsHash<ArgsInput> | NamedArray<ArgsInput>;
+  payload: AsHash<ArgsInput> | NamedArray<ArgsInput>;
 }
 
 export interface QueryOutput extends ModelBaseOutput<QueryMetaInfo> {
-  args: NamedArray<IFieldArgs>;
-  payload: NamedArray<IFieldArgs>;
+  args: NamedArray<ArgsInput>;
+  payload: NamedArray<ArgsInput>;
 }
 
 export const queryDefaultMetaInfo = {
@@ -95,15 +94,17 @@ export class Query
     assignValue<
       QueryInternal,
       QueryInput,
-      AsHash<IFieldArgs> | NamedArray<IFieldArgs>
+      AsHash<ArgsInput> | NamedArray<ArgsInput>
     >({
       src: this[Internal],
       input,
       field: 'args',
       effect: (src, value) =>
-        (src.args = Array.isArray(value)
-          ? ArrayToMap(value, v => new Args(v))
-          : HashToMap(value, (name, v) => new Args({ name, ...v }))),
+        (src.args = ArrayToMap(
+          Array.isArray(value) ? value : HashToArray(value),
+          i => new Args(i),
+          (obj, src) => obj.mergeWith(src.toObject()),
+        )),
       required: true,
       setDefault: src => (src.args = new Map()),
     });
@@ -111,15 +112,17 @@ export class Query
     assignValue<
       QueryInternal,
       QueryInput,
-      AsHash<IFieldArgs> | NamedArray<IFieldArgs>
+      AsHash<ArgsInput> | NamedArray<ArgsInput>
     >({
       src: this[Internal],
       input,
       field: 'payload',
       effect: (src, value) =>
-        (src.payload = Array.isArray(value)
-          ? ArrayToMap(value, v => new Args(v))
-          : HashToMap(value, (name, v) => new Args({ name, ...v }))),
+        (src.payload = ArrayToMap(
+          Array.isArray(value) ? value : HashToArray(value),
+          i => new Args(i),
+          (obj, src) => obj.mergeWith(src.toObject()),
+        )),
       required: true,
       setDefault: src => (src.payload = new Map()),
     });

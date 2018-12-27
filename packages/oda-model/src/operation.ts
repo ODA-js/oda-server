@@ -7,21 +7,20 @@ import {
   ModelBaseOutput,
 } from './modelbase';
 import {
-  IFieldArgs,
   OperationKind,
   AsHash,
   MetaModelType,
   assignValue,
-  HashToMap,
   NamedArray,
   ArrayToMap,
   MapToArray,
   Nullable,
+  HashToArray,
 } from './types';
 import { merge } from 'lodash';
 import { Internal } from './element';
 import decapitalize from './lib/decapitalize';
-import { IArgs, Args } from './args';
+import { IArgs, Args, ArgsInput } from './args';
 /**
  * Kind of mutation which is intended to work with single entity
  */
@@ -55,8 +54,8 @@ export interface OperationMetaInfo extends ModelBaseMetaInfo {
 }
 
 export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
-  args: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
-  payload: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
+  args: AsHash<ArgsInput> | NamedArray<ArgsInput>;
+  payload: AsHash<ArgsInput> | NamedArray<ArgsInput>;
   inheritedFrom?: string;
   entity?: string;
   actionType: OperationKind;
@@ -64,8 +63,8 @@ export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
 }
 
 export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
-  args: NamedArray<IFieldArgs>;
-  payload: NamedArray<IFieldArgs>;
+  args: NamedArray<ArgsInput>;
+  payload: NamedArray<ArgsInput>;
   inheritedFrom?: string;
   entity: string;
   actionType: OperationKind;
@@ -157,15 +156,17 @@ export class Operation
     assignValue<
       OperationInternal,
       OperationInput,
-      AsHash<IFieldArgs> | NamedArray<IFieldArgs>
+      AsHash<ArgsInput> | NamedArray<ArgsInput>
     >({
       src: this[Internal],
       input,
       field: 'args',
       effect: (src, value) =>
-        (src.args = Array.isArray(value)
-          ? ArrayToMap(value, v => new Args(v))
-          : HashToMap(value, (name, v) => new Args({ name, ...v }))),
+        (src.args = ArrayToMap(
+          Array.isArray(value) ? value : HashToArray(value),
+          i => new Args(i),
+          (obj, src) => obj.mergeWith(src.toObject()),
+        )),
       required: true,
       setDefault: src => (src.args = new Map()),
     });
@@ -173,15 +174,17 @@ export class Operation
     assignValue<
       OperationInternal,
       OperationInput,
-      AsHash<IFieldArgs> | NamedArray<IFieldArgs>
+      AsHash<ArgsInput> | NamedArray<ArgsInput>
     >({
       src: this[Internal],
       input,
       field: 'payload',
       effect: (src, value) =>
-        (src.payload = Array.isArray(value)
-          ? ArrayToMap(value, v => new Args(v))
-          : HashToMap(value, (name, v) => new Args({ name, ...v }))),
+        (src.payload = ArrayToMap(
+          Array.isArray(value) ? value : HashToArray(value),
+          i => new Args(i),
+          (obj, src) => obj.mergeWith(src.toObject()),
+        )),
       required: true,
       setDefault: src => (src.payload = new Map()),
     });

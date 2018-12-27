@@ -1,13 +1,6 @@
 import { merge } from 'lodash';
 
-import {
-  MetaModelType,
-  Nullable,
-  assignValue,
-  Multiplicity,
-  IFieldArgs,
-  IFieldArgsForHash,
-} from './types';
+import { MetaModelType, Nullable, assignValue, Multiplicity } from './types';
 import { Internal } from './element';
 import {
   ModelBase,
@@ -55,7 +48,7 @@ export const argsDefaultInput = {
 
 export class Args
   extends ModelBase<ArgsMetaInfo, ArgsInput, ArgsInternal, ArgsOutput>
-  implements IArgs, IFieldArgs, IFieldArgsForHash {
+  implements IArgs {
   public get modelType(): MetaModelType {
     return 'args';
   }

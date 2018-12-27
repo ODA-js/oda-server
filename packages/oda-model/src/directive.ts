@@ -8,7 +8,6 @@ import {
 } from './modelbase';
 import {
   DirectiveLocation,
-  IFieldArgs,
   AsHash,
   MetaModelType,
   HashToMap,
@@ -20,7 +19,7 @@ import {
 } from './types';
 import { Internal } from './element';
 import { merge, mergeWith } from 'lodash';
-import { Args, IArgs } from './args';
+import { Args, IArgs, ArgsInput } from './args';
 
 export interface IDirective
   extends IModelBase<DirectiveMetaInfo, DirectiveInput, DirectiveOutput> {
@@ -42,12 +41,12 @@ export interface DirectiveInternal extends ModelBaseInternal {
 }
 
 export interface DirectiveInput extends ModelBaseInput<DirectiveMetaInfo> {
-  args?: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
+  args?: AsHash<ArgsInput> | NamedArray<ArgsInput>;
   on: DirectiveLocation[];
 }
 
 export interface DirectiveOutput extends ModelBaseOutput<DirectiveMetaInfo> {
-  args: NamedArray<IFieldArgs>;
+  args: NamedArray<ArgsInput>;
   on: DirectiveLocation[];
 }
 

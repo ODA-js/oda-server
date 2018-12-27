@@ -304,43 +304,44 @@ export class EntityBase<
       input,
       field: 'fields',
       effect: (src, value) => {
-        const fields = new Map(
-          (Array.isArray(value) ? value : HashToArray(value))
-            .map((fld, order) => {
-              let field: Field;
-              if (isSimpleInput(fld)) {
-                field = new SimpleField(
-                  merge({}, fld, {
-                    order,
-                    entity: this.name,
-                  } as Partial<SimpleFieldInput>),
-                );
-                if (field.identity) {
-                  this.updateIndex(field, { unique: true, sparse: true });
-                }
-
-                if (field.indexed) {
-                  this.updateIndex(field, { sparse: true });
-                }
-              } else if (isRelationFieldInput(fld)) {
-                field = new RelationField(
-                  merge({}, fld, {
-                    order,
-                    entity: this.name,
-                  } as Partial<RelationFieldInput>),
-                );
-              } else {
-                field = new EntityField(
-                  merge({}, fld, {
-                    order,
-                    entity: this.name,
-                  } as Partial<EntityFieldInput>),
-                );
+        const fields = ArrayToMap(
+          Array.isArray(value) ? value : HashToArray(value),
+          (fld, order) => {
+            let field: Field;
+            if (isSimpleInput(fld)) {
+              field = new SimpleField(
+                merge({}, fld, {
+                  order,
+                  entity: this.name,
+                } as Partial<SimpleFieldInput>),
+              );
+              if (field.identity) {
+                this.updateIndex(field, { unique: true, sparse: true });
               }
-              return field;
-            })
-            .map(f => [f.name, f] as [string, Field]),
+
+              if (field.indexed) {
+                this.updateIndex(field, { sparse: true });
+              }
+            } else if (isRelationFieldInput(fld)) {
+              field = new RelationField(
+                merge({}, fld, {
+                  order,
+                  entity: this.name,
+                } as Partial<RelationFieldInput>),
+              );
+            } else {
+              field = new EntityField(
+                merge({}, fld, {
+                  order,
+                  entity: this.name,
+                } as Partial<EntityFieldInput>),
+              );
+            }
+            return field;
+          },
+          (obj: any, src: any) => obj.mergeWith(src.toObject()),
         );
+
         if (!this[Internal].exact) {
           let f: SimpleField;
           if (fields.has('id')) {

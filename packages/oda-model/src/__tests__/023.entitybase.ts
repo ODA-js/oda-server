@@ -173,6 +173,17 @@ describe('EntityBase', () => {
     });
     expect(res.operations.size).toBe(1);
   });
+  it('should deduplicates fields', () => {
+    const res = new EntityBase({
+      name: 'A',
+      fields: [
+        { name: 'a', indexed: true },
+        { name: 'a', description: 'field a description' },
+      ],
+    });
+    //+1 for ID
+    expect(res.fields.size).toBe(2);
+  });
 });
 
 describe('Indexing', () => {

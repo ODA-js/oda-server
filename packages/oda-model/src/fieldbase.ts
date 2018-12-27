@@ -9,20 +9,19 @@ import {
 import decapitalize from './lib/decapitalize';
 import { merge } from 'lodash';
 import {
-  IFieldArgs,
   FieldType,
   AsHash,
   MetaModelType,
-  HashToMap,
   MapToHash,
   Nullable,
   assignValue,
   NamedArray,
   ArrayToMap,
+  HashToArray,
 } from './types';
 import { Internal, MetaData } from './element';
 import { IEntityRef, EntityReference } from './entityreference';
-import { IArgs, Args } from './args';
+import { IArgs, Args, ArgsInput } from './args';
 
 export interface IFieldBase<
   M extends FieldBaseMetaInfo<P>,
@@ -77,7 +76,7 @@ export interface FieldBaseInput<
   T extends FieldBaseMetaInfo<P>,
   P extends FieldBasePersistence
 > extends ModelBaseInput<T> {
-  args?: AsHash<IFieldArgs> | NamedArray<IFieldArgs>;
+  args?: AsHash<ArgsInput> | NamedArray<ArgsInput>;
   inheritedFrom?: string;
   derived?: boolean;
   persistent?: boolean;
@@ -102,7 +101,7 @@ export interface FieldBaseOutput<
   required?: boolean;
   identity?: boolean | string | string[];
   indexed?: boolean | string | string[];
-  args: NamedArray<IFieldArgs>;
+  args: NamedArray<ArgsInput>;
 }
 
 export const fieldBaseDefaultMetaInfo = {
@@ -193,14 +192,16 @@ export class FieldBase<
       field: 'inheritedFrom',
     });
 
-    assignValue<S, I, AsHash<IFieldArgs> | NamedArray<IFieldArgs>>({
+    assignValue<S, I, AsHash<ArgsInput> | NamedArray<ArgsInput>>({
       src: this[Internal],
       input,
       field: 'args',
       effect: (src, value) =>
-        (src.args = Array.isArray(value)
-          ? ArrayToMap(value, v => new Args(v))
-          : HashToMap(value, (name, v) => new Args({ name, ...v }))),
+        (src.args = ArrayToMap(
+          Array.isArray(value) ? value : HashToArray(value),
+          i => new Args(i),
+          (obj, src) => obj.mergeWith(src.toObject()),
+        )),
       setDefault: src => (src.args = new Map()),
     });
 
