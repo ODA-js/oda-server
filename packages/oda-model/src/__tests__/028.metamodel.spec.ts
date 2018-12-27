@@ -10,6 +10,17 @@ describe('MetaModel', () => {
     expect(res.toObject()).toMatchSnapshot('default');
   });
 
+  it('kill dupes for packages & hooks', () => {
+    const res = new MetaModel({
+      name: 'a',
+      hooks: [{ name: 'hook' }, { name: 'hook' }],
+      packages: ['a', 'b', 'a'],
+    });
+    expect(res.name).toBe('A');
+    expect(res.hooks.size).toBe(1);
+    expect(res.packages.size).toBe(2);
+  });
+
   it('discovers packages', () => {
     const res = new MetaModel({
       name: 'A',

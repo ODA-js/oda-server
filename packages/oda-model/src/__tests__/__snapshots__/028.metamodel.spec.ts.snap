@@ -6,6 +6,7 @@ Object {
   "directives": Array [],
   "entities": Array [],
   "enums": Array [],
+  "hooks": Array [],
   "metadata": Object {},
   "mixins": Array [],
   "mutations": Array [],

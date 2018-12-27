@@ -14,7 +14,7 @@ import { IUnion, UnionInput, Union } from './union';
 import { IMutation, MutationInput, Mutation } from './mutation';
 import { IQuery, QueryInput, Query } from './query';
 import { IDirective, DirectiveInput, Directive } from './directive';
-import { MetaModelType, Nullable } from './types';
+import { MetaModelType, Nullable, ArrayToMap } from './types';
 import { IModel } from './metamodel';
 import { merge } from 'lodash';
 import { MapToArray, assignValue, createOrMergeFromMap } from './types';
@@ -131,21 +131,42 @@ export class ModelPackageBase<
       required: true,
     });
 
+    assignValue<S, I, IModel>({
+      src: this[Internal],
+      input,
+      field: 'metaModel',
+      effect: (src, value) => (src.metaModel = value),
+    });
+
     assignValue<S, I, (EntityInput | string)[]>({
       src: this[Internal],
       input,
       field: 'entities',
       allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        const createIt = createOrMergeFromMap(
-          this.metaModel,
-          Entity,
-          'entities',
+        const entities =
+          (this.metaModel && this.metaModel.entities) || new Map();
+        src.entities = ArrayToMap<any, IEntity>(
+          value,
+          (i: string | EntityInput) => {
+            let res: IEntity | undefined;
+            if (typeof i === 'string') {
+              res = entities.get(i);
+              if (!res) {
+                res = new Entity({ name: i });
+                entities.set(res.name, res);
+              }
+            } else {
+              res = new Entity(i);
+              const original = entities.get(res.name);
+              if (original) {
+                original.mergeWith(res.toObject());
+              }
+            }
+            return res;
+          },
+          (obj, src) => obj.mergeWith(src.toObject()),
         );
-        src.entities = new Map(value.map(i => createIt(i)).filter(f => f) as [
-          string,
-          IEntity
-        ][]);
       },
       required: true,
       setDefault: src => (src.entities = new Map<string, IEntity>()),
@@ -157,6 +178,12 @@ export class ModelPackageBase<
       field: 'enums',
       allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
+        src.enums = ArrayToMap<any, IEnum>(
+          value,
+          (i: string | EnumInput) =>
+            new Enum(typeof i === 'string' ? ({ name: i } as EnumInput) : i),
+          (obj, src) => obj.mergeWith(src.toObject()),
+        );
         const createIt = createOrMergeFromMap(this.metaModel, Enum, 'enums');
         src.enums = new Map(value.map(i => createIt(i)).filter(f => f) as [
           string,
@@ -262,13 +289,6 @@ export class ModelPackageBase<
         ][]);
       },
       setDefault: src => (src.queries = new Map<string, IQuery>()),
-    });
-
-    assignValue<S, I, IModel>({
-      src: this[Internal],
-      input,
-      field: 'metaModel',
-      effect: (src, value) => (src.metaModel = value),
     });
   }
 

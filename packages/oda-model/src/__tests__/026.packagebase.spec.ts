@@ -1,5 +1,6 @@
 import 'jest';
 import { ModelPackageBase } from '../packagebase';
+import { Internal } from '../element';
 
 describe('PackageBase', () => {
   it('should capitalize name', () => {
@@ -32,5 +33,18 @@ describe('PackageBase', () => {
       ],
     });
     expect(res.toObject()).toMatchSnapshot('toObject');
+  });
+
+  it('kill entity dupes', () => {
+    const res = new ModelPackageBase({
+      name: 'A',
+      metaModel: { entities: new Map() } as any,
+      entities: ['A', { name: 'A' }, { name: 'a', description: 'desc' }],
+    });
+    const meta = res.metaModel;
+    expect(res.entities.size).toBe(1);
+    expect(res.entities.get('A')).toHaveProperty('description', 'desc');
+    expect(meta.entities.size).toBe(1);
+    expect(meta.entities.get('A')).toHaveProperty('description', 'desc');
   });
 });

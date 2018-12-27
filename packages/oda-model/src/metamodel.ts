@@ -15,6 +15,7 @@ import {
   Nullable,
   ArrayToHash,
   MapToHash,
+  ArrayToMap,
 } from './types';
 import fold from './lib/fold';
 import { merge } from 'lodash';
@@ -31,7 +32,12 @@ import { FieldInput, IField, isIRelationField } from './field';
 import { Graph, Vertex, Edge } from './utils/detectcyclesedges';
 import { IRelationField } from './relationfield';
 import { Internal } from './element';
-import { ModelHookInput } from './modelhooks';
+import {
+  ModelHookInput,
+  IModelHook,
+  ModelHookOutput,
+  ModelHook,
+} from './modelhooks';
 
 export type FieldMap = {
   [name: string]: boolean;
@@ -42,7 +48,7 @@ export interface IModel
   readonly packages: Map<string, IPackage>;
   readonly defaultPackage: IPackage;
   readonly abstract: boolean;
-  readonly hooks: ModelHookInput[];
+  readonly hooks: Map<string, IModelHook>;
 }
 
 export interface MetaModelInput
@@ -55,14 +61,14 @@ export interface MetaModelOutput
   extends ModelPackageBaseOutput<MetaModelMetaInfo>,
     ModelPackageOutput {
   packages: ModelPackageOutput[];
-  hooks?: ModelHookInput[];
+  hooks?: ModelHookOutput[];
 }
 
 export interface MetaModelMetaInfo extends ModelPackageBaseMetaInfo {}
 
 export interface MetaModelInternal extends ModelPackageBaseInternal {
   packages: Map<string, IPackage>;
-  hooks: ModelHookInput[];
+  hooks: Map<string, IModelHook>;
 }
 
 const defaultMetaInfo = {};
@@ -131,6 +137,7 @@ export class MetaModel
         ...value.toObject(),
         name,
       })),
+      hooks: [...this.hooks.values()].map(h => h.toObject()),
     } as Partial<MetaModelOutput>);
   }
 
@@ -201,17 +208,11 @@ export class MetaModel
       field: 'packages',
       allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        src.packages = new Map(value
-          .map(i => {
-            let res: IPackage;
-            if (typeof i === 'string') {
-              res = new ModelPackage({ name: i });
-            } else {
-              res = new ModelPackage(i);
-            }
-            return [res.name, res];
-          })
-          .filter(f => f) as [string, IPackage][]);
+        src.packages = ArrayToMap<any, IPackage>(
+          value,
+          (i: ModelPackageInput | string) => new ModelPackage(i),
+          (obj, src) => obj.mergeWith(src.toObject()),
+        );
       },
       required: true,
       setDefault: src => (src.packages = new Map<string, IPackage>()),
@@ -231,10 +232,14 @@ export class MetaModel
         if (!Array.isArray(value)) {
           value = [fold(value) as ModelHookInput];
         }
-        src.hooks = fold(value.filter(f => f)) as ModelHookInput[];
+        src.hooks = ArrayToMap(
+          fold(value.filter(f => f)) as ModelHookInput[],
+          i => new ModelHook(i),
+          (obj, src) => obj.mergeWith(src.toObject()),
+        );
       },
       required: true,
-      setDefault: src => (src.hooks = []),
+      setDefault: src => (src.hooks = new Map()),
     });
   }
 
