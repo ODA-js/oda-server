@@ -10,6 +10,8 @@ import {
   INamed,
 } from '../types';
 
+import { merge } from 'lodash';
+
 describe('helpers', () => {
   it('ArrayToMap', () => {
     expect(
@@ -21,7 +23,17 @@ describe('helpers', () => {
         (value: any) => ({ name: value.key, ...value }),
       ),
     ).toMatchSnapshot('ArrayToMap with process');
+
+    const res = ArrayToMap(
+      [{ name: 'a', title: 'one' }, { name: 'a', other: '10' }, { name: 'b' }],
+      undefined,
+      (obj, src) => merge(obj, src),
+    );
+    expect(res).toHaveProperty('size', 2);
+    expect(res.get('a')).toHaveProperty('title', 'one');
+    expect(res.get('a')).toHaveProperty('other', '10');
   });
+
   it('HashToMap', () => {
     expect(
       HashToMap({

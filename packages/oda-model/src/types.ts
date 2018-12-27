@@ -223,11 +223,33 @@ export interface AsHash<T extends Partial<INamed> & object> {
 
 export type NamedArray<T extends INamed> = Array<T>;
 
+function mergeDupes<O extends Partial<INamed> & object>(
+  src: Map<string, O>,
+  items: [string, O][],
+  killDupes?: (obj: O, src: O) => void,
+) {
+  items.forEach(item => {
+    if (killDupes) {
+      const dupe = src.get(item[0]);
+      if (dupe) {
+        killDupes(dupe, item[1]);
+      } else {
+        src.set(item[0], item[1]);
+      }
+    } else {
+      src.set(item[0], item[1]);
+    }
+  });
+}
+
 export function ArrayToMap<T extends INamed, O extends INamed = T>(
   input: NamedArray<T>,
   process?: (v: T) => O,
+  killDupes?: (obj: O, src: O) => void,
 ) {
-  return new Map<string, O>(
+  const res = new Map<string, O>();
+  mergeDupes(
+    res,
     input.map(f => {
       let result: O = (f as unknown) as O;
       if (process) {
@@ -235,53 +257,84 @@ export function ArrayToMap<T extends INamed, O extends INamed = T>(
       }
       return [result.name, result] as [string, O];
     }),
+    killDupes,
   );
+  return res;
 }
 
 export function HashToMap<
   T extends Partial<INamed> & object,
   O extends Partial<INamed> & object = T
->(input: AsHash<T>, process?: (name: string, v: T) => O): Map<string, O> {
-  const res = Object.keys(input).map(key => {
-    let result: O | T = (input[key] as unknown) as O;
-    if (process) {
-      result = process(key, (result as unknown) as T);
-    } else {
-      result = {
-        name: key,
-        ...result,
-      };
-    }
-    return [result.name, result] as [string, O];
-  });
-  return new Map(res);
+>(
+  input: AsHash<T>,
+  process?: (name: string, v: T) => O,
+  killDupes?: (obj: O, src: O) => void,
+): Map<string, O> {
+  const res = new Map<string, O>();
+  mergeDupes(
+    res,
+    Object.keys(input).map(key => {
+      let result: O | T = (input[key] as unknown) as O;
+      if (process) {
+        result = process(key, (result as unknown) as T);
+      } else {
+        result = {
+          name: key,
+          ...result,
+        };
+      }
+      return [result.name, result] as [string, O];
+    }),
+    killDupes,
+  );
+  return res;
 }
 
 export function HashToArray<T extends Partial<INamed> & object>(
   input: AsHash<T>,
   process?: (name: string, v: T) => T,
+  killDupes?: (obj: T, src: T) => void,
 ): T[] {
-  return Object.keys(input).map(key => {
-    let result = input[key];
-    if (process) {
-      result = process(key, result);
-    } else {
-      result = {
-        ...result,
-        name: key,
-      };
-    }
-    return result;
-  });
+  const res = new Map<string, T>();
+  mergeDupes(
+    res,
+    Object.keys(input).map(key => {
+      let result = input[key];
+      if (process) {
+        result = process(key, result);
+      } else {
+        result = {
+          ...result,
+          name: key,
+        };
+      }
+      return [result.name, result] as [string, T];
+    }),
+    killDupes,
+  );
+  return [...res.values()];
 }
 
 export function ArrayToHash<T extends INamed>(
   input: Array<T>,
   process?: (v: T) => T,
+  killDupes?: (obj: T, src: T) => void,
 ): AsHash<T> {
-  return input.reduce(
+  const res = new Map<string, T>();
+  mergeDupes(
+    res,
+    input.map(f => {
+      let result: T = (f as unknown) as T;
+      if (process) {
+        result = (process(f) as unknown) as T;
+      }
+      return [result.name, result] as [string, T];
+    }),
+    killDupes,
+  );
+  return [...res.values()].reduce(
     (result, item) => {
-      result[item.name] = process ? process(item) : item;
+      result[item.name] = item;
       return result;
     },
     {} as AsHash<T>,

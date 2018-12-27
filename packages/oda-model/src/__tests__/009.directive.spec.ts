@@ -25,4 +25,18 @@ describe('Directive', () => {
     const res = new Directive({ name: 'Dedupes', on: ['FIELD', 'FIELD'] });
     expect(res.on.size).toBe(1);
   });
+  it('merges on', () => {
+    const res1 = new Directive({
+      name: 'Dedupes!',
+      on: ['FIELD_DEFINITION', 'FIELD'],
+    });
+    const res2 = new Directive({ name: 'Dedupes!', on: ['FIELD', 'FIELD'] });
+    const res = new Directive({ name: 'Dedupes', on: ['INTERFACE'] });
+
+    res.mergeWith(res1.toObject());
+    res.mergeWith(res2.toObject());
+    expect(res.name).toBe('Dedupes');
+    expect(res.on.size).toBe(3);
+    expect(res.toObject()).toMatchSnapshot('merge');
+  });
 });

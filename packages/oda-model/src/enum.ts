@@ -7,7 +7,7 @@ import {
   ModelBaseMetaInfo,
 } from './modelbase';
 import { EnumItem, IEnumItem, EnumItemInput } from './enumItem';
-import { merge } from 'lodash';
+import { merge, mergeWith } from 'lodash';
 import { Internal } from './element';
 import { MetaModelType, Nullable, assignValue } from './types';
 
@@ -95,6 +95,26 @@ export class Enum
   }
 
   public mergeWith(payload: Nullable<EnumInput>) {
-    super.mergeWith(payload);
+    const update = mergeWith(
+      this.toObject(),
+      payload,
+      (
+        o: any,
+        s: any,
+        key: string,
+        _obj: any,
+        _source: any,
+        _stack: string[],
+      ) => {
+        if (key === 'items') {
+          return [...o, ...s];
+        }
+        if (key == 'name') {
+          return o;
+        }
+        return;
+      },
+    );
+    this.updateWith(update);
   }
 }

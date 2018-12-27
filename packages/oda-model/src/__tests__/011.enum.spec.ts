@@ -13,21 +13,21 @@ describe('Enum', () => {
   });
   it('dedupes items when it is strings', () => {
     const res = new Enum({
-      name: 'localtion',
+      name: 'location',
       items: ['WORK', 'WORK', 'HOME'],
     });
     expect(res.items.size).toBe(2);
   });
   it('dedupes items when it is objects and string', () => {
     const res = new Enum({
-      name: 'localtion',
+      name: 'location',
       items: ['WORK', { name: 'WORK' }, 'HOME'],
     });
     expect(res.items.size).toBe(2);
   });
   it('dedupes items when it is objects ', () => {
     const res = new Enum({
-      name: 'localtion',
+      name: 'location',
       items: [
         { name: 'WORK', description: 'work place' },
         { name: 'WORK' },
@@ -42,5 +42,28 @@ describe('Enum', () => {
       expect(item.description).toBe('work place');
       expect(item.value).toBe('_WORK_');
     }
+  });
+  it('merges', () => {
+    const res1 = new Enum({
+      name: 'location1',
+      items: ['WORK1', 'WORK', 'HOME'],
+    });
+    const res2 = new Enum({
+      name: 'localtion2',
+      items: [
+        'WORK2',
+        { name: 'WORK', description: 'just work location' },
+        'HOME',
+      ],
+    });
+    const res = new Enum({
+      name: 'location',
+      items: ['WORK', 'WORK', 'HOME'],
+    });
+    expect(res.name).toBe('location');
+    res.mergeWith(res1.toObject());
+    res.mergeWith(res2.toObject());
+    expect(res.items.size).toBe(4);
+    expect(res.toObject()).toMatchSnapshot('merge');
   });
 });

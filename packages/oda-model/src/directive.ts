@@ -19,7 +19,7 @@ import {
   MapToArray,
 } from './types';
 import { Internal } from './element';
-import { merge } from 'lodash';
+import { merge, mergeWith } from 'lodash';
 import { Args, IArgs } from './args';
 
 export interface IDirective
@@ -115,6 +115,26 @@ export class Directive
   }
 
   public mergeWith(payload: Nullable<DirectiveInput>) {
-    super.mergeWith(payload);
+    const update = mergeWith(
+      this.toObject(),
+      payload,
+      (
+        o: any,
+        s: any,
+        key: string,
+        _obj: any,
+        _source: any,
+        _stack: string[],
+      ) => {
+        if (key === 'on') {
+          return [...o, ...s];
+        }
+        if (key == 'name') {
+          return o;
+        }
+        return;
+      },
+    );
+    this.updateWith(update);
   }
 }

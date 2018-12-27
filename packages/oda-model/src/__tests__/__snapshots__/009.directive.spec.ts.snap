@@ -23,3 +23,18 @@ Object {
   "title": undefined,
 }
 `;
+
+exports[`Directive merges on: merge 1`] = `
+Object {
+  "args": Array [],
+  "description": undefined,
+  "metadata": Object {},
+  "name": "Dedupes",
+  "on": Array [
+    "INTERFACE",
+    "FIELD_DEFINITION",
+    "FIELD",
+  ],
+  "title": undefined,
+}
+`;

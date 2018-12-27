@@ -8,7 +8,7 @@ import {
   Internal,
 } from './element';
 import { MetaModelType, INamed } from './types';
-import { merge } from 'lodash';
+import { merge, mergeWith } from 'lodash';
 import { Nullable, assignValue } from './types';
 
 export interface ModelBaseMetaInfo extends ElementMetaInfo {}
@@ -122,6 +122,23 @@ export class ModelBase<
   }
 
   public mergeWith(payload: Nullable<I>) {
-    super.mergeWith(payload);
+    const update = mergeWith(
+      this.toObject(),
+      payload,
+      (
+        o: any,
+        _s: any,
+        key: string,
+        _obj: any,
+        _source: any,
+        _stack: string[],
+      ) => {
+        if (key == 'name') {
+          return o;
+        }
+        return;
+      },
+    );
+    this.updateWith(update);
   }
 }

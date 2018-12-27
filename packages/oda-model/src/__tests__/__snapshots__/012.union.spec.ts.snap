@@ -13,3 +13,18 @@ Object {
   "title": undefined,
 }
 `;
+
+exports[`Union merges: merge 1`] = `
+Object {
+  "description": undefined,
+  "items": Array [
+    "ITEM",
+    "Item",
+    "Item2",
+    "Item1",
+  ],
+  "metadata": Object {},
+  "name": "UNION",
+  "title": undefined,
+}
+`;

@@ -1,4 +1,4 @@
-import { merge } from 'lodash';
+import { merge, mergeWith } from 'lodash';
 import { Internal } from './element';
 import {
   ModelBaseInternal,
@@ -79,6 +79,26 @@ export class Union
     >);
   }
   mergeWith(payload: Nullable<UnionInput>) {
-    super.mergeWith(payload);
+    const update = mergeWith(
+      this.toObject(),
+      payload,
+      (
+        o: any,
+        s: any,
+        key: string,
+        _obj: any,
+        _source: any,
+        _stack: string[],
+      ) => {
+        if (key === 'items') {
+          return [...o, ...s];
+        }
+        if (key == 'name') {
+          return o;
+        }
+        return;
+      },
+    );
+    this.updateWith(update);
   }
 }

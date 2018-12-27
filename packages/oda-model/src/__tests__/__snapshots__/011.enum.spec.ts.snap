@@ -24,3 +24,42 @@ Object {
   "title": undefined,
 }
 `;
+
+exports[`Enum merges: merge 1`] = `
+Object {
+  "description": undefined,
+  "items": Array [
+    Object {
+      "description": "just work location",
+      "metadata": Object {},
+      "name": "WORK",
+      "title": undefined,
+      "value": undefined,
+    },
+    Object {
+      "description": undefined,
+      "metadata": Object {},
+      "name": "HOME",
+      "title": undefined,
+      "value": undefined,
+    },
+    Object {
+      "description": undefined,
+      "metadata": Object {},
+      "name": "WORK1",
+      "title": undefined,
+      "value": undefined,
+    },
+    Object {
+      "description": undefined,
+      "metadata": Object {},
+      "name": "WORK2",
+      "title": undefined,
+      "value": undefined,
+    },
+  ],
+  "metadata": Object {},
+  "name": "location",
+  "title": undefined,
+}
+`;
