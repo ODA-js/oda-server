@@ -25,7 +25,7 @@ import {
   ModelPackageBase,
   ModelPackageBaseOutput,
 } from './packagebase';
-import { getFilter } from './getFilter';
+import { filter } from './getFilter';
 import { isIRelationField } from './field';
 import { Graph, Vertex, Edge } from './utils/detectcyclesedges';
 import { IRelationField } from './relationfield';
@@ -245,9 +245,9 @@ export class MetaModel
   public applyHooks() {
     this.hooks.forEach(hook => {
       hook.entities.forEach(hEntity => {
-        const prepare = getFilter(hEntity.name);
+        const prepare = filter(hEntity.name);
         this.entities.forEach(entity => {
-          if (prepare.filter(entity)) {
+          if (prepare(entity.name)) {
             entity.mergeWith(hEntity.toObject());
           }
         });

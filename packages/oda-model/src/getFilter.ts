@@ -69,8 +69,7 @@ export function filter(inp: string): (f: string) => boolean {
         {} as FieldMap,
       );
     result = (f: string) => !notFields[f];
-  }
-  if (inp.startsWith('[')) {
+  } else if (inp.startsWith('[')) {
     let onlyFields = inp
       .slice(1, inp.length - 1)
       .split(',')
@@ -83,6 +82,9 @@ export function filter(inp: string): (f: string) => boolean {
         {} as FieldMap,
       );
     result = (f: string) => !!onlyFields[f];
+  } else if (inp.startsWith('^')) {
+    inp = inp.slice(1);
+    return (f: string) => f !== inp;
   }
   return result;
 }

@@ -28,4 +28,11 @@ describe('Filter', () => {
     expect(f('d')).toBeFalsy();
     expect(f('c')).toBeFalsy();
   });
+  it('should exclude specific field', () => {
+    const f = filter('^a');
+    expect(f('a')).toBeFalsy();
+    expect(f('b')).toBeTruthy();
+    expect(f('d')).toBeTruthy();
+    expect(f('c')).toBeTruthy();
+  });
 });
