@@ -244,13 +244,35 @@ export class MetaModel
 
   public applyHooks() {
     this.hooks.forEach(hook => {
-      hook.entities.forEach(hEntity => {
-        const prepare = filter(hEntity.name);
-        this.entities.forEach(entity => {
-          if (prepare(entity.name)) {
-            entity.mergeWith(hEntity.toObject());
-          }
-        });
+      this.applyHooksFor(hook, 'entities');
+      this.applyHooksFor(hook, 'mixins');
+      this.applyHooksFor(hook, 'mutations');
+      this.applyHooksFor(hook, 'queries');
+      this.applyHooksFor(hook, 'enums');
+      this.applyHooksFor(hook, 'scalars');
+      this.applyHooksFor(hook, 'unions');
+      this.applyHooksFor(hook, 'directives');
+    });
+  }
+
+  private applyHooksFor(
+    hook: IModelHook,
+    key:
+      | 'entities'
+      | 'mixins'
+      | 'mutations'
+      | 'queries'
+      | 'enums'
+      | 'scalars'
+      | 'unions'
+      | 'directives',
+  ) {
+    hook[key].forEach(hItem => {
+      const prepare = filter(hItem.name);
+      this[key].forEach(item => {
+        if (prepare(item.name)) {
+          item.mergeWith(hItem.toObject());
+        }
       });
     });
   }
