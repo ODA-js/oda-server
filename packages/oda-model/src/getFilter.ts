@@ -49,3 +49,40 @@ export function getFilter<T extends INamed>(
   }
   return result;
 }
+
+export function filter(inp: string): (f: string) => boolean {
+  let result = (f: string) => f === inp;
+
+  if (inp === '*') {
+    result = () => true;
+  }
+  if (inp.startsWith('^[')) {
+    let notFields = inp
+      .slice(2, inp.length - 1)
+      .split(',')
+      .map(f => f.trim())
+      .reduce(
+        (res, cur) => {
+          res[cur] = true;
+          return res;
+        },
+        {} as FieldMap,
+      );
+    result = (f: string) => !notFields[f];
+  }
+  if (inp.startsWith('[')) {
+    let onlyFields = inp
+      .slice(1, inp.length - 1)
+      .split(',')
+      .map(f => f.trim())
+      .reduce(
+        (res, cur) => {
+          res[cur] = true;
+          return res;
+        },
+        {} as FieldMap,
+      );
+    result = (f: string) => !!onlyFields[f];
+  }
+  return result;
+}

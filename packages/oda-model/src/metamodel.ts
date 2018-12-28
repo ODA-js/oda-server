@@ -1,4 +1,4 @@
-import { Entity, EntityInput, IEntity } from './entity';
+import { IEntity } from './entity';
 
 import {
   ModelPackage,
@@ -9,13 +9,11 @@ import {
 } from './modelpackage';
 import {
   MetaModelType,
-  AsHash,
   MapToArray,
   assignValue,
   Nullable,
-  ArrayToHash,
-  MapToHash,
   ArrayToMap,
+  AssignAndKillDupes,
 } from './types';
 import fold from './lib/fold';
 import { merge } from 'lodash';
@@ -28,16 +26,11 @@ import {
   ModelPackageBaseOutput,
 } from './packagebase';
 import { getFilter } from './getFilter';
-import { FieldInput, IField, isIRelationField } from './field';
+import { isIRelationField } from './field';
 import { Graph, Vertex, Edge } from './utils/detectcyclesedges';
 import { IRelationField } from './relationfield';
 import { Internal } from './element';
-import {
-  ModelHookInput,
-  IModelHook,
-  ModelHookOutput,
-  ModelHook,
-} from './modelhooks';
+import { ModelHookInput, IModelHook, ModelHookOutput } from './modelhooks';
 
 export type FieldMap = {
   [name: string]: boolean;
@@ -208,9 +201,10 @@ export class MetaModel
       field: 'packages',
       allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
+        const process = AssignAndKillDupes(undefined, ModelPackage);
         src.packages = ArrayToMap<any, IPackage>(
           value,
-          (i: ModelPackageInput | string) => new ModelPackage(i),
+          (i: string | ModelPackageInput) => process(i),
           (obj, src) => obj.mergeWith(src.toObject()),
         );
       },
@@ -229,12 +223,13 @@ export class MetaModel
       allowEffect: (_, value) =>
         !!(value && ((Array.isArray(value) && value.length > 0) || value)),
       effect: (src, value) => {
+        const process = AssignAndKillDupes(undefined, ModelPackage);
         if (!Array.isArray(value)) {
           value = [fold(value) as ModelHookInput];
         }
-        src.hooks = ArrayToMap(
-          fold(value.filter(f => f)) as ModelHookInput[],
-          i => new ModelHook(i),
+        src.hooks = ArrayToMap<any, IPackage>(
+          value,
+          (i: string | ModelHookInput) => process(fold(i) as ModelHookInput),
           (obj, src) => obj.mergeWith(src.toObject()),
         );
       },
@@ -247,104 +242,16 @@ export class MetaModel
     // super.mergeWith(payload);
   }
 
-  protected applyEntityHook(entity: IEntity, hook: EntityInput): IEntity {
-    let result = entity.toObject();
-    if (hook.fields && Array.isArray(hook.fields)) {
-      hook.fields = ArrayToHash(hook.fields);
-    }
-    const fields = MapToHash<IField, FieldInput>(entity.fields, (_name, v) =>
-      v.toObject(),
-    );
-    if (hook.fields) {
-      for (let fName in hook.fields) {
-        let prepare = getFilter(fName);
-        let list = (result.fields || []).filter(prepare.filter);
-        if (list.length > 0) {
-          list.forEach(f => {
-            fields[f.name] = merge(f, (hook.fields as AsHash<FieldInput>)[
-              fName
-            ] as any);
-          });
-        } else {
-          // create specific items
-          prepare.fields.forEach(f => {
-            fields[f] = (hook.fields as AsHash<FieldInput>)[fName];
-          });
-        }
-      }
-    }
-
-    return new Entity({
-      ...result,
-      fields,
-    });
-  }
-
   public applyHooks() {
     this.hooks.forEach(hook => {
-      if (hook.entities && this.entities.size > 0) {
-        let keys = Object.keys(hook.entities);
-        for (let i = 0, len = keys.length; i < len; i++) {
-          let key = keys[i];
-          let current = hook.entities[key];
-          let prepare = getFilter(key);
-          let list = Array.from(this.entities.values()).filter(prepare.filter);
-          if (list.length > 0) {
-            list.forEach(e => {
-              let result = this.applyEntityHook(e, current);
-              this.entities.set(result.name, result);
-            });
-          } else if (prepare.fields.length > 0) {
-            throw new Error(
-              `Entit${prepare.fields.length === 1 ? 'y' : 'ies'} ${
-                prepare.fields
-              } not found`,
-            );
+      hook.entities.forEach(hEntity => {
+        const prepare = getFilter(hEntity.name);
+        this.entities.forEach(entity => {
+          if (prepare.filter(entity)) {
+            entity.mergeWith(hEntity.toObject());
           }
-        }
-      }
-      if (hook.mutations && this.mutations.size > 0) {
-        let keys = Object.keys(hook.mutations);
-        for (let i = 0, len = keys.length; i < len; i++) {
-          let key = keys[i];
-          let current = hook.mutations[key];
-          let prepare = getFilter(key);
-          let list = Array.from(this.mutations.values()).filter(prepare.filter);
-          if (list.length > 0) {
-            list.forEach(e => {
-              e.updateWith(merge({}, e.toObject(), current));
-              this.mutations.set(e.name, e);
-            });
-          } else if (prepare.fields.length > 0) {
-            throw new Error(
-              `Mutation${prepare.fields.length > 1 ? 's' : ''} ${
-                prepare.fields
-              } not found`,
-            );
-          }
-        }
-      }
-      if (hook.queries && this.queries.size > 0) {
-        let keys = Object.keys(hook.queries);
-        for (let i = 0, len = keys.length; i < len; i++) {
-          let key = keys[i];
-          let current = hook.queries[key];
-          let prepare = getFilter(key);
-          let list = Array.from(this.queries.values()).filter(prepare.filter);
-          if (list.length > 0) {
-            list.forEach(e => {
-              e.updateWith(merge({}, e.toObject(), current));
-              this.queries.set(e.name, e);
-            });
-          } else if (prepare.fields.length > 0) {
-            throw new Error(
-              `Quer${prepare.fields.length > 1 ? 'ies' : 'y'} ${
-                prepare.fields
-              } not found`,
-            );
-          }
-        }
-      }
+        });
+      });
     });
   }
 

@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { IUpdatableBase } from './element';
-import { merge, get, set, has, mergeWith } from 'lodash';
+import { get, set, has } from 'lodash';
 
 export type Nullable<T> = { [P in keyof T]: T[P] | undefined | null };
 
@@ -373,41 +373,40 @@ export type Merger<I extends INamed> = (
   source: I,
   stack: string[],
 ) => any;
-
 /**
- * create items with lookup from source
- * @param src source for lookup data
- * @param create constructor to create items
- * @param prop source prop name where lookup is located
+ * it checks and create item
+ * @param srcMap external source map
+ * @param create constructor for creating new item
  */
-export function createOrMergeFromMap<
-  T,
-  N extends INamed & IUpdatableBase,
-  I extends INamed,
-  V extends string | I
->(src: T, create: new (input: I) => N, prop: keyof T, merger?: Merger<I>) {
-  return (value: V) => {
-    let result: N | undefined;
-    const srcMap = (get(src, prop) as unknown) as Map<string, N> | undefined;
-    if (typeof value === 'string') {
-      result = srcMap && srcMap.get(value as string);
-    } else {
-      const name = (value as I).name;
-      const original = srcMap && srcMap.get(name);
-      if (original) {
-        let update: any;
-        if (merger) {
-          update = mergeWith({}, original.toObject(), value, merger);
-        } else {
-          update = merge({}, original.toObject(), value);
-        }
-        original.updateWith(update);
-      } else {
-        srcMap && srcMap.set(name, new create(value as I));
+export function AssignAndKillDupes<
+  T extends IUpdatableBase & INamed,
+  I extends INamed
+>(srcMap: Map<string, T> | undefined, create: new (input: I) => T) {
+  return (i: I | string) => {
+    let res: T | undefined;
+    /** if item is string */
+    if (typeof i === 'string') {
+      /** check if we have one in external map */
+      res = srcMap && srcMap.get(i);
+      if (!res) {
+        /** if not-> create it an push to external map */
+        res = new create({ name: i } as any);
+        srcMap && srcMap.set(res.name, res);
       }
-      result = new create(value as I);
+    } else {
+      /** if tem is input object */
+      res = new create(i);
+      /** if we have the same in external map */
+      const original = srcMap && srcMap.get(res.name);
+      if (original) {
+        /** if we have have then merge it with this one*/
+        original.mergeWith(res.toObject());
+      } else {
+        /** set as original one */
+        srcMap && srcMap.set(res.name, res);
+      }
     }
-    return result ? ([result.name, result] as [string, N]) : undefined;
+    return res;
   };
 }
 

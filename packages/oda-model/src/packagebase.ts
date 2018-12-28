@@ -14,10 +14,15 @@ import { IUnion, UnionInput, Union } from './union';
 import { IMutation, MutationInput, Mutation } from './mutation';
 import { IQuery, QueryInput, Query } from './query';
 import { IDirective, DirectiveInput, Directive } from './directive';
-import { MetaModelType, Nullable, ArrayToMap } from './types';
+import {
+  MetaModelType,
+  Nullable,
+  ArrayToMap,
+  AssignAndKillDupes,
+} from './types';
 import { IModel } from './metamodel';
 import { merge } from 'lodash';
-import { MapToArray, assignValue, createOrMergeFromMap } from './types';
+import { MapToArray, assignValue } from './types';
 import { Internal } from './element';
 import capitalize from './lib/capitalize';
 
@@ -146,25 +151,10 @@ export class ModelPackageBase<
       effect: (src, value) => {
         const entities =
           (this.metaModel && this.metaModel.entities) || new Map();
+        const process = AssignAndKillDupes(entities, Entity);
         src.entities = ArrayToMap<any, IEntity>(
           value,
-          (i: string | EntityInput) => {
-            let res: IEntity | undefined;
-            if (typeof i === 'string') {
-              res = entities.get(i);
-              if (!res) {
-                res = new Entity({ name: i });
-                entities.set(res.name, res);
-              }
-            } else {
-              res = new Entity(i);
-              const original = entities.get(res.name);
-              if (original) {
-                original.mergeWith(res.toObject());
-              }
-            }
-            return res;
-          },
+          (i: string | EntityInput) => process(i),
           (obj, src) => obj.mergeWith(src.toObject()),
         );
       },
@@ -178,17 +168,13 @@ export class ModelPackageBase<
       field: 'enums',
       allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
+        const enums = (this.metaModel && this.metaModel.enums) || new Map();
+        const process = AssignAndKillDupes(enums, Enum);
         src.enums = ArrayToMap<any, IEnum>(
           value,
-          (i: string | EnumInput) =>
-            new Enum(typeof i === 'string' ? ({ name: i } as EnumInput) : i),
+          (i: string | EnumInput) => process(i),
           (obj, src) => obj.mergeWith(src.toObject()),
         );
-        const createIt = createOrMergeFromMap(this.metaModel, Enum, 'enums');
-        src.enums = new Map(value.map(i => createIt(i)).filter(f => f) as [
-          string,
-          IEnum
-        ][]);
       },
       setDefault: src => (src.enums = new Map<string, IEnum>()),
     });
@@ -199,11 +185,13 @@ export class ModelPackageBase<
       field: 'scalars',
       allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        const createIt = createOrMergeFromMap(this.metaModel, Scalar, 'enums');
-        src.scalars = new Map(value.map(i => createIt(i)).filter(f => f) as [
-          string,
-          IScalar
-        ][]);
+        const scalars = (this.metaModel && this.metaModel.scalars) || new Map();
+        const process = AssignAndKillDupes(scalars, Scalar);
+        src.scalars = ArrayToMap<any, IScalar>(
+          value,
+          (i: string | ScalarInput) => process(i),
+          (obj, src) => obj.mergeWith(src.toObject()),
+        );
       },
       setDefault: src => (src.scalars = new Map<string, IScalar>()),
     });
@@ -214,15 +202,14 @@ export class ModelPackageBase<
       field: 'directives',
       allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        const createIt = createOrMergeFromMap(
-          this.metaModel,
-          Directive,
-          'directives',
+        const directives =
+          (this.metaModel && this.metaModel.directives) || new Map();
+        const process = AssignAndKillDupes(directives, Directive);
+        src.directives = ArrayToMap<any, IDirective>(
+          value,
+          (i: string | DirectiveInput) => process(i),
+          (obj, src) => obj.mergeWith(src.toObject()),
         );
-        src.directives = new Map(value.map(i => createIt(i)).filter(f => f) as [
-          string,
-          IDirective
-        ][]);
       },
       setDefault: src => (src.directives = new Map<string, IDirective>()),
     });
@@ -233,11 +220,13 @@ export class ModelPackageBase<
       field: 'mixins',
       allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        const createIt = createOrMergeFromMap(this.metaModel, Mixin, 'mixins');
-        src.mixins = new Map(value.map(i => createIt(i)).filter(f => f) as [
-          string,
-          IMixin
-        ][]);
+        const mixins = (this.metaModel && this.metaModel.mixins) || new Map();
+        const process = AssignAndKillDupes(mixins, Mixin);
+        src.mixins = ArrayToMap<any, IMixin>(
+          value,
+          (i: string | MixinInput) => process(i),
+          (obj, src) => obj.mergeWith(src.toObject()),
+        );
       },
       setDefault: src => (src.mixins = new Map<string, IMixin>()),
     });
@@ -248,11 +237,13 @@ export class ModelPackageBase<
       field: 'unions',
       allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        const createIt = createOrMergeFromMap(this.metaModel, Union, 'unions');
-        src.unions = new Map(value.map(i => createIt(i)).filter(f => f) as [
-          string,
-          IUnion
-        ][]);
+        const unions = (this.metaModel && this.metaModel.unions) || new Map();
+        const process = AssignAndKillDupes(unions, Union);
+        src.unions = ArrayToMap<any, IUnion>(
+          value,
+          (i: string | UnionInput) => process(i),
+          (obj, src) => obj.mergeWith(src.toObject()),
+        );
       },
       setDefault: src => (src.unions = new Map<string, IUnion>()),
     });
@@ -263,15 +254,14 @@ export class ModelPackageBase<
       field: 'mutations',
       allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        const createIt = createOrMergeFromMap(
-          this.metaModel,
-          Mutation,
-          'mutations',
+        const mutations =
+          (this.metaModel && this.metaModel.mutations) || new Map();
+        const process = AssignAndKillDupes(mutations, Mutation);
+        src.mutations = ArrayToMap<any, IMutation>(
+          value,
+          (i: string | MutationInput) => process(i),
+          (obj, src) => obj.mergeWith(src.toObject()),
         );
-        src.mutations = new Map(value.map(i => createIt(i)).filter(f => f) as [
-          string,
-          IMutation
-        ][]);
       },
       setDefault: src => (src.mutations = new Map<string, IMutation>()),
     });
@@ -282,11 +272,13 @@ export class ModelPackageBase<
       field: 'queries',
       allowEffect: (_, value) => value.length > 0,
       effect: (src, value) => {
-        const createIt = createOrMergeFromMap(this.metaModel, Query, 'queries');
-        src.queries = new Map(value.map(i => createIt(i)).filter(f => f) as [
-          string,
-          IQuery
-        ][]);
+        const queries = (this.metaModel && this.metaModel.queries) || new Map();
+        const process = AssignAndKillDupes(queries, Query);
+        src.queries = ArrayToMap<any, IQuery>(
+          value,
+          (i: string | QueryInput) => process(i),
+          (obj, src) => obj.mergeWith(src.toObject()),
+        );
       },
       setDefault: src => (src.queries = new Map<string, IQuery>()),
     });
@@ -329,3 +321,21 @@ export class ModelPackageBase<
     super.mergeWith(payload);
   }
 }
+// function AssignAndKillDupes(i: string | EntityInput, entities: Map<string, IEntity>) {
+//   let res: IEntity | undefined;
+//   if (typeof i === 'string') {
+//     res = entities.get(i);
+//     if (!res) {
+//       res = new Entity({ name: i });
+//       entities.set(res.name, res);
+//     }
+//   }
+//   else {
+//     res = new Entity(i);
+//     const original = entities.get(res.name);
+//     if (original) {
+//       original.mergeWith(res.toObject());
+//     }
+//   }
+//   return res;
+// }
