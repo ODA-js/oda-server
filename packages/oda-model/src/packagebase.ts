@@ -317,8 +317,8 @@ export class ModelPackageBase<
     } as O);
   }
 
-  public mergeWith(payload: Nullable<I>) {
-    super.mergeWith(payload);
+  public mergeWith(_payload: Nullable<I>) {
+    // super.mergeWith(payload);
   }
 }
 // function AssignAndKillDupes(i: string | EntityInput, entities: Map<string, IEntity>) {

@@ -21,6 +21,9 @@ import { merge } from 'lodash';
 import { Internal } from './element';
 import decapitalize from './lib/decapitalize';
 import { IArgs, Args, ArgsInput } from './args';
+import { QueryInput } from './query';
+import { MutationInput } from './mutation';
+import { IEntity } from './entity';
 /**
  * Kind of mutation which is intended to work with single entity
  */
@@ -75,7 +78,7 @@ export interface OperationInternal extends ModelBaseInternal {
   args: Map<string, IArgs>;
   payload: Map<string, IArgs>;
   inheritedFrom?: string;
-  entity: string;
+  entity?: IEntity;
   actionType: OperationKind;
 }
 
@@ -199,6 +202,56 @@ export class Operation
         value.toObject(),
       ),
     } as Partial<OperationOutput>);
+  }
+
+  public toMutation(): MutationInput | undefined {
+    if (
+      this.actionType === 'create' ||
+      this.actionType === 'update' ||
+      this.actionType === 'delete'
+    ) {
+      let name = this.name;
+      switch (this.actionType) {
+        case 'create':
+          `create${this.entity}`;
+          break;
+        case 'update':
+          `update${this.entity}`;
+          break;
+        case 'delete':
+          `delete${this.entity}`;
+          break;
+      }
+      return { ...this.toObject(), name };
+    } else {
+      return;
+    }
+  }
+
+  public toQuery(): QueryInput | undefined {
+    const entity = this[Internal].entity;
+    if (
+      (this.actionType === 'readOne' || this.actionType === 'readMany') &&
+      entity
+    ) {
+      let name = this.name;
+
+      switch (this.actionType) {
+        case 'readOne':
+          name = decapitalize(entity.name);
+          break;
+        case 'readMany':
+          name = decapitalize(entity.plural);
+          break;
+      }
+
+      return {
+        ...this.toObject(),
+        name,
+      };
+    } else {
+      return;
+    }
   }
 
   public mergeWith(payload: Nullable<OperationInput>) {

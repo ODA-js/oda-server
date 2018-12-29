@@ -117,4 +117,8 @@ export class Args
       multiplicity: this[Internal].multiplicity,
     } as Partial<ArgsOutput>) as ArgsOutput;
   }
+
+  public mergeWith(payload: Nullable<ArgsInput>) {
+    super.mergeWith(payload);
+  }
 }

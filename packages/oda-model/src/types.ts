@@ -146,9 +146,12 @@ export type ComplexTypeKind = 'enum' | 'entity';
 export type OperationKind =
   | 'create'
   | 'readOne'
-  | 'realMany'
+  | 'readMany'
   | 'update'
-  | 'delete';
+  | 'delete'
+  | 'addTo'
+  | 'removeFrom'
+  | 'other';
 
 export type DirectiveLocation =
   | 'QUERY'
