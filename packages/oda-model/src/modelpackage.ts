@@ -11,6 +11,9 @@ import {
 } from './packagebase';
 import { Internal } from './element';
 import capitalize from './lib/capitalize';
+import { MutationInput } from './mutation';
+import { OperationInput } from './operation';
+import { QueryInput } from './query';
 
 export type AccessAction = 'allow' | 'prohibit';
 
@@ -125,6 +128,22 @@ export class ModelPackage
       required: true,
       setDefault: src => (src.extends = new Set<string>()),
     });
+  }
+
+  /**
+   * fixe mutation ACL
+   * @param input Mutation
+   */
+  public fixACLMutation(input: MutationInput | OperationInput | QueryInput) {
+    if (!input.metadata) {
+      input.metadata = {};
+    }
+    if (!input.metadata.acl) {
+      input.metadata.acl = { execute: [] };
+    }
+    if (input.metadata.acl.execute.indexOf(this.name) > -1) {
+      input.metadata.acl.execute.push(this.name);
+    }
   }
 
   public toObject(): ModelPackageOutput {

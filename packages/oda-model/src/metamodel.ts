@@ -137,10 +137,13 @@ export class MetaModel
   // extracts packages from loaded model
   public discoverPackages() {
     const packages: { [key: string]: boolean } = {};
+    // fill with pre defined packages/roles
     this.packages.forEach(p => {
+      // means it is existing before discovery
       packages[p.name] = true;
     });
 
+    // for entities we need to discover this specific fields
     this.entities.forEach(e => {
       extract(e.metadata.acl.create, packages);
       extract(e.metadata.acl.delete, packages);
@@ -148,18 +151,22 @@ export class MetaModel
       extract(e.metadata.acl.readOne, packages);
       extract(e.metadata.acl.update, packages);
       e.fields.forEach(f => {
+        // for fields we must use only read and update
         extract(f.metadata.acl.read, packages);
         extract(f.metadata.acl.update, packages);
         if (isIRelationField(f)) {
+          // for relation we use also create and delete
           extract(f.metadata.acl.create, packages);
           extract(f.metadata.acl.delete, packages);
         }
       });
+      // for entity operation we use only execute
       e.operations.forEach(o => {
         extract(o.metadata.acl.execute, packages);
       });
     });
 
+    // mixins the same as entities
     this.mixins.forEach(mix => {
       extract(mix.metadata.acl.create, packages);
       extract(mix.metadata.acl.delete, packages);
@@ -178,7 +185,7 @@ export class MetaModel
         extract(o.metadata.acl.execute, packages);
       });
     });
-
+    //mutations and queries same as operations
     this.mutations.forEach(e => {
       extract(e.metadata.acl.execute, packages);
     });
@@ -348,6 +355,11 @@ export class MetaModel
   }
 }
 
+/**
+ * extract package names from list of strings
+ * @param src source list of packages/roles
+ * @param p package store as hashMap
+ */
 function extract(src: string[], p: { [key: string]: boolean }) {
   src.forEach(s => {
     if (!p.hasOwnProperty(s)) {

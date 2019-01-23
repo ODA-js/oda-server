@@ -1,6 +1,7 @@
 import { IValidate, IValidator, IValidationResultInput } from './validation';
 import { merge } from 'lodash';
 import { MetaModelType, Nullable, assignValue } from './types';
+import { IWithModelType } from './iwithmodeltype';
 
 export const Internal = Symbol.for('internal');
 export const MetaData = Symbol.for('metadata');
@@ -57,11 +58,7 @@ export interface IMeta<
   M extends ElementMetaInfo,
   I extends ElementInput<M>,
   O extends ElementOutput<M>
-> extends IUpdatable<M, I, O>, IValidate {
-  /**
-   * the kind of current item
-   */
-  readonly modelType: MetaModelType;
+> extends IUpdatable<M, I, O>, IValidate, IWithModelType {
   /**
    * meta information that is outside of model notations and can be customized as well
    */

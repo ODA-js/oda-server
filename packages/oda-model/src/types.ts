@@ -397,7 +397,7 @@ export function AssignAndKillDupes<
         srcMap && srcMap.set(res.name, res);
       }
     } else {
-      /** if tem is input object */
+      /** if item is input object */
       res = new create(i);
       /** if we have the same in external map */
       const original = srcMap && srcMap.get(res.name);
