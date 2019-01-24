@@ -15,9 +15,9 @@ import { Internal } from './element';
 
 export interface RelationFieldBaseMetaInfoACL extends FieldBaseMetaInfoACL {
   /** if package allowed to create item of relation */
-  create: string[];
+  addTo: string[];
   /** if package allowed to delete item of relation */
-  delete: string[];
+  removeFrom: string[];
 }
 
 export interface RelationFieldBaseMetaInfo<

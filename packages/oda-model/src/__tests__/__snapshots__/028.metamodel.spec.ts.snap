@@ -50,3 +50,586 @@ Object {
   "A": true,
 }
 `;
+
+exports[`MetaModel expand packages: metamodel 1`] = `
+Object {
+  "description": undefined,
+  "directives": Array [],
+  "entities": Array [],
+  "enums": Array [],
+  "hooks": Array [],
+  "metadata": Object {},
+  "mixins": Array [
+    Object {
+      "description": undefined,
+      "fields": Array [
+        Object {
+          "args": Object {},
+          "defaultValue": undefined,
+          "derived": false,
+          "description": undefined,
+          "entity": "2",
+          "identity": false,
+          "indexed": true,
+          "inheritedFrom": undefined,
+          "list": false,
+          "metadata": Object {
+            "acl": Object {
+              "read": Array [
+                "19",
+              ],
+              "update": Array [
+                "20",
+              ],
+            },
+            "entity": "2",
+            "order": 0,
+            "persistence": Object {
+              "derived": false,
+              "identity": false,
+              "indexed": true,
+              "persistent": true,
+              "required": false,
+            },
+          },
+          "name": "a",
+          "order": 0,
+          "persistent": true,
+          "required": false,
+          "title": undefined,
+          "type": "string",
+        },
+        Object {
+          "args": Object {},
+          "derived": false,
+          "description": undefined,
+          "entity": "2",
+          "identity": false,
+          "indexed": false,
+          "inheritedFrom": undefined,
+          "metadata": Object {
+            "acl": Object {
+              "addTo": Array [
+                "23",
+              ],
+              "create": Array [],
+              "delete": Array [],
+              "read": Array [
+                "21",
+              ],
+              "removeFrom": Array [
+                "24",
+              ],
+              "update": Array [
+                "22",
+              ],
+            },
+            "entity": "2",
+            "order": 1,
+            "persistence": Object {
+              "derived": false,
+              "identity": false,
+              "indexed": false,
+              "persistent": false,
+              "required": false,
+            },
+          },
+          "name": "b",
+          "order": 1,
+          "persistent": false,
+          "relation": Object {
+            "embedded": false,
+            "entity": "2",
+            "field": "b",
+            "hasMany": "id@A#id",
+            "metadata": Object {
+              "name": Object {
+                "full": "2HasManyBs",
+                "normal": "2Bs",
+                "short": "Bs",
+              },
+              "persistence": Object {
+                "embedded": false,
+                "single": false,
+                "stored": false,
+              },
+              "verb": "HasMany",
+            },
+            "name": "2HasManyBs",
+            "opposite": undefined,
+          },
+          "required": false,
+          "title": undefined,
+        },
+        Object {
+          "args": Object {},
+          "defaultValue": undefined,
+          "derived": false,
+          "description": undefined,
+          "entity": "2",
+          "identity": true,
+          "indexed": true,
+          "inheritedFrom": undefined,
+          "list": false,
+          "metadata": Object {
+            "acl": Object {
+              "read": Array [],
+              "update": Array [],
+            },
+            "entity": "2",
+            "order": -1,
+            "persistence": Object {
+              "derived": false,
+              "identity": true,
+              "indexed": true,
+              "persistent": true,
+              "required": true,
+            },
+          },
+          "name": "id",
+          "order": -1,
+          "persistent": true,
+          "required": true,
+          "title": undefined,
+          "type": "ID",
+        },
+      ],
+      "metadata": Object {
+        "UI": Object {
+          "edit": Array [],
+          "embedded": Array [],
+          "hidden": Array [],
+          "list": Array [],
+          "listName": Array [],
+          "quickSearch": Array [],
+          "show": Array [],
+        },
+        "acl": Object {
+          "create": Array [
+            "14",
+          ],
+          "delete": Array [
+            "15",
+          ],
+          "readMany": Array [
+            "16",
+          ],
+          "readOne": Array [
+            "17",
+          ],
+          "update": Array [
+            "18",
+          ],
+        },
+        "name": Object {
+          "plural": "2s",
+          "singular": "2",
+        },
+        "persistence": Object {
+          "indexes": Object {
+            "id": Object {
+              "fields": Object {
+                "id": 1,
+              },
+              "name": "id",
+              "options": Object {
+                "unique": true,
+              },
+            },
+          },
+        },
+        "titlePlural": "2s",
+      },
+      "name": "2",
+      "operations": Array [
+        Object {
+          "actionType": "other",
+          "args": Array [
+            Object {
+              "defaultValue": undefined,
+              "description": undefined,
+              "metadata": Object {},
+              "multiplicity": "one",
+              "name": "arg",
+              "required": false,
+              "title": undefined,
+              "type": "string",
+            },
+          ],
+          "description": undefined,
+          "inheritedFrom": undefined,
+          "metadata": Object {
+            "acl": Object {
+              "execute": Array [
+                "25",
+              ],
+            },
+            "entity": "2",
+            "order": 0,
+          },
+          "name": "c",
+          "payload": Array [
+            Object {
+              "defaultValue": undefined,
+              "description": undefined,
+              "metadata": Object {},
+              "multiplicity": "one",
+              "name": "payload",
+              "required": false,
+              "title": undefined,
+              "type": "string",
+            },
+          ],
+          "title": undefined,
+        },
+      ],
+      "title": undefined,
+    },
+  ],
+  "mutations": Array [],
+  "name": "A",
+  "packages": Array [
+    Object {
+      "abstract": false,
+      "defaultAccess": "allow",
+      "description": undefined,
+      "directives": Array [],
+      "entities": Array [
+        Object {
+          "abstract": false,
+          "description": undefined,
+          "embedded": false,
+          "fields": Array [
+            Object {
+              "args": Object {},
+              "defaultValue": undefined,
+              "derived": false,
+              "description": undefined,
+              "entity": "1",
+              "identity": false,
+              "indexed": true,
+              "inheritedFrom": undefined,
+              "list": false,
+              "metadata": Object {
+                "acl": Object {
+                  "read": Array [
+                    "01",
+                  ],
+                  "update": Array [
+                    "01",
+                  ],
+                },
+                "entity": "1",
+                "order": 0,
+                "persistence": Object {
+                  "derived": false,
+                  "identity": false,
+                  "indexed": true,
+                  "persistent": true,
+                  "required": false,
+                },
+              },
+              "name": "a",
+              "order": 0,
+              "persistent": true,
+              "required": false,
+              "title": undefined,
+              "type": "string",
+            },
+            Object {
+              "args": Object {},
+              "derived": false,
+              "description": undefined,
+              "entity": "1",
+              "identity": false,
+              "indexed": false,
+              "inheritedFrom": undefined,
+              "metadata": Object {
+                "acl": Object {
+                  "addTo": Array [
+                    "01",
+                  ],
+                  "create": Array [],
+                  "delete": Array [],
+                  "read": Array [
+                    "01",
+                  ],
+                  "removeFrom": Array [
+                    "01",
+                  ],
+                  "update": Array [
+                    "01",
+                  ],
+                },
+                "entity": "1",
+                "order": 1,
+                "persistence": Object {
+                  "derived": false,
+                  "identity": false,
+                  "indexed": false,
+                  "persistent": false,
+                  "required": false,
+                },
+              },
+              "name": "b",
+              "order": 1,
+              "persistent": false,
+              "relation": Object {
+                "embedded": false,
+                "entity": "1",
+                "field": "b",
+                "hasMany": "id@A#id",
+                "metadata": Object {
+                  "name": Object {
+                    "full": "1HasManyBs",
+                    "normal": "1Bs",
+                    "short": "Bs",
+                  },
+                  "persistence": Object {
+                    "embedded": false,
+                    "single": false,
+                    "stored": false,
+                  },
+                  "verb": "HasMany",
+                },
+                "name": "1HasManyBs",
+                "opposite": undefined,
+              },
+              "required": false,
+              "title": undefined,
+            },
+            Object {
+              "args": Object {},
+              "defaultValue": undefined,
+              "derived": false,
+              "description": undefined,
+              "entity": "1",
+              "identity": true,
+              "indexed": true,
+              "inheritedFrom": undefined,
+              "list": false,
+              "metadata": Object {
+                "acl": Object {
+                  "read": Array [],
+                  "update": Array [],
+                },
+                "entity": "1",
+                "order": -1,
+                "persistence": Object {
+                  "derived": false,
+                  "identity": true,
+                  "indexed": true,
+                  "persistent": true,
+                  "required": true,
+                },
+              },
+              "name": "id",
+              "order": -1,
+              "persistent": true,
+              "required": true,
+              "title": undefined,
+              "type": "ID",
+            },
+          ],
+          "implements": Array [],
+          "metadata": Object {
+            "UI": Object {
+              "edit": Array [],
+              "embedded": Array [],
+              "hidden": Array [],
+              "list": Array [],
+              "listName": Array [],
+              "quickSearch": Array [],
+              "show": Array [],
+            },
+            "acl": Object {
+              "create": Array [
+                "01",
+              ],
+              "delete": Array [
+                "01",
+              ],
+              "readMany": Array [
+                "01",
+              ],
+              "readOne": Array [
+                "01",
+              ],
+              "update": Array [
+                "01",
+              ],
+            },
+            "name": Object {
+              "plural": "1s",
+              "singular": "1",
+            },
+            "persistence": Object {
+              "indexes": Object {
+                "id": Object {
+                  "fields": Object {
+                    "id": 1,
+                  },
+                  "name": "id",
+                  "options": Object {
+                    "unique": true,
+                  },
+                },
+              },
+            },
+            "titlePlural": "1s",
+          },
+          "name": "1",
+          "operations": Array [
+            Object {
+              "actionType": "create",
+              "args": Array [
+                Object {
+                  "defaultValue": undefined,
+                  "description": undefined,
+                  "metadata": Object {},
+                  "multiplicity": "one",
+                  "name": "arg",
+                  "required": false,
+                  "title": undefined,
+                  "type": "string",
+                },
+              ],
+              "description": undefined,
+              "inheritedFrom": undefined,
+              "metadata": Object {
+                "acl": Object {
+                  "execute": Array [
+                    "01",
+                  ],
+                },
+                "entity": "1",
+                "order": 0,
+              },
+              "name": "create",
+              "payload": Array [
+                Object {
+                  "defaultValue": undefined,
+                  "description": undefined,
+                  "metadata": Object {},
+                  "multiplicity": "one",
+                  "name": "payload",
+                  "required": false,
+                  "title": undefined,
+                  "type": "string",
+                },
+              ],
+              "title": undefined,
+            },
+          ],
+          "title": undefined,
+        },
+      ],
+      "enums": Array [],
+      "extends": Array [],
+      "metadata": Object {},
+      "mixins": Array [],
+      "mutations": Array [
+        Object {
+          "args": Array [
+            Object {
+              "defaultValue": undefined,
+              "description": undefined,
+              "metadata": Object {},
+              "multiplicity": "one",
+              "name": "arg",
+              "required": false,
+              "title": undefined,
+              "type": "string",
+            },
+          ],
+          "description": undefined,
+          "metadata": Object {
+            "acl": Object {
+              "execute": Array [
+                "01",
+              ],
+            },
+          },
+          "name": "d",
+          "payload": Array [
+            Object {
+              "defaultValue": undefined,
+              "description": undefined,
+              "metadata": Object {},
+              "multiplicity": "one",
+              "name": "payload",
+              "required": false,
+              "title": undefined,
+              "type": "string",
+            },
+          ],
+          "title": undefined,
+        },
+      ],
+      "name": "01",
+      "queries": Array [
+        Object {
+          "args": Array [
+            Object {
+              "defaultValue": undefined,
+              "description": undefined,
+              "metadata": Object {},
+              "multiplicity": "one",
+              "name": "arg",
+              "required": false,
+              "title": undefined,
+              "type": "string",
+            },
+          ],
+          "description": undefined,
+          "metadata": Object {
+            "acl": Object {
+              "execute": Array [
+                "01",
+              ],
+            },
+          },
+          "name": "e",
+          "payload": Array [
+            Object {
+              "defaultValue": undefined,
+              "description": undefined,
+              "metadata": Object {},
+              "multiplicity": "one",
+              "name": "payload",
+              "required": false,
+              "title": undefined,
+              "type": "string",
+            },
+          ],
+          "title": undefined,
+        },
+      ],
+      "title": undefined,
+      "unions": Array [],
+    },
+  ],
+  "queries": Array [],
+  "title": undefined,
+  "unions": Array [],
+}
+`;
+
+exports[`MetaModel expand packages: packages 1`] = `
+Object {
+  "01": true,
+  "14": false,
+  "15": false,
+  "16": false,
+  "17": false,
+  "18": false,
+  "19": false,
+  "20": false,
+  "21": false,
+  "22": false,
+  "23": false,
+  "24": false,
+  "25": false,
+  "A": true,
+}
+`;

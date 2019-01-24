@@ -48,8 +48,8 @@ describe('MetaModel', () => {
                 acl: {
                   read: ['09'],
                   update: ['10'],
-                  delete: ['11'],
-                  create: ['12'],
+                  addTo: ['11'],
+                  removeFrom: ['12'],
                 },
               },
               relation: {
@@ -90,8 +90,8 @@ describe('MetaModel', () => {
                 acl: {
                   read: ['21'],
                   update: ['22'],
-                  delete: ['23'],
-                  create: ['24'],
+                  addTo: ['23'],
+                  removeFrom: ['24'],
                 },
               },
               relation: {
@@ -127,5 +127,97 @@ describe('MetaModel', () => {
       ],
     });
     expect(res.discoverPackages()).toMatchSnapshot('packages');
+  });
+  it('expand packages', () => {
+    const res = new MetaModel({
+      name: 'A',
+      packages: [
+        {
+          name: '01',
+          entities: [
+            {
+              name: '1',
+              fields: [
+                {
+                  name: 'a',
+                },
+                {
+                  name: 'b',
+                  relation: {
+                    hasMany: 'a#',
+                  },
+                },
+              ],
+              operations: [
+                {
+                  name: 'create',
+                  args: [{ name: 'arg' }],
+                  payload: [{ name: 'payload' }],
+                  actionType: 'create',
+                },
+              ],
+            } as EntityInput,
+          ],
+          mutations: [
+            {
+              name: 'd',
+              args: [{ name: 'arg' }],
+              payload: [{ name: 'payload' }],
+            },
+          ],
+          queries: [
+            {
+              name: 'e',
+              args: [{ name: 'arg' }],
+              payload: [{ name: 'payload' }],
+            },
+          ],
+        },
+      ],
+      mixins: [
+        {
+          name: '2',
+          metadata: {
+            acl: {
+              create: ['14'],
+              delete: ['15'],
+              readMany: ['16'],
+              readOne: ['17'],
+              update: ['18'],
+            },
+          },
+          fields: [
+            {
+              name: 'a',
+              metadata: { acl: { read: ['19'], update: ['20'] } },
+            },
+            {
+              name: 'b',
+              metadata: {
+                acl: {
+                  read: ['21'],
+                  update: ['22'],
+                  addTo: ['23'],
+                  removeFrom: ['24'],
+                },
+              },
+              relation: {
+                hasMany: 'a#',
+              },
+            },
+          ],
+          operations: [
+            {
+              name: 'c',
+              metadata: { acl: { execute: ['25'] } },
+              args: [{ name: 'arg' }],
+              payload: [{ name: 'payload' }],
+            },
+          ],
+        } as MixinInput,
+      ],
+    });
+    expect(res.discoverPackages()).toMatchSnapshot('packages');
+    expect(res.toObject()).toMatchSnapshot('metamodel');
   });
 });

@@ -31,6 +31,7 @@ import { Graph, Vertex, Edge } from './utils/detectcyclesedges';
 import { IRelationField } from './relationfield';
 import { Internal } from './element';
 import { ModelHookInput, IModelHook, ModelHookOutput } from './modelhooks';
+import { ACLFixer } from './aclfixer';
 
 export type FieldMap = {
   [name: string]: boolean;
@@ -156,8 +157,8 @@ export class MetaModel
         extract(f.metadata.acl.update, packages);
         if (isIRelationField(f)) {
           // for relation we use also create and delete
-          extract(f.metadata.acl.create, packages);
-          extract(f.metadata.acl.delete, packages);
+          extract(f.metadata.acl.addTo, packages);
+          extract(f.metadata.acl.removeFrom, packages);
         }
       });
       // for entity operation we use only execute
@@ -177,8 +178,8 @@ export class MetaModel
         extract(f.metadata.acl.read, packages);
         extract(f.metadata.acl.update, packages);
         if (isIRelationField(f)) {
-          extract(f.metadata.acl.create, packages);
-          extract(f.metadata.acl.delete, packages);
+          extract(f.metadata.acl.addTo, packages);
+          extract(f.metadata.acl.removeFrom, packages);
         }
       });
       mix.operations.forEach(o => {
@@ -193,6 +194,35 @@ export class MetaModel
       extract(e.metadata.acl.execute, packages);
     });
     return packages;
+  }
+
+  public expandPackage(pack: string | ModelPackageInput) {
+    if (typeof pack === 'string') {
+      return pack;
+    }
+    const fix = new ACLFixer(pack.name);
+    if (pack.mutations) {
+      pack.mutations.forEach(m => {
+        if (typeof m !== 'string') {
+          fix.fixOperations(m);
+        }
+      });
+    }
+    if (pack.queries) {
+      pack.queries.forEach(m => {
+        if (typeof m !== 'string') {
+          fix.fixOperations(m);
+        }
+      });
+    }
+    if (pack.entities) {
+      pack.entities.forEach(e => {
+        if (typeof e !== 'string') {
+          fix.fixEntity(e);
+        }
+      });
+    }
+    return pack;
   }
 
   public updateWith(input: Nullable<MetaModelInput>) {
@@ -211,7 +241,7 @@ export class MetaModel
         const process = AssignAndKillDupes(undefined, ModelPackage);
         src.packages = ArrayToMap<any, IPackage>(
           value,
-          (i: string | ModelPackageInput) => process(i),
+          (i: string | ModelPackageInput) => process(this.expandPackage(i)),
           (obj, src) => obj.mergeWith(src.toObject()),
         );
       },
@@ -361,6 +391,7 @@ export class MetaModel
  * @param p package store as hashMap
  */
 function extract(src: string[], p: { [key: string]: boolean }) {
+  debugger;
   src.forEach(s => {
     if (!p.hasOwnProperty(s)) {
       p[s] = false;

@@ -55,8 +55,8 @@ export interface FieldBaseMetaInfoACL {
   /** if package allowed to update property */
   update: string[];
   /** not applicable */
-  // create: string[];
-  // delete: string[];
+  // addTo: string[];
+  // removeFrom: string[];
 }
 
 export interface FieldBaseMetaInfo<T extends FieldBasePersistence>

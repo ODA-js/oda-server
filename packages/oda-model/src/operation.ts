@@ -147,6 +147,7 @@ export class Operation
       src: this[Internal],
       input,
       field: 'actionType',
+      setDefault: src => (src.actionType = 'other'),
     });
 
     assignValue({

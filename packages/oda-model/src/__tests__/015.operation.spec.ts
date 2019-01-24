@@ -13,6 +13,16 @@ describe('Operation', () => {
     expect(res.metadata).toMatchObject(operationDefaultMetaInfo);
     expect(res.toObject()).toMatchSnapshot('toObject');
   });
+  it('default actionType', () => {
+    const res = new Operation({
+      name: 'updateUser',
+      entity: 'User',
+      payload: [{ name: 'result', multiplicity: 'many' }],
+      args: [{ name: 'id' }, { name: 'fields', multiplicity: 'many' }],
+    } as any);
+    expect(res.metadata).toMatchObject(operationDefaultMetaInfo);
+    expect(res.toObject()).toMatchSnapshot('toObject');
+  });
   it('kill dupes', () => {
     const res = new Operation({
       name: 'updateUser',

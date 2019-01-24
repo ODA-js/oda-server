@@ -1,5 +1,55 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Operation default actionType: toObject 1`] = `
+Object {
+  "actionType": "other",
+  "args": Array [
+    Object {
+      "defaultValue": undefined,
+      "description": undefined,
+      "metadata": Object {},
+      "multiplicity": "one",
+      "name": "id",
+      "required": false,
+      "title": undefined,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": undefined,
+      "description": undefined,
+      "metadata": Object {},
+      "multiplicity": "many",
+      "name": "fields",
+      "required": false,
+      "title": undefined,
+      "type": "string",
+    },
+  ],
+  "description": undefined,
+  "inheritedFrom": undefined,
+  "metadata": Object {
+    "acl": Object {
+      "execute": Array [],
+    },
+    "entity": "User",
+  },
+  "name": "updateUser",
+  "payload": Array [
+    Object {
+      "defaultValue": undefined,
+      "description": undefined,
+      "metadata": Object {},
+      "multiplicity": "many",
+      "name": "result",
+      "required": false,
+      "title": undefined,
+      "type": "string",
+    },
+  ],
+  "title": undefined,
+}
+`;
+
 exports[`Operation default: toObject 1`] = `
 Object {
   "actionType": "create",
