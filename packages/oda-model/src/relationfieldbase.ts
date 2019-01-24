@@ -6,25 +6,24 @@ import {
   FieldBaseMetaInfo,
   FieldBaseInternal,
   FieldBaseOutput,
+  FieldBaseMetaInfoACL,
 } from './fieldbase';
 import { merge } from 'lodash';
 import { Nullable, MetaModelType } from './types';
 import { IRelation } from './relation';
 import { Internal } from './element';
 
+export interface RelationFieldBaseMetaInfoACL extends FieldBaseMetaInfoACL {
+  /** if package allowed to create item of relation */
+  create: string[];
+  /** if package allowed to delete item of relation */
+  delete: string[];
+}
+
 export interface RelationFieldBaseMetaInfo<
   P extends RelationFieldBasePersistence
 > extends FieldBaseMetaInfo<P> {
-  acl: {
-    /** if package allowed to read relation */
-    read: string[];
-    /** if package allowed to update relation fields */
-    update: string[];
-    /** if package allowed to create item of relation */
-    create: string[];
-    /** if package allowed to delete item of relation */
-    delete: string[];
-  };
+  acl: RelationFieldBaseMetaInfoACL;
 }
 
 export interface RelationFieldBasePersistence extends FieldBasePersistence {}

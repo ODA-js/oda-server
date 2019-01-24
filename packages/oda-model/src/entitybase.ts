@@ -82,6 +82,14 @@ export interface UIView {
   dictionary?: boolean;
 }
 
+export interface EntityBaseMetaInfoACL {
+  create: string[];
+  readOne: string[];
+  readMany: string[];
+  update: string[];
+  delete: string[];
+}
+
 export interface EntityBaseMetaInfo<P extends EntityBasePersistence>
   extends ElementMetaInfo {
   titlePlural: string;
@@ -91,13 +99,7 @@ export interface EntityBaseMetaInfo<P extends EntityBasePersistence>
   };
   persistence: P;
   UI: UIView;
-  acl: {
-    create: string[];
-    readOne: string[];
-    readMany: string[];
-    update: string[];
-    delete: string[];
-  };
+  acl: EntityBaseMetaInfoACL;
 }
 
 export interface EntityBaseInternal extends ModelBaseInternal {

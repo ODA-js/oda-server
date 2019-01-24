@@ -49,20 +49,22 @@ export interface FieldBasePersistence {
   indexed: boolean | string | string[];
 }
 
+export interface FieldBaseMetaInfoACL {
+  /** if package allowed to read property */
+  read: string[];
+  /** if package allowed to update property */
+  update: string[];
+  /** not applicable */
+  // create: string[];
+  // delete: string[];
+}
+
 export interface FieldBaseMetaInfo<T extends FieldBasePersistence>
   extends ModelBaseMetaInfo {
   entity: string;
   persistence: T;
   order: number;
-  acl: {
-    /** if package allowed to read property */
-    read: string[];
-    /** if package allowed to update property */
-    update: string[];
-    /** not applicable */
-    // create: string[];
-    // delete: string[];
-  };
+  acl: FieldBaseMetaInfoACL;
 }
 
 export interface FieldBaseInternal extends ModelBaseInternal {
