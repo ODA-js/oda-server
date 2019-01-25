@@ -781,6 +781,7 @@ Object {
           "type": "string",
         },
       ],
+      "custom": false,
       "description": undefined,
       "inheritedFrom": undefined,
       "metadata": Object {

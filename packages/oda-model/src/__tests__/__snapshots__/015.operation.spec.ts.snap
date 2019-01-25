@@ -2,7 +2,7 @@
 
 exports[`Operation default actionType: toObject 1`] = `
 Object {
-  "actionType": "other",
+  "actionType": undefined,
   "args": Array [
     Object {
       "defaultValue": undefined,
@@ -25,6 +25,58 @@ Object {
       "type": "string",
     },
   ],
+  "custom": false,
+  "description": undefined,
+  "inheritedFrom": undefined,
+  "metadata": Object {
+    "acl": Object {
+      "execute": Array [],
+    },
+    "entity": "User",
+  },
+  "name": "updateUser",
+  "payload": Array [
+    Object {
+      "defaultValue": undefined,
+      "description": undefined,
+      "metadata": Object {},
+      "multiplicity": "many",
+      "name": "result",
+      "required": false,
+      "title": undefined,
+      "type": "string",
+    },
+  ],
+  "title": undefined,
+}
+`;
+
+exports[`Operation default actionType: toObject 2`] = `
+Object {
+  "actionType": undefined,
+  "args": Array [
+    Object {
+      "defaultValue": undefined,
+      "description": undefined,
+      "metadata": Object {},
+      "multiplicity": "one",
+      "name": "id",
+      "required": false,
+      "title": undefined,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": undefined,
+      "description": undefined,
+      "metadata": Object {},
+      "multiplicity": "many",
+      "name": "fields",
+      "required": false,
+      "title": undefined,
+      "type": "string",
+    },
+  ],
+  "custom": false,
   "description": undefined,
   "inheritedFrom": undefined,
   "metadata": Object {
@@ -75,6 +127,7 @@ Object {
       "type": "string",
     },
   ],
+  "custom": false,
   "description": undefined,
   "inheritedFrom": undefined,
   "metadata": Object {
@@ -96,6 +149,44 @@ Object {
       "type": "string",
     },
   ],
+  "title": undefined,
+}
+`;
+
+exports[`Operation toQuery: ReadManyToQuery 1`] = `
+Object {
+  "actionType": "readMany",
+  "args": Array [],
+  "custom": false,
+  "description": undefined,
+  "inheritedFrom": undefined,
+  "metadata": Object {
+    "acl": Object {
+      "execute": Array [],
+    },
+    "entity": "User",
+  },
+  "name": "users",
+  "payload": Array [],
+  "title": undefined,
+}
+`;
+
+exports[`Operation toQuery: ReadManyToQuery 2`] = `
+Object {
+  "actionType": "readOne",
+  "args": Array [],
+  "custom": false,
+  "description": undefined,
+  "inheritedFrom": undefined,
+  "metadata": Object {
+    "acl": Object {
+      "execute": Array [],
+    },
+    "entity": "User",
+  },
+  "name": "user",
+  "payload": Array [],
   "title": undefined,
 }
 `;

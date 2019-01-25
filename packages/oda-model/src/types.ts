@@ -150,8 +150,7 @@ export type OperationKind =
   | 'update'
   | 'delete'
   | 'addTo'
-  | 'removeFrom'
-  | 'other';
+  | 'removeFrom';
 
 export type DirectiveLocation =
   | 'QUERY'

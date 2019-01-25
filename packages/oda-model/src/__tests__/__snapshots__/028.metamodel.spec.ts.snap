@@ -243,7 +243,7 @@ Object {
       "name": "2",
       "operations": Array [
         Object {
-          "actionType": "other",
+          "actionType": undefined,
           "args": Array [
             Object {
               "defaultValue": undefined,
@@ -256,6 +256,7 @@ Object {
               "type": "string",
             },
           ],
+          "custom": false,
           "description": undefined,
           "inheritedFrom": undefined,
           "metadata": Object {
@@ -494,6 +495,7 @@ Object {
                   "type": "string",
                 },
               ],
+              "custom": false,
               "description": undefined,
               "inheritedFrom": undefined,
               "metadata": Object {

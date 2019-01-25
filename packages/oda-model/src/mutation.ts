@@ -30,7 +30,7 @@ export interface IMutation
   /**
    * set of output fields
    */
-  readonly payload: Map<string, IArgs>;
+  readonly payload: string | Map<string, IArgs>;
 }
 
 export interface MutationMetaInfo extends ModelBaseMetaInfo {
@@ -42,17 +42,17 @@ export interface MutationMetaInfo extends ModelBaseMetaInfo {
 
 export interface MutationInternal extends ModelBaseInternal {
   args: Map<string, IArgs>;
-  payload: Map<string, IArgs>;
+  payload: string | Map<string, IArgs>;
 }
 
 export interface MutationInput extends ModelBaseInput<MutationMetaInfo> {
   args: AsHash<ArgsInput> | NamedArray<ArgsInput>;
-  payload: AsHash<ArgsInput> | NamedArray<ArgsInput>;
+  payload: string | AsHash<ArgsInput> | NamedArray<ArgsInput>;
 }
 
 export interface MutationOutput extends ModelBaseOutput<MutationMetaInfo> {
   args: NamedArray<ArgsInput>;
-  payload: NamedArray<ArgsInput>;
+  payload: string | NamedArray<ArgsInput>;
 }
 
 export const mutationDefaultMetaInfo = { acl: { execute: [] } };
@@ -78,7 +78,7 @@ export class Mutation
     return this[Internal].args;
   }
 
-  public get payload(): Map<string, IArgs> {
+  public get payload(): string | Map<string, IArgs> {
     return this[Internal].payload;
   }
 
@@ -112,22 +112,28 @@ export class Mutation
       input,
       field: 'payload',
       effect: (src, value) =>
-        (src.payload = ArrayToMap(
-          Array.isArray(value) ? value : HashToArray(value),
-          i => new Args(i),
-          (obj, src) => obj.mergeWith(src.toObject()),
-        )),
+        (src.payload =
+          typeof value === 'string'
+            ? value
+            : ArrayToMap(
+                Array.isArray(value) ? value : HashToArray(value),
+                i => new Args(i),
+                (obj, src) => obj.mergeWith(src.toObject()),
+              )),
       required: true,
       setDefault: src => (src.payload = new Map()),
     });
   }
 
   public toObject(): MutationOutput {
+    const internal = this[Internal];
+    const payload =
+      typeof internal.payload === 'string'
+        ? internal.payload
+        : MapToArray(internal.payload, (_name, value) => value.toObject());
     return merge({}, super.toObject(), {
-      args: MapToArray(this[Internal].args, (_name, value) => value.toObject()),
-      payload: MapToArray(this[Internal].payload, (_name, value) =>
-        value.toObject(),
-      ),
+      args: MapToArray(internal.args, (_name, value) => value.toObject()),
+      payload,
     } as Partial<MutationOutput>);
   }
 

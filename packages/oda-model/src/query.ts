@@ -30,7 +30,7 @@ export interface IQuery
   /**
    * set of output fields
    */
-  readonly payload: Map<string, IArgs>;
+  readonly payload: string | Map<string, IArgs>;
 }
 
 export interface QueryMetaInfo extends ModelBaseMetaInfo {
@@ -41,17 +41,17 @@ export interface QueryMetaInfo extends ModelBaseMetaInfo {
 
 export interface QueryInternal extends ModelBaseInternal {
   args: Map<string, IArgs>;
-  payload: Map<string, IArgs>;
+  payload: string | Map<string, IArgs>;
 }
 
 export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
   args: AsHash<ArgsInput> | NamedArray<ArgsInput>;
-  payload: AsHash<ArgsInput> | NamedArray<ArgsInput>;
+  payload: string | AsHash<ArgsInput> | NamedArray<ArgsInput>;
 }
 
 export interface QueryOutput extends ModelBaseOutput<QueryMetaInfo> {
   args: NamedArray<ArgsInput>;
-  payload: NamedArray<ArgsInput>;
+  payload: string | NamedArray<ArgsInput>;
 }
 
 export const queryDefaultMetaInfo = {
@@ -76,7 +76,7 @@ export class Query
     return this[Internal].args;
   }
 
-  public get payload(): Map<string, IArgs> {
+  public get payload(): string | Map<string, IArgs> {
     return this[Internal].payload;
   }
 
@@ -119,7 +119,11 @@ export class Query
       field: 'payload',
       effect: (src, value) =>
         (src.payload = ArrayToMap(
-          Array.isArray(value) ? value : HashToArray(value),
+          typeof value === 'string'
+            ? value
+            : Array.isArray(value)
+            ? value
+            : HashToArray(value),
           i => new Args(i),
           (obj, src) => obj.mergeWith(src.toObject()),
         )),
@@ -129,11 +133,14 @@ export class Query
   }
 
   public toObject(): QueryOutput {
+    const internal = this[Internal];
+    const payload =
+      typeof internal.payload === 'string'
+        ? internal.payload
+        : MapToArray(internal.payload, (_name, value) => value.toObject());
     return merge({}, super.toObject(), {
       args: MapToArray(this[Internal].args, (_name, value) => value.toObject()),
-      payload: MapToArray(this[Internal].payload, (_name, value) =>
-        value.toObject(),
-      ),
+      payload,
     } as Partial<QueryOutput>);
   }
   public mergeWith(payload: Nullable<QueryInput>) {
