@@ -135,6 +135,9 @@ export type MetaModelType =
   | 'ref'
   | 'args'
   | 'model-hook'
+  | 'input-type'
+  | 'input-simple-field'
+  | 'input-enum-field'
   | RelationType;
 
 export type Multiplicity = 'one' | 'many';

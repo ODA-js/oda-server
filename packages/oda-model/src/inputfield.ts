@@ -15,12 +15,15 @@ export interface IInputField
   readonly type: string | EnumType;
   readonly list?: boolean;
   readonly defaultValue?: string;
-  readonly order: number;
+  readonly order?: number;
+  readonly required?: boolean;
 }
 
 export interface InputFieldMeta extends ModelBaseMetaInfo {
   defaultValue?: string;
+  entity: string;
   order: number;
+  required: boolean;
 }
 
 export interface InputFieldInternal extends ModelBaseInternal {
@@ -30,9 +33,11 @@ export interface InputFieldInternal extends ModelBaseInternal {
 
 export interface InputFieldInput extends ModelBaseInput<InputFieldMeta> {
   type?: string | EnumType;
+  required?: boolean;
   defaultValue?: string;
   list?: boolean;
   order?: number;
+  entity?: string;
 }
 
 export interface InputFieldOutput extends ModelBaseOutput<InputFieldMeta> {
@@ -42,8 +47,8 @@ export interface InputFieldOutput extends ModelBaseOutput<InputFieldMeta> {
   order?: number;
 }
 
-export const simpleFieldDefaultMetaInfo = {};
-export const simpleFieldDefaultInput = { metadata: simpleFieldDefaultMetaInfo };
+export const inputFieldDefaultMetaInfo = {};
+export const inputFieldDefaultInput = { metadata: inputFieldDefaultMetaInfo };
 
 export class InputField
   extends ModelBase<
@@ -55,8 +60,8 @@ export class InputField
   implements IInputField {
   public get modelType(): MetaModelType {
     return typeof this[Internal].type === 'string'
-      ? 'simple-field'
-      : 'enum-field';
+      ? 'input-simple-field'
+      : 'input-enum-field';
   }
 
   get type(): string | EnumType {
@@ -76,12 +81,31 @@ export class InputField
     return this.metadata.order;
   }
 
+  get required(): boolean {
+    return this.metadata.required;
+  }
+
   constructor(init: InputFieldInput) {
-    super(merge({}, simpleFieldDefaultInput, init));
+    super(merge({}, inputFieldDefaultInput, init));
   }
 
   public updateWith(input: Nullable<InputFieldInput>) {
     super.updateWith(input);
+
+    assignValue<InputFieldInternal, InputFieldInput, string>({
+      src: this[Internal],
+      input,
+      field: 'name',
+      effect: (src, value) => (src.name = value.trim()),
+      required: true,
+    });
+
+    assignValue({
+      src: this.metadata,
+      input,
+      field: 'entity',
+      effect: (src, value) => (src.entity = value),
+    });
 
     assignValue<
       InputFieldInternal,
@@ -110,13 +134,13 @@ export class InputField
       field: 'list',
       required: true,
       effect: (src, value) => {
-        if (this.modelType === 'enum-field') {
+        if (this.modelType === 'input-enum-field') {
           (src.type as EnumType).multiplicity = value ? 'many' : 'one';
         }
         src.list = value;
       },
       setDefault: src => {
-        if (this.modelType === 'enum-field') {
+        if (this.modelType === 'input-enum-field') {
           src.list =
             (src.type as EnumType).multiplicity === 'many' ? true : false;
         } else {
@@ -139,6 +163,14 @@ export class InputField
       input,
       field: 'order',
       effect: (src, value) => (src.order = value),
+    });
+
+    assignValue<InputFieldMeta, InputFieldInput, boolean>({
+      src: this.metadata,
+      input,
+      inputField: 'required',
+      effect: (src, value) => (src.required = value),
+      setDefault: src => (src.required = false),
     });
   }
 

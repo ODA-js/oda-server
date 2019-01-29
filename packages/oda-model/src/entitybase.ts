@@ -129,8 +129,6 @@ export interface EntityBaseOutput<
   T extends EntityBaseMetaInfo<P>,
   P extends EntityBasePersistence
 > extends ModelBaseOutput<T> {
-  plural?: string;
-  titlePlural?: string;
   operations?: NamedArray<OperationInput>;
   fields: NamedArray<FieldInput>;
 }

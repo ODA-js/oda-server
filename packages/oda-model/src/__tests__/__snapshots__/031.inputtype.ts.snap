@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputType creates specified field with specified types: object with fields 1`] = `
+InputType {
+  Symbol(internal): Object {
+    "fields": Map {
+      "A" => InputField {
+        Symbol(internal): Object {
+          "list": false,
+          "name": "A",
+          "type": "string",
+        },
+        Symbol(metadata): Object {
+          "entity": "A",
+          "order": 0,
+        },
+      },
+      "B" => InputField {
+        Symbol(internal): Object {
+          "list": false,
+          "name": "B",
+          "type": Object {
+            "multiplicity": "one",
+            "name": "BBB",
+            "type": "enum",
+          },
+        },
+        Symbol(metadata): Object {
+          "entity": "A",
+          "order": 1,
+        },
+      },
+    },
+    "name": "A",
+  },
+  Symbol(metadata): Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "name": Object {
+      "plural": "As",
+      "singular": "A",
+    },
+    "titlePlural": "As",
+  },
+}
+`;
+
+exports[`InputType creates specified field with specified types: toObject with fields 1`] = `
+Object {
+  "description": undefined,
+  "fields": Array [
+    Object {
+      "defaultValue": undefined,
+      "description": undefined,
+      "list": false,
+      "metadata": Object {
+        "entity": "A",
+        "order": 0,
+      },
+      "name": "A",
+      "title": undefined,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": undefined,
+      "description": undefined,
+      "list": false,
+      "metadata": Object {
+        "entity": "A",
+        "order": 1,
+      },
+      "name": "B",
+      "title": undefined,
+      "type": Object {
+        "multiplicity": "one",
+        "name": "BBB",
+        "type": "enum",
+      },
+    },
+  ],
+  "metadata": Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "name": Object {
+      "plural": "As",
+      "singular": "A",
+    },
+    "titlePlural": "As",
+  },
+  "name": "A",
+  "title": undefined,
+}
+`;
+
+exports[`InputType default has no Singular: toObject 1`] = `
+Object {
+  "description": undefined,
+  "fields": Array [],
+  "metadata": Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "name": Object {
+      "plural": "AllSpecies",
+      "singular": "Species",
+    },
+    "titlePlural": "AllSpecies",
+  },
+  "name": "Species",
+  "title": undefined,
+}
+`;
+
+exports[`InputType default: toObject 1`] = `
+Object {
+  "description": undefined,
+  "fields": Array [],
+  "metadata": Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "name": Object {
+      "plural": "As",
+      "singular": "A",
+    },
+    "titlePlural": "As",
+  },
+  "name": "A",
+  "title": undefined,
+}
+`;

@@ -1,4 +1,4 @@
-import { ElementMetaInfo, Internal } from './element';
+import { ElementMetaInfo, Internal, MetaData } from './element';
 import {
   IModelBase,
   ModelBaseInput,
@@ -19,31 +19,21 @@ import {
 
 import { merge } from 'lodash';
 import * as inflected from 'inflected';
-import capitalize from './lib/capitalize';
 import { InputFieldInput, InputField, IInputField } from './inputfield';
 import { EntityFieldInput } from './entityfield';
+import { UIView } from './entitybase';
 
-export interface IEntityBase
-  extends IModelBase<EntityBaseMetaInfo, EntityBaseInput, EntityBaseOutput> {
+export interface IInputType
+  extends IModelBase<InputTypeMetaInfo, InputTypeInput, InputTypeOutput> {
   readonly plural: string;
+  readonly global: boolean;
   readonly titlePlural: string;
   readonly fields: Map<string, IInputField>;
 }
 
-export interface UIView {
-  listName?: string[];
-  quickSearch?: string[];
-  hidden?: string[];
-  edit?: string[];
-  show?: string[];
-  list?: string[];
-  embedded?: string[];
-  enum?: boolean;
-  dictionary?: boolean;
-}
-
-export interface EntityBaseMetaInfo extends ElementMetaInfo {
+export interface InputTypeMetaInfo extends ElementMetaInfo {
   titlePlural: string;
+  global: boolean;
   name: {
     plural: string;
     singular: string;
@@ -51,23 +41,21 @@ export interface EntityBaseMetaInfo extends ElementMetaInfo {
   UI: UIView;
 }
 
-export interface EntityBaseInternal extends ModelBaseInternal {
+export interface InputTypeInternal extends ModelBaseInternal {
   fields: Map<string, IInputField>;
 }
 
-export interface EntityBaseInput extends ModelBaseInput<EntityBaseMetaInfo> {
+export interface InputTypeInput extends ModelBaseInput<InputTypeMetaInfo> {
   plural?: string;
   titlePlural?: string;
   fields?: AsHash<InputFieldInput> | NamedArray<InputFieldInput>;
 }
 
-export interface EntityBaseOutput extends ModelBaseOutput<EntityBaseMetaInfo> {
-  plural?: string;
-  titlePlural?: string;
+export interface InputTypeOutput extends ModelBaseOutput<InputTypeMetaInfo> {
   fields: NamedArray<InputFieldInput>;
 }
 
-export const entityBaseDefaultMetaInfo = {
+export const InputTypeDefaultMetaInfo = {
   name: {},
   UI: {
     listName: [],
@@ -79,25 +67,25 @@ export const entityBaseDefaultMetaInfo = {
     embedded: [],
   },
 };
-export const entityBaseDefaultInput = {
-  metadata: entityBaseDefaultMetaInfo,
+export const InputTypeDefaultInput = {
+  metadata: InputTypeDefaultMetaInfo,
   exact: false,
 };
 
-export class EntityBase
+export class InputType
   extends ModelBase<
-    EntityBaseMetaInfo,
-    EntityBaseInput,
-    EntityBaseInternal,
-    EntityBaseOutput
+    InputTypeMetaInfo,
+    InputTypeInput,
+    InputTypeInternal,
+    InputTypeOutput
   >
-  implements IEntityBase {
+  implements IInputType {
   public get modelType(): MetaModelType {
-    return 'entity-base';
+    return 'input-type';
   }
 
-  constructor(init: EntityBaseInput) {
-    super(merge({}, entityBaseDefaultInput, init));
+  constructor(init: InputTypeInput) {
+    super(merge({}, InputTypeDefaultInput, init));
   }
 
   get plural(): string {
@@ -108,31 +96,43 @@ export class EntityBase
     return this.metadata.titlePlural;
   }
 
+  get global(): boolean {
+    return this.metadata.global;
+  }
+
   get fields(): Map<string, IInputField> {
     return this[Internal].fields;
   }
 
-  public updateWith(input: Nullable<EntityBaseInput>) {
+  public updateWith(input: Nullable<InputTypeInput>) {
     super.updateWith(input);
 
-    assignValue<EntityBaseInternal, EntityBaseInput, string>({
+    assignValue<InputTypeInternal, InputTypeInput, string>({
       src: this[Internal],
       input,
       field: 'name',
       effect: (src, value) => {
-        src.name = capitalize(value.trim());
+        src.name = value.trim();
         this.metadata.name.singular = src.name;
       },
       required: true,
     });
 
-    assignValue<EntityBaseMetaInfo, EntityBaseInput, string>({
+    assignValue<InputTypeMetaInfo, InputTypeInput, boolean>({
+      src: this[MetaData],
+      input,
+      field: 'name',
+      effect: (src, value) => (src.global = value),
+      setDefault: src => (src.global = false),
+    });
+
+    assignValue<InputTypeMetaInfo, InputTypeInput, string>({
       src: this.metadata,
       input,
       field: 'name.plural',
       inputField: 'plural',
       effect: (src, value) => {
-        src.name.plural = capitalize(value.trim());
+        src.name.plural = value.trim();
         if (src.name.plural === this.name) {
           src.name.plural = `All${this.name}`;
         }
@@ -145,7 +145,7 @@ export class EntityBase
       },
     });
 
-    assignValue<EntityBaseMetaInfo, EntityBaseInput, string>({
+    assignValue<InputTypeMetaInfo, InputTypeInput, string>({
       src: this.metadata,
       input,
       field: 'titlePlural',
@@ -154,8 +154,8 @@ export class EntityBase
     });
 
     assignValue<
-      EntityBaseInternal,
-      EntityBaseInput,
+      InputTypeInternal,
+      InputTypeInput,
       AsHash<InputFieldInput> | NamedArray<InputFieldInput>
     >({
       src: this[Internal],
@@ -182,16 +182,16 @@ export class EntityBase
     });
   }
 
-  public toObject(): EntityBaseOutput {
+  public toObject(): InputTypeOutput {
     return merge({}, super.toObject(), {
       fields: MapToArray(this.fields, (name, value) => ({
         ...value.toObject(),
         name,
       })),
-    } as Partial<EntityBaseOutput>);
+    } as Partial<InputTypeOutput>);
   }
 
-  public mergeWith(payload: Nullable<EntityBaseInput>) {
+  public mergeWith(payload: Nullable<InputTypeInput>) {
     super.mergeWith(payload);
   }
 }

@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputField default enum multiplicity == one: default 1`] = `
+InputField {
+  Symbol(internal): Object {
+    "list": false,
+    "name": "A",
+    "type": Object {
+      "multiplicity": "one",
+      "name": "ENUM1",
+      "type": "enum",
+    },
+  },
+  Symbol(metadata): Object {},
+}
+`;
+
+exports[`InputField default enum multiplicity == one: toObject 1`] = `
+Object {
+  "defaultValue": undefined,
+  "description": undefined,
+  "list": false,
+  "metadata": Object {},
+  "name": "A",
+  "title": undefined,
+  "type": Object {
+    "multiplicity": "one",
+    "name": "ENUM1",
+    "type": "enum",
+  },
+}
+`;
+
+exports[`InputField default enum: default 1`] = `
+InputField {
+  Symbol(internal): Object {
+    "list": true,
+    "name": "A",
+    "type": Object {
+      "multiplicity": "many",
+      "name": "ENUM1",
+      "type": "enum",
+    },
+  },
+  Symbol(metadata): Object {},
+}
+`;
+
+exports[`InputField default enum: toObject 1`] = `
+Object {
+  "defaultValue": undefined,
+  "description": undefined,
+  "list": true,
+  "metadata": Object {},
+  "name": "A",
+  "title": undefined,
+  "type": Object {
+    "multiplicity": "many",
+    "name": "ENUM1",
+    "type": "enum",
+  },
+}
+`;
+
+exports[`InputField default: default 1`] = `
+InputField {
+  Symbol(internal): Object {
+    "list": false,
+    "name": "A",
+    "type": "string",
+  },
+  Symbol(metadata): Object {},
+}
+`;
+
+exports[`InputField default: toObject 1`] = `
+Object {
+  "defaultValue": undefined,
+  "description": undefined,
+  "list": false,
+  "metadata": Object {},
+  "name": "A",
+  "title": undefined,
+  "type": "string",
+}
+`;
+
+exports[`InputField required is setup: required 1`] = `
+Object {
+  "defaultValue": undefined,
+  "description": undefined,
+  "list": false,
+  "metadata": Object {
+    "required": true,
+  },
+  "name": "A",
+  "title": undefined,
+  "type": "string",
+}
+`;
