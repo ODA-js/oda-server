@@ -28,5 +28,7 @@ RelationFieldBase --|> FieldBase
 SimpleField --|> FieldBase
 RelationField --|> RelationFieldBase
 EntityField --|> RelationFieldBase
+InputType ----|> ModelBase
+InputFIeld ----|> ModelBase
 
 @enduml

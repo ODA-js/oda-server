@@ -55,11 +55,15 @@ describe('Operation', () => {
       'description',
       'simple description',
     );
-    expect(res.payload.size).toBe(1);
-    expect(res.payload.get('result')).toHaveProperty(
-      'description',
-      'simple description',
-    );
+    if (typeof res.payload !== 'string') {
+      expect(res.payload.size).toBe(1);
+      expect(res.payload.get('result')).toHaveProperty(
+        'description',
+        'simple description',
+      );
+    } else {
+      throw new Error('Must be of Map type');
+    }
   });
   it('toQuery', () => {
     const resMany = new Operation({
