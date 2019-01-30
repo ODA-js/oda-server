@@ -3,7 +3,7 @@
 exports[`InputField default enum multiplicity == one: default 1`] = `
 InputField {
   Symbol(internal): Object {
-    "list": false,
+    "multiplicity": "one",
     "name": "A",
     "type": Object {
       "multiplicity": "one",
@@ -19,8 +19,8 @@ exports[`InputField default enum multiplicity == one: toObject 1`] = `
 Object {
   "defaultValue": undefined,
   "description": undefined,
-  "list": false,
   "metadata": Object {},
+  "multiplicity": "one",
   "name": "A",
   "title": undefined,
   "type": Object {
@@ -34,7 +34,7 @@ Object {
 exports[`InputField default enum: default 1`] = `
 InputField {
   Symbol(internal): Object {
-    "list": true,
+    "multiplicity": "many",
     "name": "A",
     "type": Object {
       "multiplicity": "many",
@@ -50,8 +50,8 @@ exports[`InputField default enum: toObject 1`] = `
 Object {
   "defaultValue": undefined,
   "description": undefined,
-  "list": true,
   "metadata": Object {},
+  "multiplicity": "many",
   "name": "A",
   "title": undefined,
   "type": Object {
@@ -65,7 +65,7 @@ Object {
 exports[`InputField default: default 1`] = `
 InputField {
   Symbol(internal): Object {
-    "list": false,
+    "multiplicity": "one",
     "name": "A",
     "type": "string",
   },
@@ -77,8 +77,8 @@ exports[`InputField default: toObject 1`] = `
 Object {
   "defaultValue": undefined,
   "description": undefined,
-  "list": false,
   "metadata": Object {},
+  "multiplicity": "one",
   "name": "A",
   "title": undefined,
   "type": "string",
@@ -89,10 +89,10 @@ exports[`InputField required is setup: required 1`] = `
 Object {
   "defaultValue": undefined,
   "description": undefined,
-  "list": false,
   "metadata": Object {
     "required": true,
   },
+  "multiplicity": "one",
   "name": "A",
   "title": undefined,
   "type": "string",

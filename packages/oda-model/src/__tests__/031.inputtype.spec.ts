@@ -43,9 +43,13 @@ describe('InputType', () => {
           name: 'B',
           type: { type: 'enum', name: 'BBB' },
         },
+        {
+          name: 'c',
+          type: { type: 'entity', name: 'CCC', multiplicity: 'many' },
+        },
       ],
     });
-    expect(res.fields.size).toBe(2);
+    expect(res.fields.size).toBe(3);
     expect(res.fields.get('A')).not.toBeUndefined();
     const a = res.fields.get('a');
     if (a) {
@@ -55,6 +59,11 @@ describe('InputType', () => {
     const b = res.fields.get('B');
     if (b) {
       expect(b.modelType).toBe('input-enum-field');
+    }
+    const c = res.fields.get('c');
+    if (c) {
+      expect(c.multiplicity).toBe('many');
+      expect(c.modelType).toBe('input-entity-field');
     }
     expect(res).toMatchSnapshot('object with fields');
     expect(res.toObject()).toMatchSnapshot('toObject with fields');

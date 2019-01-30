@@ -138,6 +138,7 @@ export type MetaModelType =
   | 'input-type'
   | 'input-simple-field'
   | 'input-enum-field'
+  | 'input-entity-field'
   | RelationType;
 
 export type Multiplicity = 'one' | 'many';

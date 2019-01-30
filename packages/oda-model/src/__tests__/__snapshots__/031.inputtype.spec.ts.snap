@@ -6,7 +6,7 @@ InputType {
     "fields": Map {
       "A" => InputField {
         Symbol(internal): Object {
-          "list": false,
+          "multiplicity": "one",
           "name": "A",
           "type": "string",
         },
@@ -17,7 +17,7 @@ InputType {
       },
       "B" => InputField {
         Symbol(internal): Object {
-          "list": false,
+          "multiplicity": "one",
           "name": "B",
           "type": Object {
             "multiplicity": "one",
@@ -28,6 +28,21 @@ InputType {
         Symbol(metadata): Object {
           "entity": "A",
           "order": 1,
+        },
+      },
+      "c" => InputField {
+        Symbol(internal): Object {
+          "multiplicity": "many",
+          "name": "c",
+          "type": Object {
+            "multiplicity": "many",
+            "name": "CCC",
+            "type": "entity",
+          },
+        },
+        Symbol(metadata): Object {
+          "entity": "A",
+          "order": 2,
         },
       },
     },
@@ -43,6 +58,7 @@ InputType {
       "quickSearch": Array [],
       "show": Array [],
     },
+    "global": "A",
     "name": Object {
       "plural": "As",
       "singular": "A",
@@ -59,11 +75,11 @@ Object {
     Object {
       "defaultValue": undefined,
       "description": undefined,
-      "list": false,
       "metadata": Object {
         "entity": "A",
         "order": 0,
       },
+      "multiplicity": "one",
       "name": "A",
       "title": undefined,
       "type": "string",
@@ -71,17 +87,33 @@ Object {
     Object {
       "defaultValue": undefined,
       "description": undefined,
-      "list": false,
       "metadata": Object {
         "entity": "A",
         "order": 1,
       },
+      "multiplicity": "one",
       "name": "B",
       "title": undefined,
       "type": Object {
         "multiplicity": "one",
         "name": "BBB",
         "type": "enum",
+      },
+    },
+    Object {
+      "defaultValue": undefined,
+      "description": undefined,
+      "metadata": Object {
+        "entity": "A",
+        "order": 2,
+      },
+      "multiplicity": "many",
+      "name": "c",
+      "title": undefined,
+      "type": Object {
+        "multiplicity": "many",
+        "name": "CCC",
+        "type": "entity",
       },
     },
   ],
@@ -95,6 +127,7 @@ Object {
       "quickSearch": Array [],
       "show": Array [],
     },
+    "global": "A",
     "name": Object {
       "plural": "As",
       "singular": "A",
@@ -120,6 +153,7 @@ Object {
       "quickSearch": Array [],
       "show": Array [],
     },
+    "global": "Species",
     "name": Object {
       "plural": "AllSpecies",
       "singular": "Species",
@@ -145,6 +179,7 @@ Object {
       "quickSearch": Array [],
       "show": Array [],
     },
+    "global": "A",
     "name": Object {
       "plural": "As",
       "singular": "A",

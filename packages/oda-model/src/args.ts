@@ -25,6 +25,7 @@ export interface ArgsInternal extends ModelBaseInternal {
   required: boolean;
   defaultValue?: string;
   multiplicity: Multiplicity;
+  order: number;
 }
 
 export interface ArgsInput extends ModelBaseInput<ArgsMetaInfo> {

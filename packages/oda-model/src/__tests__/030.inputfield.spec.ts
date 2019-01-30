@@ -10,7 +10,7 @@ describe('InputField', () => {
     expect(res.name).toBe('A');
     expect(res.type).toBe('string');
     expect(res.modelType).toBe('input-simple-field');
-    expect(res.list).toBeFalsy();
+    expect(res.multiplicity).toBe('one');
     expect(res).toMatchSnapshot('default');
     expect(res.toObject()).toMatchSnapshot('toObject');
   });
@@ -52,7 +52,7 @@ describe('InputField', () => {
     });
     expect(res.name).toBe('A');
     expect(res.modelType).toBe('input-enum-field');
-    expect(res.list).toBeTruthy();
+    expect(res.multiplicity).toBe('many');
     expect((res.type as EnumType).type).toBe('enum');
     expect(res).toMatchSnapshot('default');
     expect(res.toObject()).toMatchSnapshot('toObject');
@@ -61,7 +61,7 @@ describe('InputField', () => {
   it('default enum list', () => {
     const res = new InputField({
       name: 'A',
-      list: true,
+      multiplicity: 'many',
       type: {
         type: 'enum',
         name: 'ENUM1',
@@ -69,7 +69,7 @@ describe('InputField', () => {
     });
     expect(res.name).toBe('A');
     expect(res.modelType).toBe('input-enum-field');
-    expect(res.list).toBeTruthy();
+    expect(res.multiplicity).toBe('many');
     expect((res.type as EnumType).type).toBe('enum');
     expect((res.type as EnumType).multiplicity).toBe('many');
   });
@@ -83,7 +83,7 @@ describe('InputField', () => {
     });
     expect(res.name).toBe('A');
     expect(res.modelType).toBe('input-enum-field');
-    expect(res.list).toBeFalsy();
+    expect(res.multiplicity).toBe('one');
     expect((res.type as EnumType).type).toBe('enum');
     expect((res.type as EnumType).multiplicity).toBe('one');
     expect(res).toMatchSnapshot('default');

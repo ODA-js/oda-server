@@ -7,13 +7,20 @@ import {
   ModelBaseMetaInfo,
 } from './modelbase';
 import { merge, get } from 'lodash';
-import { EnumType, Nullable, assignValue, MetaModelType } from './types';
+import {
+  EnumType,
+  Nullable,
+  assignValue,
+  MetaModelType,
+  Multiplicity,
+  EntityType,
+} from './types';
 import { Internal } from './element';
 
 export interface IInputField
   extends IModelBase<InputFieldMeta, InputFieldInput, InputFieldOutput> {
-  readonly type: string | EnumType;
-  readonly list?: boolean;
+  readonly type: string | EnumType | EntityType;
+  readonly multiplicity?: Multiplicity;
   readonly defaultValue?: string;
   readonly order?: number;
   readonly required?: boolean;
@@ -24,18 +31,20 @@ export interface InputFieldMeta extends ModelBaseMetaInfo {
   entity: string;
   order: number;
   required: boolean;
+  type: string | EnumType | EntityType;
+  multiplicity?: Multiplicity;
 }
 
 export interface InputFieldInternal extends ModelBaseInternal {
-  type: string | EnumType;
-  list: boolean;
+  type: string | EnumType | EntityType;
+  multiplicity: Multiplicity;
 }
 
 export interface InputFieldInput extends ModelBaseInput<InputFieldMeta> {
-  type?: string | EnumType;
+  type?: string | EnumType | EntityType;
   required?: boolean;
   defaultValue?: string;
-  list?: boolean;
+  multiplicity?: Multiplicity;
   order?: number;
   entity?: string;
 }
@@ -43,7 +52,7 @@ export interface InputFieldInput extends ModelBaseInput<InputFieldMeta> {
 export interface InputFieldOutput extends ModelBaseOutput<InputFieldMeta> {
   type?: string | EnumType;
   defaultValue?: string;
-  list?: boolean;
+  multiplicity?: Multiplicity;
   order?: number;
 }
 
@@ -59,18 +68,21 @@ export class InputField
   >
   implements IInputField {
   public get modelType(): MetaModelType {
-    return typeof this[Internal].type === 'string'
+    const internal = this[Internal];
+    return typeof internal.type === 'string'
       ? 'input-simple-field'
+      : internal.type.type === 'entity'
+      ? 'input-entity-field'
       : 'input-enum-field';
   }
 
-  get type(): string | EnumType {
+  get type(): string | EnumType | EntityType {
     return this[Internal].type;
   }
 
   // if it is the field is List of Items i.e. String[]
-  get list(): boolean {
-    return get(this[Internal], 'list', false);
+  get multiplicity(): Multiplicity {
+    return get(this[Internal], 'multiplicity', 'one');
   }
 
   get defaultValue(): string | undefined {
@@ -116,8 +128,12 @@ export class InputField
       input,
       field: 'type',
       effect: (src, value) => {
-        if (typeof value !== 'string' && !value.multiplicity) {
-          value.multiplicity = 'one';
+        if (typeof value !== 'string') {
+          if (!value.multiplicity) {
+            value.multiplicity = 'one';
+          } else {
+            src.multiplicity = value.multiplicity;
+          }
         }
         src.type = value;
       },
@@ -127,24 +143,29 @@ export class InputField
     assignValue<
       InputFieldInternal,
       InputFieldInput,
-      NonNullable<InputFieldInput['list']>
+      NonNullable<InputFieldInput['multiplicity']>
     >({
       src: this[Internal],
       input,
-      field: 'list',
+      field: 'multiplicity',
       required: true,
       effect: (src, value) => {
         if (this.modelType === 'input-enum-field') {
           (src.type as EnumType).multiplicity = value ? 'many' : 'one';
         }
-        src.list = value;
+        if (this.modelType === 'input-entity-field') {
+          (src.type as EntityType).multiplicity = value ? 'many' : 'one';
+        }
+        src.multiplicity = value;
       },
       setDefault: src => {
         if (this.modelType === 'input-enum-field') {
-          src.list =
-            (src.type as EnumType).multiplicity === 'many' ? true : false;
+          src.multiplicity = (src.type as EnumType).multiplicity || 'one';
+        }
+        if (this.modelType === 'input-entity-field') {
+          src.multiplicity = (src.type as EntityType).multiplicity || 'one';
         } else {
-          src.list = false;
+          src.multiplicity = 'one';
         }
       },
     });
@@ -178,7 +199,7 @@ export class InputField
     return merge({}, super.toObject(), {
       defaultValue: this.defaultValue,
       type: this.type,
-      list: this[Internal].list,
+      multiplicity: this[Internal].multiplicity,
     } as Partial<InputFieldOutput>);
   }
 
