@@ -6,10 +6,12 @@ Object {
     Object {
       "defaultValue": "THIS PROP IS READ ONLY",
       "description": undefined,
-      "metadata": Object {},
+      "metadata": Object {
+        "defaultValue": "THIS PROP IS READ ONLY",
+        "required": false,
+      },
       "multiplicity": "one",
       "name": "message",
-      "required": false,
       "title": undefined,
       "type": "string",
     },

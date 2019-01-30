@@ -21,7 +21,7 @@ import {
 } from './types';
 import { Internal, MetaData } from './element';
 import { IEntityRef, EntityReference } from './entityreference';
-import { IArgs, Args, ArgsInput } from './args';
+import { ITypeField, TypeField, TypeFieldInput } from './typefield';
 
 export interface IFieldBase<
   M extends FieldBaseMetaInfo<P>,
@@ -34,7 +34,7 @@ export interface IFieldBase<
   readonly inheritedFrom?: string;
   readonly order: number;
   readonly derived: boolean;
-  readonly args: Map<string, IArgs>;
+  readonly args: Map<string, ITypeField>;
   readonly persistent: boolean;
   readonly identity: boolean | string | string[];
   readonly required: boolean;
@@ -68,7 +68,7 @@ export interface FieldBaseMetaInfo<T extends FieldBasePersistence>
 }
 
 export interface FieldBaseInternal extends ModelBaseInternal {
-  args: Map<string, IArgs>;
+  args: Map<string, ITypeField>;
   inheritedFrom?: string;
   type: FieldType;
   idKey: IEntityRef;
@@ -78,7 +78,7 @@ export interface FieldBaseInput<
   T extends FieldBaseMetaInfo<P>,
   P extends FieldBasePersistence
 > extends ModelBaseInput<T> {
-  args?: AsHash<ArgsInput> | NamedArray<ArgsInput>;
+  args?: AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>;
   inheritedFrom?: string;
   derived?: boolean;
   persistent?: boolean;
@@ -103,7 +103,7 @@ export interface FieldBaseOutput<
   required?: boolean;
   identity?: boolean | string | string[];
   indexed?: boolean | string | string[];
-  args: NamedArray<ArgsInput>;
+  args: NamedArray<TypeFieldInput>;
 }
 
 export const fieldBaseDefaultMetaInfo = {
@@ -145,7 +145,7 @@ export class FieldBase<
     return this[Internal].inheritedFrom;
   }
 
-  get args(): Map<string, IArgs> {
+  get args(): Map<string, ITypeField> {
     return this[Internal].args;
   }
 
@@ -194,14 +194,14 @@ export class FieldBase<
       field: 'inheritedFrom',
     });
 
-    assignValue<S, I, AsHash<ArgsInput> | NamedArray<ArgsInput>>({
+    assignValue<S, I, AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>>({
       src: this[Internal],
       input,
       field: 'args',
       effect: (src, value) =>
         (src.args = ArrayToMap(
           Array.isArray(value) ? value : HashToArray(value),
-          i => new Args(i),
+          i => new TypeField(i),
           (obj, src) => obj.mergeWith(src.toObject()),
         )),
       setDefault: src => (src.args = new Map()),

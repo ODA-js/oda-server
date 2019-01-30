@@ -17,8 +17,8 @@ import {
 } from './types';
 import { Internal } from './element';
 
-export interface IInputField
-  extends IModelBase<InputFieldMeta, InputFieldInput, InputFieldOutput> {
+export interface ITypeField
+  extends IModelBase<TypeFieldMeta, TypeFieldInput, TypeFieldOutput> {
   readonly type: string | EnumType | EntityType;
   readonly multiplicity?: Multiplicity;
   readonly defaultValue?: string;
@@ -26,7 +26,7 @@ export interface IInputField
   readonly required?: boolean;
 }
 
-export interface InputFieldMeta extends ModelBaseMetaInfo {
+export interface TypeFieldMeta extends ModelBaseMetaInfo {
   defaultValue?: string;
   entity: string;
   order: number;
@@ -35,12 +35,12 @@ export interface InputFieldMeta extends ModelBaseMetaInfo {
   multiplicity?: Multiplicity;
 }
 
-export interface InputFieldInternal extends ModelBaseInternal {
+export interface TypeFieldInternal extends ModelBaseInternal {
   type: string | EnumType | EntityType;
   multiplicity: Multiplicity;
 }
 
-export interface InputFieldInput extends ModelBaseInput<InputFieldMeta> {
+export interface TypeFieldInput extends ModelBaseInput<TypeFieldMeta> {
   type?: string | EnumType | EntityType;
   required?: boolean;
   defaultValue?: string;
@@ -49,24 +49,24 @@ export interface InputFieldInput extends ModelBaseInput<InputFieldMeta> {
   entity?: string;
 }
 
-export interface InputFieldOutput extends ModelBaseOutput<InputFieldMeta> {
+export interface TypeFieldOutput extends ModelBaseOutput<TypeFieldMeta> {
   type?: string | EnumType;
   defaultValue?: string;
   multiplicity?: Multiplicity;
   order?: number;
 }
 
-export const inputFieldDefaultMetaInfo = {};
-export const inputFieldDefaultInput = { metadata: inputFieldDefaultMetaInfo };
+export const typeFieldDefaultMetaInfo = {};
+export const TypeFieldDefaultInput = { metadata: typeFieldDefaultMetaInfo };
 
-export class InputField
+export class TypeField
   extends ModelBase<
-    InputFieldMeta,
-    InputFieldInput,
-    InputFieldInternal,
-    InputFieldOutput
+    TypeFieldMeta,
+    TypeFieldInput,
+    TypeFieldInternal,
+    TypeFieldOutput
   >
-  implements IInputField {
+  implements ITypeField {
   public get modelType(): MetaModelType {
     const internal = this[Internal];
     return typeof internal.type === 'string'
@@ -97,14 +97,14 @@ export class InputField
     return this.metadata.required;
   }
 
-  constructor(init: InputFieldInput) {
-    super(merge({}, inputFieldDefaultInput, init));
+  constructor(init: TypeFieldInput) {
+    super(merge({}, TypeFieldDefaultInput, init));
   }
 
-  public updateWith(input: Nullable<InputFieldInput>) {
+  public updateWith(input: Nullable<TypeFieldInput>) {
     super.updateWith(input);
 
-    assignValue<InputFieldInternal, InputFieldInput, string>({
+    assignValue<TypeFieldInternal, TypeFieldInput, string>({
       src: this[Internal],
       input,
       field: 'name',
@@ -120,9 +120,9 @@ export class InputField
     });
 
     assignValue<
-      InputFieldInternal,
-      InputFieldInput,
-      NonNullable<InputFieldInput['type']>
+      TypeFieldInternal,
+      TypeFieldInput,
+      NonNullable<TypeFieldInput['type']>
     >({
       src: this[Internal],
       input,
@@ -141,9 +141,9 @@ export class InputField
     });
 
     assignValue<
-      InputFieldInternal,
-      InputFieldInput,
-      NonNullable<InputFieldInput['multiplicity']>
+      TypeFieldInternal,
+      TypeFieldInput,
+      NonNullable<TypeFieldInput['multiplicity']>
     >({
       src: this[Internal],
       input,
@@ -186,7 +186,7 @@ export class InputField
       effect: (src, value) => (src.order = value),
     });
 
-    assignValue<InputFieldMeta, InputFieldInput, boolean>({
+    assignValue<TypeFieldMeta, TypeFieldInput, boolean>({
       src: this.metadata,
       input,
       inputField: 'required',
@@ -195,15 +195,15 @@ export class InputField
     });
   }
 
-  public toObject(): InputFieldOutput {
+  public toObject(): TypeFieldOutput {
     return merge({}, super.toObject(), {
       defaultValue: this.defaultValue,
       type: this.type,
       multiplicity: this[Internal].multiplicity,
-    } as Partial<InputFieldOutput>);
+    } as Partial<TypeFieldOutput>);
   }
 
-  public mergeWith(payload: Nullable<InputFieldInput>) {
+  public mergeWith(payload: Nullable<TypeFieldInput>) {
     super.mergeWith(payload);
   }
 }

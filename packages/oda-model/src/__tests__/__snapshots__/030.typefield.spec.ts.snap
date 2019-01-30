@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`InputField default enum multiplicity == one: default 1`] = `
-InputField {
+exports[`TypeField default enum multiplicity == one: default 1`] = `
+TypeField {
   Symbol(internal): Object {
     "multiplicity": "one",
     "name": "A",
@@ -15,7 +15,7 @@ InputField {
 }
 `;
 
-exports[`InputField default enum multiplicity == one: toObject 1`] = `
+exports[`TypeField default enum multiplicity == one: toObject 1`] = `
 Object {
   "defaultValue": undefined,
   "description": undefined,
@@ -31,8 +31,8 @@ Object {
 }
 `;
 
-exports[`InputField default enum: default 1`] = `
-InputField {
+exports[`TypeField default enum: default 1`] = `
+TypeField {
   Symbol(internal): Object {
     "multiplicity": "many",
     "name": "A",
@@ -46,7 +46,7 @@ InputField {
 }
 `;
 
-exports[`InputField default enum: toObject 1`] = `
+exports[`TypeField default enum: toObject 1`] = `
 Object {
   "defaultValue": undefined,
   "description": undefined,
@@ -62,8 +62,8 @@ Object {
 }
 `;
 
-exports[`InputField default: default 1`] = `
-InputField {
+exports[`TypeField default: default 1`] = `
+TypeField {
   Symbol(internal): Object {
     "multiplicity": "one",
     "name": "A",
@@ -73,7 +73,7 @@ InputField {
 }
 `;
 
-exports[`InputField default: toObject 1`] = `
+exports[`TypeField default: toObject 1`] = `
 Object {
   "defaultValue": undefined,
   "description": undefined,
@@ -85,7 +85,7 @@ Object {
 }
 `;
 
-exports[`InputField required is setup: required 1`] = `
+exports[`TypeField required is setup: required 1`] = `
 Object {
   "defaultValue": undefined,
   "description": undefined,

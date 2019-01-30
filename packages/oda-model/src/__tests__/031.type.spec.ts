@@ -1,29 +1,29 @@
 import 'jest';
 import { MetaData } from '../element';
-import { InputType, InputTypeDefaultMetaInfo } from '../inputtype';
+import { Type, TypeDefaultMetaInfo } from '../type';
 
-describe('InputType', () => {
+describe('Type', () => {
   it('default', () => {
-    const res = new InputType({ name: 'A' });
-    expect(res[MetaData]).toMatchObject(InputTypeDefaultMetaInfo);
+    const res = new Type({ name: 'A' });
+    expect(res[MetaData]).toMatchObject(TypeDefaultMetaInfo);
     expect(res.toObject()).toMatchSnapshot('toObject');
   });
   it('default has no Singular', () => {
-    const res = new InputType({ name: 'Species' });
+    const res = new Type({ name: 'Species' });
     expect(res.plural).toBe('AllSpecies');
     expect(res.toObject()).toMatchSnapshot('toObject');
   });
   it('should Capitalize name', () => {
-    const res = new InputType({ name: 'entity' });
+    const res = new Type({ name: 'entity' });
     expect(res.name).toBe('entity');
   });
   it('take TitlePlural from Plural name', () => {
-    const res = new InputType({ name: 'Child', plural: 'Children  ' });
+    const res = new Type({ name: 'Child', plural: 'Children  ' });
     expect(res.plural).toBe('Children');
     expect(res.titlePlural).toBe('Children');
   });
   it('should take Plural Title plural', () => {
-    const res = new InputType({
+    const res = new Type({
       name: 'Species',
       plural: 'Species',
       titlePlural: 'All Species',
@@ -33,7 +33,7 @@ describe('InputType', () => {
   });
 
   it('creates specified field with specified types', () => {
-    const res = new InputType({
+    const res = new Type({
       name: 'A',
       fields: [
         {
@@ -70,7 +70,7 @@ describe('InputType', () => {
   });
 
   it('should pass entity name to fields', () => {
-    const res = new InputType({
+    const res = new Type({
       name: 'A',
       fields: [{ name: 'a' }],
     });
@@ -82,7 +82,7 @@ describe('InputType', () => {
   });
 
   it('should deduplicates fields', () => {
-    const res = new InputType({
+    const res = new Type({
       name: 'A',
       fields: [
         { name: 'a' },

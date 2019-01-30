@@ -1,10 +1,10 @@
 import 'jest';
-import { InputField } from '../inputfield';
+import { TypeField } from '../typefield';
 import { EnumType } from '../types';
 
-describe('InputField', () => {
+describe('TypeField', () => {
   it('default', () => {
-    const res = new InputField({
+    const res = new TypeField({
       name: 'A',
     });
     expect(res.name).toBe('A');
@@ -16,7 +16,7 @@ describe('InputField', () => {
   });
 
   it('default value only for persistent fields', () => {
-    const res = new InputField({
+    const res = new TypeField({
       name: 'A',
       defaultValue: 'NAME_OF_DEFAULT_VALUE',
     });
@@ -25,14 +25,14 @@ describe('InputField', () => {
   });
 
   it('required by default is false', () => {
-    const res = new InputField({
+    const res = new TypeField({
       name: 'A',
     });
     expect(res.name).toBe('A');
     expect(res.required).toBeFalsy();
   });
   it('required is setup', () => {
-    const res = new InputField({
+    const res = new TypeField({
       name: 'A',
       required: true,
     });
@@ -42,7 +42,7 @@ describe('InputField', () => {
   });
 
   it('default enum', () => {
-    const res = new InputField({
+    const res = new TypeField({
       name: 'A',
       type: {
         type: 'enum',
@@ -59,7 +59,7 @@ describe('InputField', () => {
   });
 
   it('default enum list', () => {
-    const res = new InputField({
+    const res = new TypeField({
       name: 'A',
       multiplicity: 'many',
       type: {
@@ -74,7 +74,7 @@ describe('InputField', () => {
     expect((res.type as EnumType).multiplicity).toBe('many');
   });
   it('default enum multiplicity == one', () => {
-    const res = new InputField({
+    const res = new TypeField({
       name: 'A',
       type: {
         type: 'enum',

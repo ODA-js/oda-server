@@ -19,18 +19,18 @@ import {
   ModelBaseMetaInfo,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
-import { IArgs, Args, ArgsInput } from './args';
+import { ITypeField, TypeField, TypeFieldInput } from './typefield';
 
 export interface IMutation
   extends IModelBase<MutationMetaInfo, MutationInput, MutationOutput> {
   /**
    * set of arguments
    */
-  readonly args: Map<string, IArgs>;
+  readonly args: Map<string, ITypeField>;
   /**
    * set of output fields
    */
-  readonly payload: string | Map<string, IArgs>;
+  readonly payload: string | Map<string, ITypeField>;
 }
 
 export interface MutationMetaInfo extends ModelBaseMetaInfo {
@@ -41,18 +41,18 @@ export interface MutationMetaInfo extends ModelBaseMetaInfo {
 }
 
 export interface MutationInternal extends ModelBaseInternal {
-  args: Map<string, IArgs>;
-  payload: string | Map<string, IArgs>;
+  args: Map<string, ITypeField>;
+  payload: string | Map<string, ITypeField>;
 }
 
 export interface MutationInput extends ModelBaseInput<MutationMetaInfo> {
-  args: AsHash<ArgsInput> | NamedArray<ArgsInput>;
-  payload: string | AsHash<ArgsInput> | NamedArray<ArgsInput>;
+  args: AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>;
+  payload: string | AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>;
 }
 
 export interface MutationOutput extends ModelBaseOutput<MutationMetaInfo> {
-  args: NamedArray<ArgsInput>;
-  payload: string | NamedArray<ArgsInput>;
+  args: NamedArray<TypeFieldInput>;
+  payload: string | NamedArray<TypeFieldInput>;
 }
 
 export const mutationDefaultMetaInfo = { acl: { execute: [] } };
@@ -74,11 +74,11 @@ export class Mutation
     super(merge({}, mutationDefaultInput, init));
   }
 
-  public get args(): Map<string, IArgs> {
+  public get args(): Map<string, ITypeField> {
     return this[Internal].args;
   }
 
-  public get payload(): string | Map<string, IArgs> {
+  public get payload(): string | Map<string, ITypeField> {
     return this[Internal].payload;
   }
 
@@ -100,7 +100,7 @@ export class Mutation
       effect: (src, value) =>
         (src.args = ArrayToMap(
           Array.isArray(value) ? value : HashToArray(value),
-          i => new Args(i),
+          i => new TypeField(i),
           (obj, src) => obj.mergeWith(src.toObject()),
         )),
       required: true,
@@ -117,7 +117,7 @@ export class Mutation
             ? value
             : ArrayToMap(
                 Array.isArray(value) ? value : HashToArray(value),
-                i => new Args(i),
+                i => new TypeField(i),
                 (obj, src) => obj.mergeWith(src.toObject()),
               )),
       required: true,

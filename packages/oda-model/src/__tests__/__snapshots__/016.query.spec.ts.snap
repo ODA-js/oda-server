@@ -9,7 +9,6 @@ Object {
       "metadata": Object {},
       "multiplicity": "one",
       "name": "disabled",
-      "required": false,
       "title": undefined,
       "type": "boolean",
     },
@@ -25,10 +24,11 @@ Object {
     Object {
       "defaultValue": undefined,
       "description": undefined,
-      "metadata": Object {},
+      "metadata": Object {
+        "required": true,
+      },
       "multiplicity": "many",
       "name": "id",
-      "required": true,
       "title": undefined,
       "type": "string",
     },

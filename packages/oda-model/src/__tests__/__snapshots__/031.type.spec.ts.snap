@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`InputType creates specified field with specified types: object with fields 1`] = `
-InputType {
+exports[`Type creates specified field with specified types: object with fields 1`] = `
+Type {
   Symbol(internal): Object {
     "fields": Map {
-      "A" => InputField {
+      "A" => TypeField {
         Symbol(internal): Object {
           "multiplicity": "one",
           "name": "A",
@@ -15,7 +15,7 @@ InputType {
           "order": 0,
         },
       },
-      "B" => InputField {
+      "B" => TypeField {
         Symbol(internal): Object {
           "multiplicity": "one",
           "name": "B",
@@ -30,7 +30,7 @@ InputType {
           "order": 1,
         },
       },
-      "c" => InputField {
+      "c" => TypeField {
         Symbol(internal): Object {
           "multiplicity": "many",
           "name": "c",
@@ -68,7 +68,7 @@ InputType {
 }
 `;
 
-exports[`InputType creates specified field with specified types: toObject with fields 1`] = `
+exports[`Type creates specified field with specified types: toObject with fields 1`] = `
 Object {
   "description": undefined,
   "fields": Array [
@@ -139,7 +139,7 @@ Object {
 }
 `;
 
-exports[`InputType default has no Singular: toObject 1`] = `
+exports[`Type default has no Singular: toObject 1`] = `
 Object {
   "description": undefined,
   "fields": Array [],
@@ -165,7 +165,7 @@ Object {
 }
 `;
 
-exports[`InputType default: toObject 1`] = `
+exports[`Type default: toObject 1`] = `
 Object {
   "description": undefined,
   "fields": Array [],

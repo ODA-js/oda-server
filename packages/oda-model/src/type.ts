@@ -19,19 +19,18 @@ import {
 
 import { merge } from 'lodash';
 import * as inflected from 'inflected';
-import { InputFieldInput, InputField, IInputField } from './inputfield';
+import { TypeFieldInput, TypeField, ITypeField } from './typefield';
 import { EntityFieldInput } from './entityfield';
 import { UIView } from './entitybase';
 
-export interface IInputType
-  extends IModelBase<InputTypeMetaInfo, InputTypeInput, InputTypeOutput> {
+export interface IType extends IModelBase<TypeMetaInfo, TypeInput, TypeOutput> {
   readonly plural: string;
   readonly global: boolean;
   readonly titlePlural: string;
-  readonly fields: Map<string, IInputField>;
+  readonly fields: Map<string, ITypeField>;
 }
 
-export interface InputTypeMetaInfo extends ElementMetaInfo {
+export interface TypeMetaInfo extends ElementMetaInfo {
   titlePlural: string;
   global: boolean;
   name: {
@@ -41,21 +40,21 @@ export interface InputTypeMetaInfo extends ElementMetaInfo {
   UI: UIView;
 }
 
-export interface InputTypeInternal extends ModelBaseInternal {
-  fields: Map<string, IInputField>;
+export interface TypeInternal extends ModelBaseInternal {
+  fields: Map<string, ITypeField>;
 }
 
-export interface InputTypeInput extends ModelBaseInput<InputTypeMetaInfo> {
+export interface TypeInput extends ModelBaseInput<TypeMetaInfo> {
   plural?: string;
   titlePlural?: string;
-  fields?: AsHash<InputFieldInput> | NamedArray<InputFieldInput>;
+  fields?: AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>;
 }
 
-export interface InputTypeOutput extends ModelBaseOutput<InputTypeMetaInfo> {
-  fields: NamedArray<InputFieldInput>;
+export interface TypeOutput extends ModelBaseOutput<TypeMetaInfo> {
+  fields: NamedArray<TypeFieldInput>;
 }
 
-export const InputTypeDefaultMetaInfo = {
+export const TypeDefaultMetaInfo = {
   name: {},
   UI: {
     listName: [],
@@ -67,25 +66,20 @@ export const InputTypeDefaultMetaInfo = {
     embedded: [],
   },
 };
-export const InputTypeDefaultInput = {
-  metadata: InputTypeDefaultMetaInfo,
+export const typeDefaultInput = {
+  metadata: TypeDefaultMetaInfo,
   exact: false,
 };
 
-export class InputType
-  extends ModelBase<
-    InputTypeMetaInfo,
-    InputTypeInput,
-    InputTypeInternal,
-    InputTypeOutput
-  >
-  implements IInputType {
+export class Type
+  extends ModelBase<TypeMetaInfo, TypeInput, TypeInternal, TypeOutput>
+  implements IType {
   public get modelType(): MetaModelType {
     return 'input-type';
   }
 
-  constructor(init: InputTypeInput) {
-    super(merge({}, InputTypeDefaultInput, init));
+  constructor(init: TypeInput) {
+    super(merge({}, typeDefaultInput, init));
   }
 
   get plural(): string {
@@ -100,14 +94,14 @@ export class InputType
     return this.metadata.global;
   }
 
-  get fields(): Map<string, IInputField> {
+  get fields(): Map<string, ITypeField> {
     return this[Internal].fields;
   }
 
-  public updateWith(input: Nullable<InputTypeInput>) {
+  public updateWith(input: Nullable<TypeInput>) {
     super.updateWith(input);
 
-    assignValue<InputTypeInternal, InputTypeInput, string>({
+    assignValue<TypeInternal, TypeInput, string>({
       src: this[Internal],
       input,
       field: 'name',
@@ -118,7 +112,7 @@ export class InputType
       required: true,
     });
 
-    assignValue<InputTypeMetaInfo, InputTypeInput, boolean>({
+    assignValue<TypeMetaInfo, TypeInput, boolean>({
       src: this[MetaData],
       input,
       field: 'name',
@@ -126,7 +120,7 @@ export class InputType
       setDefault: src => (src.global = false),
     });
 
-    assignValue<InputTypeMetaInfo, InputTypeInput, string>({
+    assignValue<TypeMetaInfo, TypeInput, string>({
       src: this.metadata,
       input,
       field: 'name.plural',
@@ -145,7 +139,7 @@ export class InputType
       },
     });
 
-    assignValue<InputTypeMetaInfo, InputTypeInput, string>({
+    assignValue<TypeMetaInfo, TypeInput, string>({
       src: this.metadata,
       input,
       field: 'titlePlural',
@@ -154,9 +148,9 @@ export class InputType
     });
 
     assignValue<
-      InputTypeInternal,
-      InputTypeInput,
-      AsHash<InputFieldInput> | NamedArray<InputFieldInput>
+      TypeInternal,
+      TypeInput,
+      AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>
     >({
       src: this[Internal],
       input,
@@ -165,7 +159,7 @@ export class InputType
         const fields = ArrayToMap(
           Array.isArray(value) ? value : HashToArray(value),
           (fld, order) => {
-            let field = new InputField(
+            let field = new TypeField(
               merge({}, fld, {
                 order,
                 entity: this.name,
@@ -182,16 +176,16 @@ export class InputType
     });
   }
 
-  public toObject(): InputTypeOutput {
+  public toObject(): TypeOutput {
     return merge({}, super.toObject(), {
       fields: MapToArray(this.fields, (name, value) => ({
         ...value.toObject(),
         name,
       })),
-    } as Partial<InputTypeOutput>);
+    } as Partial<TypeOutput>);
   }
 
-  public mergeWith(payload: Nullable<InputTypeInput>) {
+  public mergeWith(payload: Nullable<TypeInput>) {
     super.mergeWith(payload);
   }
 }

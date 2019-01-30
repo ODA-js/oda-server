@@ -19,14 +19,14 @@ import {
 } from './types';
 import { Internal } from './element';
 import { merge, mergeWith } from 'lodash';
-import { Args, IArgs, ArgsInput } from './args';
+import { TypeField, ITypeField, TypeFieldInput } from './typefield';
 
 export interface IDirective
   extends IModelBase<DirectiveMetaInfo, DirectiveInput, DirectiveOutput> {
   /**
    * set of arguments
    */
-  readonly args: Map<string, IArgs>;
+  readonly args: Map<string, ITypeField>;
   /**
    * where it can met
    */
@@ -36,17 +36,17 @@ export interface IDirective
 export interface DirectiveMetaInfo extends ModelBaseMetaInfo {}
 
 export interface DirectiveInternal extends ModelBaseInternal {
-  args: Map<string, IArgs>;
+  args: Map<string, ITypeField>;
   on: Set<DirectiveLocation>;
 }
 
 export interface DirectiveInput extends ModelBaseInput<DirectiveMetaInfo> {
-  args?: AsHash<ArgsInput> | NamedArray<ArgsInput>;
+  args?: AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>;
   on: DirectiveLocation[];
 }
 
 export interface DirectiveOutput extends ModelBaseOutput<DirectiveMetaInfo> {
-  args: NamedArray<ArgsInput>;
+  args: NamedArray<TypeFieldInput>;
   on: DirectiveLocation[];
 }
 
@@ -64,7 +64,7 @@ export class Directive
   public get modelType(): MetaModelType {
     return 'directive';
   }
-  get args(): Map<string, IArgs> {
+  get args(): Map<string, ITypeField> {
     return this[Internal].args;
   }
 
@@ -89,8 +89,8 @@ export class Directive
       field: 'args',
       effect: (src, value) =>
         (src.args = Array.isArray(value)
-          ? ArrayToMap(value, v => new Args(v))
-          : HashToMap(value, (name, v) => new Args({ name, ...v }))),
+          ? ArrayToMap(value, v => new TypeField(v))
+          : HashToMap(value, (name, v) => new TypeField({ name, ...v }))),
       setDefault: src => (src.args = new Map()),
     });
 
