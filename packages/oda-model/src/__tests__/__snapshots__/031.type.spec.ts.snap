@@ -62,7 +62,7 @@ Record {
       "quickSearch": Array [],
       "show": Array [],
     },
-    "global": "A",
+    "global": false,
     "name": Object {
       "plural": "As",
       "singular": "A",
@@ -132,7 +132,7 @@ Object {
       "quickSearch": Array [],
       "show": Array [],
     },
-    "global": "A",
+    "global": false,
     "name": Object {
       "plural": "As",
       "singular": "A",
@@ -159,7 +159,7 @@ Object {
       "quickSearch": Array [],
       "show": Array [],
     },
-    "global": "Species",
+    "global": false,
     "name": Object {
       "plural": "AllSpecies",
       "singular": "Species",
@@ -186,7 +186,7 @@ Object {
       "quickSearch": Array [],
       "show": Array [],
     },
-    "global": "A",
+    "global": false,
     "name": Object {
       "plural": "As",
       "singular": "A",
