@@ -17,7 +17,7 @@ import {
   MetaModelType,
 } from './types';
 import { Internal } from './element';
-import { TypeFieldInput } from './typefield';
+import { RecordFieldInput } from './recordfield';
 ``;
 export interface ISimpleField
   extends IFieldBase<
@@ -164,7 +164,7 @@ export class SimpleField
     assignValue<
       SimpleFieldMeta,
       SimpleFieldInput,
-      AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>
+      AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>
     >({
       src: this.metadata,
       input,

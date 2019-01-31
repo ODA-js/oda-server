@@ -15,22 +15,24 @@ import {
   NamedArray,
   MapToArray,
   ArrayToMap,
+  ComplexTypeKind as RecordKind,
 } from './types';
 
 import { merge } from 'lodash';
 import * as inflected from 'inflected';
-import { TypeFieldInput, TypeField, ITypeField } from './typefield';
-import { EntityFieldInput } from './entityfield';
+import { RecordFieldInput, RecordField, IRecordField } from './recordfield';
 import { UIView } from './entitybase';
 
-export interface IType extends IModelBase<TypeMetaInfo, TypeInput, TypeOutput> {
+export interface IRecord
+  extends IModelBase<RecordMetaInfo, RecordInput, RecordOutput> {
+  readonly kind: RecordKind;
   readonly plural: string;
   readonly global: boolean;
   readonly titlePlural: string;
-  readonly fields: Map<string, ITypeField>;
+  readonly fields: Map<string, IRecordField>;
 }
 
-export interface TypeMetaInfo extends ElementMetaInfo {
+export interface RecordMetaInfo extends ElementMetaInfo {
   titlePlural: string;
   global: boolean;
   name: {
@@ -40,21 +42,24 @@ export interface TypeMetaInfo extends ElementMetaInfo {
   UI: UIView;
 }
 
-export interface TypeInternal extends ModelBaseInternal {
-  fields: Map<string, ITypeField>;
+export interface RecordInternal extends ModelBaseInternal {
+  fields: Map<string, IRecordField>;
+  kind: RecordKind;
 }
 
-export interface TypeInput extends ModelBaseInput<TypeMetaInfo> {
+export interface RecordInput extends ModelBaseInput<RecordMetaInfo> {
   plural?: string;
+  kind: RecordKind;
   titlePlural?: string;
-  fields?: AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>;
+  fields?: AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>;
 }
 
-export interface TypeOutput extends ModelBaseOutput<TypeMetaInfo> {
-  fields: NamedArray<TypeFieldInput>;
+export interface RecordOutput extends ModelBaseOutput<RecordMetaInfo> {
+  fields: NamedArray<RecordFieldInput>;
+  kind: RecordKind;
 }
 
-export const TypeDefaultMetaInfo = {
+export const recordDefaultMetaInfo = {
   name: {},
   UI: {
     listName: [],
@@ -66,20 +71,24 @@ export const TypeDefaultMetaInfo = {
     embedded: [],
   },
 };
-export const typeDefaultInput = {
-  metadata: TypeDefaultMetaInfo,
+export const recordDefaultInput = {
+  metadata: recordDefaultMetaInfo,
   exact: false,
 };
 
-export class Type
-  extends ModelBase<TypeMetaInfo, TypeInput, TypeInternal, TypeOutput>
-  implements IType {
+export class Record
+  extends ModelBase<RecordMetaInfo, RecordInput, RecordInternal, RecordOutput>
+  implements IRecord {
   public get modelType(): MetaModelType {
     return 'input-type';
   }
 
-  constructor(init: TypeInput) {
-    super(merge({}, typeDefaultInput, init));
+  constructor(init: RecordInput) {
+    super(merge({}, recordDefaultInput, init));
+  }
+
+  get kind(): RecordKind {
+    return this[Internal].kind;
   }
 
   get plural(): string {
@@ -94,14 +103,14 @@ export class Type
     return this.metadata.global;
   }
 
-  get fields(): Map<string, ITypeField> {
+  get fields(): Map<string, IRecordField> {
     return this[Internal].fields;
   }
 
-  public updateWith(input: Nullable<TypeInput>) {
+  public updateWith(input: Nullable<RecordInput>) {
     super.updateWith(input);
 
-    assignValue<TypeInternal, TypeInput, string>({
+    assignValue<RecordInternal, RecordInput, string>({
       src: this[Internal],
       input,
       field: 'name',
@@ -112,7 +121,7 @@ export class Type
       required: true,
     });
 
-    assignValue<TypeMetaInfo, TypeInput, boolean>({
+    assignValue<RecordMetaInfo, RecordInput, boolean>({
       src: this[MetaData],
       input,
       field: 'name',
@@ -120,7 +129,7 @@ export class Type
       setDefault: src => (src.global = false),
     });
 
-    assignValue<TypeMetaInfo, TypeInput, string>({
+    assignValue<RecordMetaInfo, RecordInput, string>({
       src: this.metadata,
       input,
       field: 'name.plural',
@@ -139,7 +148,7 @@ export class Type
       },
     });
 
-    assignValue<TypeMetaInfo, TypeInput, string>({
+    assignValue<RecordMetaInfo, RecordInput, string>({
       src: this.metadata,
       input,
       field: 'titlePlural',
@@ -148,9 +157,9 @@ export class Type
     });
 
     assignValue<
-      TypeInternal,
-      TypeInput,
-      AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>
+      RecordInternal,
+      RecordInput,
+      AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>
     >({
       src: this[Internal],
       input,
@@ -159,11 +168,11 @@ export class Type
         const fields = ArrayToMap(
           Array.isArray(value) ? value : HashToArray(value),
           (fld, order) => {
-            let field = new TypeField(
+            let field = new RecordField(
               merge({}, fld, {
                 order,
                 entity: this.name,
-              } as Partial<EntityFieldInput>),
+              }),
             );
             return field;
           },
@@ -176,16 +185,17 @@ export class Type
     });
   }
 
-  public toObject(): TypeOutput {
+  public toObject(): RecordOutput {
     return merge({}, super.toObject(), {
       fields: MapToArray(this.fields, (name, value) => ({
         ...value.toObject(),
         name,
       })),
-    } as Partial<TypeOutput>);
+      kind: this[Internal].kind,
+    } as Partial<RecordOutput>);
   }
 
-  public mergeWith(payload: Nullable<TypeInput>) {
+  public mergeWith(payload: Nullable<RecordInput>) {
     super.mergeWith(payload);
   }
 }

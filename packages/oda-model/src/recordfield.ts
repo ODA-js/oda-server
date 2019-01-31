@@ -17,8 +17,8 @@ import {
 } from './types';
 import { Internal } from './element';
 
-export interface ITypeField
-  extends IModelBase<TypeFieldMeta, TypeFieldInput, TypeFieldOutput> {
+export interface IRecordField
+  extends IModelBase<RecordFieldMeta, RecordFieldInput, RecordFieldOutput> {
   readonly type: string | EnumType | EntityType;
   readonly multiplicity?: Multiplicity;
   readonly defaultValue?: string;
@@ -26,7 +26,7 @@ export interface ITypeField
   readonly required?: boolean;
 }
 
-export interface TypeFieldMeta extends ModelBaseMetaInfo {
+export interface RecordFieldMeta extends ModelBaseMetaInfo {
   defaultValue?: string;
   entity: string;
   order: number;
@@ -35,12 +35,12 @@ export interface TypeFieldMeta extends ModelBaseMetaInfo {
   multiplicity?: Multiplicity;
 }
 
-export interface TypeFieldInternal extends ModelBaseInternal {
+export interface RecordFieldInternal extends ModelBaseInternal {
   type: string | EnumType | EntityType;
   multiplicity: Multiplicity;
 }
 
-export interface TypeFieldInput extends ModelBaseInput<TypeFieldMeta> {
+export interface RecordFieldInput extends ModelBaseInput<RecordFieldMeta> {
   type?: string | EnumType | EntityType;
   required?: boolean;
   defaultValue?: string;
@@ -49,7 +49,7 @@ export interface TypeFieldInput extends ModelBaseInput<TypeFieldMeta> {
   entity?: string;
 }
 
-export interface TypeFieldOutput extends ModelBaseOutput<TypeFieldMeta> {
+export interface RecordFieldOutput extends ModelBaseOutput<RecordFieldMeta> {
   type?: string | EnumType;
   defaultValue?: string;
   multiplicity?: Multiplicity;
@@ -59,14 +59,14 @@ export interface TypeFieldOutput extends ModelBaseOutput<TypeFieldMeta> {
 export const typeFieldDefaultMetaInfo = {};
 export const TypeFieldDefaultInput = { metadata: typeFieldDefaultMetaInfo };
 
-export class TypeField
+export class RecordField
   extends ModelBase<
-    TypeFieldMeta,
-    TypeFieldInput,
-    TypeFieldInternal,
-    TypeFieldOutput
+    RecordFieldMeta,
+    RecordFieldInput,
+    RecordFieldInternal,
+    RecordFieldOutput
   >
-  implements ITypeField {
+  implements IRecordField {
   public get modelType(): MetaModelType {
     const internal = this[Internal];
     return typeof internal.type === 'string'
@@ -97,14 +97,14 @@ export class TypeField
     return this.metadata.required;
   }
 
-  constructor(init: TypeFieldInput) {
+  constructor(init: RecordFieldInput) {
     super(merge({}, TypeFieldDefaultInput, init));
   }
 
-  public updateWith(input: Nullable<TypeFieldInput>) {
+  public updateWith(input: Nullable<RecordFieldInput>) {
     super.updateWith(input);
 
-    assignValue<TypeFieldInternal, TypeFieldInput, string>({
+    assignValue<RecordFieldInternal, RecordFieldInput, string>({
       src: this[Internal],
       input,
       field: 'name',
@@ -120,9 +120,9 @@ export class TypeField
     });
 
     assignValue<
-      TypeFieldInternal,
-      TypeFieldInput,
-      NonNullable<TypeFieldInput['type']>
+      RecordFieldInternal,
+      RecordFieldInput,
+      NonNullable<RecordFieldInput['type']>
     >({
       src: this[Internal],
       input,
@@ -141,9 +141,9 @@ export class TypeField
     });
 
     assignValue<
-      TypeFieldInternal,
-      TypeFieldInput,
-      NonNullable<TypeFieldInput['multiplicity']>
+      RecordFieldInternal,
+      RecordFieldInput,
+      NonNullable<RecordFieldInput['multiplicity']>
     >({
       src: this[Internal],
       input,
@@ -186,7 +186,7 @@ export class TypeField
       effect: (src, value) => (src.order = value),
     });
 
-    assignValue<TypeFieldMeta, TypeFieldInput, boolean>({
+    assignValue<RecordFieldMeta, RecordFieldInput, boolean>({
       src: this.metadata,
       input,
       inputField: 'required',
@@ -195,15 +195,15 @@ export class TypeField
     });
   }
 
-  public toObject(): TypeFieldOutput {
+  public toObject(): RecordFieldOutput {
     return merge({}, super.toObject(), {
       defaultValue: this.defaultValue,
       type: this.type,
       multiplicity: this[Internal].multiplicity,
-    } as Partial<TypeFieldOutput>);
+    } as Partial<RecordFieldOutput>);
   }
 
-  public mergeWith(payload: Nullable<TypeFieldInput>) {
+  public mergeWith(payload: Nullable<RecordFieldInput>) {
     super.mergeWith(payload);
   }
 }

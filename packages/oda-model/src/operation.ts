@@ -20,7 +20,7 @@ import {
 import { merge } from 'lodash';
 import { Internal, MetaData } from './element';
 import decapitalize from './lib/decapitalize';
-import { ITypeField, TypeField, TypeFieldInput } from './typefield';
+import { IRecordField, RecordField, RecordFieldInput } from './recordfield';
 import { QueryInput } from './query';
 import { MutationInput } from './mutation';
 import { IEntity } from './entity';
@@ -43,8 +43,8 @@ export interface IOperation
   /**
    * set of arguments
    */
-  readonly args?: Map<string, ITypeField>;
-  readonly payload: string | Map<string, ITypeField>;
+  readonly args?: Map<string, IRecordField>;
+  readonly payload: string | Map<string, IRecordField>;
   readonly order: number;
   readonly entity: string;
   readonly field?: string;
@@ -61,8 +61,8 @@ export interface OperationMetaInfo extends ModelBaseMetaInfo {
 }
 
 export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
-  args?: AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>;
-  payload?: string | AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>;
+  args?: AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>;
+  payload?: string | AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>;
   inheritedFrom?: string;
   entity?: string;
   field?: string;
@@ -72,8 +72,8 @@ export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
 }
 
 export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
-  args: NamedArray<TypeFieldInput>;
-  payload: string | NamedArray<TypeFieldInput>;
+  args: NamedArray<RecordFieldInput>;
+  payload: string | NamedArray<RecordFieldInput>;
   inheritedFrom?: string;
   entity: string;
   field?: string;
@@ -83,8 +83,8 @@ export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
 }
 
 export interface OperationInternal extends ModelBaseInternal {
-  args: Map<string, ITypeField>;
-  payload: string | Map<string, ITypeField>;
+  args: Map<string, IRecordField>;
+  payload: string | Map<string, IRecordField>;
   inheritedFrom?: string;
   /** хранит ссылку на entity */
   entity?: IEntity;
@@ -121,11 +121,11 @@ export class Operation
     return this[Internal].inheritedFrom;
   }
 
-  get args(): Map<string, ITypeField> {
+  get args(): Map<string, IRecordField> {
     return this[Internal].args;
   }
 
-  get payload(): string | Map<string, ITypeField> {
+  get payload(): string | Map<string, IRecordField> {
     return this[Internal].payload;
   }
 
@@ -194,7 +194,7 @@ export class Operation
     assignValue<
       OperationInternal,
       OperationInput,
-      AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>
+      AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>
     >({
       src: this[Internal],
       input,
@@ -202,7 +202,7 @@ export class Operation
       effect: (src, value) =>
         (src.args = ArrayToMap(
           Array.isArray(value) ? value : HashToArray(value),
-          i => new TypeField(i),
+          i => new RecordField(i),
           (obj, src) => obj.mergeWith(src.toObject()),
         )),
       required: true,
@@ -212,7 +212,7 @@ export class Operation
     assignValue<
       OperationInternal,
       OperationInput,
-      AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>
+      AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>
     >({
       src: this[Internal],
       input,
@@ -220,7 +220,7 @@ export class Operation
       effect: (src, value) =>
         (src.payload = ArrayToMap(
           Array.isArray(value) ? value : HashToArray(value),
-          i => new TypeField(i),
+          i => new RecordField(i),
           (obj, src) => obj.mergeWith(src.toObject()),
         )),
       required: true,
@@ -252,12 +252,12 @@ export class Operation
       this.actionType === 'removeFrom'
     ) {
       const internal = this[Internal];
-      let payload: string | TypeFieldInput[] =
+      let payload: string | RecordFieldInput[] =
         typeof internal.payload === 'string'
           ? internal.payload
           : MapToArray(internal.payload, (_name, value) => value.toObject());
       let name = this.name;
-      let args: TypeFieldInput[] = MapToArray(internal.args, (_name, value) =>
+      let args: RecordFieldInput[] = MapToArray(internal.args, (_name, value) =>
         value.toObject(),
       );
 

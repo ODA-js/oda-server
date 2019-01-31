@@ -19,14 +19,15 @@ import {
 } from './types';
 import { Internal } from './element';
 import { merge, mergeWith } from 'lodash';
-import { TypeField, ITypeField, TypeFieldInput } from './typefield';
+import { RecordField, IRecordField, RecordFieldInput } from './recordfield';
+import { IRecord, RecordInput } from './record';
 
 export interface IDirective
   extends IModelBase<DirectiveMetaInfo, DirectiveInput, DirectiveOutput> {
   /**
    * set of arguments
    */
-  readonly args: Map<string, ITypeField>;
+  readonly args: Map<string, IRecordField | IRecord>;
   /**
    * where it can met
    */
@@ -36,17 +37,19 @@ export interface IDirective
 export interface DirectiveMetaInfo extends ModelBaseMetaInfo {}
 
 export interface DirectiveInternal extends ModelBaseInternal {
-  args: Map<string, ITypeField>;
+  args: Map<string, IRecordField | IRecord>;
   on: Set<DirectiveLocation>;
 }
 
 export interface DirectiveInput extends ModelBaseInput<DirectiveMetaInfo> {
-  args?: AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>;
+  args?:
+    | AsHash<RecordFieldInput | RecordInput>
+    | NamedArray<RecordFieldInput | RecordInput>;
   on: DirectiveLocation[];
 }
 
 export interface DirectiveOutput extends ModelBaseOutput<DirectiveMetaInfo> {
-  args: NamedArray<TypeFieldInput>;
+  args: NamedArray<RecordFieldInput>;
   on: DirectiveLocation[];
 }
 
@@ -64,7 +67,7 @@ export class Directive
   public get modelType(): MetaModelType {
     return 'directive';
   }
-  get args(): Map<string, ITypeField> {
+  get args(): Map<string, IRecordField | IRecord> {
     return this[Internal].args;
   }
 
@@ -89,8 +92,8 @@ export class Directive
       field: 'args',
       effect: (src, value) =>
         (src.args = Array.isArray(value)
-          ? ArrayToMap(value, v => new TypeField(v))
-          : HashToMap(value, (name, v) => new TypeField({ name, ...v }))),
+          ? ArrayToMap(value, v => new RecordField(v))
+          : HashToMap(value, (name, v) => new RecordField({ name, ...v }))),
       setDefault: src => (src.args = new Map()),
     });
 

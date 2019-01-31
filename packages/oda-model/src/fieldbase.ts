@@ -21,7 +21,8 @@ import {
 } from './types';
 import { Internal, MetaData } from './element';
 import { IEntityRef, EntityReference } from './entityreference';
-import { ITypeField, TypeField, TypeFieldInput } from './typefield';
+import { IRecordField, RecordField, RecordFieldInput } from './recordfield';
+import { IRecord, RecordInput } from './record';
 
 export interface IFieldBase<
   M extends FieldBaseMetaInfo<P>,
@@ -34,7 +35,7 @@ export interface IFieldBase<
   readonly inheritedFrom?: string;
   readonly order: number;
   readonly derived: boolean;
-  readonly args: Map<string, ITypeField>;
+  readonly args: Map<string, IRecordField | IRecord>;
   readonly persistent: boolean;
   readonly identity: boolean | string | string[];
   readonly required: boolean;
@@ -68,7 +69,7 @@ export interface FieldBaseMetaInfo<T extends FieldBasePersistence>
 }
 
 export interface FieldBaseInternal extends ModelBaseInternal {
-  args: Map<string, ITypeField>;
+  args: Map<string, IRecordField | IRecord>;
   inheritedFrom?: string;
   type: FieldType;
   idKey: IEntityRef;
@@ -78,7 +79,9 @@ export interface FieldBaseInput<
   T extends FieldBaseMetaInfo<P>,
   P extends FieldBasePersistence
 > extends ModelBaseInput<T> {
-  args?: AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>;
+  args?:
+    | AsHash<RecordFieldInput | RecordInput>
+    | NamedArray<RecordFieldInput | RecordInput>;
   inheritedFrom?: string;
   derived?: boolean;
   persistent?: boolean;
@@ -103,7 +106,7 @@ export interface FieldBaseOutput<
   required?: boolean;
   identity?: boolean | string | string[];
   indexed?: boolean | string | string[];
-  args: NamedArray<TypeFieldInput>;
+  args: NamedArray<RecordFieldInput>;
 }
 
 export const fieldBaseDefaultMetaInfo = {
@@ -145,7 +148,7 @@ export class FieldBase<
     return this[Internal].inheritedFrom;
   }
 
-  get args(): Map<string, ITypeField> {
+  get args(): Map<string, IRecordField | IRecord> {
     return this[Internal].args;
   }
 
@@ -194,14 +197,14 @@ export class FieldBase<
       field: 'inheritedFrom',
     });
 
-    assignValue<S, I, AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>>({
+    assignValue<S, I, AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>>({
       src: this[Internal],
       input,
       field: 'args',
       effect: (src, value) =>
         (src.args = ArrayToMap(
           Array.isArray(value) ? value : HashToArray(value),
-          i => new TypeField(i),
+          i => new RecordField(i),
           (obj, src) => obj.mergeWith(src.toObject()),
         )),
       setDefault: src => (src.args = new Map()),

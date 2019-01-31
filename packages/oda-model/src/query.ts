@@ -19,18 +19,18 @@ import {
   ModelBaseMetaInfo,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
-import { ITypeField, TypeField, TypeFieldInput } from './typefield';
+import { IRecordField, RecordField, RecordFieldInput } from './recordfield';
 
 export interface IQuery
   extends IModelBase<QueryMetaInfo, QueryInput, QueryOutput> {
   /**
    * set of arguments
    */
-  readonly args: Map<string, ITypeField>;
+  readonly args: Map<string, IRecordField>;
   /**
    * set of output fields
    */
-  readonly payload: string | Map<string, ITypeField>;
+  readonly payload: string | Map<string, IRecordField>;
 }
 
 export interface QueryMetaInfo extends ModelBaseMetaInfo {
@@ -40,18 +40,18 @@ export interface QueryMetaInfo extends ModelBaseMetaInfo {
 }
 
 export interface QueryInternal extends ModelBaseInternal {
-  args: Map<string, ITypeField>;
-  payload: string | Map<string, ITypeField>;
+  args: Map<string, IRecordField>;
+  payload: string | Map<string, IRecordField>;
 }
 
 export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
-  args: AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>;
-  payload: string | AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>;
+  args: AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>;
+  payload: string | AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>;
 }
 
 export interface QueryOutput extends ModelBaseOutput<QueryMetaInfo> {
-  args: NamedArray<TypeFieldInput>;
-  payload: string | NamedArray<TypeFieldInput>;
+  args: NamedArray<RecordFieldInput>;
+  payload: string | NamedArray<RecordFieldInput>;
 }
 
 export const queryDefaultMetaInfo = {
@@ -72,11 +72,11 @@ export class Query
     super(merge({}, queryDefaultInput, init));
   }
 
-  public get args(): Map<string, ITypeField> {
+  public get args(): Map<string, IRecordField> {
     return this[Internal].args;
   }
 
-  public get payload(): string | Map<string, ITypeField> {
+  public get payload(): string | Map<string, IRecordField> {
     return this[Internal].payload;
   }
 
@@ -94,7 +94,7 @@ export class Query
     assignValue<
       QueryInternal,
       QueryInput,
-      AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>
+      AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>
     >({
       src: this[Internal],
       input,
@@ -102,7 +102,7 @@ export class Query
       effect: (src, value) =>
         (src.args = ArrayToMap(
           Array.isArray(value) ? value : HashToArray(value),
-          i => new TypeField(i),
+          i => new RecordField(i),
           (obj, src) => obj.mergeWith(src.toObject()),
         )),
       required: true,
@@ -112,7 +112,7 @@ export class Query
     assignValue<
       QueryInternal,
       QueryInput,
-      AsHash<TypeFieldInput> | NamedArray<TypeFieldInput>
+      AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>
     >({
       src: this[Internal],
       input,
@@ -124,7 +124,7 @@ export class Query
             : Array.isArray(value)
             ? value
             : HashToArray(value),
-          i => new TypeField(i),
+          i => new RecordField(i),
           (obj, src) => obj.mergeWith(src.toObject()),
         )),
       required: true,

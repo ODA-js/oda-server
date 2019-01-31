@@ -108,6 +108,8 @@ export function assignValue<S extends object, I extends object, V = any>(
 
 export type RelationType = 'HasMany' | 'HasOne' | 'BelongsToMany' | 'BelongsTo';
 
+export type ComplextTypeKind = 'input' | 'type';
+
 export type MetaModelType =
   | 'element'
   | 'metadata'
