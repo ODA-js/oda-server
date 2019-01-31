@@ -80,13 +80,15 @@ export class BelongsTo extends RelationBase<
   public updateWith(input: Nullable<BelongsToInput>) {
     super.updateWith(input);
 
-    assignValue<BelongsToInternal, BelongsToInput, string>({
-      src: this[Internal],
-      input,
-      field: 'belongsTo',
-      effect: (src, value) => (src.belongsTo = new EntityReference(value)),
-      required: true,
-    });
+    assignValue<BelongsToInternal, BelongsToInput, BelongsToInput['belongsTo']>(
+      {
+        src: this[Internal],
+        input,
+        field: 'belongsTo',
+        effect: (src, value) => (src.belongsTo = new EntityReference(value)),
+        required: true,
+      },
+    );
   }
 
   // it get fixed object

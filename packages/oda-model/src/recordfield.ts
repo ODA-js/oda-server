@@ -113,7 +113,11 @@ export class RecordField
   public updateWith(input: Nullable<RecordFieldInput>) {
     super.updateWith(input);
 
-    assignValue<RecordFieldInternal, RecordFieldInput, string>({
+    assignValue<
+      RecordFieldInternal,
+      RecordFieldInput,
+      RecordFieldInput['name']
+    >({
       src: this[Internal],
       input,
       field: 'name',
@@ -172,7 +176,11 @@ export class RecordField
       },
     });
 
-    assignValue({
+    assignValue<
+      RecordFieldMeta,
+      RecordFieldInput,
+      NonNullable<RecordFieldInput['defaultValue']>
+    >({
       src: this.metadata,
       input,
       field: 'defaultValue',
@@ -181,14 +189,22 @@ export class RecordField
       },
     });
 
-    assignValue({
+    assignValue<
+      RecordFieldMeta,
+      RecordFieldInput,
+      NonNullable<RecordFieldInput['order']>
+    >({
       src: this.metadata,
       input,
       field: 'order',
       effect: (src, value) => (src.order = value),
     });
 
-    assignValue({
+    assignValue<
+      RecordFieldInternal,
+      RecordFieldInput,
+      NonNullable<RecordFieldInput['kind']>
+    >({
       src: this[Internal],
       input,
       field: 'kind',
@@ -196,7 +212,11 @@ export class RecordField
       setDefault: src => (src.kind = 'input'),
     });
 
-    assignValue<RecordFieldMeta, RecordFieldInput, boolean>({
+    assignValue<
+      RecordFieldMeta,
+      RecordFieldInput,
+      NonNullable<RecordFieldInput['required']>
+    >({
       src: this.metadata,
       input,
       field: 'required',

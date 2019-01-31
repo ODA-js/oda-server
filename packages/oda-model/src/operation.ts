@@ -181,7 +181,7 @@ export class Operation
   public updateWith(input: Nullable<OperationInput>) {
     super.updateWith(input);
 
-    assignValue<OperationInternal, OperationInput, string>({
+    assignValue<OperationInternal, OperationInput, OperationInput['name']>({
       src: this[Internal],
       input,
       field: 'name',
@@ -189,21 +189,33 @@ export class Operation
       required: true,
     });
 
-    assignValue({
+    assignValue<
+      OperationMetaInfo,
+      OperationInput,
+      NonNullable<OperationInput['entity']>
+    >({
       src: this[MetaData],
       input,
       field: 'entity',
       effect: (src, value) => (src.entity = value),
     });
 
-    assignValue({
+    assignValue<
+      OperationMetaInfo,
+      OperationInput,
+      NonNullable<OperationInput['field']>
+    >({
       src: this.metadata,
       input,
       field: 'field',
       effect: (src, value) => (src.field = value),
     });
 
-    assignValue({
+    assignValue<
+      OperationInternal,
+      OperationInput,
+      NonNullable<OperationInput['custom']>
+    >({
       src: this[Internal],
       input,
       field: 'custom',
@@ -211,13 +223,21 @@ export class Operation
       setDefault: src => (src.custom = false),
     });
 
-    assignValue({
+    assignValue<
+      OperationInternal,
+      OperationInput,
+      NonNullable<OperationInput['actionType']>
+    >({
       src: this[Internal],
       input,
       field: 'actionType',
     });
 
-    assignValue({
+    assignValue<
+      OperationMetaInfo,
+      OperationInput,
+      NonNullable<OperationInput['order']>
+    >({
       src: this.metadata,
       input,
       field: 'order',

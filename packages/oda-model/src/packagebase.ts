@@ -54,6 +54,7 @@ export interface ModelPackageBaseInput<M extends ModelPackageBaseMetaInfo>
   scalars?: (string | ScalarInput)[];
   unions?: (string | UnionInput)[];
   directives?: (string | DirectiveInput)[];
+  metaModel?: IModel;
 }
 
 export interface ModelPackageBaseOutput<M extends ModelPackageBaseMetaInfo>
@@ -128,7 +129,7 @@ export class ModelPackageBase<
   public updateWith(input: Nullable<I>) {
     super.updateWith(input);
 
-    assignValue<ModelPackageBaseInternal, I, string>({
+    assignValue<ModelPackageBaseInternal, I, I['name']>({
       src: this[Internal],
       input,
       field: 'name',
@@ -136,14 +137,14 @@ export class ModelPackageBase<
       required: true,
     });
 
-    assignValue<S, I, IModel>({
+    assignValue<ModelPackageBaseInternal, I, NonNullable<I['metaModel']>>({
       src: this[Internal],
       input,
       field: 'metaModel',
       effect: (src, value) => (src.metaModel = value),
     });
 
-    assignValue<S, I, (EntityInput | string)[]>({
+    assignValue<S, I, NonNullable<I['entities']>>({
       src: this[Internal],
       input,
       field: 'entities',
@@ -162,7 +163,7 @@ export class ModelPackageBase<
       setDefault: src => (src.entities = new Map<string, IEntity>()),
     });
 
-    assignValue<S, I, (EnumInput | string)[]>({
+    assignValue<S, I, NonNullable<I['enums']>>({
       src: this[Internal],
       input,
       field: 'enums',
@@ -179,7 +180,7 @@ export class ModelPackageBase<
       setDefault: src => (src.enums = new Map<string, IEnum>()),
     });
 
-    assignValue<S, I, (ScalarInput | string)[]>({
+    assignValue<S, I, NonNullable<I['scalars']>>({
       src: this[Internal],
       input,
       field: 'scalars',
@@ -196,7 +197,7 @@ export class ModelPackageBase<
       setDefault: src => (src.scalars = new Map<string, IScalar>()),
     });
 
-    assignValue<S, I, (DirectiveInput | string)[]>({
+    assignValue<S, I, NonNullable<I['directives']>>({
       src: this[Internal],
       input,
       field: 'directives',
@@ -214,7 +215,7 @@ export class ModelPackageBase<
       setDefault: src => (src.directives = new Map<string, IDirective>()),
     });
 
-    assignValue<S, I, (MixinInput | string)[]>({
+    assignValue<S, I, NonNullable<I['mixins']>>({
       src: this[Internal],
       input,
       field: 'mixins',
@@ -231,7 +232,7 @@ export class ModelPackageBase<
       setDefault: src => (src.mixins = new Map<string, IMixin>()),
     });
 
-    assignValue<S, I, (UnionInput | string)[]>({
+    assignValue<S, I, NonNullable<I['unions']>>({
       src: this[Internal],
       input,
       field: 'unions',
@@ -248,7 +249,7 @@ export class ModelPackageBase<
       setDefault: src => (src.unions = new Map<string, IUnion>()),
     });
 
-    assignValue<S, I, (MutationInput | string)[]>({
+    assignValue<S, I, NonNullable<I['mutations']>>({
       src: this[Internal],
       input,
       field: 'mutations',
@@ -266,7 +267,7 @@ export class ModelPackageBase<
       setDefault: src => (src.mutations = new Map<string, IMutation>()),
     });
 
-    assignValue<S, I, (QueryInput | string)[]>({
+    assignValue<S, I, NonNullable<I['queries']>>({
       src: this[Internal],
       input,
       field: 'queries',

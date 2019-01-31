@@ -77,7 +77,7 @@ export class HasOne extends RelationBase<
   public updateWith(input: Nullable<HasOneInput>) {
     super.updateWith(input);
 
-    assignValue<HasOneInternal, HasOneInput, string>({
+    assignValue<HasOneInternal, HasOneInput, HasOneInput['hasOne']>({
       src: this[Internal],
       input,
       field: 'hasOne',

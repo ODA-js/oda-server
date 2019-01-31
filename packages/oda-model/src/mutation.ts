@@ -111,7 +111,7 @@ export class Mutation
   public updateWith(input: Nullable<MutationInput>) {
     super.updateWith(input);
 
-    assignValue<MutationInternal, MutationInput, string>({
+    assignValue<MutationInternal, MutationInput, MutationInput['name']>({
       src: this[Internal],
       input,
       field: 'name',

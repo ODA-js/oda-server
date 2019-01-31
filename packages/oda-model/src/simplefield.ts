@@ -140,7 +140,11 @@ export class SimpleField
       },
     });
 
-    assignValue<SimpleFieldMeta, SimpleFieldInput, boolean>({
+    assignValue<
+      SimpleFieldMeta,
+      SimpleFieldInput,
+      NonNullable<SimpleFieldInput['derived']>
+    >({
       src: this.metadata,
       input,
       inputField: 'derived',
@@ -153,7 +157,11 @@ export class SimpleField
       setDefault: src => (src.persistence.derived = false),
     });
 
-    assignValue<SimpleFieldMeta, SimpleFieldInput, boolean>({
+    assignValue<
+      SimpleFieldMeta,
+      SimpleFieldInput,
+      NonNullable<SimpleFieldInput['persistent']>
+    >({
       src: this.metadata,
       input,
       inputField: 'persistent',
@@ -164,7 +172,7 @@ export class SimpleField
     assignValue<
       SimpleFieldMeta,
       SimpleFieldInput,
-      AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>
+      NonNullable<SimpleFieldInput['args']>
     >({
       src: this.metadata,
       input,
@@ -174,7 +182,11 @@ export class SimpleField
       effect: (src, _) => (src.persistence.derived = true),
     });
 
-    assignValue({
+    assignValue<
+      SimpleFieldMeta,
+      SimpleFieldInput,
+      NonNullable<SimpleFieldInput['defaultValue']>
+    >({
       src: this.metadata,
       input,
       inputField: 'defaultValue',

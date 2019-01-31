@@ -99,7 +99,11 @@ export class Element<
    * @param input metadata patch object
    */
   public updateWith(input: Nullable<ElementInput<M>>) {
-    assignValue<Element<M, I, S, O>, ElementInput<M>, ElementInternal>({
+    assignValue<
+      Element<M, I, S, O>,
+      ElementInput<M>,
+      NonNullable<ElementInput<M>['metadata']>
+    >({
       src: this,
       input,
       field: 'metadata',

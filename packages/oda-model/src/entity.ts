@@ -88,7 +88,11 @@ export class Entity
       field: 'abstract',
       setDefault: src => (src.abstract = false),
     });
-    assignValue<EntityInternal, EntityInput, string[]>({
+    assignValue<
+      EntityInternal,
+      EntityInput,
+      NonNullable<EntityInput['implements']>
+    >({
       src: this[Internal],
       input,
       field: 'implements',
@@ -96,7 +100,11 @@ export class Entity
       setDefault: src => (src.implements = new Set()),
     });
 
-    assignValue<EntityInternal, EntityInput, boolean | string[]>({
+    assignValue<
+      EntityInternal,
+      EntityInput,
+      NonNullable<EntityInput['embedded']>
+    >({
       src: this[Internal],
       input,
       field: 'embedded',

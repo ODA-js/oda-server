@@ -77,7 +77,7 @@ export class HasMany extends RelationBase<
   public updateWith(input: Nullable<HasManyInput>) {
     super.updateWith(input);
 
-    assignValue<HasManyInternal, HasManyInput, string>({
+    assignValue<HasManyInternal, HasManyInput, HasManyInput['hasMany']>({
       src: this[Internal],
       input,
       field: 'hasMany',

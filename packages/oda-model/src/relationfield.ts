@@ -102,7 +102,11 @@ export class RelationField
   public updateWith(input: Nullable<RelationFieldInput>) {
     super.updateWith(input);
 
-    assignValue<RelationFieldInternal, RelationFieldInput, RelationInput>({
+    assignValue<
+      RelationFieldInternal,
+      RelationFieldInput,
+      RelationFieldInput['relation']
+    >({
       src: this[Internal],
       input,
       field: 'relation',
@@ -142,7 +146,11 @@ export class RelationField
       },
     });
 
-    assignValue({
+    assignValue<
+      RelationFieldMetaInfo,
+      RelationFieldInput,
+      NonNullable<RelationFieldInput['derived']>
+    >({
       src: this.metadata,
       input,
       inputField: 'derived',
@@ -160,7 +168,11 @@ export class RelationField
       setDefault: src => (src.persistence.derived = defaultInput.derived),
     });
 
-    assignValue({
+    assignValue<
+      RelationFieldMetaInfo,
+      RelationFieldInput,
+      NonNullable<RelationFieldInput['persistent']>
+    >({
       src: this.metadata,
       input,
       inputField: 'persistent',
@@ -175,7 +187,11 @@ export class RelationField
       setDefault: src => (src.persistence.persistent = defaultInput.persistent),
     });
 
-    assignValue<RelationFieldMetaInfo, RelationFieldInput, boolean>({
+    assignValue<
+      RelationFieldMetaInfo,
+      RelationFieldInput,
+      NonNullable<RelationFieldInput['identity']>
+    >({
       src: this.metadata,
       input,
       inputField: 'identity',
@@ -190,7 +206,11 @@ export class RelationField
       setDefault: src => (src.persistence.identity = defaultInput.identity),
     });
 
-    assignValue<RelationFieldMetaInfo, RelationFieldInput, boolean>({
+    assignValue<
+      RelationFieldMetaInfo,
+      RelationFieldInput,
+      NonNullable<RelationFieldInput['indexed']>
+    >({
       src: this.metadata,
       input,
       inputField: 'indexed',
@@ -205,7 +225,11 @@ export class RelationField
       setDefault: src => (src.persistence.indexed = defaultInput.indexed),
     });
 
-    assignValue<RelationFieldMetaInfo, RelationFieldInput, boolean>({
+    assignValue<
+      RelationFieldMetaInfo,
+      RelationFieldInput,
+      NonNullable<RelationFieldInput['required']>
+    >({
       src: this.metadata,
       input,
       inputField: 'required',

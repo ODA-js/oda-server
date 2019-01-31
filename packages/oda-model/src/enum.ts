@@ -52,7 +52,7 @@ export class Enum
   public updateWith(input: Nullable<EnumInput>) {
     super.updateWith(input);
 
-    assignValue<EnumInternal, EnumInput, any>({
+    assignValue<EnumInternal, EnumInput, EnumInput['items']>({
       src: this[Internal],
       input,
       field: 'items',

@@ -123,7 +123,11 @@ export class BelongsToMany
       setDefault: src => (src.fields = new Map()),
     });
 
-    assignValue<BelongsToManyInternal, BelongsToManyInput, string>({
+    assignValue<
+      BelongsToManyInternal,
+      BelongsToManyInput,
+      BelongsToManyInput['belongsToMany']
+    >({
       src: this[Internal],
       input,
       field: 'belongsToMany',
@@ -137,7 +141,11 @@ export class BelongsToMany
       },
     });
 
-    assignValue<BelongsToManyInternal, BelongsToManyInput, string>({
+    assignValue<
+      BelongsToManyInternal,
+      BelongsToManyInput,
+      BelongsToManyInput['using']
+    >({
       src: this[Internal],
       input,
       field: 'using',

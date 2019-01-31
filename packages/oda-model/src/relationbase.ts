@@ -207,7 +207,7 @@ export class RelationBase<
     assignValue<
       RelationBaseMetaInfo<RelationBasePersistence>,
       RelationBaseInput<T, P>,
-      boolean
+      NonNullable<RelationBaseInput<T, P>['embedded']>
     >({
       src: this.metadata,
       input,
@@ -217,7 +217,11 @@ export class RelationBase<
       setDefault: src => (src.persistence.embedded = false),
     });
 
-    assignValue<S, RelationBaseInput<T, P>, string>({
+    assignValue<
+      S,
+      RelationBaseInput<T, P>,
+      NonNullable<RelationBaseInput<T, P>['name']>
+    >({
       src: this[Internal],
       input,
       field: 'name',
@@ -226,20 +230,32 @@ export class RelationBase<
       },
     });
 
-    assignValue<S, RelationBaseInput<T, P>, string>({
+    assignValue<
+      S,
+      RelationBaseInput<T, P>,
+      NonNullable<RelationBaseInput<T, P>['opposite']>
+    >({
       src: this[Internal],
       input,
       field: 'opposite',
       effect: (src, value) => (src.opposite = decapitalize(value.trim())),
     });
 
-    assignValue({
+    assignValue<
+      S,
+      RelationBaseInput<T, P>,
+      NonNullable<RelationBaseInput<T, P>['entity']>
+    >({
       src: this[Internal],
       input,
       field: 'entity',
     });
 
-    assignValue({
+    assignValue<
+      S,
+      RelationBaseInput<T, P>,
+      NonNullable<RelationBaseInput<T, P>['field']>
+    >({
       src: this[Internal],
       input,
       field: 'field',

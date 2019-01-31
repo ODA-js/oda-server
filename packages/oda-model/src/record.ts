@@ -49,6 +49,7 @@ export interface RecordInternal extends ModelBaseInternal {
 
 export interface RecordInput extends ModelBaseInput<RecordMetaInfo> {
   plural?: string;
+  global?: boolean;
   kind?: ArgumentKind;
   titlePlural?: string;
   fields: AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>;
@@ -121,7 +122,7 @@ export class Record
   public updateWith(input: Nullable<RecordInput>) {
     super.updateWith(input);
 
-    assignValue<RecordInternal, RecordInput, string>({
+    assignValue<RecordInternal, RecordInput, RecordInput['name']>({
       src: this[Internal],
       input,
       field: 'name',
@@ -132,15 +133,23 @@ export class Record
       required: true,
     });
 
-    assignValue<RecordMetaInfo, RecordInput, boolean>({
+    assignValue<
+      RecordMetaInfo,
+      RecordInput,
+      NonNullable<RecordInput['global']>
+    >({
       src: this[MetaData],
       input,
-      field: 'name',
+      field: 'global',
       effect: (src, value) => (src.global = value),
       setDefault: src => (src.global = false),
     });
 
-    assignValue<RecordMetaInfo, RecordInput, string>({
+    assignValue<
+      RecordMetaInfo,
+      RecordInput,
+      NonNullable<RecordInput['plural']>
+    >({
       src: this.metadata,
       input,
       field: 'name.plural',
@@ -159,7 +168,11 @@ export class Record
       },
     });
 
-    assignValue<RecordMetaInfo, RecordInput, string>({
+    assignValue<
+      RecordMetaInfo,
+      RecordInput,
+      NonNullable<RecordInput['titlePlural']>
+    >({
       src: this.metadata,
       input,
       field: 'titlePlural',
@@ -167,7 +180,7 @@ export class Record
       setDefault: src => (src.titlePlural = this.plural),
     });
 
-    assignValue<RecordInternal, RecordInput, ArgumentKind>({
+    assignValue<RecordInternal, RecordInput, NonNullable<RecordInput['kind']>>({
       src: this[Internal],
       input,
       field: 'kind',
@@ -178,7 +191,7 @@ export class Record
     assignValue<
       RecordInternal,
       RecordInput,
-      AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>
+      NonNullable<RecordInput['fields']>
     >({
       src: this[Internal],
       input,

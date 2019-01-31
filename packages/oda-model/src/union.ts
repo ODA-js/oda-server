@@ -55,7 +55,7 @@ export class Union
   public updateWith(input: Nullable<UnionInput>) {
     super.updateWith(input);
 
-    assignValue<UnionInternal, UnionInput, string>({
+    assignValue<UnionInternal, UnionInput, UnionInput['name']>({
       src: this[Internal],
       input,
       field: 'name',

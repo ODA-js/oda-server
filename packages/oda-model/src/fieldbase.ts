@@ -195,7 +195,7 @@ export class FieldBase<
   public updateWith(input: Nullable<I>) {
     super.updateWith(input);
 
-    assignValue<S, I, string>({
+    assignValue<S, I, I['name']>({
       src: this[Internal],
       input,
       field: 'name',
@@ -227,7 +227,7 @@ export class FieldBase<
       setDefault: src => (src.args = new Map()),
     });
 
-    assignValue({
+    assignValue<T, I, NonNullable<FieldBaseInput<T, P>['entity']>>({
       src: this.metadata,
       input,
       field: 'entity',
@@ -241,21 +241,21 @@ export class FieldBase<
       effect: (src, value) => (src.order = value),
     });
 
-    assignValue({
+    assignValue<T, I, NonNullable<FieldBaseInput<T, P>['derived']>>({
       src: this.metadata,
       input,
       inputField: 'derived',
       effect: (src, value) => (src.persistence.derived = value),
     });
 
-    assignValue({
+    assignValue<T, I, NonNullable<FieldBaseInput<T, P>['persistent']>>({
       src: this.metadata,
       input,
       inputField: 'persistent',
       effect: (src, value) => (src.persistence.persistent = value),
     });
 
-    assignValue<T, I, boolean | string | string[]>({
+    assignValue<T, I, NonNullable<FieldBaseInput<T, P>['identity']>>({
       src: this.metadata,
       input,
       inputField: 'identity',
@@ -279,7 +279,7 @@ export class FieldBase<
       },
     });
 
-    assignValue<T, I, boolean | string | string[]>({
+    assignValue<T, I, NonNullable<FieldBaseInput<T, P>['indexed']>>({
       src: this.metadata,
       input,
       inputField: 'indexed',
@@ -294,7 +294,7 @@ export class FieldBase<
       },
     });
 
-    assignValue<T, I, boolean>({
+    assignValue<T, I, NonNullable<FieldBaseInput<T, P>['required']>>({
       src: this.metadata,
       input,
       inputField: 'required',

@@ -116,7 +116,7 @@ export class Directive
       setDefault: src => (src.args = new Map()),
     });
 
-    assignValue<DirectiveInternal, DirectiveInput, DirectiveLocation[]>({
+    assignValue<DirectiveInternal, DirectiveInput, DirectiveInput['on']>({
       src: this[Internal],
       input,
       field: 'on',

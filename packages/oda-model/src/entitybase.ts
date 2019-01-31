@@ -250,7 +250,7 @@ export class EntityBase<
   public updateWith(input: Nullable<I>) {
     super.updateWith(input);
 
-    assignValue<P, I, string>({
+    assignValue<P, I, I['name']>({
       src: this[Internal],
       input,
       field: 'name',
@@ -261,7 +261,7 @@ export class EntityBase<
       required: true,
     });
 
-    assignValue<P, I, boolean>({
+    assignValue<P, I, NonNullable<I['exact']>>({
       src: this[Internal],
       input,
       field: 'exact',
@@ -291,7 +291,7 @@ export class EntityBase<
       },
     });
 
-    assignValue<M, I, string>({
+    assignValue<M, I, NonNullable<I['titlePlural']>>({
       src: this.metadata,
       input,
       field: 'titlePlural',
@@ -299,7 +299,7 @@ export class EntityBase<
       setDefault: src => (src.titlePlural = this.plural),
     });
 
-    assignValue<P, I, AsHash<FieldInput> | NamedArray<FieldInput>>({
+    assignValue<P, I, NonNullable<I['fields']>>({
       src: this[Internal],
       input,
       field: 'fields',
@@ -379,7 +379,7 @@ export class EntityBase<
         ] as [string, SimpleField][])),
     });
 
-    assignValue<P, I, AsHash<OperationInput> | NamedArray<OperationInput>>({
+    assignValue<P, I, NonNullable<I['operations']>>({
       src: this[Internal],
       input,
       field: 'operations',

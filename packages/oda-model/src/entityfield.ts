@@ -79,7 +79,11 @@ export class EntityField
   public updateWith(input: Nullable<EntityFieldInput>) {
     super.updateWith(input);
 
-    assignValue<EntityFieldInternal, EntityFieldInput, boolean>({
+    assignValue<
+      EntityFieldInternal,
+      EntityFieldInput,
+      NonNullable<EntityFieldInput['list']>
+    >({
       src: this[Internal],
       input,
       field: 'list',
@@ -99,7 +103,11 @@ export class EntityField
       },
     });
 
-    assignValue<EntityFieldInternal, EntityFieldInput, EntityType>({
+    assignValue<
+      EntityFieldInternal,
+      EntityFieldInput,
+      NonNullable<EntityFieldInput['type']>
+    >({
       src: this[Internal],
       input,
       field: 'type',
@@ -135,7 +143,11 @@ export class EntityField
       required: true,
     });
 
-    assignValue<EntityFieldMeta, EntityFieldInput, boolean>({
+    assignValue<
+      EntityFieldMeta,
+      EntityFieldInput,
+      NonNullable<EntityFieldInput['identity']>
+    >({
       src: this[MetaData],
       input,
       field: 'identity',
@@ -144,7 +156,11 @@ export class EntityField
       setDefault: src => (src.persistence.identity = false),
     });
 
-    assignValue<EntityFieldMeta, EntityFieldInput, boolean>({
+    assignValue<
+      EntityFieldMeta,
+      EntityFieldInput,
+      NonNullable<EntityFieldInput['derived']>
+    >({
       src: this[MetaData],
       input,
       field: 'derived',
@@ -153,7 +169,11 @@ export class EntityField
       setDefault: src => (src.persistence.derived = false),
     });
 
-    assignValue<EntityFieldMeta, EntityFieldInput, boolean>({
+    assignValue<
+      EntityFieldMeta,
+      EntityFieldInput,
+      NonNullable<EntityFieldInput['persistent']>
+    >({
       src: this[MetaData],
       input,
       field: 'persistent',
