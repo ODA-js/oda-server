@@ -23,12 +23,7 @@ Object {
       "fields": Array [
         Object {
           "args": Object {},
-          "defaultValue": undefined,
-          "derived": false,
           "description": undefined,
-          "entity": "Entity",
-          "identity": true,
-          "indexed": true,
           "inheritedFrom": undefined,
           "list": false,
           "metadata": Object {
@@ -47,9 +42,6 @@ Object {
             },
           },
           "name": "id",
-          "order": -1,
-          "persistent": true,
-          "required": true,
           "title": undefined,
           "type": "ID",
         },
@@ -110,12 +102,7 @@ Object {
       "fields": Array [
         Object {
           "args": Object {},
-          "defaultValue": undefined,
-          "derived": false,
           "description": undefined,
-          "entity": "Mixin",
-          "identity": true,
-          "indexed": true,
           "inheritedFrom": undefined,
           "list": false,
           "metadata": Object {
@@ -134,9 +121,6 @@ Object {
             },
           },
           "name": "id",
-          "order": -1,
-          "persistent": true,
-          "required": true,
           "title": undefined,
           "type": "ID",
         },
@@ -176,7 +160,6 @@ Object {
     Object {
       "args": Array [
         Object {
-          "defaultValue": undefined,
           "description": undefined,
           "metadata": Object {
             "required": false,
@@ -196,7 +179,6 @@ Object {
       "name": "mutation",
       "payload": Array [
         Object {
-          "defaultValue": undefined,
           "description": undefined,
           "metadata": Object {
             "required": false,
@@ -215,7 +197,6 @@ Object {
     Object {
       "args": Array [
         Object {
-          "defaultValue": undefined,
           "description": undefined,
           "metadata": Object {
             "required": false,
@@ -235,7 +216,6 @@ Object {
       "name": "mutation",
       "payload": Array [
         Object {
-          "defaultValue": undefined,
           "description": undefined,
           "metadata": Object {
             "required": false,

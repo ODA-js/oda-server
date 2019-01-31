@@ -4,7 +4,6 @@ exports[`Mutation default: toObject 1`] = `
 Object {
   "args": Array [
     Object {
-      "defaultValue": undefined,
       "description": undefined,
       "metadata": Object {
         "required": false,
@@ -15,7 +14,6 @@ Object {
       "type": "string",
     },
     Object {
-      "defaultValue": undefined,
       "description": undefined,
       "metadata": Object {
         "required": false,
@@ -35,7 +33,6 @@ Object {
   "name": "loginUser",
   "payload": Array [
     Object {
-      "defaultValue": undefined,
       "description": undefined,
       "metadata": Object {
         "required": false,

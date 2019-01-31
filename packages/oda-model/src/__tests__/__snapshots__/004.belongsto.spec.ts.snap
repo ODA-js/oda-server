@@ -3,7 +3,6 @@
 exports[`BelongsTo default: toObject 1`] = `
 Object {
   "belongsTo": "A#id",
-  "embedded": false,
   "entity": undefined,
   "field": undefined,
   "metadata": Object {

@@ -191,10 +191,6 @@ export class SimpleField
 
   public toObject(): SimpleFieldOutput {
     return merge({}, super.toObject(), {
-      derived: this.derived,
-      defaultValue: this.defaultValue,
-      persistent: this.persistent,
-      entity: this.metadata.entity,
       type: this.type,
       inheritedFrom: this[Internal].inheritedFrom,
       list: this[Internal].list,

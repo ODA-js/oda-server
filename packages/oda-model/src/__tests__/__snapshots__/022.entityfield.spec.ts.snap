@@ -3,11 +3,7 @@
 exports[`EntityField default many: default 1`] = `
 Object {
   "args": Object {},
-  "derived": false,
   "description": undefined,
-  "entity": undefined,
-  "identity": false,
-  "indexed": false,
   "inheritedFrom": undefined,
   "list": true,
   "metadata": Object {
@@ -26,9 +22,6 @@ Object {
     },
   },
   "name": "a",
-  "order": undefined,
-  "persistent": false,
-  "required": false,
   "title": undefined,
   "type": Object {
     "multiplicity": "many",
@@ -98,11 +91,7 @@ EntityField {
 exports[`EntityField default: default 1`] = `
 Object {
   "args": Object {},
-  "derived": false,
   "description": undefined,
-  "entity": undefined,
-  "identity": false,
-  "indexed": false,
   "inheritedFrom": undefined,
   "list": false,
   "metadata": Object {
@@ -121,9 +110,6 @@ Object {
     },
   },
   "name": "a",
-  "order": undefined,
-  "persistent": false,
-  "required": false,
   "title": undefined,
   "type": Object {
     "multiplicity": "one",

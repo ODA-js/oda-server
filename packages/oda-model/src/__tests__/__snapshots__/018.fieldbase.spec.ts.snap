@@ -48,7 +48,6 @@ exports[`FieldBase default: toObject clean 1`] = `
 Object {
   "args": Object {
     "demoARG": Object {
-      "defaultValue": undefined,
       "description": undefined,
       "metadata": Object {
         "required": false,
@@ -59,11 +58,7 @@ Object {
       "type": "string",
     },
   },
-  "derived": true,
   "description": undefined,
-  "entity": "B",
-  "identity": true,
-  "indexed": true,
   "inheritedFrom": "_B",
   "metadata": Object {
     "acl": Object {
@@ -81,9 +76,6 @@ Object {
     },
   },
   "name": "fieldName",
-  "order": 1,
-  "persistent": true,
-  "required": true,
   "title": undefined,
 }
 `;

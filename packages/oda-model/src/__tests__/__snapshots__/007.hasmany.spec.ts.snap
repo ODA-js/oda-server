@@ -2,7 +2,6 @@
 
 exports[`haOne default: toObject 1`] = `
 Object {
-  "embedded": false,
   "entity": undefined,
   "field": undefined,
   "hasMany": "id@A#id",

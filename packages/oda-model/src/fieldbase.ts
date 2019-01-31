@@ -110,14 +110,7 @@ export interface FieldBaseOutput<
   P extends FieldBasePersistence
 > extends ModelBaseOutput<T> {
   inheritedFrom?: string;
-  derived?: boolean;
-  persistent?: boolean;
-  entity?: string;
   type?: FieldType;
-  order?: number;
-  required?: boolean;
-  identity?: boolean | string | string[];
-  indexed?: boolean | string | string[];
   args: NamedArray<RecordOutput | RecordFieldOutput>;
 }
 
@@ -318,17 +311,10 @@ export class FieldBase<
 
   public toObject(): O {
     return merge({}, super.toObject(), {
-      entity: this.metadata.entity,
-      derived: this.derived,
-      persistent: this.persistent,
       inheritedFrom: this[Internal].inheritedFrom,
-      order: this.metadata.order,
       args: this[Internal].args
         ? MapToHash(this[Internal].args, (_name, v) => v.toObject())
         : undefined,
-      required: this.required,
-      indexed: this.indexed,
-      identity: this.identity,
     } as Partial<O>);
   }
   public mergeWith(payload: Nullable<I>) {

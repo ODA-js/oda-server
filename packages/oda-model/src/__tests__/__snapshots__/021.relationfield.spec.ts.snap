@@ -53,11 +53,7 @@ RelationField {
 exports[`RelationField belongsTo: belongsTo to Object 1`] = `
 Object {
   "args": Object {},
-  "derived": false,
   "description": undefined,
-  "entity": undefined,
-  "identity": false,
-  "indexed": false,
   "inheritedFrom": undefined,
   "metadata": Object {
     "acl": Object {
@@ -75,11 +71,8 @@ Object {
     },
   },
   "name": "ref",
-  "order": undefined,
-  "persistent": false,
   "relation": Object {
     "belongsTo": "A#id",
-    "embedded": false,
     "entity": undefined,
     "field": "ref",
     "metadata": Object {
@@ -98,7 +91,6 @@ Object {
     "name": "BelongsToRef",
     "opposite": undefined,
   },
-  "required": false,
   "title": undefined,
 }
 `;
@@ -166,11 +158,7 @@ RelationField {
 exports[`RelationField belongsToMany: belongsToMany to Object 1`] = `
 Object {
   "args": Object {},
-  "derived": false,
   "description": undefined,
-  "entity": undefined,
-  "identity": false,
-  "indexed": false,
   "inheritedFrom": undefined,
   "metadata": Object {
     "acl": Object {
@@ -188,11 +176,8 @@ Object {
     },
   },
   "name": "ref",
-  "order": undefined,
-  "persistent": false,
   "relation": Object {
     "belongsToMany": "id@A#id",
-    "embedded": false,
     "entity": undefined,
     "field": "ref",
     "fields": Array [],
@@ -213,7 +198,6 @@ Object {
     "opposite": undefined,
     "using": "id@B#id",
   },
-  "required": false,
   "title": undefined,
 }
 `;
@@ -272,11 +256,7 @@ RelationField {
 exports[`RelationField hasMany: hasMany to Object 1`] = `
 Object {
   "args": Object {},
-  "derived": false,
   "description": undefined,
-  "entity": undefined,
-  "identity": false,
-  "indexed": false,
   "inheritedFrom": undefined,
   "metadata": Object {
     "acl": Object {
@@ -294,10 +274,7 @@ Object {
     },
   },
   "name": "ref",
-  "order": undefined,
-  "persistent": false,
   "relation": Object {
-    "embedded": false,
     "entity": undefined,
     "field": "ref",
     "hasMany": "id@A#id",
@@ -317,7 +294,6 @@ Object {
     "name": "HasManyRefs",
     "opposite": undefined,
   },
-  "required": false,
   "title": undefined,
 }
 `;
@@ -376,11 +352,7 @@ RelationField {
 exports[`RelationField hasOne: hasOne to Object 1`] = `
 Object {
   "args": Object {},
-  "derived": false,
   "description": undefined,
-  "entity": undefined,
-  "identity": false,
-  "indexed": false,
   "inheritedFrom": undefined,
   "metadata": Object {
     "acl": Object {
@@ -398,10 +370,7 @@ Object {
     },
   },
   "name": "ref",
-  "order": undefined,
-  "persistent": false,
   "relation": Object {
-    "embedded": false,
     "entity": undefined,
     "field": "ref",
     "hasOne": "id@A#id",
@@ -421,7 +390,6 @@ Object {
     "name": "HasOneRef",
     "opposite": undefined,
   },
-  "required": false,
   "title": undefined,
 }
 `;

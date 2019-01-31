@@ -53,12 +53,9 @@ export interface RecordFieldInput extends ModelBaseInput<RecordFieldMeta> {
 
 export interface RecordFieldOutput extends ModelBaseOutput<RecordFieldMeta> {
   type?: string | EnumType;
-  defaultValue?: string;
   multiplicity?: Multiplicity;
   order?: number;
   kind: ArgumentKind;
-  /** stored in metadata so it is not in output */
-  required?: boolean;
 }
 
 export const typeFieldDefaultMetaInfo = {};
@@ -228,7 +225,6 @@ export class RecordField
 
   public toObject(): RecordFieldOutput {
     return merge({}, super.toObject(), {
-      defaultValue: this.defaultValue,
       type: this.type,
       multiplicity: this[Internal].multiplicity,
     } as Partial<RecordFieldOutput>);

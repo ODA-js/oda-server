@@ -3,7 +3,6 @@
 exports[`belongsToMany default: toObject 1`] = `
 Object {
   "belongsToMany": "id@A#id",
-  "embedded": false,
   "entity": undefined,
   "field": undefined,
   "fields": Array [],

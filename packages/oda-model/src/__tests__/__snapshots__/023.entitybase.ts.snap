@@ -254,12 +254,7 @@ Object {
   "fields": Array [
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": false,
-      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -278,20 +273,12 @@ Object {
         },
       },
       "name": "a",
-      "order": 0,
-      "persistent": true,
-      "required": false,
       "title": undefined,
       "type": "string",
     },
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": false,
-      "indexed": false,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -310,9 +297,6 @@ Object {
         },
       },
       "name": "b",
-      "order": 1,
-      "persistent": true,
-      "required": false,
       "title": undefined,
       "type": Object {
         "multiplicity": "one",
@@ -322,11 +306,7 @@ Object {
     },
     Object {
       "args": Object {},
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": false,
-      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -347,9 +327,6 @@ Object {
         },
       },
       "name": "c",
-      "order": 2,
-      "persistent": false,
-      "required": false,
       "title": undefined,
       "type": Object {
         "multiplicity": "one",
@@ -359,11 +336,7 @@ Object {
     },
     Object {
       "args": Object {},
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": false,
-      "indexed": false,
       "inheritedFrom": undefined,
       "metadata": Object {
         "acl": Object {
@@ -383,10 +356,7 @@ Object {
         },
       },
       "name": "d",
-      "order": 3,
-      "persistent": false,
       "relation": Object {
-        "embedded": false,
         "entity": "A",
         "field": "d",
         "hasOne": "id@CCC#id",
@@ -406,17 +376,11 @@ Object {
         "name": "AHasOneD",
         "opposite": undefined,
       },
-      "required": false,
       "title": undefined,
     },
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": true,
-      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -435,9 +399,6 @@ Object {
         },
       },
       "name": "id",
-      "order": -1,
-      "persistent": true,
-      "required": true,
       "title": undefined,
       "type": "ID",
     },
@@ -490,12 +451,7 @@ Object {
   "fields": Array [
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "Species",
-      "identity": true,
-      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -514,9 +470,6 @@ Object {
         },
       },
       "name": "id",
-      "order": -1,
-      "persistent": true,
-      "required": true,
       "title": undefined,
       "type": "ID",
     },
@@ -559,12 +512,7 @@ Object {
   "fields": Array [
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": true,
-      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -583,9 +531,6 @@ Object {
         },
       },
       "name": "id",
-      "order": -1,
-      "persistent": true,
-      "required": true,
       "title": undefined,
       "type": "ID",
     },
@@ -625,12 +570,7 @@ Object {
 exports[`EntityBase should accept non default identity field "_id": non default _id fields 1`] = `
 Object {
   "args": Object {},
-  "defaultValue": undefined,
-  "derived": false,
   "description": undefined,
-  "entity": "A",
-  "identity": true,
-  "indexed": true,
   "inheritedFrom": undefined,
   "list": false,
   "metadata": Object {
@@ -649,9 +589,6 @@ Object {
     },
   },
   "name": "_id",
-  "order": 0,
-  "persistent": true,
-  "required": true,
   "title": undefined,
   "type": "string",
 }
@@ -660,12 +597,7 @@ Object {
 exports[`EntityBase should accept non default identity field "id": non default id fields 1`] = `
 Object {
   "args": Object {},
-  "defaultValue": undefined,
-  "derived": false,
   "description": undefined,
-  "entity": "A",
-  "identity": true,
-  "indexed": true,
   "inheritedFrom": undefined,
   "list": false,
   "metadata": Object {
@@ -684,9 +616,6 @@ Object {
     },
   },
   "name": "id",
-  "order": 0,
-  "persistent": true,
-  "required": true,
   "title": undefined,
   "type": "string",
 }
@@ -698,12 +627,7 @@ Object {
   "fields": Array [
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": true,
-      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -722,9 +646,6 @@ Object {
         },
       },
       "name": "id",
-      "order": -1,
-      "persistent": true,
-      "required": true,
       "title": undefined,
       "type": "ID",
     },
@@ -761,7 +682,6 @@ Object {
       "actionType": "create",
       "args": Array [
         Object {
-          "defaultValue": undefined,
           "description": undefined,
           "metadata": Object {
             "required": false,
@@ -772,7 +692,6 @@ Object {
           "type": "string",
         },
         Object {
-          "defaultValue": undefined,
           "description": undefined,
           "metadata": Object {
             "required": false,
@@ -796,7 +715,6 @@ Object {
       "name": "updateUser",
       "payload": Array [
         Object {
-          "defaultValue": undefined,
           "description": undefined,
           "metadata": Object {
             "required": false,
@@ -820,12 +738,7 @@ Object {
   "fields": Array [
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": false,
-      "indexed": "text",
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -844,20 +757,12 @@ Object {
         },
       },
       "name": "a",
-      "order": 0,
-      "persistent": true,
-      "required": false,
       "title": undefined,
       "type": "string",
     },
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": false,
-      "indexed": "text",
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -876,20 +781,12 @@ Object {
         },
       },
       "name": "b",
-      "order": 1,
-      "persistent": true,
-      "required": false,
       "title": undefined,
       "type": "string",
     },
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": true,
-      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -908,9 +805,6 @@ Object {
         },
       },
       "name": "id",
-      "order": -1,
-      "persistent": true,
-      "required": true,
       "title": undefined,
       "type": "ID",
     },
@@ -973,12 +867,7 @@ Object {
   "fields": Array [
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": "ab",
-      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -997,20 +886,12 @@ Object {
         },
       },
       "name": "a",
-      "order": 0,
-      "persistent": true,
-      "required": true,
       "title": undefined,
       "type": "string",
     },
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": "ab",
-      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -1029,20 +910,12 @@ Object {
         },
       },
       "name": "b",
-      "order": 1,
-      "persistent": true,
-      "required": true,
       "title": undefined,
       "type": "string",
     },
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": true,
-      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -1061,9 +934,6 @@ Object {
         },
       },
       "name": "id",
-      "order": -1,
-      "persistent": true,
-      "required": true,
       "title": undefined,
       "type": "ID",
     },
@@ -1145,12 +1015,7 @@ Object {
   "fields": Array [
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": "ab",
-      "indexed": "text",
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -1169,20 +1034,12 @@ Object {
         },
       },
       "name": "a",
-      "order": 0,
-      "persistent": true,
-      "required": true,
       "title": undefined,
       "type": "string",
     },
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": "ab",
-      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -1201,20 +1058,12 @@ Object {
         },
       },
       "name": "b",
-      "order": 1,
-      "persistent": true,
-      "required": true,
       "title": undefined,
       "type": "string",
     },
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": false,
-      "indexed": "text",
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -1233,23 +1082,12 @@ Object {
         },
       },
       "name": "c",
-      "order": 2,
-      "persistent": true,
-      "required": false,
       "title": undefined,
       "type": "string",
     },
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": "ab",
-      "indexed": Array [
-        "text",
-        "d",
-      ],
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -1271,20 +1109,12 @@ Object {
         },
       },
       "name": "d",
-      "order": 3,
-      "persistent": true,
-      "required": true,
       "title": undefined,
       "type": "string",
     },
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": true,
-      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -1303,9 +1133,6 @@ Object {
         },
       },
       "name": "id",
-      "order": -1,
-      "persistent": true,
-      "required": true,
       "title": undefined,
       "type": "ID",
     },
@@ -1381,5 +1208,135 @@ Object {
   "name": "A",
   "operations": Array [],
   "title": undefined,
+}
+`;
+
+exports[`Indexing should create index entry: indexed entity 1`] = `
+EntityBase {
+  Symbol(internal): Object {
+    "exact": false,
+    "fields": Map {
+      "a" => SimpleField {
+        Symbol(internal): Object {
+          "args": Map {},
+          "list": false,
+          "name": "a",
+          "type": "string",
+        },
+        Symbol(metadata): Object {
+          "acl": Object {
+            "read": Array [],
+            "update": Array [],
+          },
+          "entity": "A",
+          "order": 0,
+          "persistence": Object {
+            "derived": false,
+            "identity": false,
+            "indexed": Array [
+              "some",
+              "a",
+            ],
+            "persistent": true,
+            "required": false,
+          },
+        },
+      },
+      "id" => SimpleField {
+        Symbol(internal): Object {
+          "args": Map {},
+          "idKey": EntityReference {
+            Symbol(internal): Object {
+              "entity": "A",
+              "field": "id",
+            },
+            Symbol(metadata): Object {},
+          },
+          "list": false,
+          "name": "id",
+          "type": "ID",
+        },
+        Symbol(metadata): Object {
+          "acl": Object {
+            "read": Array [],
+            "update": Array [],
+          },
+          "entity": "A",
+          "order": -1,
+          "persistence": Object {
+            "derived": false,
+            "identity": true,
+            "indexed": true,
+            "persistent": true,
+            "required": true,
+          },
+        },
+      },
+    },
+    "identity": Set {
+      "id",
+    },
+    "indexed": Set {
+      "a",
+      "id",
+    },
+    "name": "A",
+    "operations": Map {},
+    "relations": Set {},
+    "required": Set {
+      "id",
+    },
+  },
+  Symbol(metadata): Object {
+    "UI": Object {
+      "edit": Array [],
+      "embedded": Array [],
+      "hidden": Array [],
+      "list": Array [],
+      "listName": Array [],
+      "quickSearch": Array [],
+      "show": Array [],
+    },
+    "acl": Object {
+      "create": Array [],
+      "delete": Array [],
+      "readMany": Array [],
+      "readOne": Array [],
+      "update": Array [],
+    },
+    "name": Object {
+      "plural": "As",
+      "singular": "A",
+    },
+    "persistence": Object {
+      "indexes": Object {
+        "a": Object {
+          "fields": Object {
+            "a": 1,
+          },
+          "name": "a",
+          "options": Object {
+            "sparse": true,
+          },
+        },
+        "coolIndex": Object {
+          "fields": Object {
+            "a": 1,
+          },
+          "name": "some",
+        },
+        "id": Object {
+          "fields": Object {
+            "id": 1,
+          },
+          "name": "id",
+          "options": Object {
+            "unique": true,
+          },
+        },
+      },
+    },
+    "titlePlural": "As",
+  },
 }
 `;

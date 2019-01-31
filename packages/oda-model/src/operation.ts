@@ -24,12 +24,7 @@ import {
 import { merge } from 'lodash';
 import { Internal, MetaData } from './element';
 import decapitalize from './lib/decapitalize';
-import {
-  IRecordField,
-  RecordField,
-  RecordFieldInput,
-  RecordFieldOutput,
-} from './recordfield';
+import { IRecordField, RecordField, RecordFieldInput } from './recordfield';
 import { QueryInput } from './query';
 import { MutationInput } from './mutation';
 import { IEntity } from './entity';
@@ -41,7 +36,6 @@ import {
   Record,
   IRecord,
   RecordInput,
-  RecordOutput,
 } from './record';
 /**
  * Kind of mutation which is intended to work with single entity
@@ -336,7 +330,7 @@ export class Operation
           : MapToArray(internal.payload, (_name, value) => value.toObject());
 
       let name = this.name;
-      let args: NamedArray<RecordFieldOutput | RecordOutput> = MapToArray(
+      let args: NamedArray<RecordFieldInput | RecordInput> = MapToArray(
         internal.args,
         (_name, value) => value.toObject(),
       );
@@ -362,7 +356,7 @@ export class Operation
                     name: 'input',
                     type: `addTo${field.relation.metadata.name.full}Input`,
                     required: true,
-                  } as RecordFieldOutput,
+                  } as RecordFieldInput,
                 ];
                 payload = `addTo${field.relation.metadata.name.full}Payload`;
               }
@@ -378,7 +372,7 @@ export class Operation
                     name: 'input',
                     type: `addTo${field.relation.metadata.name.full}Input`,
                     required: true,
-                  } as RecordFieldOutput,
+                  } as RecordFieldInput,
                 ];
                 payload = `addTo${field.relation.metadata.name.full}Payload`;
               }

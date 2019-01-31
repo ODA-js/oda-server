@@ -191,12 +191,25 @@ describe('Indexing', () => {
     const res = new EntityBase({
       name: 'A',
       fields: [{ name: 'a', indexed: true }],
+      metadata: {
+        persistence: {
+          indexes: {
+            coolIndex: {
+              name: 'some',
+              fields: {
+                a: 1,
+              },
+            },
+          },
+        },
+      },
     });
     expect(res.metadata.persistence.indexes['a']).toMatchObject({
       name: 'a',
       fields: { a: 1 },
       options: { sparse: true },
     });
+    expect(res).toMatchSnapshot('indexed entity');
   });
   it('should create unique index entry', () => {
     const res = new EntityBase({

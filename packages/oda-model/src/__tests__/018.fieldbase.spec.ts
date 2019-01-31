@@ -38,8 +38,12 @@ describe('FieldBase', () => {
     expect(res).toMatchSnapshot('identity');
     expect(res.toObject()).toMatchObject({
       name: 'field',
-      indexed: true,
-      identity: true,
+      metadata: {
+        persistence: {
+          indexed: true,
+          identity: true,
+        },
+      },
     });
   });
 

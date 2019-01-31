@@ -56,7 +56,7 @@ export interface IEntityBase<
 export interface IndexEntry {
   name: string;
   fields: { [field: string]: number };
-  options: { sparse: boolean; unique: boolean };
+  options?: { sparse?: boolean; unique?: boolean };
 }
 
 export interface IndexEntryOptions {
@@ -410,16 +410,22 @@ export class EntityBase<
     Object.keys(this.metadata.persistence.indexes).forEach(name => {
       const index = this.metadata.persistence.indexes[name];
       const fields = Object.keys(index.fields);
-      const isUnique = index.options.unique;
+      const isUnique = index.options && index.options.unique;
       const indexType = isUnique ? 'identity' : 'indexed';
       fields.forEach(f => {
         const field = this.fields.get(f);
         if (field) {
-          const res = field.toObject();
           let value: string[];
+          const indexed = field[indexType];
           if (initialized[indexType].has(field.name)) {
-            const indexed = res[indexType] as string[];
-            value = mergeStringArray(indexed, index.name);
+            /**
+             * index can be defined as external index, but field is marked just as boolean
+             * in this case we need to merge two index implementation and set it to selected field
+             */
+            value = mergeStringArray(
+              typeof indexed === 'boolean' ? [field.name] : indexed,
+              index.name,
+            );
           } else {
             value = [index.name];
             initialized[indexType].add(field.name);

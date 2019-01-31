@@ -31,12 +31,7 @@ SimpleField {
 exports[`SimpleField default enum multiplicity == one: toObject 1`] = `
 Object {
   "args": Object {},
-  "defaultValue": undefined,
-  "derived": false,
   "description": undefined,
-  "entity": undefined,
-  "identity": false,
-  "indexed": false,
   "inheritedFrom": undefined,
   "list": false,
   "metadata": Object {
@@ -53,9 +48,6 @@ Object {
     },
   },
   "name": "a",
-  "order": undefined,
-  "persistent": true,
-  "required": false,
   "title": undefined,
   "type": Object {
     "multiplicity": "one",
@@ -96,12 +88,7 @@ SimpleField {
 exports[`SimpleField default enum: toObject 1`] = `
 Object {
   "args": Object {},
-  "defaultValue": undefined,
-  "derived": false,
   "description": undefined,
-  "entity": undefined,
-  "identity": false,
-  "indexed": false,
   "inheritedFrom": undefined,
   "list": true,
   "metadata": Object {
@@ -118,9 +105,6 @@ Object {
     },
   },
   "name": "a",
-  "order": undefined,
-  "persistent": true,
-  "required": false,
   "title": undefined,
   "type": Object {
     "multiplicity": "many",
@@ -157,12 +141,7 @@ SimpleField {
 exports[`SimpleField default: toObject 1`] = `
 Object {
   "args": Object {},
-  "defaultValue": undefined,
-  "derived": false,
   "description": undefined,
-  "entity": undefined,
-  "identity": false,
-  "indexed": false,
   "inheritedFrom": undefined,
   "list": false,
   "metadata": Object {
@@ -179,9 +158,6 @@ Object {
     },
   },
   "name": "a",
-  "order": undefined,
-  "persistent": true,
-  "required": false,
   "title": undefined,
   "type": "string",
 }

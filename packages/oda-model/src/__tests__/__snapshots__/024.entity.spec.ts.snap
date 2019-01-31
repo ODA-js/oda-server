@@ -8,12 +8,7 @@ Object {
   "fields": Array [
     Object {
       "args": Object {},
-      "defaultValue": undefined,
-      "derived": false,
       "description": undefined,
-      "entity": "A",
-      "identity": true,
-      "indexed": true,
       "inheritedFrom": undefined,
       "list": false,
       "metadata": Object {
@@ -32,9 +27,6 @@ Object {
         },
       },
       "name": "id",
-      "order": -1,
-      "persistent": true,
-      "required": true,
       "title": undefined,
       "type": "ID",
     },

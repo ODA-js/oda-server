@@ -4,7 +4,6 @@ exports[`Directive default: toObject 1`] = `
 Object {
   "args": Array [
     Object {
-      "defaultValue": "THIS PROP IS READ ONLY",
       "description": undefined,
       "metadata": Object {
         "defaultValue": "THIS PROP IS READ ONLY",

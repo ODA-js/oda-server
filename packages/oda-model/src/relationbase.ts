@@ -268,7 +268,6 @@ export class RelationBase<
       entity: this.entity,
       field: this.field,
       opposite: this.opposite,
-      embedded: this.embedded,
     } as Partial<O>);
   }
   public mergeWith(payload: Nullable<I>) {

@@ -3,11 +3,7 @@
 exports[`RelationFieldBase default: default 1`] = `
 Object {
   "args": Object {},
-  "derived": false,
   "description": undefined,
-  "entity": undefined,
-  "identity": false,
-  "indexed": false,
   "inheritedFrom": undefined,
   "metadata": Object {
     "acl": Object {
@@ -25,9 +21,6 @@ Object {
     },
   },
   "name": "defaultField",
-  "order": undefined,
-  "persistent": true,
-  "required": false,
   "title": undefined,
 }
 `;
