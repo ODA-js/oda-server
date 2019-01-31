@@ -1,22 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Type creates specified field with specified types: object with fields 1`] = `
-Type {
+Record {
   Symbol(internal): Object {
     "fields": Map {
-      "A" => TypeField {
+      "A" => RecordField {
         Symbol(internal): Object {
+          "kind": "input",
           "multiplicity": "one",
           "name": "A",
           "type": "string",
         },
         Symbol(metadata): Object {
-          "entity": "A",
           "order": 0,
+          "required": false,
         },
       },
-      "B" => TypeField {
+      "B" => RecordField {
         Symbol(internal): Object {
+          "kind": "input",
           "multiplicity": "one",
           "name": "B",
           "type": Object {
@@ -26,12 +28,13 @@ Type {
           },
         },
         Symbol(metadata): Object {
-          "entity": "A",
           "order": 1,
+          "required": false,
         },
       },
-      "c" => TypeField {
+      "c" => RecordField {
         Symbol(internal): Object {
+          "kind": "input",
           "multiplicity": "many",
           "name": "c",
           "type": Object {
@@ -41,11 +44,12 @@ Type {
           },
         },
         Symbol(metadata): Object {
-          "entity": "A",
           "order": 2,
+          "required": false,
         },
       },
     },
+    "kind": "input",
     "name": "A",
   },
   Symbol(metadata): Object {
@@ -76,8 +80,8 @@ Object {
       "defaultValue": undefined,
       "description": undefined,
       "metadata": Object {
-        "entity": "A",
         "order": 0,
+        "required": false,
       },
       "multiplicity": "one",
       "name": "A",
@@ -88,8 +92,8 @@ Object {
       "defaultValue": undefined,
       "description": undefined,
       "metadata": Object {
-        "entity": "A",
         "order": 1,
+        "required": false,
       },
       "multiplicity": "one",
       "name": "B",
@@ -104,8 +108,8 @@ Object {
       "defaultValue": undefined,
       "description": undefined,
       "metadata": Object {
-        "entity": "A",
         "order": 2,
+        "required": false,
       },
       "multiplicity": "many",
       "name": "c",
@@ -117,6 +121,7 @@ Object {
       },
     },
   ],
+  "kind": "input",
   "metadata": Object {
     "UI": Object {
       "edit": Array [],
@@ -143,6 +148,7 @@ exports[`Type default has no Singular: toObject 1`] = `
 Object {
   "description": undefined,
   "fields": Array [],
+  "kind": "input",
   "metadata": Object {
     "UI": Object {
       "edit": Array [],
@@ -169,6 +175,7 @@ exports[`Type default: toObject 1`] = `
 Object {
   "description": undefined,
   "fields": Array [],
+  "kind": "input",
   "metadata": Object {
     "UI": Object {
       "edit": Array [],

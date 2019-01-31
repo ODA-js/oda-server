@@ -35,6 +35,7 @@ export type assignInput<S, I, V = any> = {
   required?: boolean;
   /**
    * field from dest object which value will be assigned to dest field
+   * use it only when both source and dest field names are different
    */
   inputField?: keyof I;
   /**
@@ -98,7 +99,10 @@ export function assignValue<S extends object, I extends object, V = any>(
     }
   } else {
     // set default value
-    if (field && get(src, field) == null) {
+    if (
+      (field && get(src, field) == null) ||
+      (inputField && get(src, inputField) == null)
+    ) {
       if (setDefault instanceof Function) {
         setDefault(src);
       }
@@ -108,7 +112,7 @@ export function assignValue<S extends object, I extends object, V = any>(
 
 export type RelationType = 'HasMany' | 'HasOne' | 'BelongsToMany' | 'BelongsTo';
 
-export type ComplextTypeKind = 'input' | 'type';
+export type ArgumentKind = 'input' | 'output';
 
 export type MetaModelType =
   | 'element'
@@ -137,10 +141,10 @@ export type MetaModelType =
   | 'ref'
   | 'args'
   | 'model-hook'
-  | 'input-type'
-  | 'input-simple-field'
-  | 'input-enum-field'
-  | 'input-entity-field'
+  | 'record-type'
+  | 'argument-simple-field'
+  | 'argument-enum-field'
+  | 'argument-entity-field'
   | RelationType;
 
 export type Multiplicity = 'one' | 'many';
@@ -200,6 +204,10 @@ export type EntityType = {
   multiplicity?: Multiplicity;
 };
 
+export function isEntityType(src: any): src is EntityType {
+  return typeof src === 'object' && src.type === 'entity';
+}
+
 export type EnumType = {
   /**
    * complex type name
@@ -214,6 +222,10 @@ export type EnumType = {
    */
   multiplicity?: Multiplicity;
 };
+
+export function isEnumType(src: any): src is EnumType {
+  return typeof src === 'object' && src.type === 'enum';
+}
 
 export type FieldType = string | EnumType | EntityType;
 

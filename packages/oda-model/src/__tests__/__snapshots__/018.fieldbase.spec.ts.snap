@@ -6,11 +6,14 @@ FieldBase {
     "args": Map {
       "demoARG" => RecordField {
         Symbol(internal): Object {
+          "kind": "input",
           "multiplicity": "one",
           "name": "demoARG",
           "type": "string",
         },
-        Symbol(metadata): Object {},
+        Symbol(metadata): Object {
+          "required": false,
+        },
       },
     },
     "idKey": EntityReference {
@@ -47,7 +50,9 @@ Object {
     "demoARG": Object {
       "defaultValue": undefined,
       "description": undefined,
-      "metadata": Object {},
+      "metadata": Object {
+        "required": false,
+      },
       "multiplicity": "one",
       "name": "demoARG",
       "title": undefined,

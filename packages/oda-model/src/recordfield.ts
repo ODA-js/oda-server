@@ -14,6 +14,7 @@ import {
   MetaModelType,
   Multiplicity,
   EntityType,
+  ArgumentKind,
 } from './types';
 import { Internal } from './element';
 
@@ -23,12 +24,12 @@ export interface IRecordField
   readonly multiplicity?: Multiplicity;
   readonly defaultValue?: string;
   readonly order?: number;
-  readonly required?: boolean;
+  readonly required: boolean;
+  readonly kind: ArgumentKind;
 }
 
 export interface RecordFieldMeta extends ModelBaseMetaInfo {
   defaultValue?: string;
-  entity: string;
   order: number;
   required: boolean;
   type: string | EnumType | EntityType;
@@ -38,6 +39,7 @@ export interface RecordFieldMeta extends ModelBaseMetaInfo {
 export interface RecordFieldInternal extends ModelBaseInternal {
   type: string | EnumType | EntityType;
   multiplicity: Multiplicity;
+  kind: ArgumentKind;
 }
 
 export interface RecordFieldInput extends ModelBaseInput<RecordFieldMeta> {
@@ -46,7 +48,7 @@ export interface RecordFieldInput extends ModelBaseInput<RecordFieldMeta> {
   defaultValue?: string;
   multiplicity?: Multiplicity;
   order?: number;
-  entity?: string;
+  kind?: ArgumentKind;
 }
 
 export interface RecordFieldOutput extends ModelBaseOutput<RecordFieldMeta> {
@@ -54,6 +56,9 @@ export interface RecordFieldOutput extends ModelBaseOutput<RecordFieldMeta> {
   defaultValue?: string;
   multiplicity?: Multiplicity;
   order?: number;
+  kind: ArgumentKind;
+  /** stored in metadata so it is not in output */
+  required?: boolean;
 }
 
 export const typeFieldDefaultMetaInfo = {};
@@ -70,10 +75,10 @@ export class RecordField
   public get modelType(): MetaModelType {
     const internal = this[Internal];
     return typeof internal.type === 'string'
-      ? 'input-simple-field'
+      ? 'argument-simple-field'
       : internal.type.type === 'entity'
-      ? 'input-entity-field'
-      : 'input-enum-field';
+      ? 'argument-entity-field'
+      : 'argument-enum-field';
   }
 
   get type(): string | EnumType | EntityType {
@@ -87,6 +92,10 @@ export class RecordField
 
   get defaultValue(): string | undefined {
     return get(this.metadata, 'defaultValue');
+  }
+
+  get kind(): ArgumentKind {
+    return this[Internal].kind;
   }
 
   get order(): number {
@@ -110,13 +119,6 @@ export class RecordField
       field: 'name',
       effect: (src, value) => (src.name = value.trim()),
       required: true,
-    });
-
-    assignValue({
-      src: this.metadata,
-      input,
-      field: 'entity',
-      effect: (src, value) => (src.entity = value),
     });
 
     assignValue<
@@ -150,19 +152,19 @@ export class RecordField
       field: 'multiplicity',
       required: true,
       effect: (src, value) => {
-        if (this.modelType === 'input-enum-field') {
+        if (this.modelType === 'argument-enum-field') {
           (src.type as EnumType).multiplicity = value ? 'many' : 'one';
         }
-        if (this.modelType === 'input-entity-field') {
+        if (this.modelType === 'argument-entity-field') {
           (src.type as EntityType).multiplicity = value ? 'many' : 'one';
         }
         src.multiplicity = value;
       },
       setDefault: src => {
-        if (this.modelType === 'input-enum-field') {
+        if (this.modelType === 'argument-enum-field') {
           src.multiplicity = (src.type as EnumType).multiplicity || 'one';
         }
-        if (this.modelType === 'input-entity-field') {
+        if (this.modelType === 'argument-entity-field') {
           src.multiplicity = (src.type as EntityType).multiplicity || 'one';
         } else {
           src.multiplicity = 'one';
@@ -173,7 +175,7 @@ export class RecordField
     assignValue({
       src: this.metadata,
       input,
-      inputField: 'defaultValue',
+      field: 'defaultValue',
       effect: (src, value) => {
         src.defaultValue = value;
       },
@@ -186,11 +188,20 @@ export class RecordField
       effect: (src, value) => (src.order = value),
     });
 
+    assignValue({
+      src: this[Internal],
+      input,
+      field: 'kind',
+      effect: (src, value) => (src.kind = value),
+      setDefault: src => (src.kind = 'input'),
+    });
+
     assignValue<RecordFieldMeta, RecordFieldInput, boolean>({
       src: this.metadata,
       input,
-      inputField: 'required',
+      field: 'required',
       effect: (src, value) => (src.required = value),
+      required: true,
       setDefault: src => (src.required = false),
     });
   }

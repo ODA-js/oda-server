@@ -16,16 +16,33 @@ import {
   MapToArray,
   Nullable,
   HashToArray,
+  EnumType,
+  EntityType,
+  isEnumType,
+  isEntityType,
 } from './types';
 import { merge } from 'lodash';
 import { Internal, MetaData } from './element';
 import decapitalize from './lib/decapitalize';
-import { IRecordField, RecordField, RecordFieldInput } from './recordfield';
+import {
+  IRecordField,
+  RecordField,
+  RecordFieldInput,
+  RecordFieldOutput,
+} from './recordfield';
 import { QueryInput } from './query';
 import { MutationInput } from './mutation';
 import { IEntity } from './entity';
 import { IRelationField } from './relationfield';
 import { isISimpleField } from './field';
+import {
+  isRecord,
+  isRecordInput,
+  Record,
+  IRecord,
+  RecordInput,
+  RecordOutput,
+} from './record';
 /**
  * Kind of mutation which is intended to work with single entity
  */
@@ -43,8 +60,12 @@ export interface IOperation
   /**
    * set of arguments
    */
-  readonly args?: Map<string, IRecordField>;
-  readonly payload: string | Map<string, IRecordField>;
+  readonly args?: Map<string, IRecord | IRecordField>;
+  readonly payload:
+    | string
+    | EnumType
+    | EntityType
+    | Map<string, IRecord | IRecordField>;
   readonly order: number;
   readonly entity: string;
   readonly field?: string;
@@ -61,8 +82,16 @@ export interface OperationMetaInfo extends ModelBaseMetaInfo {
 }
 
 export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
-  args?: AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>;
-  payload?: string | AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>;
+  args?:
+    | AsHash<RecordFieldInput | RecordInput>
+    | NamedArray<RecordFieldInput | RecordInput>;
+  payload?:
+    | string
+    | EnumType
+    | EntityType
+    | AsHash<RecordFieldInput | RecordInput>
+    | NamedArray<RecordFieldInput | RecordInput>;
+
   inheritedFrom?: string;
   entity?: string;
   field?: string;
@@ -83,8 +112,8 @@ export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
 }
 
 export interface OperationInternal extends ModelBaseInternal {
-  args: Map<string, IRecordField>;
-  payload: string | Map<string, IRecordField>;
+  args: Map<string, IRecord | IRecordField>;
+  payload: string | EnumType | EntityType | Map<string, IRecord | IRecordField>;
   inheritedFrom?: string;
   /** хранит ссылку на entity */
   entity?: IEntity;
@@ -121,11 +150,15 @@ export class Operation
     return this[Internal].inheritedFrom;
   }
 
-  get args(): Map<string, IRecordField> {
+  get args(): Map<string, IRecord | IRecordField> {
     return this[Internal].args;
   }
 
-  get payload(): string | Map<string, IRecordField> {
+  get payload():
+    | string
+    | EnumType
+    | EntityType
+    | Map<string, IRecord | IRecordField> {
     return this[Internal].payload;
   }
 
@@ -194,7 +227,7 @@ export class Operation
     assignValue<
       OperationInternal,
       OperationInput,
-      AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>
+      NonNullable<OperationInput['args']>
     >({
       src: this[Internal],
       input,
@@ -202,8 +235,13 @@ export class Operation
       effect: (src, value) =>
         (src.args = ArrayToMap(
           Array.isArray(value) ? value : HashToArray(value),
-          i => new RecordField(i),
-          (obj, src) => obj.mergeWith(src.toObject()),
+          v => (isRecordInput(v) ? new Record(v) : new RecordField(v)),
+          (obj, src) =>
+            isRecord(obj) && isRecord(src)
+              ? obj.mergeWith(src.toObject())
+              : !isRecord(obj) && !isRecord(src)
+              ? obj.mergeWith(src.toObject())
+              : obj,
         )),
       required: true,
       setDefault: src => (src.args = new Map()),
@@ -212,17 +250,27 @@ export class Operation
     assignValue<
       OperationInternal,
       OperationInput,
-      AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>
+      NonNullable<OperationInput['payload']>
     >({
       src: this[Internal],
       input,
       field: 'payload',
       effect: (src, value) =>
-        (src.payload = ArrayToMap(
-          Array.isArray(value) ? value : HashToArray(value),
-          i => new RecordField(i),
-          (obj, src) => obj.mergeWith(src.toObject()),
-        )),
+        (src.payload =
+          typeof value === 'string'
+            ? value
+            : isEnumType(value) || isEntityType(value)
+            ? value
+            : ArrayToMap(
+                Array.isArray(value) ? value : HashToArray(value),
+                v => (isRecordInput(v) ? new Record(v) : new RecordField(v)),
+                (obj, src) =>
+                  isRecord(obj) && isRecord(src)
+                    ? obj.mergeWith(src.toObject())
+                    : !isRecord(obj) && !isRecord(src)
+                    ? obj.mergeWith(src.toObject())
+                    : obj,
+              )),
       required: true,
       setDefault: src => (src.payload = new Map()),
     });
@@ -232,6 +280,8 @@ export class Operation
     const internal = this[Internal];
     const payload =
       typeof internal.payload === 'string'
+        ? internal.payload
+        : isEnumType(internal.payload) || isEntityType(internal.payload)
         ? internal.payload
         : MapToArray(internal.payload, (_name, value) => value.toObject());
     return merge({}, super.toObject(), {
@@ -252,13 +302,17 @@ export class Operation
       this.actionType === 'removeFrom'
     ) {
       const internal = this[Internal];
-      let payload: string | RecordFieldInput[] =
+      let payload =
         typeof internal.payload === 'string'
           ? internal.payload
+          : isEnumType(internal.payload) || isEntityType(internal.payload)
+          ? internal.payload
           : MapToArray(internal.payload, (_name, value) => value.toObject());
+
       let name = this.name;
-      let args: RecordFieldInput[] = MapToArray(internal.args, (_name, value) =>
-        value.toObject(),
+      let args: NamedArray<RecordFieldOutput | RecordOutput> = MapToArray(
+        internal.args,
+        (_name, value) => value.toObject(),
       );
 
       if (!this.custom) {
@@ -282,7 +336,7 @@ export class Operation
                     name: 'input',
                     type: `addTo${field.relation.metadata.name.full}Input`,
                     required: true,
-                  },
+                  } as RecordFieldOutput,
                 ];
                 payload = `addTo${field.relation.metadata.name.full}Payload`;
               }
@@ -298,7 +352,7 @@ export class Operation
                     name: 'input',
                     type: `addTo${field.relation.metadata.name.full}Input`,
                     required: true,
-                  },
+                  } as RecordFieldOutput,
                 ];
                 payload = `addTo${field.relation.metadata.name.full}Payload`;
               }

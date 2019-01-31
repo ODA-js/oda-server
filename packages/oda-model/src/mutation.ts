@@ -9,6 +9,10 @@ import {
   ArrayToMap,
   MapToArray,
   HashToArray,
+  EnumType,
+  EntityType,
+  isEnumType,
+  isEntityType,
 } from './types';
 import {
   IModelBase,
@@ -20,17 +24,28 @@ import {
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
 import { IRecordField, RecordField, RecordFieldInput } from './recordfield';
+import {
+  IRecord,
+  isRecordInput,
+  Record,
+  isRecord,
+  RecordInput,
+} from './record';
 
 export interface IMutation
   extends IModelBase<MutationMetaInfo, MutationInput, MutationOutput> {
   /**
    * set of arguments
    */
-  readonly args: Map<string, IRecordField>;
+  readonly args: Map<string, IRecord | IRecordField>;
   /**
    * set of output fields
    */
-  readonly payload: string | Map<string, IRecordField>;
+  readonly payload:
+    | string
+    | EnumType
+    | EntityType
+    | Map<string, IRecord | IRecordField>;
 }
 
 export interface MutationMetaInfo extends ModelBaseMetaInfo {
@@ -41,18 +56,25 @@ export interface MutationMetaInfo extends ModelBaseMetaInfo {
 }
 
 export interface MutationInternal extends ModelBaseInternal {
-  args: Map<string, IRecordField>;
-  payload: string | Map<string, IRecordField>;
+  args: Map<string, IRecord | IRecordField>;
+  payload: string | EnumType | EntityType | Map<string, IRecord | IRecordField>;
 }
 
 export interface MutationInput extends ModelBaseInput<MutationMetaInfo> {
-  args: AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>;
-  payload: string | AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>;
+  args:
+    | AsHash<RecordFieldInput | RecordInput>
+    | NamedArray<RecordFieldInput | RecordInput>;
+  payload:
+    | string
+    | EnumType
+    | EntityType
+    | AsHash<RecordFieldInput | RecordInput>
+    | NamedArray<RecordFieldInput | RecordInput>;
 }
 
 export interface MutationOutput extends ModelBaseOutput<MutationMetaInfo> {
   args: NamedArray<RecordFieldInput>;
-  payload: string | NamedArray<RecordFieldInput>;
+  payload: string | EnumType | EntityType | NamedArray<RecordFieldInput>;
 }
 
 export const mutationDefaultMetaInfo = { acl: { execute: [] } };
@@ -74,11 +96,15 @@ export class Mutation
     super(merge({}, mutationDefaultInput, init));
   }
 
-  public get args(): Map<string, IRecordField> {
+  public get args(): Map<string, IRecord | IRecordField> {
     return this[Internal].args;
   }
 
-  public get payload(): string | Map<string, IRecordField> {
+  public get payload():
+    | string
+    | EnumType
+    | EntityType
+    | Map<string, IRecord | IRecordField> {
     return this[Internal].payload;
   }
 
@@ -93,15 +119,24 @@ export class Mutation
       required: true,
     });
 
-    assignValue<MutationInternal, MutationInput, MutationInput['args']>({
+    assignValue<
+      MutationInternal,
+      MutationInput,
+      NonNullable<MutationInput['args']>
+    >({
       src: this[Internal],
       input,
       field: 'args',
       effect: (src, value) =>
         (src.args = ArrayToMap(
           Array.isArray(value) ? value : HashToArray(value),
-          i => new RecordField(i),
-          (obj, src) => obj.mergeWith(src.toObject()),
+          v => (isRecordInput(v) ? new Record(v) : new RecordField(v)),
+          (obj, src) =>
+            isRecord(obj) && isRecord(src)
+              ? obj.mergeWith(src.toObject())
+              : !isRecord(obj) && !isRecord(src)
+              ? obj.mergeWith(src.toObject())
+              : obj,
         )),
       required: true,
       setDefault: src => (src.args = new Map()),
@@ -115,10 +150,17 @@ export class Mutation
         (src.payload =
           typeof value === 'string'
             ? value
+            : isEnumType(value) || isEntityType(value)
+            ? value
             : ArrayToMap(
                 Array.isArray(value) ? value : HashToArray(value),
-                i => new RecordField(i),
-                (obj, src) => obj.mergeWith(src.toObject()),
+                v => (isRecordInput(v) ? new Record(v) : new RecordField(v)),
+                (obj, src) =>
+                  isRecord(obj) && isRecord(src)
+                    ? obj.mergeWith(src.toObject())
+                    : !isRecord(obj) && !isRecord(src)
+                    ? obj.mergeWith(src.toObject())
+                    : obj,
               )),
       required: true,
       setDefault: src => (src.payload = new Map()),
@@ -129,6 +171,8 @@ export class Mutation
     const internal = this[Internal];
     const payload =
       typeof internal.payload === 'string'
+        ? internal.payload
+        : isEnumType(internal.payload) || isEntityType(internal.payload)
         ? internal.payload
         : MapToArray(internal.payload, (_name, value) => value.toObject());
     return merge({}, super.toObject(), {

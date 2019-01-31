@@ -15,7 +15,7 @@ import {
   NamedArray,
   MapToArray,
   ArrayToMap,
-  ComplexTypeKind as RecordKind,
+  ArgumentKind,
 } from './types';
 
 import { merge } from 'lodash';
@@ -25,7 +25,7 @@ import { UIView } from './entitybase';
 
 export interface IRecord
   extends IModelBase<RecordMetaInfo, RecordInput, RecordOutput> {
-  readonly kind: RecordKind;
+  readonly kind: ArgumentKind;
   readonly plural: string;
   readonly global: boolean;
   readonly titlePlural: string;
@@ -44,19 +44,30 @@ export interface RecordMetaInfo extends ElementMetaInfo {
 
 export interface RecordInternal extends ModelBaseInternal {
   fields: Map<string, IRecordField>;
-  kind: RecordKind;
+  kind: ArgumentKind;
 }
 
 export interface RecordInput extends ModelBaseInput<RecordMetaInfo> {
   plural?: string;
-  kind: RecordKind;
+  kind?: ArgumentKind;
   titlePlural?: string;
-  fields?: AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>;
+  fields: AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>;
+}
+
+export function isRecordInput(inp: any): inp is RecordInput {
+  return typeof inp === 'object' && inp.hasOwnProperty('fields');
+}
+
+export function isRecord(inp: any): inp is Record {
+  return (
+    typeof inp === 'object' &&
+    (inp.modelType as MetaModelType) === 'record-type'
+  );
 }
 
 export interface RecordOutput extends ModelBaseOutput<RecordMetaInfo> {
   fields: NamedArray<RecordFieldInput>;
-  kind: RecordKind;
+  kind: ArgumentKind;
 }
 
 export const recordDefaultMetaInfo = {
@@ -80,14 +91,14 @@ export class Record
   extends ModelBase<RecordMetaInfo, RecordInput, RecordInternal, RecordOutput>
   implements IRecord {
   public get modelType(): MetaModelType {
-    return 'input-type';
+    return 'record-type';
   }
 
   constructor(init: RecordInput) {
     super(merge({}, recordDefaultInput, init));
   }
 
-  get kind(): RecordKind {
+  get kind(): ArgumentKind {
     return this[Internal].kind;
   }
 
@@ -156,6 +167,14 @@ export class Record
       setDefault: src => (src.titlePlural = this.plural),
     });
 
+    assignValue<RecordInternal, RecordInput, ArgumentKind>({
+      src: this[Internal],
+      input,
+      field: 'kind',
+      effect: (src, value) => (src.kind = value),
+      setDefault: src => (src.kind = 'input'),
+    });
+
     assignValue<
       RecordInternal,
       RecordInput,
@@ -172,6 +191,7 @@ export class Record
               merge({}, fld, {
                 order,
                 entity: this.name,
+                kind: this.kind,
               }),
             );
             return field;

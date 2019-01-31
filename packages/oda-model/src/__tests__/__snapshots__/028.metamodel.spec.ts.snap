@@ -248,7 +248,9 @@ Object {
             Object {
               "defaultValue": undefined,
               "description": undefined,
-              "metadata": Object {},
+              "metadata": Object {
+                "required": false,
+              },
               "multiplicity": "one",
               "name": "arg",
               "title": undefined,
@@ -272,7 +274,9 @@ Object {
             Object {
               "defaultValue": undefined,
               "description": undefined,
-              "metadata": Object {},
+              "metadata": Object {
+                "required": false,
+              },
               "multiplicity": "one",
               "name": "payload",
               "title": undefined,
@@ -485,7 +489,9 @@ Object {
                 Object {
                   "defaultValue": undefined,
                   "description": undefined,
-                  "metadata": Object {},
+                  "metadata": Object {
+                    "required": false,
+                  },
                   "multiplicity": "one",
                   "name": "arg",
                   "title": undefined,
@@ -509,7 +515,9 @@ Object {
                 Object {
                   "defaultValue": undefined,
                   "description": undefined,
-                  "metadata": Object {},
+                  "metadata": Object {
+                    "required": false,
+                  },
                   "multiplicity": "one",
                   "name": "payload",
                   "title": undefined,
@@ -532,7 +540,9 @@ Object {
             Object {
               "defaultValue": undefined,
               "description": undefined,
-              "metadata": Object {},
+              "metadata": Object {
+                "required": false,
+              },
               "multiplicity": "one",
               "name": "arg",
               "title": undefined,
@@ -552,7 +562,9 @@ Object {
             Object {
               "defaultValue": undefined,
               "description": undefined,
-              "metadata": Object {},
+              "metadata": Object {
+                "required": false,
+              },
               "multiplicity": "one",
               "name": "payload",
               "title": undefined,
@@ -569,7 +581,9 @@ Object {
             Object {
               "defaultValue": undefined,
               "description": undefined,
-              "metadata": Object {},
+              "metadata": Object {
+                "required": false,
+              },
               "multiplicity": "one",
               "name": "arg",
               "title": undefined,
@@ -589,7 +603,9 @@ Object {
             Object {
               "defaultValue": undefined,
               "description": undefined,
-              "metadata": Object {},
+              "metadata": Object {
+                "required": false,
+              },
               "multiplicity": "one",
               "name": "payload",
               "title": undefined,

@@ -21,8 +21,20 @@ import {
 } from './types';
 import { Internal, MetaData } from './element';
 import { IEntityRef, EntityReference } from './entityreference';
-import { IRecordField, RecordField, RecordFieldInput } from './recordfield';
-import { IRecord, RecordInput } from './record';
+import {
+  IRecordField,
+  RecordField,
+  RecordFieldInput,
+  RecordFieldOutput,
+} from './recordfield';
+import {
+  IRecord,
+  RecordInput,
+  RecordOutput,
+  isRecordInput,
+  Record,
+  isRecord,
+} from './record';
 
 export interface IFieldBase<
   M extends FieldBaseMetaInfo<P>,
@@ -106,7 +118,7 @@ export interface FieldBaseOutput<
   required?: boolean;
   identity?: boolean | string | string[];
   indexed?: boolean | string | string[];
-  args: NamedArray<RecordFieldInput>;
+  args: NamedArray<RecordOutput | RecordFieldOutput>;
 }
 
 export const fieldBaseDefaultMetaInfo = {
@@ -197,15 +209,20 @@ export class FieldBase<
       field: 'inheritedFrom',
     });
 
-    assignValue<S, I, AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>>({
+    assignValue<S, I, NonNullable<FieldBaseInput<T, P>['args']>>({
       src: this[Internal],
       input,
       field: 'args',
       effect: (src, value) =>
         (src.args = ArrayToMap(
           Array.isArray(value) ? value : HashToArray(value),
-          i => new RecordField(i),
-          (obj, src) => obj.mergeWith(src.toObject()),
+          v => (isRecordInput(v) ? new Record(v) : new RecordField(v)),
+          (obj, src) =>
+            isRecord(obj) && isRecord(src)
+              ? obj.mergeWith(src.toObject())
+              : !isRecord(obj) && !isRecord(src)
+              ? obj.mergeWith(src.toObject())
+              : obj,
         )),
       setDefault: src => (src.args = new Map()),
     });

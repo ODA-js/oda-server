@@ -1,39 +1,40 @@
 import 'jest';
 import { MetaData } from '../element';
-import { Type, TypeDefaultMetaInfo } from '../type';
+import { Record, recordDefaultMetaInfo } from '../record';
 
 describe('Type', () => {
   it('default', () => {
-    const res = new Type({ name: 'A' });
-    expect(res[MetaData]).toMatchObject(TypeDefaultMetaInfo);
+    const res = new Record({ name: 'A', fields: [] });
+    expect(res[MetaData]).toMatchObject(recordDefaultMetaInfo);
     expect(res.toObject()).toMatchSnapshot('toObject');
   });
   it('default has no Singular', () => {
-    const res = new Type({ name: 'Species' });
+    const res = new Record({ name: 'Species', fields: [] });
     expect(res.plural).toBe('AllSpecies');
     expect(res.toObject()).toMatchSnapshot('toObject');
   });
   it('should Capitalize name', () => {
-    const res = new Type({ name: 'entity' });
+    const res = new Record({ name: 'entity', fields: [] });
     expect(res.name).toBe('entity');
   });
   it('take TitlePlural from Plural name', () => {
-    const res = new Type({ name: 'Child', plural: 'Children  ' });
+    const res = new Record({ name: 'Child', plural: 'Children  ', fields: [] });
     expect(res.plural).toBe('Children');
     expect(res.titlePlural).toBe('Children');
   });
   it('should take Plural Title plural', () => {
-    const res = new Type({
+    const res = new Record({
       name: 'Species',
       plural: 'Species',
       titlePlural: 'All Species',
+      fields: [],
     });
     expect(res.titlePlural).toBe('All Species');
     expect(res.plural).toBe('AllSpecies');
   });
 
   it('creates specified field with specified types', () => {
-    const res = new Type({
+    const res = new Record({
       name: 'A',
       fields: [
         {
@@ -51,38 +52,39 @@ describe('Type', () => {
     });
     expect(res.fields.size).toBe(3);
     expect(res.fields.get('A')).not.toBeUndefined();
-    const a = res.fields.get('a');
+    const a = res.fields.get('A');
     if (a) {
-      expect(a.modelType).toBe('input-simple-field');
+      expect(a.modelType).toBe('argument-simple-field');
     }
     expect(res.fields.get('A')).not.toBeUndefined();
     const b = res.fields.get('B');
     if (b) {
-      expect(b.modelType).toBe('input-enum-field');
+      expect(b.modelType).toBe('argument-enum-field');
     }
     const c = res.fields.get('c');
     if (c) {
       expect(c.multiplicity).toBe('many');
-      expect(c.modelType).toBe('input-entity-field');
+      expect(c.modelType).toBe('argument-entity-field');
     }
     expect(res).toMatchSnapshot('object with fields');
     expect(res.toObject()).toMatchSnapshot('toObject with fields');
   });
 
   it('should pass entity name to fields', () => {
-    const res = new Type({
+    const res = new Record({
       name: 'A',
       fields: [{ name: 'a' }],
+      kind: 'output',
     });
     const a = res.fields.get('a');
     if (a) {
-      expect(a.metadata.entity).toBe('A');
+      expect(a.kind).toBe('output');
       expect(a.metadata.order).toBe(0);
     }
   });
 
   it('should deduplicates fields', () => {
-    const res = new Type({
+    const res = new Record({
       name: 'A',
       fields: [
         { name: 'a' },

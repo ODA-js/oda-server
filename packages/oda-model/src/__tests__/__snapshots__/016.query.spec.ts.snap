@@ -6,7 +6,9 @@ Object {
     Object {
       "defaultValue": undefined,
       "description": undefined,
-      "metadata": Object {},
+      "metadata": Object {
+        "required": false,
+      },
       "multiplicity": "one",
       "name": "disabled",
       "title": undefined,

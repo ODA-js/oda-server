@@ -10,17 +10,29 @@ import {
   DirectiveLocation,
   AsHash,
   MetaModelType,
-  HashToMap,
   Nullable,
   assignValue,
   NamedArray,
   ArrayToMap,
   MapToArray,
+  HashToArray,
 } from './types';
 import { Internal } from './element';
 import { merge, mergeWith } from 'lodash';
-import { RecordField, IRecordField, RecordFieldInput } from './recordfield';
-import { IRecord, RecordInput } from './record';
+import {
+  RecordField,
+  IRecordField,
+  RecordFieldInput,
+  RecordFieldOutput,
+} from './recordfield';
+import {
+  IRecord,
+  RecordInput,
+  isRecordInput,
+  Record,
+  RecordOutput,
+  isRecord,
+} from './record';
 
 export interface IDirective
   extends IModelBase<DirectiveMetaInfo, DirectiveInput, DirectiveOutput> {
@@ -49,7 +61,7 @@ export interface DirectiveInput extends ModelBaseInput<DirectiveMetaInfo> {
 }
 
 export interface DirectiveOutput extends ModelBaseOutput<DirectiveMetaInfo> {
-  args: NamedArray<RecordFieldInput>;
+  args: NamedArray<RecordOutput | RecordFieldOutput>;
   on: DirectiveLocation[];
 }
 
@@ -91,9 +103,16 @@ export class Directive
       input,
       field: 'args',
       effect: (src, value) =>
-        (src.args = Array.isArray(value)
-          ? ArrayToMap(value, v => new RecordField(v))
-          : HashToMap(value, (name, v) => new RecordField({ name, ...v }))),
+        (src.args = ArrayToMap(
+          Array.isArray(value) ? value : HashToArray(value),
+          v => (isRecordInput(v) ? new Record(v) : new RecordField(v)),
+          (obj, src) =>
+            isRecord(obj) && isRecord(src)
+              ? obj.mergeWith(src.toObject())
+              : !isRecord(obj) && !isRecord(src)
+              ? obj.mergeWith(src.toObject())
+              : obj,
+        )),
       setDefault: src => (src.args = new Map()),
     });
 

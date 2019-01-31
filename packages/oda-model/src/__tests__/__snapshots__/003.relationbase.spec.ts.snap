@@ -2,7 +2,7 @@
 
 exports[`RelationBase creates: toObject 1`] = `
 Object {
-  "embedded": undefined,
+  "embedded": false,
   "entity": undefined,
   "field": undefined,
   "metadata": Object {
@@ -11,7 +11,9 @@ Object {
       "normal": "",
       "short": "",
     },
-    "persistence": Object {},
+    "persistence": Object {
+      "embedded": false,
+    },
     "verb": "RelatedTo",
   },
   "name": "RelatedTo",

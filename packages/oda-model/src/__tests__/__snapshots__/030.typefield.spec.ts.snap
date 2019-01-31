@@ -1,8 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TypeField default enum multiplicity == one: default 1`] = `
-TypeField {
+exports[`RecordField default enum multiplicity == one: default 1`] = `
+RecordField {
   Symbol(internal): Object {
+    "kind": "input",
     "multiplicity": "one",
     "name": "A",
     "type": Object {
@@ -11,15 +12,19 @@ TypeField {
       "type": "enum",
     },
   },
-  Symbol(metadata): Object {},
+  Symbol(metadata): Object {
+    "required": false,
+  },
 }
 `;
 
-exports[`TypeField default enum multiplicity == one: toObject 1`] = `
+exports[`RecordField default enum multiplicity == one: toObject 1`] = `
 Object {
   "defaultValue": undefined,
   "description": undefined,
-  "metadata": Object {},
+  "metadata": Object {
+    "required": false,
+  },
   "multiplicity": "one",
   "name": "A",
   "title": undefined,
@@ -31,9 +36,10 @@ Object {
 }
 `;
 
-exports[`TypeField default enum: default 1`] = `
-TypeField {
+exports[`RecordField default enum: default 1`] = `
+RecordField {
   Symbol(internal): Object {
+    "kind": "input",
     "multiplicity": "many",
     "name": "A",
     "type": Object {
@@ -42,15 +48,19 @@ TypeField {
       "type": "enum",
     },
   },
-  Symbol(metadata): Object {},
+  Symbol(metadata): Object {
+    "required": false,
+  },
 }
 `;
 
-exports[`TypeField default enum: toObject 1`] = `
+exports[`RecordField default enum: toObject 1`] = `
 Object {
   "defaultValue": undefined,
   "description": undefined,
-  "metadata": Object {},
+  "metadata": Object {
+    "required": false,
+  },
   "multiplicity": "many",
   "name": "A",
   "title": undefined,
@@ -62,22 +72,27 @@ Object {
 }
 `;
 
-exports[`TypeField default: default 1`] = `
-TypeField {
+exports[`RecordField default: default 1`] = `
+RecordField {
   Symbol(internal): Object {
+    "kind": "input",
     "multiplicity": "one",
     "name": "A",
     "type": "string",
   },
-  Symbol(metadata): Object {},
+  Symbol(metadata): Object {
+    "required": false,
+  },
 }
 `;
 
-exports[`TypeField default: toObject 1`] = `
+exports[`RecordField default: toObject 1`] = `
 Object {
   "defaultValue": undefined,
   "description": undefined,
-  "metadata": Object {},
+  "metadata": Object {
+    "required": false,
+  },
   "multiplicity": "one",
   "name": "A",
   "title": undefined,
@@ -85,7 +100,7 @@ Object {
 }
 `;
 
-exports[`TypeField required is setup: required 1`] = `
+exports[`RecordField required is setup: required 1`] = `
 Object {
   "defaultValue": undefined,
   "description": undefined,
