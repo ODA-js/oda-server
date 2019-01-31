@@ -90,7 +90,7 @@ export class ModelBase<
   public updateWith(input: Nullable<I>) {
     super.updateWith(input);
 
-    assignValue<S, I, I['name']>({
+    assignValue<S, I, ModelBaseInput<T>['name']>({
       src: this[Internal],
       input,
       field: 'name',
@@ -98,14 +98,14 @@ export class ModelBase<
       required: true,
     });
 
-    assignValue<S, I, NonNullable<I['title']>>({
+    assignValue<S, I, NonNullable<ModelBaseInput<T>['title']>>({
       src: this[Internal],
       input,
       field: 'title',
       effect: (src, value) => (src.title = value.trim()),
     });
 
-    assignValue<S, I, NonNullable<I['description']>>({
+    assignValue<S, I, NonNullable<ModelBaseInput<T>['description']>>({
       src: this[Internal],
       input,
       field: 'description',

@@ -195,7 +195,7 @@ export class FieldBase<
   public updateWith(input: Nullable<I>) {
     super.updateWith(input);
 
-    assignValue<S, I, I['name']>({
+    assignValue<S, I, FieldBaseInput<T, P>['name']>({
       src: this[Internal],
       input,
       field: 'name',
@@ -203,7 +203,7 @@ export class FieldBase<
       required: true,
     });
 
-    assignValue({
+    assignValue<S, I, FieldBaseInput<T, P>['inheritedFrom']>({
       src: this[Internal],
       input,
       field: 'inheritedFrom',
@@ -234,7 +234,7 @@ export class FieldBase<
       effect: (src, value) => (src.entity = value),
     });
 
-    assignValue({
+    assignValue<T, I, NonNullable<FieldBaseInput<T, P>['order']>>({
       src: this.metadata,
       input,
       field: 'order',

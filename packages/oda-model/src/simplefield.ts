@@ -8,16 +8,8 @@ import {
   FieldBaseOutput,
 } from './fieldbase';
 import { merge, get } from 'lodash';
-import {
-  EnumType,
-  Nullable,
-  assignValue,
-  AsHash,
-  NamedArray,
-  MetaModelType,
-} from './types';
+import { EnumType, Nullable, assignValue, MetaModelType } from './types';
 import { Internal } from './element';
-import { RecordFieldInput } from './recordfield';
 ``;
 export interface ISimpleField
   extends IFieldBase<

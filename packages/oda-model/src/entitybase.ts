@@ -250,7 +250,7 @@ export class EntityBase<
   public updateWith(input: Nullable<I>) {
     super.updateWith(input);
 
-    assignValue<P, I, I['name']>({
+    assignValue<P, I, EntityBaseInput<M, MP>['name']>({
       src: this[Internal],
       input,
       field: 'name',
@@ -261,7 +261,7 @@ export class EntityBase<
       required: true,
     });
 
-    assignValue<P, I, NonNullable<I['exact']>>({
+    assignValue<P, I, NonNullable<EntityBaseInput<M, MP>['exact']>>({
       src: this[Internal],
       input,
       field: 'exact',
@@ -272,7 +272,7 @@ export class EntityBase<
       setDefault: src => (src.exact = false),
     });
 
-    assignValue<M, I, string>({
+    assignValue<M, I, NonNullable<EntityBaseInput<M, MP>['plural']>>({
       src: this.metadata,
       input,
       field: 'name.plural',
@@ -291,7 +291,7 @@ export class EntityBase<
       },
     });
 
-    assignValue<M, I, NonNullable<I['titlePlural']>>({
+    assignValue<M, I, NonNullable<EntityBaseInput<M, MP>['titlePlural']>>({
       src: this.metadata,
       input,
       field: 'titlePlural',
@@ -299,7 +299,7 @@ export class EntityBase<
       setDefault: src => (src.titlePlural = this.plural),
     });
 
-    assignValue<P, I, NonNullable<I['fields']>>({
+    assignValue<P, I, NonNullable<EntityBaseInput<M, MP>['fields']>>({
       src: this[Internal],
       input,
       field: 'fields',
@@ -379,7 +379,7 @@ export class EntityBase<
         ] as [string, SimpleField][])),
     });
 
-    assignValue<P, I, NonNullable<I['operations']>>({
+    assignValue<P, I, NonNullable<EntityBaseInput<M, MP>['operations']>>({
       src: this[Internal],
       input,
       field: 'operations',
