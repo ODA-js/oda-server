@@ -130,7 +130,10 @@ export class Mutation
       effect: (src, value) =>
         (src.args = ArrayToMap(
           Array.isArray(value) ? value : HashToArray(value),
-          v => (isRecordInput(v) ? new Record(v) : new RecordField(v)),
+          v =>
+            isRecordInput(v)
+              ? new Record({ ...v, kind: 'input' })
+              : new RecordField({ ...v, kind: 'input' }),
           (obj, src) =>
             isRecord(obj) && isRecord(src)
               ? obj.mergeWith(src.toObject())
@@ -154,7 +157,10 @@ export class Mutation
             ? value
             : ArrayToMap(
                 Array.isArray(value) ? value : HashToArray(value),
-                v => (isRecordInput(v) ? new Record(v) : new RecordField(v)),
+                v =>
+                  isRecordInput(v)
+                    ? new Record({ ...v, kind: 'output' })
+                    : new RecordField({ ...v, kind: 'output' }),
                 (obj, src) =>
                   isRecord(obj) && isRecord(src)
                     ? obj.mergeWith(src.toObject())
