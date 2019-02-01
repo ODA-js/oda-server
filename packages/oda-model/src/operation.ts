@@ -37,6 +37,9 @@ import {
   IRecord,
   RecordInput,
 } from './record';
+import { ISimpleField } from './simplefield';
+import { IEntityField } from './entityfield';
+import { idField, mutableFields, storedRelations } from './utils/queries';
 /**
  * Kind of mutation which is intended to work with single entity
  */
@@ -59,6 +62,7 @@ export interface IOperation
     | string
     | EnumType
     | EntityType
+    | IRecord
     | Map<string, IRecord | IRecordField>;
   readonly order: number;
   readonly entity: string;
@@ -83,6 +87,7 @@ export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
     | string
     | EnumType
     | EntityType
+    | RecordInput
     | AsHash<RecordFieldInput | RecordInput>
     | NamedArray<RecordFieldInput | RecordInput>;
 
@@ -95,8 +100,14 @@ export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
 }
 
 export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
-  args: NamedArray<RecordFieldInput>;
-  payload: string | NamedArray<RecordFieldInput>;
+  args: NamedArray<RecordFieldInput | RecordInput>;
+  payload:
+    | string
+    | EnumType
+    | EntityType
+    | RecordInput
+    | AsHash<RecordFieldInput | RecordInput>
+    | NamedArray<RecordFieldInput | RecordInput>;
   inheritedFrom?: string;
   entity: string;
   field?: string;
@@ -107,7 +118,12 @@ export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
 
 export interface OperationInternal extends ModelBaseInternal {
   args: Map<string, IRecord | IRecordField>;
-  payload: string | EnumType | EntityType | Map<string, IRecord | IRecordField>;
+  payload:
+    | string
+    | EnumType
+    | EntityType
+    | IRecord
+    | Map<string, IRecord | IRecordField>;
   inheritedFrom?: string;
   /** хранит ссылку на entity */
   entity?: IEntity;
@@ -152,6 +168,7 @@ export class Operation
     | string
     | EnumType
     | EntityType
+    | IRecord
     | Map<string, IRecord | IRecordField> {
     return this[Internal].payload;
   }
@@ -278,6 +295,8 @@ export class Operation
             ? value
             : isEnumType(value) || isEntityType(value)
             ? value
+            : isRecordInput(value)
+            ? new Record(value)
             : ArrayToMap(
                 Array.isArray(value) ? value : HashToArray(value),
                 v =>
@@ -301,8 +320,12 @@ export class Operation
     const payload =
       typeof internal.payload === 'string'
         ? internal.payload
-        : isEnumType(internal.payload) || isEntityType(internal.payload)
-        ? internal.payload
+        : isEnumType(internal.payload) ||
+          isEntityType(internal.payload) ||
+          isRecord(internal.payload)
+        ? isRecord(internal.payload)
+          ? internal.payload.toObject()
+          : internal.payload
         : MapToArray(internal.payload, (_name, value) => value.toObject());
     return merge({}, super.toObject(), {
       actionType: this.actionType,
@@ -313,7 +336,7 @@ export class Operation
     } as Partial<OperationOutput>);
   }
 
-  public toMutation(_entity: IEntity): MutationInput | undefined {
+  public toMutation(entity: IEntity): MutationInput | undefined {
     if (
       this.actionType === 'create' ||
       this.actionType === 'update' ||
@@ -322,11 +345,15 @@ export class Operation
       this.actionType === 'removeFrom'
     ) {
       const internal = this[Internal];
-      let payload =
+      let payload: OperationInput['payload'] =
         typeof internal.payload === 'string'
           ? internal.payload
-          : isEnumType(internal.payload) || isEntityType(internal.payload)
-          ? internal.payload
+          : isEnumType(internal.payload) ||
+            isEntityType(internal.payload) ||
+            isRecord(internal.payload)
+          ? isRecord(internal.payload)
+            ? internal.payload.toObject()
+            : internal.payload
           : MapToArray(internal.payload, (_name, value) => value.toObject());
 
       let name = this.name;
@@ -339,16 +366,27 @@ export class Operation
         switch (this.actionType) {
           case 'create':
             name = `create${this.entity}`;
+            args = [
+              {
+                type: `create${this.entity}Input`,
+                name: 'input',
+                required: true,
+              },
+            ];
+            payload = `create${this.entity}Payload`;
+            getCreateOrUpdateFields(entity);
             break;
           case 'update':
             name = `update${this.entity}`;
+            payload = `update${this.entity}Payload`;
             break;
           case 'delete':
             name = `delete${this.entity}`;
+            payload = `delete${this.entity}Payload`;
             break;
           case 'addTo':
             if (this.field) {
-              const field = _entity.fields.get(this.field);
+              const field = entity.fields.get(this.field);
               if (field && !isISimpleField(field)) {
                 name = `addTo${field.relation.metadata.name.full}`;
                 args = [
@@ -364,7 +402,7 @@ export class Operation
             break;
           case 'removeFrom':
             if (this.field) {
-              const field = _entity.fields.get(this.field);
+              const field = entity.fields.get(this.field);
               if (field && !isISimpleField(field)) {
                 name = `removeFrom${field.relation.metadata.name.full}`;
                 args = [
@@ -416,4 +454,19 @@ export class Operation
   public mergeWith(payload: Nullable<OperationInput>) {
     super.mergeWith(payload);
   }
+}
+function getCreateOrUpdateFields(entity: IEntity) {
+  const fields: ISimpleField[] = [];
+  const rels: (IEntityField | IRelationField)[] = [];
+  entity.fields.forEach(f => {
+    if (isISimpleField(f)) {
+      if (idField(f) || mutableFields(f)) {
+        fields.push(f);
+      }
+    } else {
+      if (storedRelations(f)) {
+        rels.push(f);
+      }
+    }
+  });
 }

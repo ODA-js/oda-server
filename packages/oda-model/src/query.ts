@@ -102,6 +102,7 @@ export class Query
     | string
     | EnumType
     | EntityType
+    | IRecord
     | Map<string, IRecord | IRecordField> {
     return this[Internal].payload;
   }
