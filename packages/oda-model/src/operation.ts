@@ -12,31 +12,24 @@ import {
   MetaModelType,
   assignValue,
   NamedArray,
-  ArrayToMap,
   MapToArray,
   Nullable,
-  HashToArray,
   EnumType,
   EntityType,
-  isEnumType,
-  isEntityType,
 } from './types';
+import { payloadToObject } from './payloadToObject';
+import { applyArgs } from './applyArgs';
+import { applyPayload } from './applyPayload';
 import { merge } from 'lodash';
 import { Internal, MetaData } from './element';
 import decapitalize from './lib/decapitalize';
-import { IRecordField, RecordField, RecordFieldInput } from './recordfield';
+import { IRecordField, RecordFieldInput } from './recordfield';
 import { QueryInput } from './query';
 import { MutationInput } from './mutation';
 import { IEntity } from './entity';
 import { IRelationField } from './relationfield';
 import { isISimpleField } from './field';
-import {
-  isRecord,
-  isRecordInput,
-  Record,
-  IRecord,
-  RecordInput,
-} from './record';
+import { IRecord, RecordInput } from './record';
 import { ISimpleField } from './simplefield';
 import { IEntityField } from './entityfield';
 import { idField, mutableFields, storedRelations } from './utils/queries';
@@ -263,20 +256,7 @@ export class Operation
       src: this[Internal],
       input,
       field: 'args',
-      effect: (src, value) =>
-        (src.args = ArrayToMap(
-          Array.isArray(value) ? value : HashToArray(value),
-          v =>
-            isRecordInput(v)
-              ? new Record({ ...v, kind: 'input' })
-              : new RecordField({ ...v, kind: 'input' }),
-          (obj, src) =>
-            isRecord(obj) && isRecord(src)
-              ? obj.mergeWith(src.toObject())
-              : !isRecord(obj) && !isRecord(src)
-              ? obj.mergeWith(src.toObject())
-              : obj,
-        )),
+      effect: applyArgs,
       required: true,
       setDefault: src => (src.args = new Map()),
     });
@@ -289,27 +269,7 @@ export class Operation
       src: this[Internal],
       input,
       field: 'payload',
-      effect: (src, value) =>
-        (src.payload =
-          typeof value === 'string'
-            ? value
-            : isEnumType(value) || isEntityType(value)
-            ? value
-            : isRecordInput(value)
-            ? new Record(value)
-            : ArrayToMap(
-                Array.isArray(value) ? value : HashToArray(value),
-                v =>
-                  isRecordInput(v)
-                    ? new Record({ ...v, kind: 'output' })
-                    : new RecordField({ ...v, kind: 'output' }),
-                (obj, src) =>
-                  isRecord(obj) && isRecord(src)
-                    ? obj.mergeWith(src.toObject())
-                    : !isRecord(obj) && !isRecord(src)
-                    ? obj.mergeWith(src.toObject())
-                    : obj,
-              )),
+      effect: applyPayload,
       required: true,
       setDefault: src => (src.payload = new Map()),
     });
@@ -317,16 +277,7 @@ export class Operation
 
   public toObject(): OperationOutput {
     const internal = this[Internal];
-    const payload =
-      typeof internal.payload === 'string'
-        ? internal.payload
-        : isEnumType(internal.payload) ||
-          isEntityType(internal.payload) ||
-          isRecord(internal.payload)
-        ? isRecord(internal.payload)
-          ? internal.payload.toObject()
-          : internal.payload
-        : MapToArray(internal.payload, (_name, value) => value.toObject());
+    const payload = payloadToObject(internal);
     return merge({}, super.toObject(), {
       actionType: this.actionType,
       custom: this.custom,
@@ -345,16 +296,7 @@ export class Operation
       this.actionType === 'removeFrom'
     ) {
       const internal = this[Internal];
-      let payload: OperationInput['payload'] =
-        typeof internal.payload === 'string'
-          ? internal.payload
-          : isEnumType(internal.payload) ||
-            isEntityType(internal.payload) ||
-            isRecord(internal.payload)
-          ? isRecord(internal.payload)
-            ? internal.payload.toObject()
-            : internal.payload
-          : MapToArray(internal.payload, (_name, value) => value.toObject());
+      let payload = payloadToObject(internal);
 
       let name = this.name;
       let args: NamedArray<RecordFieldInput | RecordInput> = MapToArray(

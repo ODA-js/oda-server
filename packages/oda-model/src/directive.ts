@@ -13,26 +13,17 @@ import {
   Nullable,
   assignValue,
   NamedArray,
-  ArrayToMap,
   MapToArray,
-  HashToArray,
 } from './types';
+import { applyArgs } from './applyArgs';
 import { Internal } from './element';
 import { merge, mergeWith } from 'lodash';
 import {
-  RecordField,
   IRecordField,
   RecordFieldInput,
   RecordFieldOutput,
 } from './recordfield';
-import {
-  IRecord,
-  RecordInput,
-  isRecordInput,
-  Record,
-  RecordOutput,
-  isRecord,
-} from './record';
+import { IRecord, RecordInput, RecordOutput } from './record';
 
 export interface IDirective
   extends IModelBase<DirectiveMetaInfo, DirectiveInput, DirectiveOutput> {
@@ -102,20 +93,7 @@ export class Directive
       src: this[Internal],
       input,
       field: 'args',
-      effect: (src, value) =>
-        (src.args = ArrayToMap(
-          Array.isArray(value) ? value : HashToArray(value),
-          v =>
-            isRecordInput(v)
-              ? new Record({ ...v, kind: 'input' })
-              : new RecordField({ ...v, kind: 'input' }),
-          (obj, src) =>
-            isRecord(obj) && isRecord(src)
-              ? obj.mergeWith(src.toObject())
-              : !isRecord(obj) && !isRecord(src)
-              ? obj.mergeWith(src.toObject())
-              : obj,
-        )),
+      effect: applyArgs,
       setDefault: src => (src.args = new Map()),
     });
 

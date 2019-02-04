@@ -6,14 +6,13 @@ import {
   Nullable,
   assignValue,
   NamedArray,
-  ArrayToMap,
   MapToArray,
-  HashToArray,
   EnumType,
   EntityType,
-  isEntityType,
-  isEnumType,
 } from './types';
+import { payloadToObject } from './payloadToObject';
+import { applyArgs } from './applyArgs';
+import { applyPayload } from './applyPayload';
 import {
   IModelBase,
   ModelBaseInternal,
@@ -23,14 +22,8 @@ import {
   ModelBaseMetaInfo,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
-import { IRecordField, RecordField, RecordFieldInput } from './recordfield';
-import {
-  IRecord,
-  RecordInput,
-  isRecordInput,
-  isRecord,
-  Record,
-} from './record';
+import { IRecordField, RecordFieldInput } from './recordfield';
+import { IRecord, RecordInput } from './record';
 
 export interface IQuery
   extends IModelBase<QueryMetaInfo, QueryInput, QueryOutput> {
@@ -134,20 +127,7 @@ export class Query
       src: this[Internal],
       input,
       field: 'args',
-      effect: (src, value) =>
-        (src.args = ArrayToMap(
-          Array.isArray(value) ? value : HashToArray(value),
-          v =>
-            isRecordInput(v)
-              ? new Record({ ...v, kind: 'input' })
-              : new RecordField({ ...v, kind: 'input' }),
-          (obj, src) =>
-            isRecord(obj) && isRecord(src)
-              ? obj.mergeWith(src.toObject())
-              : !isRecord(obj) && !isRecord(src)
-              ? obj.mergeWith(src.toObject())
-              : obj,
-        )),
+      effect: applyArgs,
       required: true,
       setDefault: src => (src.args = new Map()),
     });
@@ -156,27 +136,7 @@ export class Query
       src: this[Internal],
       input,
       field: 'payload',
-      effect: (src, value) =>
-        (src.payload =
-          typeof value === 'string'
-            ? value
-            : isEnumType(value) || isEntityType(value) || isRecordInput(value)
-            ? isRecordInput(value)
-              ? new Record(value)
-              : value
-            : ArrayToMap(
-                Array.isArray(value) ? value : HashToArray(value),
-                v =>
-                  isRecordInput(v)
-                    ? new Record({ ...v, kind: 'output' })
-                    : new RecordField({ ...v, kind: 'output' }),
-                (obj, src) =>
-                  isRecord(obj) && isRecord(src)
-                    ? obj.mergeWith(src.toObject())
-                    : !isRecord(obj) && !isRecord(src)
-                    ? obj.mergeWith(src.toObject())
-                    : obj,
-              )),
+      effect: applyPayload,
       required: true,
       setDefault: src => (src.payload = new Map()),
     });
@@ -184,16 +144,7 @@ export class Query
 
   public toObject(): QueryOutput {
     const internal = this[Internal];
-    const payload =
-      typeof internal.payload === 'string'
-        ? internal.payload
-        : isEnumType(internal.payload) ||
-          isEntityType(internal.payload) ||
-          isRecord(internal.payload)
-        ? isRecord(internal.payload)
-          ? internal.payload.toObject()
-          : internal.payload
-        : MapToArray(internal.payload, (_name, value) => value.toObject());
+    const payload = payloadToObject(internal);
     return merge({}, super.toObject(), {
       args: MapToArray(this[Internal].args, (_name, value) => value.toObject()),
       payload,
