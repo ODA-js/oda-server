@@ -59,7 +59,7 @@ export function isRecordInput(inp: any): inp is RecordInput {
   return typeof inp === 'object' && inp.hasOwnProperty('fields');
 }
 
-export function isRecord(inp: any): inp is Record {
+export function isRecord(inp: any): inp is IRecord | Record {
   return (
     typeof inp === 'object' &&
     (inp.modelType as MetaModelType) === 'record-type'

@@ -45,6 +45,7 @@ export interface IMutation
     | string
     | EnumType
     | EntityType
+    | IRecord
     | Map<string, IRecord | IRecordField>;
 }
 
@@ -57,7 +58,12 @@ export interface MutationMetaInfo extends ModelBaseMetaInfo {
 
 export interface MutationInternal extends ModelBaseInternal {
   args: Map<string, IRecord | IRecordField>;
-  payload: string | EnumType | EntityType | Map<string, IRecord | IRecordField>;
+  payload:
+    | string
+    | EnumType
+    | EntityType
+    | IRecord
+    | Map<string, IRecord | IRecordField>;
 }
 
 export interface MutationInput extends ModelBaseInput<MutationMetaInfo> {
@@ -68,13 +74,19 @@ export interface MutationInput extends ModelBaseInput<MutationMetaInfo> {
     | string
     | EnumType
     | EntityType
+    | RecordInput
     | AsHash<RecordFieldInput | RecordInput>
     | NamedArray<RecordFieldInput | RecordInput>;
 }
 
 export interface MutationOutput extends ModelBaseOutput<MutationMetaInfo> {
   args: NamedArray<RecordFieldInput>;
-  payload: string | EnumType | EntityType | NamedArray<RecordFieldInput>;
+  payload:
+    | string
+    | EnumType
+    | EntityType
+    | RecordInput
+    | NamedArray<RecordFieldInput>;
 }
 
 export const mutationDefaultMetaInfo = { acl: { execute: [] } };
@@ -104,6 +116,7 @@ export class Mutation
     | string
     | EnumType
     | EntityType
+    | IRecord
     | Map<string, IRecord | IRecordField> {
     return this[Internal].payload;
   }
@@ -153,8 +166,10 @@ export class Mutation
         (src.payload =
           typeof value === 'string'
             ? value
-            : isEnumType(value) || isEntityType(value)
-            ? value
+            : isEnumType(value) || isEntityType(value) || isRecordInput(value)
+            ? isRecordInput(value)
+              ? new Record(value)
+              : value
             : ArrayToMap(
                 Array.isArray(value) ? value : HashToArray(value),
                 v =>
@@ -178,8 +193,12 @@ export class Mutation
     const payload =
       typeof internal.payload === 'string'
         ? internal.payload
-        : isEnumType(internal.payload) || isEntityType(internal.payload)
-        ? internal.payload
+        : isEnumType(internal.payload) ||
+          isEntityType(internal.payload) ||
+          isRecord(internal.payload)
+        ? isRecord(internal.payload)
+          ? internal.payload.toObject()
+          : internal.payload
         : MapToArray(internal.payload, (_name, value) => value.toObject());
     return merge({}, super.toObject(), {
       args: MapToArray(internal.args, (_name, value) => value.toObject()),

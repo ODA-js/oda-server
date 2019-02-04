@@ -45,6 +45,7 @@ export interface IQuery
     | string
     | EnumType
     | EntityType
+    | IRecord
     | Map<string, IRecord | IRecordField>;
 }
 
@@ -56,7 +57,12 @@ export interface QueryMetaInfo extends ModelBaseMetaInfo {
 
 export interface QueryInternal extends ModelBaseInternal {
   args: Map<string, IRecord | IRecordField>;
-  payload: string | EnumType | EntityType | Map<string, IRecord | IRecordField>;
+  payload:
+    | string
+    | EnumType
+    | EntityType
+    | IRecord
+    | Map<string, IRecord | IRecordField>;
 }
 
 export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
@@ -67,13 +73,19 @@ export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
     | string
     | EnumType
     | EntityType
+    | RecordInput
     | AsHash<RecordFieldInput | RecordInput>
     | NamedArray<RecordFieldInput | RecordInput>;
 }
 
 export interface QueryOutput extends ModelBaseOutput<QueryMetaInfo> {
   args: NamedArray<RecordFieldInput>;
-  payload: string | EnumType | EntityType | NamedArray<RecordFieldInput>;
+  payload:
+    | string
+    | EnumType
+    | EntityType
+    | RecordInput
+    | NamedArray<RecordFieldInput | RecordInput>;
 }
 
 export const queryDefaultMetaInfo = {
@@ -148,8 +160,10 @@ export class Query
         (src.payload =
           typeof value === 'string'
             ? value
-            : isEnumType(value) || isEntityType(value)
-            ? value
+            : isEnumType(value) || isEntityType(value) || isRecordInput(value)
+            ? isRecordInput(value)
+              ? new Record(value)
+              : value
             : ArrayToMap(
                 Array.isArray(value) ? value : HashToArray(value),
                 v =>
@@ -173,8 +187,12 @@ export class Query
     const payload =
       typeof internal.payload === 'string'
         ? internal.payload
-        : isEnumType(internal.payload) || isEntityType(internal.payload)
-        ? internal.payload
+        : isEnumType(internal.payload) ||
+          isEntityType(internal.payload) ||
+          isRecord(internal.payload)
+        ? isRecord(internal.payload)
+          ? internal.payload.toObject()
+          : internal.payload
         : MapToArray(internal.payload, (_name, value) => value.toObject());
     return merge({}, super.toObject(), {
       args: MapToArray(this[Internal].args, (_name, value) => value.toObject()),
