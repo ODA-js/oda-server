@@ -55,7 +55,7 @@ describe('Operation', () => {
       'description',
       'simple description',
     );
-    if (typeof res.payload !== 'string') {
+    if (res.payload instanceof Map) {
       expect(res.payload.size).toBe(1);
       expect(res.payload.get('result')).toHaveProperty(
         'description',

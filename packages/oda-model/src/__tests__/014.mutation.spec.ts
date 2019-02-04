@@ -30,10 +30,12 @@ describe('Mutation', () => {
     });
     expect(res.args.size).toBe(1);
     expect(res.args.get('login')).toHaveProperty('title', 'some title');
-    expect(res.payload.size).toBe(1);
-    expect(res.payload.get('token')).toHaveProperty(
-      'description',
-      'this is the token',
-    );
+    if (res.payload instanceof Map) {
+      expect(res.payload.size).toBe(1);
+      expect(res.payload.get('token')).toHaveProperty(
+        'description',
+        'this is the token',
+      );
+    }
   });
 });
