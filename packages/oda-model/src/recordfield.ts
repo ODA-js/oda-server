@@ -32,7 +32,6 @@ export interface RecordFieldMeta extends ModelBaseMetaInfo {
   defaultValue?: string;
   order: number;
   required: boolean;
-  type: string | EnumType | EntityType;
   multiplicity?: Multiplicity;
 }
 

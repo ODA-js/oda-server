@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`queries indexes: all ndexes 1`] = `
+Array [
+  Object {
+    "description": undefined,
+    "kind": "input",
+    "name": "a",
+    "order": 0,
+    "required": false,
+    "title": undefined,
+    "type": "string",
+  },
+  Object {
+    "fields": Array [
+      Object {
+        "description": undefined,
+        "kind": "input",
+        "name": "b",
+        "order": 0,
+        "required": false,
+        "title": undefined,
+        "type": "string",
+      },
+      Object {
+        "description": undefined,
+        "kind": "input",
+        "name": "c",
+        "order": 1,
+        "required": false,
+        "title": undefined,
+        "type": "string",
+      },
+    ],
+    "name": "b",
+  },
+]
+`;
+
+exports[`queries unique indexes: all identity indexes 1`] = `
+Array [
+  Object {
+    "description": undefined,
+    "kind": "input",
+    "name": "a",
+    "order": 0,
+    "required": true,
+    "title": undefined,
+    "type": "string",
+  },
+  Object {
+    "fields": Array [
+      Object {
+        "description": undefined,
+        "kind": "input",
+        "name": "b",
+        "order": 0,
+        "required": true,
+        "title": undefined,
+        "type": "string",
+      },
+      Object {
+        "description": undefined,
+        "kind": "input",
+        "name": "c",
+        "order": 1,
+        "required": true,
+        "title": undefined,
+        "type": "string",
+      },
+    ],
+    "name": "b",
+  },
+  Object {
+    "description": undefined,
+    "kind": "input",
+    "name": "id",
+    "order": 0,
+    "required": true,
+    "title": undefined,
+    "type": "ID",
+  },
+]
+`;

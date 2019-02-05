@@ -1,6 +1,8 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { IUpdatableBase } from './element';
 import { get, set, has } from 'lodash';
+import { IRelation } from './relation';
+import { IBelongsToManyRelation } from './belongstomany';
 
 export type Nullable<T> = { [P in keyof T]: T[P] | undefined | null };
 
@@ -443,4 +445,8 @@ export function saveToFile<T extends { toObject: () => any }>(
   inp: T,
 ) {
   writeFileSync(filename, inp.toObject());
+}
+
+export function isBelongsToMany(rel: IRelation): rel is IBelongsToManyRelation {
+  return rel.verb === 'BelongsToMany';
 }

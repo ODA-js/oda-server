@@ -2,6 +2,8 @@ import { ISimpleField } from '../simplefield';
 import { IField, isISimpleField } from '../field';
 import { IEntity } from '../entity';
 import { IndexEntry } from '../entitybase';
+import { Record } from '../record';
+import { RecordFieldInput, RecordField } from '../recordfield';
 
 /**
  * checks if field is _id or id
@@ -24,7 +26,7 @@ export const mutableFields = (f: ISimpleField): boolean =>
  * @param f field
  */
 export const storedRelations = (f: IField): boolean =>
-  !isISimpleField(f) && f.persistent;
+  !isISimpleField(f) && f.relation.metadata.persistence.stored;
 
 export const getIndexedFields = (filter: (i: IndexEntry) => boolean) => (
   entity: IEntity,
@@ -41,13 +43,45 @@ export const getIndexedFields = (filter: (i: IndexEntry) => boolean) => (
           ])
         : undefined;
     })
-    .filter(f => f) as unknown) as [string, IField[]];
+    .filter(f => f) as unknown) as [string, IField[]][];
 };
 
-export const getUniqueIndexedFields = () =>
-  getIndexedFields(
-    (entry: IndexEntry) => !!(entry.options && entry.options.unique),
-  );
+export const getUniqueIndexedFields = getIndexedFields(
+  (entry: IndexEntry) => !!(entry.options && entry.options.unique),
+);
 
-export const getGeneralIndexedFields = () =>
-  getIndexedFields((entry: IndexEntry) => !!entry);
+export const getGeneralIndexedFields = getIndexedFields(
+  (entry: IndexEntry) => !!entry && !(entry.options && entry.options.unique),
+);
+
+export const ArgsFromTuples = (args: [string, IField[]][]) => {
+  return args.map(item => {
+    if (item[1].length > 1) {
+      return {
+        name: item[0],
+        fields: item[1].map(
+          (f, i) =>
+            ({
+              name: f.name,
+              title: f.title,
+              description: f.description,
+              kind: 'input',
+              required: f.required,
+              type: f.type,
+              order: i,
+            } as RecordFieldInput),
+        ),
+      };
+    } else {
+      return {
+        name: item[0],
+        title: item[1][0].title,
+        description: item[1][0].description,
+        kind: 'input',
+        required: item[1][0].required,
+        type: item[1][0].type,
+        order: 0,
+      } as RecordFieldInput;
+    }
+  });
+};

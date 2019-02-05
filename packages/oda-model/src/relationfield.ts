@@ -76,7 +76,7 @@ export interface RelationFieldInternal extends RelationFieldBaseInternal {}
 const defaultMetaInfo = {};
 const defaultInput = {
   metadata: defaultMetaInfo,
-  persistent: false,
+  // persistent: false,
   derived: false,
   identity: false,
   indexed: false,
@@ -184,7 +184,9 @@ export class RelationField
         }
       },
       required: true,
-      setDefault: src => (src.persistence.persistent = defaultInput.persistent),
+      setDefault: src =>
+        (src.persistence.persistent =
+          this.relation.verb === 'BelongsTo' ? true : false),
     });
 
     assignValue<

@@ -46,7 +46,14 @@ export interface EntityFieldOutput
   list?: boolean;
 }
 
-const defaultMetaInfo = { persistence: { derived: false, persistent: true } };
+const defaultMetaInfo = {
+  persistence: {
+    derived: false,
+    persistent: true,
+    identity: false,
+    indexed: false,
+  },
+};
 const defaultInput = { metadata: defaultMetaInfo };
 
 export class EntityField

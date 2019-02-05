@@ -46,10 +46,15 @@ export interface IFieldBase<
 }
 
 export interface FieldBasePersistence {
+  /** is field derived in code */
   derived: boolean;
+  /** is field persisted somewhere */
   persistent: boolean;
+  /** is field required */
   required: boolean;
+  /** is field identity */
   identity: boolean | string | string[];
+  /** is field indexed */
   indexed: boolean | string | string[];
 }
 

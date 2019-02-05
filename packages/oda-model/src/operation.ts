@@ -16,6 +16,7 @@ import {
   Nullable,
   EnumType,
   EntityType,
+  isBelongsToMany,
 } from './types';
 import { payloadToObject } from './payloadToObject';
 import { applyArgs } from './applyArgs';
@@ -28,11 +29,17 @@ import { QueryInput } from './query';
 import { MutationInput } from './mutation';
 import { IEntity } from './entity';
 import { IRelationField } from './relationfield';
-import { isISimpleField } from './field';
+import { isISimpleField, isIEntityField } from './field';
 import { IRecord, RecordInput } from './record';
-import { ISimpleField } from './simplefield';
-import { IEntityField } from './entityfield';
-import { idField, mutableFields, storedRelations } from './utils/queries';
+import {
+  idField,
+  mutableFields,
+  storedRelations,
+  ArgsFromTuples,
+  getUniqueIndexedFields,
+} from './utils/queries';
+import capitalize from './lib/capitalize';
+
 /**
  * Kind of mutation which is intended to work with single entity
  */
@@ -306,26 +313,73 @@ export class Operation
 
       if (!this.custom) {
         switch (this.actionType) {
-          case 'create':
-            name = `create${this.entity}`;
-            args = [
-              {
-                type: `create${this.entity}Input`,
-                name: 'input',
-                required: true,
-              },
-            ];
-            payload = `create${this.entity}Payload`;
-            getCreateOrUpdateFields(entity);
-            break;
-          case 'update':
-            name = `update${this.entity}`;
-            payload = `update${this.entity}Payload`;
-            break;
+          case 'create': {
+            let fields = getCreateFields(entity);
+            return {
+              name: `create${this.entity}`,
+              args: [
+                {
+                  name: `create${this.entity}Input`,
+                  fields,
+                } as RecordFieldInput,
+              ],
+              payload: {
+                name: `create${this.entity}Payload`,
+                kind: 'output',
+                fields: [
+                  {
+                    name: decapitalize(entity.name),
+                    type: `${entity.plural}Edge`,
+                  } as RecordFieldInput,
+                ],
+              } as RecordInput,
+            };
+          }
+          case 'update': {
+            let fields = getUpdateFields(entity);
+            return {
+              name: `update${this.entity}`,
+              args: [
+                {
+                  name: `create${this.entity}Input`,
+                  kind: 'input',
+                  fields,
+                },
+              ],
+              payload: {
+                name: `update${this.entity}Payload`,
+                kind: 'output',
+                fields: [
+                  {
+                    name: decapitalize(entity.name),
+                    type: `${entity.name}`,
+                  } as RecordFieldInput,
+                ],
+              } as RecordInput,
+            };
+          }
           case 'delete':
             name = `delete${this.entity}`;
             payload = `delete${this.entity}Payload`;
-            break;
+            return {
+              name: `update${this.entity}`,
+              args: [
+                {
+                  name: `delete${this.entity}Input`,
+                  fields: ArgsFromTuples(getUniqueIndexedFields(entity)),
+                },
+              ],
+              payload: {
+                name: `delete${this.entity}Payload`,
+                kind: 'output',
+                fields: [
+                  {
+                    name: decapitalize(entity.name),
+                    type: `${entity.name}`,
+                  } as RecordFieldInput,
+                ],
+              } as RecordInput,
+            };
           case 'addTo':
             if (this.field) {
               const field = entity.fields.get(this.field);
@@ -397,18 +451,148 @@ export class Operation
     super.mergeWith(payload);
   }
 }
-function getCreateOrUpdateFields(entity: IEntity) {
-  const fields: ISimpleField[] = [];
-  const rels: (IEntityField | IRelationField)[] = [];
+
+function getCreateFields(entity: IEntity) {
+  const result: RecordFieldInput[] = [];
   entity.fields.forEach(f => {
     if (isISimpleField(f)) {
       if (idField(f) || mutableFields(f)) {
-        fields.push(f);
+        result.push({
+          name: f.name,
+          title: f.title,
+          description: f.description,
+          kind: 'input',
+          required: f.required,
+          type: f.type,
+          order: f.order,
+        });
       }
     } else {
       if (storedRelations(f)) {
-        rels.push(f);
+        if (isIEntityField(f)) {
+          result.push({
+            name: f.name,
+            title: f.title,
+            description: f.description,
+            kind: 'input',
+            required: f.required,
+            multiplicity: f.type.multiplicity,
+            type: `embed${f.type.type}Input`,
+            order: f.order,
+          });
+        } else {
+          const createName =
+            isBelongsToMany(f.relation) && f.relation.fields.size > 0
+              ? `embed${f.relation.ref.entity}UpdateInto${
+                  entity.name
+                }${capitalize(f.name)}Input`
+              : `embed${f.relation.entity}Input`;
+
+          result.push({
+            name: f.name,
+            title: f.title,
+            description: f.description,
+            kind: 'input',
+            required: f.required,
+            multiplicity: f.relation.metadata.persistence.single
+              ? 'one'
+              : 'many',
+            type: createName,
+            order: f.order,
+          });
+        }
       }
     }
   });
+  return result;
+}
+
+function getUpdateFields(entity: IEntity) {
+  const result: RecordFieldInput[] = [];
+  entity.fields.forEach(f => {
+    if (isISimpleField(f)) {
+      if (idField(f) || mutableFields(f)) {
+        result.push({
+          name: f.name,
+          title: f.title,
+          description: f.description,
+          kind: 'input',
+          required: f.required,
+          type: f.type,
+          order: f.order,
+        });
+      }
+    } else {
+      if (storedRelations(f)) {
+        if (isIEntityField(f)) {
+          result.push({
+            name: f.name,
+            title: f.title,
+            description: f.description,
+            kind: 'input',
+            required: f.required,
+            multiplicity: f.type.multiplicity,
+            type: `embed${f.type.type}Input`,
+            order: f.order,
+          });
+        } else {
+          const createName =
+            isBelongsToMany(f.relation) && f.relation.fields.size > 0
+              ? `embed${f.relation.ref.entity}UpdateInto${
+                  entity.name
+                }${capitalize(f.name)}Input`
+              : `embed${f.relation.entity}Input`;
+
+          const updateName =
+            isBelongsToMany(f.relation) && f.relation.fields.size > 0
+              ? `embed${f.relation.ref.entity}UpdateInto${
+                  entity.name
+                }${capitalize(f.name)}Input`
+              : `embed${f.relation.entity}Input`;
+
+          result.push({
+            name: f.name,
+            title: f.title,
+            description: f.description,
+            kind: 'input',
+            required: f.required,
+            multiplicity: f.relation.metadata.persistence.single
+              ? 'one'
+              : 'many',
+            type: updateName,
+            order: f.order,
+          });
+
+          if (!f.relation.metadata.persistence.embedded) {
+            result.push({
+              name: `${f.name}Unlink`,
+              title: f.title,
+              description: f.description,
+              kind: 'input',
+              required: f.required,
+              multiplicity: f.relation.metadata.persistence.single
+                ? 'one'
+                : 'many',
+              type: updateName,
+              order: f.order,
+            });
+
+            result.push({
+              name: `${f.name}Create`,
+              title: f.title,
+              description: f.description,
+              kind: 'input',
+              required: f.required,
+              multiplicity: f.relation.metadata.persistence.single
+                ? 'one'
+                : 'many',
+              type: createName,
+              order: f.order,
+            });
+          }
+        }
+      }
+    }
+  });
+  return result;
 }

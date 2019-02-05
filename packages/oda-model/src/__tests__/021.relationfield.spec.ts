@@ -64,6 +64,7 @@ describe('RelationField', () => {
         belongsTo: 'A#',
       },
     });
+    expect(res.persistent).toBeTruthy();
     expect(res).toMatchSnapshot('belongsTo');
     expect(res.toObject()).toMatchSnapshot('belongsTo to Object');
   });
