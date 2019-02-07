@@ -19,18 +19,18 @@ import { applyArgs } from './applyArgs';
 import { Internal } from './element';
 import { merge, mergeWith } from 'lodash';
 import {
-  IRecordField,
-  RecordFieldInput,
-  RecordFieldOutput,
-} from './recordfield';
-import { IRecord, RecordInput, RecordOutput } from './record';
+  IObjectTypeField,
+  ObjectTypeFieldInput,
+  ObjectTypeFieldOutput,
+} from './objecttypefield';
+import { IObjectType, ObjectTypeInput, ObjectTypeOutput } from './objecttype';
 
 export interface IDirective
   extends IModelBase<DirectiveMetaInfo, DirectiveInput, DirectiveOutput> {
   /**
    * set of arguments
    */
-  readonly args: Map<string, IRecordField | IRecord>;
+  readonly args: Map<string, IObjectTypeField | IObjectType>;
   /**
    * where it can met
    */
@@ -40,19 +40,19 @@ export interface IDirective
 export interface DirectiveMetaInfo extends ModelBaseMetaInfo {}
 
 export interface DirectiveInternal extends ModelBaseInternal {
-  args: Map<string, IRecordField | IRecord>;
+  args: Map<string, IObjectTypeField | IObjectType>;
   on: Set<DirectiveLocation>;
 }
 
 export interface DirectiveInput extends ModelBaseInput<DirectiveMetaInfo> {
   args?:
-    | AsHash<RecordFieldInput | RecordInput>
-    | NamedArray<RecordFieldInput | RecordInput>;
+    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
+    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   on: DirectiveLocation[];
 }
 
 export interface DirectiveOutput extends ModelBaseOutput<DirectiveMetaInfo> {
-  args: NamedArray<RecordOutput | RecordFieldOutput>;
+  args: NamedArray<ObjectTypeOutput | ObjectTypeFieldOutput>;
   on: DirectiveLocation[];
 }
 
@@ -70,7 +70,7 @@ export class Directive
   public get modelType(): MetaModelType {
     return 'directive';
   }
-  get args(): Map<string, IRecordField | IRecord> {
+  get args(): Map<string, IObjectTypeField | IObjectType> {
     return this[Internal].args;
   }
 

@@ -22,15 +22,15 @@ import {
   ModelBaseMetaInfo,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
-import { IRecordField, RecordFieldInput } from './recordfield';
-import { IRecord, RecordInput } from './record';
+import { IObjectTypeField, ObjectTypeFieldInput } from './objecttypefield';
+import { IObjectType, ObjectTypeInput } from './objecttype';
 
 export interface IQuery
   extends IModelBase<QueryMetaInfo, QueryInput, QueryOutput> {
   /**
    * set of arguments
    */
-  readonly args: Map<string, IRecord | IRecordField>;
+  readonly args: Map<string, IObjectType | IObjectTypeField>;
   /**
    * set of output fields
    */
@@ -38,8 +38,8 @@ export interface IQuery
     | string
     | EnumType
     | EntityType
-    | IRecord
-    | Map<string, IRecord | IRecordField>;
+    | IObjectType
+    | Map<string, IObjectType | IObjectTypeField>;
 }
 
 export interface QueryMetaInfo extends ModelBaseMetaInfo {
@@ -49,36 +49,36 @@ export interface QueryMetaInfo extends ModelBaseMetaInfo {
 }
 
 export interface QueryInternal extends ModelBaseInternal {
-  args: Map<string, IRecord | IRecordField>;
+  args: Map<string, IObjectType | IObjectTypeField>;
   payload:
     | string
     | EnumType
     | EntityType
-    | IRecord
-    | Map<string, IRecord | IRecordField>;
+    | IObjectType
+    | Map<string, IObjectType | IObjectTypeField>;
 }
 
 export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
   args:
-    | AsHash<RecordFieldInput | RecordInput>
-    | NamedArray<RecordFieldInput | RecordInput>;
+    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
+    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   payload:
     | string
     | EnumType
     | EntityType
-    | RecordInput
-    | AsHash<RecordFieldInput | RecordInput>
-    | NamedArray<RecordFieldInput | RecordInput>;
+    | ObjectTypeInput
+    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
+    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
 }
 
 export interface QueryOutput extends ModelBaseOutput<QueryMetaInfo> {
-  args: NamedArray<RecordFieldInput>;
+  args: NamedArray<ObjectTypeFieldInput>;
   payload:
     | string
     | EnumType
     | EntityType
-    | RecordInput
-    | NamedArray<RecordFieldInput | RecordInput>;
+    | ObjectTypeInput
+    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
 }
 
 export const queryDefaultMetaInfo = {
@@ -99,7 +99,7 @@ export class Query
     super(merge({}, queryDefaultInput, init));
   }
 
-  public get args(): Map<string, IRecord | IRecordField> {
+  public get args(): Map<string, IObjectType | IObjectTypeField> {
     return this[Internal].args;
   }
 
@@ -107,8 +107,8 @@ export class Query
     | string
     | EnumType
     | EntityType
-    | IRecord
-    | Map<string, IRecord | IRecordField> {
+    | IObjectType
+    | Map<string, IObjectType | IObjectTypeField> {
     return this[Internal].payload;
   }
 

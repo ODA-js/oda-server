@@ -1,11 +1,15 @@
 import {
-  RecordInput,
-  isRecordInput,
-  Record,
-  isRecord,
-  IRecord,
-} from './record';
-import { RecordFieldInput, RecordField, IRecordField } from './recordfield';
+  ObjectTypeInput,
+  isObjectTypeInput,
+  ObjectType,
+  isObjectType,
+  IObjectType,
+} from './objecttype';
+import {
+  ObjectTypeFieldInput,
+  ObjectTypeField,
+  IObjectTypeField,
+} from './objecttypefield';
 import {
   EnumType,
   EntityType,
@@ -21,34 +25,34 @@ export function applyPayload(
       | string
       | EnumType
       | EntityType
-      | IRecord
-      | Map<string, IRecord | IRecordField>;
+      | IObjectType
+      | Map<string, IObjectType | IObjectTypeField>;
   },
   value:
     | string
     | EnumType
     | EntityType
-    | RecordInput
-    | AsHash<RecordInput | RecordFieldInput>
-    | (RecordInput | RecordFieldInput)[],
+    | ObjectTypeInput
+    | AsHash<ObjectTypeInput | ObjectTypeFieldInput>
+    | (ObjectTypeInput | ObjectTypeFieldInput)[],
 ) {
   return (src.payload =
     typeof value === 'string'
       ? value
-      : isEnumType(value) || isEntityType(value) || isRecordInput(value)
-      ? isRecordInput(value)
-        ? new Record(value)
+      : isEnumType(value) || isEntityType(value) || isObjectTypeInput(value)
+      ? isObjectTypeInput(value)
+        ? new ObjectType(value)
         : value
       : ArrayToMap(
           Array.isArray(value) ? value : HashToArray(value),
           v =>
-            isRecordInput(v)
-              ? new Record({ ...v, kind: 'output' })
-              : new RecordField({ ...v, kind: 'output' }),
+            isObjectTypeInput(v)
+              ? new ObjectType({ ...v, kind: 'output' })
+              : new ObjectTypeField({ ...v, kind: 'output' }),
           (obj, src) =>
-            isRecord(obj) && isRecord(src)
+            isObjectType(obj) && isObjectType(src)
               ? obj.mergeWith(src.toObject())
-              : !isRecord(obj) && !isRecord(src)
+              : !isObjectType(obj) && !isObjectType(src)
               ? obj.mergeWith(src.toObject())
               : obj,
         ));

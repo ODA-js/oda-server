@@ -32,5 +32,5 @@ export * from './entityreference';
 export * from './getFilter';
 export * from './validation';
 export * from './modelhooks';
-export * from './recordfield';
-export * from './record';
+export * from './objecttypefield';
+export * from './objecttype';

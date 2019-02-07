@@ -22,15 +22,15 @@ import {
   ModelBaseMetaInfo,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
-import { IRecordField, RecordFieldInput } from './recordfield';
-import { IRecord, RecordInput } from './record';
+import { IObjectTypeField, ObjectTypeFieldInput } from './objecttypefield';
+import { IObjectType, ObjectTypeInput } from './objecttype';
 
 export interface IMutation
   extends IModelBase<MutationMetaInfo, MutationInput, MutationOutput> {
   /**
    * set of arguments
    */
-  readonly args: Map<string, IRecord | IRecordField>;
+  readonly args: Map<string, IObjectType | IObjectTypeField>;
   /**
    * set of output fields
    */
@@ -38,8 +38,8 @@ export interface IMutation
     | string
     | EnumType
     | EntityType
-    | IRecord
-    | Map<string, IRecord | IRecordField>;
+    | IObjectType
+    | Map<string, IObjectType | IObjectTypeField>;
 }
 
 export interface MutationMetaInfo extends ModelBaseMetaInfo {
@@ -50,36 +50,36 @@ export interface MutationMetaInfo extends ModelBaseMetaInfo {
 }
 
 export interface MutationInternal extends ModelBaseInternal {
-  args: Map<string, IRecord | IRecordField>;
+  args: Map<string, IObjectType | IObjectTypeField>;
   payload:
     | string
     | EnumType
     | EntityType
-    | IRecord
-    | Map<string, IRecord | IRecordField>;
+    | IObjectType
+    | Map<string, IObjectType | IObjectTypeField>;
 }
 
 export interface MutationInput extends ModelBaseInput<MutationMetaInfo> {
   args:
-    | AsHash<RecordFieldInput | RecordInput>
-    | NamedArray<RecordFieldInput | RecordInput>;
+    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
+    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   payload:
     | string
     | EnumType
     | EntityType
-    | RecordInput
-    | AsHash<RecordFieldInput | RecordInput>
-    | NamedArray<RecordFieldInput | RecordInput>;
+    | ObjectTypeInput
+    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
+    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
 }
 
 export interface MutationOutput extends ModelBaseOutput<MutationMetaInfo> {
-  args: NamedArray<RecordFieldInput>;
+  args: NamedArray<ObjectTypeFieldInput>;
   payload:
     | string
     | EnumType
     | EntityType
-    | RecordInput
-    | NamedArray<RecordFieldInput>;
+    | ObjectTypeInput
+    | NamedArray<ObjectTypeFieldInput>;
 }
 
 export const mutationDefaultMetaInfo = { acl: { execute: [] } };
@@ -101,7 +101,7 @@ export class Mutation
     super(merge({}, mutationDefaultInput, init));
   }
 
-  public get args(): Map<string, IRecord | IRecordField> {
+  public get args(): Map<string, IObjectType | IObjectTypeField> {
     return this[Internal].args;
   }
 
@@ -109,8 +109,8 @@ export class Mutation
     | string
     | EnumType
     | EntityType
-    | IRecord
-    | Map<string, IRecord | IRecordField> {
+    | IObjectType
+    | Map<string, IObjectType | IObjectTypeField> {
     return this[Internal].payload;
   }
 

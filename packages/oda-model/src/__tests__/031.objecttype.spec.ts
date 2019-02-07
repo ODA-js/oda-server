@@ -1,29 +1,33 @@
 import 'jest';
 import { MetaData } from '../element';
-import { Record, recordDefaultMetaInfo } from '../record';
+import { ObjectType, recordDefaultMetaInfo } from '../objecttype';
 
 describe('Type', () => {
   it('default', () => {
-    const res = new Record({ name: 'A', fields: [] });
+    const res = new ObjectType({ name: 'A', fields: [] });
     expect(res[MetaData]).toMatchObject(recordDefaultMetaInfo);
     expect(res.toObject()).toMatchSnapshot('toObject');
   });
   it('default has no Singular', () => {
-    const res = new Record({ name: 'Species', fields: [] });
+    const res = new ObjectType({ name: 'Species', fields: [] });
     expect(res.plural).toBe('AllSpecies');
     expect(res.toObject()).toMatchSnapshot('toObject');
   });
   it('should Capitalize name', () => {
-    const res = new Record({ name: 'entity', fields: [] });
+    const res = new ObjectType({ name: 'entity', fields: [] });
     expect(res.name).toBe('entity');
   });
   it('take TitlePlural from Plural name', () => {
-    const res = new Record({ name: 'Child', plural: 'Children  ', fields: [] });
+    const res = new ObjectType({
+      name: 'Child',
+      plural: 'Children  ',
+      fields: [],
+    });
     expect(res.plural).toBe('Children');
     expect(res.titlePlural).toBe('Children');
   });
   it('should take Plural Title plural', () => {
-    const res = new Record({
+    const res = new ObjectType({
       name: 'Species',
       plural: 'Species',
       titlePlural: 'All Species',
@@ -34,7 +38,7 @@ describe('Type', () => {
   });
 
   it('creates specified field with specified types', () => {
-    const res = new Record({
+    const res = new ObjectType({
       name: 'A',
       fields: [
         {
@@ -71,7 +75,7 @@ describe('Type', () => {
   });
 
   it('should pass entity name to fields', () => {
-    const res = new Record({
+    const res = new ObjectType({
       name: 'A',
       fields: [{ name: 'a' }],
       kind: 'output',
@@ -84,7 +88,7 @@ describe('Type', () => {
   });
 
   it('should deduplicates fields', () => {
-    const res = new Record({
+    const res = new ObjectType({
       name: 'A',
       fields: [
         { name: 'a' },

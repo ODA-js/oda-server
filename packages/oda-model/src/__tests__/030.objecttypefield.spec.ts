@@ -1,10 +1,11 @@
 import 'jest';
-import { RecordField } from '../recordfield';
+import { ObjectTypeField } from '../objecttypefield';
 import { EnumType } from '../types';
+import { ObjectTypeInput } from '../objecttype';
 
-describe('RecordField', () => {
+describe('ObjectTypeField', () => {
   it('default', () => {
-    const res = new RecordField({
+    const res = new ObjectTypeField({
       name: 'A',
     });
     expect(res.name).toBe('A');
@@ -16,7 +17,7 @@ describe('RecordField', () => {
   });
 
   it('default value only for persistent fields', () => {
-    const res = new RecordField({
+    const res = new ObjectTypeField({
       name: 'A',
       defaultValue: 'NAME_OF_DEFAULT_VALUE',
     });
@@ -25,14 +26,14 @@ describe('RecordField', () => {
   });
 
   it('required by default is false', () => {
-    const res = new RecordField({
+    const res = new ObjectTypeField({
       name: 'A',
     });
     expect(res.name).toBe('A');
     expect(res.required).toBeFalsy();
   });
   it('required is setup', () => {
-    const res = new RecordField({
+    const res = new ObjectTypeField({
       name: 'A',
       required: true,
     });
@@ -42,7 +43,7 @@ describe('RecordField', () => {
   });
 
   it('default enum', () => {
-    const res = new RecordField({
+    const res = new ObjectTypeField({
       name: 'A',
       type: {
         type: 'enum',
@@ -59,7 +60,7 @@ describe('RecordField', () => {
   });
 
   it('default enum list', () => {
-    const res = new RecordField({
+    const res = new ObjectTypeField({
       name: 'A',
       multiplicity: 'many',
       type: {
@@ -74,7 +75,7 @@ describe('RecordField', () => {
     expect((res.type as EnumType).multiplicity).toBe('many');
   });
   it('default enum multiplicity == one', () => {
-    const res = new RecordField({
+    const res = new ObjectTypeField({
       name: 'A',
       type: {
         type: 'enum',
@@ -87,6 +88,35 @@ describe('RecordField', () => {
     expect((res.type as EnumType).type).toBe('enum');
     expect((res.type as EnumType).multiplicity).toBe('one');
     expect(res).toMatchSnapshot('default');
+    expect(res.toObject()).toMatchSnapshot('toObject');
+  });
+  it('ObjectType as field type ObjectType', () => {
+    const res = new ObjectTypeField({
+      name: 'A',
+      type: {
+        name: 'one',
+        fields: [
+          {
+            name: 'a',
+          },
+          {
+            name: 'b',
+          },
+          {
+            name: 'c',
+            type: {
+              name: 'C',
+              fields: [
+                {
+                  name: 'c1',
+                },
+              ],
+            },
+          },
+        ],
+      } as ObjectTypeInput,
+    });
+    expect(res).toMatchSnapshot('object');
     expect(res.toObject()).toMatchSnapshot('toObject');
   });
 });

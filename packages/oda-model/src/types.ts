@@ -143,10 +143,12 @@ export type MetaModelType =
   | 'ref'
   | 'args'
   | 'model-hook'
-  | 'record-type'
+  | 'object-type'
   | 'argument-simple-field'
   | 'argument-enum-field'
   | 'argument-entity-field'
+  | 'argument-entity-field'
+  | 'argument-object-type'
   | RelationType;
 
 export type Multiplicity = 'one' | 'many';
@@ -449,4 +451,8 @@ export function saveToFile<T extends { toObject: () => any }>(
 
 export function isBelongsToMany(rel: IRelation): rel is IBelongsToManyRelation {
   return rel.verb === 'BelongsToMany';
+}
+
+export interface IBuildable {
+  build: () => void;
 }

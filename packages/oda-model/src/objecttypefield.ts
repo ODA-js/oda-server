@@ -17,10 +17,22 @@ import {
   ArgumentKind,
 } from './types';
 import { Internal } from './element';
+import {
+  IObjectType,
+  ObjectTypeInput,
+  ObjectTypeOutput,
+  isObjectType,
+  isObjectTypeInput,
+  ObjectType,
+} from './objecttype';
 
-export interface IRecordField
-  extends IModelBase<RecordFieldMeta, RecordFieldInput, RecordFieldOutput> {
-  readonly type: string | EnumType | EntityType;
+export interface IObjectTypeField
+  extends IModelBase<
+    ObjectTypeFieldMeta,
+    ObjectTypeFieldInput,
+    ObjectTypeFieldOutput
+  > {
+  readonly type: string | EnumType | EntityType | IObjectType;
   readonly multiplicity?: Multiplicity;
   readonly defaultValue?: string;
   readonly order?: number;
@@ -28,21 +40,22 @@ export interface IRecordField
   readonly kind: ArgumentKind;
 }
 
-export interface RecordFieldMeta extends ModelBaseMetaInfo {
+export interface ObjectTypeFieldMeta extends ModelBaseMetaInfo {
   defaultValue?: string;
   order: number;
   required: boolean;
   multiplicity?: Multiplicity;
 }
 
-export interface RecordFieldInternal extends ModelBaseInternal {
-  type: string | EnumType | EntityType;
+export interface ObjectTypeFieldInternal extends ModelBaseInternal {
+  type: string | EnumType | EntityType | IObjectType;
   multiplicity: Multiplicity;
   kind: ArgumentKind;
 }
 
-export interface RecordFieldInput extends ModelBaseInput<RecordFieldMeta> {
-  type?: string | EnumType | EntityType;
+export interface ObjectTypeFieldInput
+  extends ModelBaseInput<ObjectTypeFieldMeta> {
+  type?: string | EnumType | EntityType | ObjectTypeInput;
   required?: boolean;
   defaultValue?: string;
   multiplicity?: Multiplicity;
@@ -50,8 +63,9 @@ export interface RecordFieldInput extends ModelBaseInput<RecordFieldMeta> {
   kind?: ArgumentKind;
 }
 
-export interface RecordFieldOutput extends ModelBaseOutput<RecordFieldMeta> {
-  type?: string | EnumType;
+export interface ObjectTypeFieldOutput
+  extends ModelBaseOutput<ObjectTypeFieldMeta> {
+  type?: string | EnumType | EntityType | ObjectTypeOutput;
   multiplicity?: Multiplicity;
   order?: number;
   kind: ArgumentKind;
@@ -60,24 +74,26 @@ export interface RecordFieldOutput extends ModelBaseOutput<RecordFieldMeta> {
 export const typeFieldDefaultMetaInfo = {};
 export const TypeFieldDefaultInput = { metadata: typeFieldDefaultMetaInfo };
 
-export class RecordField
+export class ObjectTypeField
   extends ModelBase<
-    RecordFieldMeta,
-    RecordFieldInput,
-    RecordFieldInternal,
-    RecordFieldOutput
+    ObjectTypeFieldMeta,
+    ObjectTypeFieldInput,
+    ObjectTypeFieldInternal,
+    ObjectTypeFieldOutput
   >
-  implements IRecordField {
+  implements IObjectTypeField {
   public get modelType(): MetaModelType {
     const internal = this[Internal];
     return typeof internal.type === 'string'
       ? 'argument-simple-field'
+      : isObjectType(internal.type)
+      ? 'argument-object-type'
       : internal.type.type === 'entity'
       ? 'argument-entity-field'
       : 'argument-enum-field';
   }
 
-  get type(): string | EnumType | EntityType {
+  get type(): string | EnumType | EntityType | IObjectType {
     return this[Internal].type;
   }
 
@@ -102,17 +118,17 @@ export class RecordField
     return this.metadata.required;
   }
 
-  constructor(init: RecordFieldInput) {
+  constructor(init: ObjectTypeFieldInput) {
     super(merge({}, TypeFieldDefaultInput, init));
   }
 
-  public updateWith(input: Nullable<RecordFieldInput>) {
+  public updateWith(input: Nullable<ObjectTypeFieldInput>) {
     super.updateWith(input);
 
     assignValue<
-      RecordFieldInternal,
-      RecordFieldInput,
-      RecordFieldInput['name']
+      ObjectTypeFieldInternal,
+      ObjectTypeFieldInput,
+      ObjectTypeFieldInput['name']
     >({
       src: this[Internal],
       input,
@@ -122,30 +138,34 @@ export class RecordField
     });
 
     assignValue<
-      RecordFieldInternal,
-      RecordFieldInput,
-      NonNullable<RecordFieldInput['type']>
+      ObjectTypeFieldInternal,
+      ObjectTypeFieldInput,
+      NonNullable<ObjectTypeFieldInput['type']>
     >({
       src: this[Internal],
       input,
       field: 'type',
       effect: (src, value) => {
-        if (typeof value !== 'string') {
+        if (typeof value !== 'string' && !isObjectTypeInput(value)) {
           if (!value.multiplicity) {
             value.multiplicity = 'one';
           } else {
             src.multiplicity = value.multiplicity;
           }
         }
-        src.type = value;
+        if (isObjectTypeInput(value)) {
+          src.type = new ObjectType(value);
+        } else {
+          src.type = value;
+        }
       },
       setDefault: src => (src.type = 'string'),
     });
 
     assignValue<
-      RecordFieldInternal,
-      RecordFieldInput,
-      NonNullable<RecordFieldInput['multiplicity']>
+      ObjectTypeFieldInternal,
+      ObjectTypeFieldInput,
+      NonNullable<ObjectTypeFieldInput['multiplicity']>
     >({
       src: this[Internal],
       input,
@@ -173,9 +193,9 @@ export class RecordField
     });
 
     assignValue<
-      RecordFieldMeta,
-      RecordFieldInput,
-      NonNullable<RecordFieldInput['defaultValue']>
+      ObjectTypeFieldMeta,
+      ObjectTypeFieldInput,
+      NonNullable<ObjectTypeFieldInput['defaultValue']>
     >({
       src: this.metadata,
       input,
@@ -186,9 +206,9 @@ export class RecordField
     });
 
     assignValue<
-      RecordFieldMeta,
-      RecordFieldInput,
-      NonNullable<RecordFieldInput['order']>
+      ObjectTypeFieldMeta,
+      ObjectTypeFieldInput,
+      NonNullable<ObjectTypeFieldInput['order']>
     >({
       src: this.metadata,
       input,
@@ -197,9 +217,9 @@ export class RecordField
     });
 
     assignValue<
-      RecordFieldInternal,
-      RecordFieldInput,
-      NonNullable<RecordFieldInput['kind']>
+      ObjectTypeFieldInternal,
+      ObjectTypeFieldInput,
+      NonNullable<ObjectTypeFieldInput['kind']>
     >({
       src: this[Internal],
       input,
@@ -209,9 +229,9 @@ export class RecordField
     });
 
     assignValue<
-      RecordFieldMeta,
-      RecordFieldInput,
-      NonNullable<RecordFieldInput['required']>
+      ObjectTypeFieldMeta,
+      ObjectTypeFieldInput,
+      NonNullable<ObjectTypeFieldInput['required']>
     >({
       src: this.metadata,
       input,
@@ -222,14 +242,14 @@ export class RecordField
     });
   }
 
-  public toObject(): RecordFieldOutput {
+  public toObject(): ObjectTypeFieldOutput {
     return merge({}, super.toObject(), {
-      type: this.type,
+      type: isObjectType(this.type) ? this.type.toObject() : this.type,
       multiplicity: this[Internal].multiplicity,
-    } as Partial<RecordFieldOutput>);
+    } as Partial<ObjectTypeFieldOutput>);
   }
 
-  public mergeWith(payload: Nullable<RecordFieldInput>) {
+  public mergeWith(payload: Nullable<ObjectTypeFieldInput>) {
     super.mergeWith(payload);
   }
 }

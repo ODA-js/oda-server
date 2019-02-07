@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Type creates specified field with specified types: object with fields 1`] = `
-Record {
+ObjectType {
   Symbol(internal): Object {
     "fields": Map {
-      "A" => RecordField {
+      "A" => ObjectTypeField {
         Symbol(internal): Object {
           "kind": "input",
           "multiplicity": "one",
@@ -16,7 +16,7 @@ Record {
           "required": false,
         },
       },
-      "B" => RecordField {
+      "B" => ObjectTypeField {
         Symbol(internal): Object {
           "kind": "input",
           "multiplicity": "one",
@@ -32,7 +32,7 @@ Record {
           "required": false,
         },
       },
-      "c" => RecordField {
+      "c" => ObjectTypeField {
         Symbol(internal): Object {
           "kind": "input",
           "multiplicity": "many",

@@ -1,30 +1,34 @@
 import {
-  RecordInput,
-  isRecordInput,
-  Record,
-  isRecord,
-  IRecord,
-} from './record';
-import { RecordFieldInput, RecordField, IRecordField } from './recordfield';
+  ObjectTypeInput,
+  isObjectTypeInput,
+  ObjectType,
+  isObjectType,
+  IObjectType,
+} from './objecttype';
+import {
+  ObjectTypeFieldInput,
+  ObjectTypeField,
+  IObjectTypeField,
+} from './objecttypefield';
 import { AsHash, ArrayToMap, HashToArray } from './types';
 export function applyArgs(
   src: {
-    args: Map<string, IRecord | IRecordField>;
+    args: Map<string, IObjectType | IObjectTypeField>;
   },
   value:
-    | AsHash<RecordFieldInput | RecordInput>
-    | (RecordFieldInput | RecordInput)[],
+    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
+    | (ObjectTypeFieldInput | ObjectTypeInput)[],
 ) {
   return (src.args = ArrayToMap(
     Array.isArray(value) ? value : HashToArray(value),
     v =>
-      isRecordInput(v)
-        ? new Record({ ...v, kind: 'input' })
-        : new RecordField({ ...v, kind: 'input' }),
+      isObjectTypeInput(v)
+        ? new ObjectType({ ...v, kind: 'input' })
+        : new ObjectTypeField({ ...v, kind: 'input' }),
     (obj, src) =>
-      isRecord(obj) && isRecord(src)
+      isObjectType(obj) && isObjectType(src)
         ? obj.mergeWith(src.toObject())
-        : !isRecord(obj) && !isRecord(src)
+        : !isObjectType(obj) && !isObjectType(src)
         ? obj.mergeWith(src.toObject())
         : obj,
   ));

@@ -1,0 +1,326 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ObjectTypeField ObjectType as field type ObjectType: object 1`] = `
+ObjectTypeField {
+  Symbol(internal): Object {
+    "kind": "input",
+    "multiplicity": "one",
+    "name": "A",
+    "type": ObjectType {
+      Symbol(internal): Object {
+        "fields": Map {
+          "a" => ObjectTypeField {
+            Symbol(internal): Object {
+              "kind": "input",
+              "multiplicity": "one",
+              "name": "a",
+              "type": "string",
+            },
+            Symbol(metadata): Object {
+              "order": 0,
+              "required": false,
+            },
+          },
+          "b" => ObjectTypeField {
+            Symbol(internal): Object {
+              "kind": "input",
+              "multiplicity": "one",
+              "name": "b",
+              "type": "string",
+            },
+            Symbol(metadata): Object {
+              "order": 1,
+              "required": false,
+            },
+          },
+          "c" => ObjectTypeField {
+            Symbol(internal): Object {
+              "kind": "input",
+              "multiplicity": "one",
+              "name": "c",
+              "type": ObjectType {
+                Symbol(internal): Object {
+                  "fields": Map {
+                    "c1" => ObjectTypeField {
+                      Symbol(internal): Object {
+                        "kind": "input",
+                        "multiplicity": "one",
+                        "name": "c1",
+                        "type": "string",
+                      },
+                      Symbol(metadata): Object {
+                        "order": 0,
+                        "required": false,
+                      },
+                    },
+                  },
+                  "kind": "input",
+                  "name": "C",
+                },
+                Symbol(metadata): Object {
+                  "UI": Object {
+                    "edit": Array [],
+                    "embedded": Array [],
+                    "hidden": Array [],
+                    "list": Array [],
+                    "listName": Array [],
+                    "quickSearch": Array [],
+                    "show": Array [],
+                  },
+                  "global": false,
+                  "name": Object {
+                    "plural": "Cs",
+                    "singular": "C",
+                  },
+                  "titlePlural": "Cs",
+                },
+              },
+            },
+            Symbol(metadata): Object {
+              "order": 2,
+              "required": false,
+            },
+          },
+        },
+        "kind": "input",
+        "name": "one",
+      },
+      Symbol(metadata): Object {
+        "UI": Object {
+          "edit": Array [],
+          "embedded": Array [],
+          "hidden": Array [],
+          "list": Array [],
+          "listName": Array [],
+          "quickSearch": Array [],
+          "show": Array [],
+        },
+        "global": false,
+        "name": Object {
+          "plural": "ones",
+          "singular": "one",
+        },
+        "titlePlural": "ones",
+      },
+    },
+  },
+  Symbol(metadata): Object {
+    "required": false,
+  },
+}
+`;
+
+exports[`ObjectTypeField ObjectType as field type ObjectType: toObject 1`] = `
+Object {
+  "description": undefined,
+  "metadata": Object {
+    "required": false,
+  },
+  "multiplicity": "one",
+  "name": "A",
+  "title": undefined,
+  "type": Object {
+    "description": undefined,
+    "fields": Array [
+      Object {
+        "description": undefined,
+        "metadata": Object {
+          "order": 0,
+          "required": false,
+        },
+        "multiplicity": "one",
+        "name": "a",
+        "title": undefined,
+        "type": "string",
+      },
+      Object {
+        "description": undefined,
+        "metadata": Object {
+          "order": 1,
+          "required": false,
+        },
+        "multiplicity": "one",
+        "name": "b",
+        "title": undefined,
+        "type": "string",
+      },
+      Object {
+        "description": undefined,
+        "metadata": Object {
+          "order": 2,
+          "required": false,
+        },
+        "multiplicity": "one",
+        "name": "c",
+        "title": undefined,
+        "type": Object {
+          "description": undefined,
+          "fields": Array [
+            Object {
+              "description": undefined,
+              "metadata": Object {
+                "order": 0,
+                "required": false,
+              },
+              "multiplicity": "one",
+              "name": "c1",
+              "title": undefined,
+              "type": "string",
+            },
+          ],
+          "kind": "input",
+          "metadata": Object {
+            "UI": Object {
+              "edit": Array [],
+              "embedded": Array [],
+              "hidden": Array [],
+              "list": Array [],
+              "listName": Array [],
+              "quickSearch": Array [],
+              "show": Array [],
+            },
+            "global": false,
+            "name": Object {
+              "plural": "Cs",
+              "singular": "C",
+            },
+            "titlePlural": "Cs",
+          },
+          "name": "C",
+          "title": undefined,
+        },
+      },
+    ],
+    "kind": "input",
+    "metadata": Object {
+      "UI": Object {
+        "edit": Array [],
+        "embedded": Array [],
+        "hidden": Array [],
+        "list": Array [],
+        "listName": Array [],
+        "quickSearch": Array [],
+        "show": Array [],
+      },
+      "global": false,
+      "name": Object {
+        "plural": "ones",
+        "singular": "one",
+      },
+      "titlePlural": "ones",
+    },
+    "name": "one",
+    "title": undefined,
+  },
+}
+`;
+
+exports[`ObjectTypeField default enum multiplicity == one: default 1`] = `
+ObjectTypeField {
+  Symbol(internal): Object {
+    "kind": "input",
+    "multiplicity": "one",
+    "name": "A",
+    "type": Object {
+      "multiplicity": "one",
+      "name": "ENUM1",
+      "type": "enum",
+    },
+  },
+  Symbol(metadata): Object {
+    "required": false,
+  },
+}
+`;
+
+exports[`ObjectTypeField default enum multiplicity == one: toObject 1`] = `
+Object {
+  "description": undefined,
+  "metadata": Object {
+    "required": false,
+  },
+  "multiplicity": "one",
+  "name": "A",
+  "title": undefined,
+  "type": Object {
+    "multiplicity": "one",
+    "name": "ENUM1",
+    "type": "enum",
+  },
+}
+`;
+
+exports[`ObjectTypeField default enum: default 1`] = `
+ObjectTypeField {
+  Symbol(internal): Object {
+    "kind": "input",
+    "multiplicity": "many",
+    "name": "A",
+    "type": Object {
+      "multiplicity": "many",
+      "name": "ENUM1",
+      "type": "enum",
+    },
+  },
+  Symbol(metadata): Object {
+    "required": false,
+  },
+}
+`;
+
+exports[`ObjectTypeField default enum: toObject 1`] = `
+Object {
+  "description": undefined,
+  "metadata": Object {
+    "required": false,
+  },
+  "multiplicity": "many",
+  "name": "A",
+  "title": undefined,
+  "type": Object {
+    "multiplicity": "many",
+    "name": "ENUM1",
+    "type": "enum",
+  },
+}
+`;
+
+exports[`ObjectTypeField default: default 1`] = `
+ObjectTypeField {
+  Symbol(internal): Object {
+    "kind": "input",
+    "multiplicity": "one",
+    "name": "A",
+    "type": "string",
+  },
+  Symbol(metadata): Object {
+    "required": false,
+  },
+}
+`;
+
+exports[`ObjectTypeField default: toObject 1`] = `
+Object {
+  "description": undefined,
+  "metadata": Object {
+    "required": false,
+  },
+  "multiplicity": "one",
+  "name": "A",
+  "title": undefined,
+  "type": "string",
+}
+`;
+
+exports[`ObjectTypeField required is setup: required 1`] = `
+Object {
+  "description": undefined,
+  "metadata": Object {
+    "required": true,
+  },
+  "multiplicity": "one",
+  "name": "A",
+  "title": undefined,
+  "type": "string",
+}
+`;

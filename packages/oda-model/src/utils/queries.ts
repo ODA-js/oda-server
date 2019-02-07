@@ -2,8 +2,7 @@ import { ISimpleField } from '../simplefield';
 import { IField, isISimpleField } from '../field';
 import { IEntity } from '../entity';
 import { IndexEntry } from '../entitybase';
-import { Record } from '../record';
-import { RecordFieldInput, RecordField } from '../recordfield';
+import { ObjectTypeFieldInput } from '../objecttypefield';
 
 /**
  * checks if field is _id or id
@@ -69,7 +68,7 @@ export const ArgsFromTuples = (args: [string, IField[]][]) => {
               required: f.required,
               type: f.type,
               order: i,
-            } as RecordFieldInput),
+            } as ObjectTypeFieldInput),
         ),
       };
     } else {
@@ -81,7 +80,7 @@ export const ArgsFromTuples = (args: [string, IField[]][]) => {
         required: item[1][0].required,
         type: item[1][0].type,
         order: 0,
-      } as RecordFieldInput;
+      } as ObjectTypeFieldInput;
     }
   });
 };

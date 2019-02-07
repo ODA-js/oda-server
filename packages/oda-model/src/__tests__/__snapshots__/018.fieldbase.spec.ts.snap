@@ -4,7 +4,7 @@ exports[`FieldBase default: internal 1`] = `
 FieldBase {
   Symbol(internal): Object {
     "args": Map {
-      "demoARG" => RecordField {
+      "demoARG" => ObjectTypeField {
         Symbol(internal): Object {
           "kind": "input",
           "multiplicity": "one",

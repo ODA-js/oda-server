@@ -20,19 +20,23 @@ import {
 
 import { merge } from 'lodash';
 import * as inflected from 'inflected';
-import { RecordFieldInput, RecordField, IRecordField } from './recordfield';
+import {
+  ObjectTypeFieldInput,
+  ObjectTypeField,
+  IObjectTypeField,
+} from './objecttypefield';
 import { UIView } from './entitybase';
 
-export interface IRecord
-  extends IModelBase<RecordMetaInfo, RecordInput, RecordOutput> {
+export interface IObjectType
+  extends IModelBase<ObjectTypeMetaInfo, ObjectTypeInput, ObjectTypeOutput> {
   readonly kind: ArgumentKind;
   readonly plural: string;
   readonly global: boolean;
   readonly titlePlural: string;
-  readonly fields: Map<string, IRecordField>;
+  readonly fields: Map<string, IObjectTypeField>;
 }
 
-export interface RecordMetaInfo extends ElementMetaInfo {
+export interface ObjectTypeMetaInfo extends ElementMetaInfo {
   titlePlural: string;
   global: boolean;
   name: {
@@ -42,32 +46,32 @@ export interface RecordMetaInfo extends ElementMetaInfo {
   UI: UIView;
 }
 
-export interface RecordInternal extends ModelBaseInternal {
-  fields: Map<string, IRecordField>;
+export interface ObjectTypeInternal extends ModelBaseInternal {
+  fields: Map<string, IObjectTypeField>;
   kind: ArgumentKind;
 }
 
-export interface RecordInput extends ModelBaseInput<RecordMetaInfo> {
+export interface ObjectTypeInput extends ModelBaseInput<ObjectTypeMetaInfo> {
   plural?: string;
   global?: boolean;
   kind?: ArgumentKind;
   titlePlural?: string;
-  fields: AsHash<RecordFieldInput> | NamedArray<RecordFieldInput>;
+  fields: AsHash<ObjectTypeFieldInput> | NamedArray<ObjectTypeFieldInput>;
 }
 
-export function isRecordInput(inp: any): inp is RecordInput {
+export function isObjectTypeInput(inp: any): inp is ObjectTypeInput {
   return typeof inp === 'object' && inp.hasOwnProperty('fields');
 }
 
-export function isRecord(inp: any): inp is IRecord | Record {
+export function isObjectType(inp: any): inp is IObjectType | ObjectType {
   return (
     typeof inp === 'object' &&
-    (inp.modelType as MetaModelType) === 'record-type'
+    (inp.modelType as MetaModelType) === 'object-type'
   );
 }
 
-export interface RecordOutput extends ModelBaseOutput<RecordMetaInfo> {
-  fields: NamedArray<RecordFieldInput>;
+export interface ObjectTypeOutput extends ModelBaseOutput<ObjectTypeMetaInfo> {
+  fields: NamedArray<ObjectTypeFieldInput>;
   kind: ArgumentKind;
 }
 
@@ -88,14 +92,19 @@ export const recordDefaultInput = {
   exact: false,
 };
 
-export class Record
-  extends ModelBase<RecordMetaInfo, RecordInput, RecordInternal, RecordOutput>
-  implements IRecord {
+export class ObjectType
+  extends ModelBase<
+    ObjectTypeMetaInfo,
+    ObjectTypeInput,
+    ObjectTypeInternal,
+    ObjectTypeOutput
+  >
+  implements IObjectType {
   public get modelType(): MetaModelType {
-    return 'record-type';
+    return 'object-type';
   }
 
-  constructor(init: RecordInput) {
+  constructor(init: ObjectTypeInput) {
     super(merge({}, recordDefaultInput, init));
   }
 
@@ -115,14 +124,14 @@ export class Record
     return this.metadata.global;
   }
 
-  get fields(): Map<string, IRecordField> {
+  get fields(): Map<string, IObjectTypeField> {
     return this[Internal].fields;
   }
 
-  public updateWith(input: Nullable<RecordInput>) {
+  public updateWith(input: Nullable<ObjectTypeInput>) {
     super.updateWith(input);
 
-    assignValue<RecordInternal, RecordInput, RecordInput['name']>({
+    assignValue<ObjectTypeInternal, ObjectTypeInput, ObjectTypeInput['name']>({
       src: this[Internal],
       input,
       field: 'name',
@@ -134,9 +143,9 @@ export class Record
     });
 
     assignValue<
-      RecordMetaInfo,
-      RecordInput,
-      NonNullable<RecordInput['global']>
+      ObjectTypeMetaInfo,
+      ObjectTypeInput,
+      NonNullable<ObjectTypeInput['global']>
     >({
       src: this[MetaData],
       input,
@@ -146,9 +155,9 @@ export class Record
     });
 
     assignValue<
-      RecordMetaInfo,
-      RecordInput,
-      NonNullable<RecordInput['plural']>
+      ObjectTypeMetaInfo,
+      ObjectTypeInput,
+      NonNullable<ObjectTypeInput['plural']>
     >({
       src: this.metadata,
       input,
@@ -169,9 +178,9 @@ export class Record
     });
 
     assignValue<
-      RecordMetaInfo,
-      RecordInput,
-      NonNullable<RecordInput['titlePlural']>
+      ObjectTypeMetaInfo,
+      ObjectTypeInput,
+      NonNullable<ObjectTypeInput['titlePlural']>
     >({
       src: this.metadata,
       input,
@@ -180,7 +189,11 @@ export class Record
       setDefault: src => (src.titlePlural = this.plural),
     });
 
-    assignValue<RecordInternal, RecordInput, NonNullable<RecordInput['kind']>>({
+    assignValue<
+      ObjectTypeInternal,
+      ObjectTypeInput,
+      NonNullable<ObjectTypeInput['kind']>
+    >({
       src: this[Internal],
       input,
       field: 'kind',
@@ -189,9 +202,9 @@ export class Record
     });
 
     assignValue<
-      RecordInternal,
-      RecordInput,
-      NonNullable<RecordInput['fields']>
+      ObjectTypeInternal,
+      ObjectTypeInput,
+      NonNullable<ObjectTypeInput['fields']>
     >({
       src: this[Internal],
       input,
@@ -200,7 +213,7 @@ export class Record
         const fields = ArrayToMap(
           Array.isArray(value) ? value : HashToArray(value),
           (fld, order) => {
-            let field = new RecordField(
+            let field = new ObjectTypeField(
               merge({}, fld, {
                 order,
                 entity: this.name,
@@ -218,17 +231,17 @@ export class Record
     });
   }
 
-  public toObject(): RecordOutput {
+  public toObject(): ObjectTypeOutput {
     return merge({}, super.toObject(), {
       fields: MapToArray(this.fields, (name, value) => ({
         ...value.toObject(),
         name,
       })),
       kind: this[Internal].kind,
-    } as Partial<RecordOutput>);
+    } as Partial<ObjectTypeOutput>);
   }
 
-  public mergeWith(payload: Nullable<RecordInput>) {
+  public mergeWith(payload: Nullable<ObjectTypeInput>) {
     super.mergeWith(payload);
   }
 }

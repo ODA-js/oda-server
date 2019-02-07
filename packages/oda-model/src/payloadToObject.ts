@@ -1,5 +1,5 @@
-import { isRecord, IRecord } from './record';
-import { IRecordField } from './recordfield';
+import { isObjectType, IObjectType } from './objecttype';
+import { IObjectTypeField } from './objecttypefield';
 import {
   EnumType,
   EntityType,
@@ -12,15 +12,15 @@ export function payloadToObject(internal: {
     | string
     | EnumType
     | EntityType
-    | IRecord
-    | Map<string, IRecord | IRecordField>;
+    | IObjectType
+    | Map<string, IObjectType | IObjectTypeField>;
 }) {
   return typeof internal.payload === 'string'
     ? internal.payload
     : isEnumType(internal.payload) ||
       isEntityType(internal.payload) ||
-      isRecord(internal.payload)
-    ? isRecord(internal.payload)
+      isObjectType(internal.payload)
+    ? isObjectType(internal.payload)
       ? internal.payload.toObject()
       : internal.payload
     : MapToArray(internal.payload, (_name, value) => value.toObject());

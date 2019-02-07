@@ -1,3 +1,6 @@
+/**
+ *
+ */
 import {
   ModelBaseInternal,
   IModelBase,
@@ -24,13 +27,13 @@ import { applyPayload } from './applyPayload';
 import { merge } from 'lodash';
 import { Internal, MetaData } from './element';
 import decapitalize from './lib/decapitalize';
-import { IRecordField, RecordFieldInput } from './recordfield';
+import { IObjectTypeField, ObjectTypeFieldInput } from './objecttypefield';
 import { QueryInput } from './query';
 import { MutationInput } from './mutation';
 import { IEntity } from './entity';
 import { IRelationField } from './relationfield';
 import { isISimpleField, isIEntityField } from './field';
-import { IRecord, RecordInput } from './record';
+import { IObjectType, ObjectTypeInput } from './objecttype';
 import {
   idField,
   mutableFields,
@@ -57,13 +60,13 @@ export interface IOperation
   /**
    * set of arguments
    */
-  readonly args?: Map<string, IRecord | IRecordField>;
+  readonly args?: Map<string, IObjectType | IObjectTypeField>;
   readonly payload:
     | string
     | EnumType
     | EntityType
-    | IRecord
-    | Map<string, IRecord | IRecordField>;
+    | IObjectType
+    | Map<string, IObjectType | IObjectTypeField>;
   readonly order: number;
   readonly entity: string;
   readonly field?: string;
@@ -81,15 +84,15 @@ export interface OperationMetaInfo extends ModelBaseMetaInfo {
 
 export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
   args?:
-    | AsHash<RecordFieldInput | RecordInput>
-    | NamedArray<RecordFieldInput | RecordInput>;
+    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
+    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   payload?:
     | string
     | EnumType
     | EntityType
-    | RecordInput
-    | AsHash<RecordFieldInput | RecordInput>
-    | NamedArray<RecordFieldInput | RecordInput>;
+    | ObjectTypeInput
+    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
+    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
 
   inheritedFrom?: string;
   entity?: string;
@@ -100,14 +103,14 @@ export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
 }
 
 export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
-  args: NamedArray<RecordFieldInput | RecordInput>;
+  args: NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   payload:
     | string
     | EnumType
     | EntityType
-    | RecordInput
-    | AsHash<RecordFieldInput | RecordInput>
-    | NamedArray<RecordFieldInput | RecordInput>;
+    | ObjectTypeInput
+    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
+    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   inheritedFrom?: string;
   entity: string;
   field?: string;
@@ -117,13 +120,13 @@ export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
 }
 
 export interface OperationInternal extends ModelBaseInternal {
-  args: Map<string, IRecord | IRecordField>;
+  args: Map<string, IObjectType | IObjectTypeField>;
   payload:
     | string
     | EnumType
     | EntityType
-    | IRecord
-    | Map<string, IRecord | IRecordField>;
+    | IObjectType
+    | Map<string, IObjectType | IObjectTypeField>;
   inheritedFrom?: string;
   /** хранит ссылку на entity */
   entity?: IEntity;
@@ -160,7 +163,7 @@ export class Operation
     return this[Internal].inheritedFrom;
   }
 
-  get args(): Map<string, IRecord | IRecordField> {
+  get args(): Map<string, IObjectType | IObjectTypeField> {
     return this[Internal].args;
   }
 
@@ -168,8 +171,8 @@ export class Operation
     | string
     | EnumType
     | EntityType
-    | IRecord
-    | Map<string, IRecord | IRecordField> {
+    | IObjectType
+    | Map<string, IObjectType | IObjectTypeField> {
     return this[Internal].payload;
   }
 
@@ -306,7 +309,7 @@ export class Operation
       let payload = payloadToObject(internal);
 
       let name = this.name;
-      let args: NamedArray<RecordFieldInput | RecordInput> = MapToArray(
+      let args: NamedArray<ObjectTypeFieldInput | ObjectTypeInput> = MapToArray(
         internal.args,
         (_name, value) => value.toObject(),
       );
@@ -321,7 +324,7 @@ export class Operation
                 {
                   name: `create${this.entity}Input`,
                   fields,
-                } as RecordFieldInput,
+                } as ObjectTypeFieldInput,
               ],
               payload: {
                 name: `create${this.entity}Payload`,
@@ -330,9 +333,9 @@ export class Operation
                   {
                     name: decapitalize(entity.name),
                     type: `${entity.plural}Edge`,
-                  } as RecordFieldInput,
+                  } as ObjectTypeFieldInput,
                 ],
-              } as RecordInput,
+              } as ObjectTypeInput,
             };
           }
           case 'update': {
@@ -353,9 +356,9 @@ export class Operation
                   {
                     name: decapitalize(entity.name),
                     type: `${entity.name}`,
-                  } as RecordFieldInput,
+                  } as ObjectTypeFieldInput,
                 ],
-              } as RecordInput,
+              } as ObjectTypeInput,
             };
           }
           case 'delete':
@@ -376,9 +379,9 @@ export class Operation
                   {
                     name: decapitalize(entity.name),
                     type: `${entity.name}`,
-                  } as RecordFieldInput,
+                  } as ObjectTypeFieldInput,
                 ],
-              } as RecordInput,
+              } as ObjectTypeInput,
             };
           case 'addTo':
             if (this.field) {
@@ -390,7 +393,7 @@ export class Operation
                     name: 'input',
                     type: `addTo${field.relation.metadata.name.full}Input`,
                     required: true,
-                  } as RecordFieldInput,
+                  } as ObjectTypeFieldInput,
                 ];
                 payload = `addTo${field.relation.metadata.name.full}Payload`;
               }
@@ -406,7 +409,7 @@ export class Operation
                     name: 'input',
                     type: `addTo${field.relation.metadata.name.full}Input`,
                     required: true,
-                  } as RecordFieldInput,
+                  } as ObjectTypeFieldInput,
                 ];
                 payload = `addTo${field.relation.metadata.name.full}Payload`;
               }
@@ -453,7 +456,7 @@ export class Operation
 }
 
 function getCreateFields(entity: IEntity) {
-  const result: RecordFieldInput[] = [];
+  const result: ObjectTypeFieldInput[] = [];
   entity.fields.forEach(f => {
     if (isISimpleField(f)) {
       if (idField(f) || mutableFields(f)) {
@@ -508,7 +511,7 @@ function getCreateFields(entity: IEntity) {
 }
 
 function getUpdateFields(entity: IEntity) {
-  const result: RecordFieldInput[] = [];
+  const result: ObjectTypeFieldInput[] = [];
   entity.fields.forEach(f => {
     if (isISimpleField(f)) {
       if (idField(f) || mutableFields(f)) {

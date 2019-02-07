@@ -14,6 +14,7 @@ import {
   Nullable,
   ArrayToMap,
   AssignAndKillDupes,
+  IBuildable,
 } from './types';
 import fold from './lib/fold';
 import { merge } from 'lodash';
@@ -78,7 +79,7 @@ export class MetaModel
     MetaModelInternal,
     MetaModelOutput
   >
-  implements IModel, IPackage {
+  implements IModel, IPackage, IBuildable {
   public get modelType(): MetaModelType {
     return 'model';
   }

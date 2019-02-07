@@ -15,6 +15,7 @@ import {
   NamedArray,
   MapToArray,
   ArrayToMap,
+  IBuildable,
 } from './types';
 import { OperationInput, IOperation, Operation } from './operation';
 import {
@@ -35,6 +36,7 @@ import { DEFAULT_ID_FIELD } from './definitions';
 import { RelationField, RelationFieldInput } from './relationfield';
 import { EntityField, EntityFieldInput } from './entityfield';
 import capitalize from './lib/capitalize';
+import { ObjectType } from './objecttype';
 
 export interface IEntityBase<
   T extends EntityBaseMetaInfo<P>,
@@ -51,6 +53,7 @@ export interface IEntityBase<
   readonly required: Set<string>;
   readonly indexed: Set<string>;
   readonly exact: boolean;
+  readonly objectTypes: ObjectType[];
 }
 
 export interface IndexEntry {
@@ -111,6 +114,7 @@ export interface EntityBaseInternal extends ModelBaseInternal {
   indexed: Set<string>;
   /** not applies anything */
   exact: boolean;
+  objectTypes: ObjectType[];
 }
 
 export interface EntityBaseInput<
@@ -166,7 +170,11 @@ export class EntityBase<
   P extends EntityBaseInternal,
   MP extends EntityBasePersistence,
   O extends EntityBaseOutput<M, MP>
-> extends ModelBase<M, I, P, O> implements IEntityBase<M, MP, I, O> {
+> extends ModelBase<M, I, P, O>
+  implements IEntityBase<M, MP, I, O>, IBuildable {
+  public get objectTypes(): ObjectType[] {
+    return this[Internal].objectTypes;
+  }
   public get modelType(): MetaModelType {
     return 'entity-base';
   }
@@ -174,6 +182,7 @@ export class EntityBase<
   constructor(init: I) {
     super(merge({}, entityBaseDefaultInput, init));
   }
+
   get exact(): boolean {
     return this[Internal].exact;
   }
@@ -489,6 +498,12 @@ export class EntityBase<
 
   public mergeWith(payload: Nullable<I>) {
     super.mergeWith(payload);
+  }
+
+  public build() {
+    /** build operation */
+    /** to mutation */
+    /** to query */
   }
 }
 

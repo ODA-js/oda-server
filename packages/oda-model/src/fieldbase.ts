@@ -21,11 +21,11 @@ import { applyArgs } from './applyArgs';
 import { Internal, MetaData } from './element';
 import { IEntityRef, EntityReference } from './entityreference';
 import {
-  IRecordField,
-  RecordFieldInput,
-  RecordFieldOutput,
-} from './recordfield';
-import { IRecord, RecordInput, RecordOutput } from './record';
+  IObjectTypeField,
+  ObjectTypeFieldInput,
+  ObjectTypeFieldOutput,
+} from './objecttypefield';
+import { IObjectType, ObjectTypeInput, ObjectTypeOutput } from './objecttype';
 
 export interface IFieldBase<
   M extends FieldBaseMetaInfo<P>,
@@ -38,7 +38,7 @@ export interface IFieldBase<
   readonly inheritedFrom?: string;
   readonly order: number;
   readonly derived: boolean;
-  readonly args: Map<string, IRecordField | IRecord>;
+  readonly args: Map<string, IObjectTypeField | IObjectType>;
   readonly persistent: boolean;
   readonly identity: boolean | string | string[];
   readonly required: boolean;
@@ -77,7 +77,7 @@ export interface FieldBaseMetaInfo<T extends FieldBasePersistence>
 }
 
 export interface FieldBaseInternal extends ModelBaseInternal {
-  args: Map<string, IRecordField | IRecord>;
+  args: Map<string, IObjectTypeField | IObjectType>;
   inheritedFrom?: string;
   type: FieldType;
   idKey: IEntityRef;
@@ -88,8 +88,8 @@ export interface FieldBaseInput<
   P extends FieldBasePersistence
 > extends ModelBaseInput<T> {
   args?:
-    | AsHash<RecordFieldInput | RecordInput>
-    | NamedArray<RecordFieldInput | RecordInput>;
+    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
+    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   inheritedFrom?: string;
   derived?: boolean;
   persistent?: boolean;
@@ -107,7 +107,7 @@ export interface FieldBaseOutput<
 > extends ModelBaseOutput<T> {
   inheritedFrom?: string;
   type?: FieldType;
-  args: NamedArray<RecordOutput | RecordFieldOutput>;
+  args: NamedArray<ObjectTypeOutput | ObjectTypeFieldOutput>;
 }
 
 export const fieldBaseDefaultMetaInfo = {
@@ -149,7 +149,7 @@ export class FieldBase<
     return this[Internal].inheritedFrom;
   }
 
-  get args(): Map<string, IRecordField | IRecord> {
+  get args(): Map<string, IObjectTypeField | IObjectType> {
     return this[Internal].args;
   }
 
