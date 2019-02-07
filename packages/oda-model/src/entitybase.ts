@@ -17,6 +17,7 @@ import {
   ArrayToMap,
   IBuildable,
 } from './types';
+
 import { OperationInput, IOperation, Operation } from './operation';
 import {
   FieldInput,
@@ -500,11 +501,7 @@ export class EntityBase<
     super.mergeWith(payload);
   }
 
-  public build() {
-    /** build operation */
-    /** to mutation */
-    /** to query */
-  }
+  public build() {}
 }
 
 function updateFieldWithIndex(
