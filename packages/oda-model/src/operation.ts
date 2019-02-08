@@ -99,6 +99,7 @@ export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
     | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   inheritedFrom?: string;
   entity: string;
+  /** addTo/removeFrom */
   field?: string;
   custom: boolean;
   actionType: OperationKind;

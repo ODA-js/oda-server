@@ -53,24 +53,30 @@ export const getGeneralIndexedFields = getIndexedFields(
   (entry: IndexEntry) => !!entry && !(entry.options && entry.options.unique),
 );
 
-export const ArgsFromTuples = (args: [string, IField[]][]) => {
+export const ArgsFromTuples = (
+  args: [string, IField[]][],
+  name: (name: string) => string,
+) => {
   return args.map(item => {
     if (item[1].length > 1) {
       return {
         name: item[0],
-        fields: item[1].map(
-          (f, i) =>
-            ({
-              name: f.name,
-              title: f.title,
-              description: f.description,
-              kind: 'input',
-              required: f.required,
-              type: f.type,
-              order: i,
-            } as ObjectTypeFieldInput),
-        ),
-      };
+        type: {
+          name: name(item[0]),
+          fields: item[1].map(
+            (f, i) =>
+              ({
+                name: f.name,
+                title: f.title,
+                description: f.description,
+                kind: 'input',
+                required: f.required,
+                type: f.type,
+                order: i,
+              } as ObjectTypeFieldInput),
+          ),
+        },
+      } as ObjectTypeFieldInput;
     } else {
       return {
         name: item[0],

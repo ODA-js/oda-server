@@ -18,20 +18,20 @@ import {
 import { merge } from 'lodash';
 import { Internal } from './element';
 import { ObjectTypeFieldInput } from './objecttypefield';
-import { isISimpleField, isIEntityField } from './field';
+import { isISimpleField, isIEntityField, IField } from './field';
 import {
   idField,
   mutableFields,
   storedRelations,
   ArgsFromTuples,
   getUniqueIndexedFields,
+  getGeneralIndexedFields,
 } from './utils/queries';
 import capitalize from './lib/capitalize';
 import { payloadToObject } from './payloadToObject';
-import { ObjectTypeInput, ObjectType, IObjectType } from './objecttype';
+import { ObjectTypeInput, isObjectTypeInput } from './objecttype';
 import decapitalize from './lib/decapitalize';
-import { IOperation, OperationInput } from './operation';
-import { IQuery, QueryInput } from './query';
+import { QueryInput } from './query';
 import { MutationInput } from './mutation';
 
 export interface IEntity
@@ -156,6 +156,32 @@ export class Entity
     const mutations: MutationInput[] = [];
     const queries: QueryInput[] = [];
 
+    /** indexes */
+    const indexedFields = ArgsFromTuples(
+      getUniqueIndexedFields(this),
+      name => `${name}${this.name}IdentityInput`,
+    );
+
+    indexedFields.forEach(f => {
+      if (isObjectTypeInput(f.type)) {
+        inputs.push(f.type);
+        f.type = f.type.name;
+      }
+    });
+
+    /** unique */
+    const uniqueFields = ArgsFromTuples(
+      getGeneralIndexedFields(this),
+      name => `${name}${this.name}IdentityInput`,
+    );
+
+    uniqueFields.forEach(f => {
+      if (isObjectTypeInput(f.type)) {
+        inputs.push(f.type);
+        f.type = f.type.name;
+      }
+    });
+
     this.operations.forEach(op => {
       if (
         op.actionType === 'create' ||
@@ -179,7 +205,7 @@ export class Entity
                 const input: ObjectTypeInput = {
                   name: `create${op.entity}Input`,
                   kind: 'input',
-                  fields: getCreateFields(this),
+                  fields: getCreateFields(this.fields, this.name),
                 };
                 inputs.push(input);
                 /** payload */
@@ -193,7 +219,7 @@ export class Entity
                     } as ObjectTypeFieldInput,
                   ],
                 };
-                payloads.push(input);
+                payloads.push(payload);
 
                 /** mutation */
                 mutations.push({
@@ -223,6 +249,7 @@ export class Entity
                     } as ObjectTypeFieldInput,
                   ],
                 };
+                payloads.push(payload);
                 /** mutation */
                 mutations.push({
                   name: `update${op.entity}`,
@@ -236,7 +263,7 @@ export class Entity
                 /** input */
                 const input: ObjectTypeInput = {
                   name: `delete${op.entity}Input`,
-                  fields: ArgsFromTuples(getUniqueIndexedFields(this)),
+                  fields: uniqueFields,
                 };
                 inputs.push(input);
                 /** payload */
@@ -261,32 +288,71 @@ export class Entity
               break;
             case 'addTo':
               {
-                /**
-                  input addTo#{field.relation.metadata.name.full}Input {
-                    #{decapitalize(entity.name)}: ID!
-                    #{connection.refFieldName}: #{connection.embedded ? 'create'+connection.entity+'Input' :'ID'}!
-                    #additional Edge fields
-                    ///
-                    isBelongsToMany(f.relation) && f.relation.fields.size > 0
-                  <# connection.fields.forEach(f=>{-#>
-                    #{f.name}: #{f.type}
-                  <# });-#>
-                  }
-                */
                 if (op.field) {
                   const field = this.fields.get(op.field);
                   if (field && !isISimpleField(field)) {
-                    name = `addTo${field.relation.metadata.name.full}`;
-                    args = [
-                      {
-                        name: 'input',
-                        type: `addTo${field.relation.metadata.name.full}Input`,
-                        required: true,
-                      } as ObjectTypeFieldInput,
-                    ];
-                    payload = `addTo${
-                      field.relation.metadata.name.full
-                    }Payload`;
+                    /** args */
+                    let sameEntity = this.name === field.relation.ref.entity;
+                    let refFieldName = `${field.relation.ref.entity}${
+                      sameEntity ? capitalize(field.name) : ''
+                    }`;
+
+                    const input: ObjectTypeInput = {
+                      name: `addTo${field.relation.metadata.name.full}Input`,
+                      fields: [
+                        {
+                          name: decapitalize(this.name),
+                          type: 'ID',
+                          required: true,
+                        },
+                        {
+                          name: decapitalize(refFieldName),
+                          type: field.relation.metadata.persistence.embedded
+                            ? 'create' + field.relation.ref.entity + 'Input'
+                            : 'ID',
+                          required: true,
+                        },
+                        ...(() => {
+                          if (
+                            isBelongsToMany(field.relation) &&
+                            field.relation.fields.size > 0
+                          ) {
+                            const using = field.relation.using.entity;
+                            return getCreateFields(
+                              field.relation.fields,
+                              using,
+                            );
+                          } else {
+                            return [];
+                          }
+                        })(),
+                      ],
+                    };
+                    inputs.push(input);
+                    /** payload */
+                    const payload: ObjectTypeInput = {
+                      name: `addTo${field.relation.metadata.name.full}Payload`,
+                      kind: 'output',
+                      fields: [
+                        {
+                          name: decapitalize(this.name),
+                          type: `${this.name}`,
+                        } as ObjectTypeFieldInput,
+                      ],
+                    };
+                    payloads.push(payload);
+                    /** mutation */
+                    mutations.push({
+                      name: `addTo${field.relation.metadata.name.full}`,
+                      args: [
+                        {
+                          name: 'input',
+                          required: true,
+                          type: input.name,
+                        },
+                      ],
+                      payload: payload.name,
+                    });
                   }
                 }
               }
@@ -296,17 +362,61 @@ export class Entity
                 if (op.field) {
                   const field = this.fields.get(op.field);
                   if (field && !isISimpleField(field)) {
-                    name = `removeFrom${field.relation.metadata.name.full}`;
-                    args = [
+                    /** args */
+                    let sameEntity = this.name === field.relation.ref.entity;
+                    let refFieldName = `${field.relation.ref.entity}${
+                      sameEntity ? capitalize(field.name) : ''
+                    }`;
+
+                    const fields = [
                       {
-                        name: 'input',
-                        type: `addTo${field.relation.metadata.name.full}Input`,
+                        name: decapitalize(this.name),
+                        type: 'ID',
                         required: true,
-                      } as ObjectTypeFieldInput,
+                      },
                     ];
-                    payload = `addTo${
-                      field.relation.metadata.name.full
-                    }Payload`;
+
+                    if (field.relation.metadata.persistence.embedded) {
+                      fields.push({
+                        name: decapitalize(refFieldName),
+                        type: 'ID',
+                        required: true,
+                      });
+                    }
+
+                    const input: ObjectTypeInput = {
+                      name: `removeFrom${
+                        field.relation.metadata.name.full
+                      }Input`,
+                      fields,
+                    };
+                    inputs.push(input);
+                    /** payload */
+                    const payload: ObjectTypeInput = {
+                      name: `removeFrom${
+                        field.relation.metadata.name.full
+                      }Payload`,
+                      kind: 'output',
+                      fields: [
+                        {
+                          name: decapitalize(this.name),
+                          type: `${this.name}`,
+                        } as ObjectTypeFieldInput,
+                      ],
+                    };
+                    payloads.push(payload);
+                    /** mutation */
+                    mutations.push({
+                      name: `removeFrom${field.relation.metadata.name.full}`,
+                      args: [
+                        {
+                          name: 'input',
+                          required: true,
+                          type: input.name,
+                        },
+                      ],
+                      payload: payload.name,
+                    });
                   }
                 }
               }
@@ -320,10 +430,61 @@ export class Entity
         if (!op.custom) {
           switch (op.actionType) {
             case 'readOne':
-              name = decapitalize(this.name);
+              {
+                /** mutation */
+                queries.push({
+                  name: decapitalize(this.name),
+                  args: uniqueFields,
+                  payload: { name: this.name, type: 'entity' },
+                });
+              }
               break;
-            case 'readMany':
-              name = decapitalize(this.plural);
+            case 'readManyConnection':
+              // after: String, first: Int, before: String, last: Int, limit: Int, skip: Int, orderBy: [#{ctx.entry.name}SortOrder], filter: #{ctx.entry.name}ComplexFilter
+              queries.push({
+                name: decapitalize(this.plural),
+                args: [
+                  {
+                    name: 'after',
+                    type: 'String',
+                  },
+                  {
+                    name: 'first',
+                    type: 'String',
+                  },
+                  {
+                    name: 'before',
+                    type: 'String',
+                  },
+                  {
+                    name: 'last',
+                    type: 'String',
+                  },
+                  {
+                    name: 'limit',
+                    type: 'Int',
+                  },
+                  {
+                    name: 'skip',
+                    type: 'Int',
+                  },
+                  /** сложные типы */
+                  {
+                    name: 'orderBy',
+                    type: `${this.name}SortOrder`,
+                    multiplicity: 'many',
+                  } as ObjectTypeFieldInput,
+                  {
+                    name: 'filter',
+                    type: `${this.name}ComplexFilter`,
+                    multiplicity: 'many',
+                  } as ObjectTypeFieldInput,
+                ],
+                payload: { name: this.name, type: 'entity' },
+              });
+              break;
+            case 'readManyList':
+              name = `${decapitalize(this.plural)}Items`;
               break;
           }
         }
@@ -337,58 +498,67 @@ export class Entity
   }
 }
 
-function getCreateFields(entity: IEntity) {
+function getCreateFields(fields: Map<string, IField>, entityName: string) {
   const result: ObjectTypeFieldInput[] = [];
-  entity.fields.forEach(f => {
-    if (isISimpleField(f)) {
-      if (idField(f) || mutableFields(f)) {
-        result.push({
+  fields.forEach(f => {
+    const field = processFields(f, entityName);
+    if (field) {
+      result.push(field);
+    }
+  });
+  return result;
+}
+
+function processFields(
+  f: IField,
+  entityName: string,
+): ObjectTypeFieldInput | null {
+  let result: ObjectTypeFieldInput | null = null;
+  if (isISimpleField(f)) {
+    if (idField(f) || mutableFields(f)) {
+      result = {
+        name: f.name,
+        title: f.title,
+        description: f.description,
+        kind: 'input',
+        required: f.required,
+        type: f.type,
+        order: f.order,
+      };
+    }
+  } else {
+    if (storedRelations(f)) {
+      if (isIEntityField(f)) {
+        result = {
           name: f.name,
           title: f.title,
           description: f.description,
           kind: 'input',
           required: f.required,
-          type: f.type,
+          multiplicity: f.type.multiplicity,
+          type: `embed${f.type.type}Input`,
           order: f.order,
-        });
-      }
-    } else {
-      if (storedRelations(f)) {
-        if (isIEntityField(f)) {
-          result.push({
-            name: f.name,
-            title: f.title,
-            description: f.description,
-            kind: 'input',
-            required: f.required,
-            multiplicity: f.type.multiplicity,
-            type: `embed${f.type.type}Input`,
-            order: f.order,
-          });
-        } else {
-          const createName =
-            isBelongsToMany(f.relation) && f.relation.fields.size > 0
-              ? `embed${f.relation.ref.entity}UpdateInto${
-                  entity.name
-                }${capitalize(f.name)}Input`
-              : `embed${f.relation.entity}Input`;
-
-          result.push({
-            name: f.name,
-            title: f.title,
-            description: f.description,
-            kind: 'input',
-            required: f.required,
-            multiplicity: f.relation.metadata.persistence.single
-              ? 'one'
-              : 'many',
-            type: createName,
-            order: f.order,
-          });
-        }
+        };
+      } else {
+        const createName =
+          isBelongsToMany(f.relation) && f.relation.fields.size > 0
+            ? `embed${f.relation.ref.entity}UpdateInto${entityName}${capitalize(
+                f.name,
+              )}Input`
+            : `embed${f.relation.entity}Input`;
+        result = {
+          name: f.name,
+          title: f.title,
+          description: f.description,
+          kind: 'input',
+          required: f.required,
+          multiplicity: f.relation.metadata.persistence.single ? 'one' : 'many',
+          type: createName,
+          order: f.order,
+        };
       }
     }
-  });
+  }
   return result;
 }
 

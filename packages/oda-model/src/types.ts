@@ -160,7 +160,8 @@ export type ComplexTypeKind = 'enum' | 'entity';
 export type OperationKind =
   | 'create'
   | 'readOne'
-  | 'readMany'
+  | 'readManyList'
+  | 'readManyConnection'
   | 'update'
   | 'delete'
   | 'addTo'
