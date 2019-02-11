@@ -5,7 +5,6 @@ Object {
   "args": Object {},
   "description": undefined,
   "inheritedFrom": undefined,
-  "list": true,
   "metadata": Object {
     "acl": Object {
       "create": Array [],
@@ -21,6 +20,7 @@ Object {
       "required": false,
     },
   },
+  "multiplicity": "many",
   "name": "a",
   "title": undefined,
   "type": Object {
@@ -35,7 +35,7 @@ exports[`EntityField default many: default 2`] = `
 EntityField {
   Symbol(internal): Object {
     "args": Map {},
-    "list": true,
+    "multiplicity": "many",
     "name": "a",
     "relation": HasMany {
       Symbol(internal): Object {
@@ -93,7 +93,6 @@ Object {
   "args": Object {},
   "description": undefined,
   "inheritedFrom": undefined,
-  "list": false,
   "metadata": Object {
     "acl": Object {
       "create": Array [],
@@ -109,6 +108,7 @@ Object {
       "required": false,
     },
   },
+  "multiplicity": "one",
   "name": "a",
   "title": undefined,
   "type": Object {
@@ -123,7 +123,7 @@ exports[`EntityField default: default 2`] = `
 EntityField {
   Symbol(internal): Object {
     "args": Map {},
-    "list": false,
+    "multiplicity": "one",
     "name": "a",
     "relation": HasOne {
       Symbol(internal): Object {

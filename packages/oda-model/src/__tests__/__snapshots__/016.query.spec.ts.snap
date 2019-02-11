@@ -30,7 +30,7 @@ Object {
       "multiplicity": "many",
       "name": "id",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
   ],
   "title": undefined,

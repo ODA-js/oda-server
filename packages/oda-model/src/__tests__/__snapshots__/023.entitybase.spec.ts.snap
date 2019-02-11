@@ -8,9 +8,9 @@ EntityBase {
       "a" => SimpleField {
         Symbol(internal): Object {
           "args": Map {},
-          "list": false,
+          "multiplicity": "one",
           "name": "a",
-          "type": "string",
+          "type": "String",
         },
         Symbol(metadata): Object {
           "acl": Object {
@@ -31,7 +31,7 @@ EntityBase {
       "b" => SimpleField {
         Symbol(internal): Object {
           "args": Map {},
-          "list": false,
+          "multiplicity": "one",
           "name": "b",
           "type": Object {
             "multiplicity": "one",
@@ -58,7 +58,7 @@ EntityBase {
       "c" => EntityField {
         Symbol(internal): Object {
           "args": Map {},
-          "list": false,
+          "multiplicity": "one",
           "name": "c",
           "relation": HasOne {
             Symbol(internal): Object {
@@ -173,7 +173,7 @@ EntityBase {
             },
             Symbol(metadata): Object {},
           },
-          "list": false,
+          "multiplicity": "one",
           "name": "id",
           "type": "ID",
         },
@@ -256,7 +256,6 @@ Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -272,15 +271,15 @@ Object {
           "required": false,
         },
       },
+      "multiplicity": "one",
       "name": "a",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
     Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -296,6 +295,7 @@ Object {
           "required": false,
         },
       },
+      "multiplicity": "one",
       "name": "b",
       "title": undefined,
       "type": Object {
@@ -308,7 +308,6 @@ Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "create": Array [],
@@ -326,6 +325,7 @@ Object {
           "required": false,
         },
       },
+      "multiplicity": "one",
       "name": "c",
       "title": undefined,
       "type": Object {
@@ -382,7 +382,6 @@ Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -398,6 +397,7 @@ Object {
           "required": true,
         },
       },
+      "multiplicity": "one",
       "name": "id",
       "title": undefined,
       "type": "ID",
@@ -453,7 +453,6 @@ Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -469,6 +468,7 @@ Object {
           "required": true,
         },
       },
+      "multiplicity": "one",
       "name": "id",
       "title": undefined,
       "type": "ID",
@@ -514,7 +514,6 @@ Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -530,6 +529,7 @@ Object {
           "required": true,
         },
       },
+      "multiplicity": "one",
       "name": "id",
       "title": undefined,
       "type": "ID",
@@ -572,7 +572,6 @@ Object {
   "args": Object {},
   "description": undefined,
   "inheritedFrom": undefined,
-  "list": false,
   "metadata": Object {
     "acl": Object {
       "read": Array [],
@@ -588,9 +587,10 @@ Object {
       "required": true,
     },
   },
+  "multiplicity": "one",
   "name": "_id",
   "title": undefined,
-  "type": "string",
+  "type": "String",
 }
 `;
 
@@ -599,7 +599,6 @@ Object {
   "args": Object {},
   "description": undefined,
   "inheritedFrom": undefined,
-  "list": false,
   "metadata": Object {
     "acl": Object {
       "read": Array [],
@@ -615,9 +614,10 @@ Object {
       "required": true,
     },
   },
+  "multiplicity": "one",
   "name": "id",
   "title": undefined,
-  "type": "string",
+  "type": "String",
 }
 `;
 
@@ -629,7 +629,6 @@ Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -645,6 +644,7 @@ Object {
           "required": true,
         },
       },
+      "multiplicity": "one",
       "name": "id",
       "title": undefined,
       "type": "ID",
@@ -689,7 +689,7 @@ Object {
           "multiplicity": "one",
           "name": "id",
           "title": undefined,
-          "type": "string",
+          "type": "String",
         },
         Object {
           "description": undefined,
@@ -699,7 +699,7 @@ Object {
           "multiplicity": "many",
           "name": "fields",
           "title": undefined,
-          "type": "string",
+          "type": "String",
         },
       ],
       "custom": false,
@@ -722,7 +722,7 @@ Object {
           "multiplicity": "many",
           "name": "result",
           "title": undefined,
-          "type": "string",
+          "type": "String",
         },
       ],
       "title": undefined,
@@ -740,7 +740,6 @@ Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -756,15 +755,15 @@ Object {
           "required": false,
         },
       },
+      "multiplicity": "one",
       "name": "a",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
     Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -780,15 +779,15 @@ Object {
           "required": false,
         },
       },
+      "multiplicity": "one",
       "name": "b",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
     Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -804,6 +803,7 @@ Object {
           "required": true,
         },
       },
+      "multiplicity": "one",
       "name": "id",
       "title": undefined,
       "type": "ID",
@@ -869,7 +869,6 @@ Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -885,15 +884,15 @@ Object {
           "required": true,
         },
       },
+      "multiplicity": "one",
       "name": "a",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
     Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -909,15 +908,15 @@ Object {
           "required": true,
         },
       },
+      "multiplicity": "one",
       "name": "b",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
     Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -933,6 +932,7 @@ Object {
           "required": true,
         },
       },
+      "multiplicity": "one",
       "name": "id",
       "title": undefined,
       "type": "ID",
@@ -1017,7 +1017,6 @@ Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -1033,15 +1032,15 @@ Object {
           "required": true,
         },
       },
+      "multiplicity": "one",
       "name": "a",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
     Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -1057,15 +1056,15 @@ Object {
           "required": true,
         },
       },
+      "multiplicity": "one",
       "name": "b",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
     Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -1081,15 +1080,15 @@ Object {
           "required": false,
         },
       },
+      "multiplicity": "one",
       "name": "c",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
     Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -1108,15 +1107,15 @@ Object {
           "required": true,
         },
       },
+      "multiplicity": "one",
       "name": "d",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
     Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -1132,6 +1131,7 @@ Object {
           "required": true,
         },
       },
+      "multiplicity": "one",
       "name": "id",
       "title": undefined,
       "type": "ID",
@@ -1219,9 +1219,9 @@ EntityBase {
       "a" => SimpleField {
         Symbol(internal): Object {
           "args": Map {},
-          "list": false,
+          "multiplicity": "one",
           "name": "a",
-          "type": "string",
+          "type": "String",
         },
         Symbol(metadata): Object {
           "acl": Object {
@@ -1252,7 +1252,7 @@ EntityBase {
             },
             Symbol(metadata): Object {},
           },
-          "list": false,
+          "multiplicity": "one",
           "name": "id",
           "type": "ID",
         },

@@ -14,6 +14,7 @@ import {
   isBelongsToMany,
   NamedArray,
   MapToArray,
+  ScalarTypes,
 } from './types';
 import { merge } from 'lodash';
 import { Internal } from './element';
@@ -165,7 +166,10 @@ export class Entity
     indexedFields.forEach(f => {
       if (isObjectTypeInput(f.type)) {
         inputs.push(f.type);
-        f.type = f.type.name;
+        f.type = {
+          name: f.type.name,
+          type: 'input',
+        };
       }
     });
 
@@ -178,7 +182,10 @@ export class Entity
     uniqueFields.forEach(f => {
       if (isObjectTypeInput(f.type)) {
         inputs.push(f.type);
-        f.type = f.type.name;
+        f.type = {
+          name: f.type.name,
+          type: 'input',
+        };
       }
     });
 
@@ -224,7 +231,15 @@ export class Entity
                 /** mutation */
                 mutations.push({
                   name: `create${op.entity}`,
-                  args: [{ name: 'input', type: input.name }],
+                  args: [
+                    {
+                      name: 'input',
+                      type: {
+                        name: input.name,
+                        type: 'input',
+                      },
+                    },
+                  ],
                   payload: payload.name,
                 });
               }
@@ -253,7 +268,15 @@ export class Entity
                 /** mutation */
                 mutations.push({
                   name: `update${op.entity}`,
-                  args: [{ name: 'input', type: input.name }],
+                  args: [
+                    {
+                      name: 'input',
+                      type: {
+                        name: input.name,
+                        type: 'input',
+                      },
+                    },
+                  ],
                   payload: payload.name,
                 });
               }
@@ -281,7 +304,15 @@ export class Entity
                 /** mutation */
                 mutations.push({
                   name: `delete${op.entity}`,
-                  args: [{ name: 'input', type: input.name }],
+                  args: [
+                    {
+                      name: 'input',
+                      type: {
+                        name: input.name,
+                        type: 'input',
+                      },
+                    },
+                  ],
                   payload: payload.name,
                 });
               }
@@ -308,7 +339,13 @@ export class Entity
                         {
                           name: decapitalize(refFieldName),
                           type: field.relation.metadata.persistence.embedded
-                            ? 'create' + field.relation.ref.entity + 'Input'
+                            ? {
+                                name:
+                                  'create' +
+                                  field.relation.ref.entity +
+                                  'Input',
+                                type: 'input',
+                              }
                             : 'ID',
                           required: true,
                         },
@@ -348,7 +385,7 @@ export class Entity
                         {
                           name: 'input',
                           required: true,
-                          type: input.name,
+                          type: { name: input.name, type: 'input' },
                         },
                       ],
                       payload: payload.name,
@@ -371,7 +408,7 @@ export class Entity
                     const fields = [
                       {
                         name: decapitalize(this.name),
-                        type: 'ID',
+                        type: 'ID' as ScalarTypes,
                         required: true,
                       },
                     ];
@@ -412,7 +449,7 @@ export class Entity
                         {
                           name: 'input',
                           required: true,
-                          type: input.name,
+                          type: { name: input.name, type: 'input' },
                         },
                       ],
                       payload: payload.name,
@@ -440,51 +477,144 @@ export class Entity
               }
               break;
             case 'readManyConnection':
-              // after: String, first: Int, before: String, last: Int, limit: Int, skip: Int, orderBy: [#{ctx.entry.name}SortOrder], filter: #{ctx.entry.name}ComplexFilter
-              queries.push({
-                name: decapitalize(this.plural),
-                args: [
-                  {
-                    name: 'after',
-                    type: 'String',
-                  },
-                  {
-                    name: 'first',
-                    type: 'String',
-                  },
-                  {
-                    name: 'before',
-                    type: 'String',
-                  },
-                  {
-                    name: 'last',
-                    type: 'String',
-                  },
-                  {
-                    name: 'limit',
-                    type: 'Int',
-                  },
-                  {
-                    name: 'skip',
-                    type: 'Int',
-                  },
-                  /** сложные типы */
-                  {
-                    name: 'orderBy',
-                    type: `${this.name}SortOrder`,
-                    multiplicity: 'many',
-                  } as ObjectTypeFieldInput,
-                  {
-                    name: 'filter',
-                    type: `${this.name}ComplexFilter`,
-                    multiplicity: 'many',
-                  } as ObjectTypeFieldInput,
-                ],
-                payload: { name: this.name, type: 'entity' },
-              });
+              {
+                /**
+                 *
+                 * let filter = filterForAcl(role, pack)(aclAllow, entity)
+                    .filter(k => {
+                      let f = entity.fields.get(k);
+                      if (!f.relation) {
+                        return true;
+                      }
+                      if (!((f.relation && f.relation.embedded) || f.relation.stored)) {
+                        return false;
+                      }
+                      let ref = pack.relations.get(entity.name).get(f.name);
+                      if (!ref) {
+                        return false;
+                      }
+                      let ent = pack.entities.get(ref.relation.ref.entity);
+                      return !!ent;
+                    })
+                    .map(k => {
+                      let field = entity.fields.get(k);
+                      let type;
+                      if (field.relation) {
+                        if (field.relation.embedded) {
+                          let ref = pack.relations.get(entity.name).get(field.name);
+                          let ent = pack.entities.get(ref.relation.ref.entity);
+                          type = `${ent.name}Filter`;
+                        } else {
+                          let ref = pack.relations.get(entity.name).get(field.name);
+                          let ent = pack.entities.get(ref.relation.ref.entity);
+                          type = ent.fields.get(ref.relation.ref.field).type;
+                          type = `Where${idField(field) ? 'ID' : mapToGQLTypes(type)}`;
+                        }
+                      } else {
+                        if (
+                          pack.entities.has(
+                            typeof field.type === 'string' ? field.type : field.type.name,
+                          )
+                        ) {
+                          type = 'id';
+                        } else if (
+                          pack.enums.has(
+                            typeof field.type === 'string' ? field.type : field.type.name,
+                          )
+                        ) {
+                          type = typeof field.type === 'string' ? field.type : field.type.name;
+                        } else {
+                          type = field.type;
+                        }
+                        type = `Where${idField(field) ? 'ID' : mapToGQLTypes(type)}`;
+                      }
+                      return {
+                        name: k,
+                        type,
+                      };
+                    })
+                    .map(i => `${i.name}: ${i.type}`);
+                 *
+                 *     input #{entity.name}ComplexFilter {
+                          or: [#{entity.name}ComplexFilter]
+                          and: [#{entity.name}ComplexFilter]
+                        <#-entity.filter.forEach((item, index)=>{#>
+                          #{item}
+                        <#-})#>
+                        }
+                 */
+                /**
+                 *     enum #{entity.name}SortOrder {<#
+                          if(entity.fields.length > 0){
+                          for (let key of entity.fields){
+                        #>
+                          #{key}Asc
+                          #{key}Desc
+                        <#-
+                            }
+                          } else {
+                        #>
+                          native
+                          <#}#>
+                        }
+                 *
+                 */
+                /** edge */
+                const edge: ObjectTypeInput = {
+                  name: `${this.plural}Edge`,
+                  kind: 'output',
+                  fields: [
+                    {
+                      name: 'node',
+                      type: {
+                        type: 'entity',
+                        name: this.name,
+                      },
+                    },
+                    {
+                      name: 'cursor',
+                      type: `String`,
+                      required: true,
+                    },
+                  ],
+                };
+                /** connection */
+                const connection: ObjectTypeInput = {
+                  name: `${this.plural}Connection`,
+                  kind: 'output',
+                  fields: [
+                    {
+                      name: 'pageInfo',
+                      type: { name: 'PageInfo', type: 'output' },
+                      required: true,
+                    },
+                    {
+                      name: 'edges',
+                      type: { name: `${this.plural}Edge`, type: 'output' },
+                      multiplicity: 'many',
+                      required: true,
+                    },
+                  ],
+                };
+                payloads.push(connection);
+                payloads.push(edge);
+                queries.push({
+                  name: decapitalize(this.plural),
+                  args: getListAttrs(this.name),
+                  payload: connection.name,
+                });
+              }
               break;
             case 'readManyList':
-              name = `${decapitalize(this.plural)}Items`;
+              queries.push({
+                name: `${decapitalize(this.plural)}Items`,
+                args: getListAttrs(this.name),
+                payload: {
+                  name: this.name,
+                  type: 'entity',
+                  multiplicity: 'many',
+                },
+              });
               break;
           }
         }
@@ -496,6 +626,116 @@ export class Entity
       }
     });
   }
+}
+/**
+ *
+ * after: String,
+ * first: Int,
+ * before: String,
+ * last: Int,
+ * limit: Int,
+ * skip: Int,
+ * orderBy: [#{ctx.entry.name}SortOrder],
+ * filter: #{ctx.entry.name}ComplexFilter
+ * @param name
+ */
+function getListAttrs(name: string): ObjectTypeFieldInput[] {
+  return [
+    {
+      name: 'after',
+      type: 'String',
+    },
+    {
+      name: 'first',
+      type: 'String',
+    },
+    {
+      name: 'before',
+      type: 'String',
+    },
+    {
+      name: 'last',
+      type: 'String',
+    },
+    {
+      name: 'limit',
+      type: 'Int',
+    },
+    {
+      name: 'skip',
+      type: 'Int',
+    },
+    /** сложные типы */
+    {
+      name: 'orderBy',
+      type: { name: `${name}SortOrder`, type: 'input' },
+      multiplicity: 'many',
+    } as ObjectTypeFieldInput,
+    {
+      name: 'filter',
+      type: { name: `${name}ComplexFilter`, type: 'input' },
+      multiplicity: 'many',
+    } as ObjectTypeFieldInput,
+  ];
+}
+
+export function getFilterFields(
+  fields: Map<string, IField>,
+  entityName: string,
+) {
+  const result: ObjectTypeFieldInput[] = [];
+  fields.forEach(f => {
+    const field = getFields(f, entityName);
+    if (field) {
+      result.push(field);
+    }
+  });
+  return result;
+}
+
+function getFields(f: IField, entityName: string): ObjectTypeFieldInput | null {
+  let result: ObjectTypeFieldInput | null = null;
+  if (isISimpleField(f)) {
+    if (idField(f) || mutableFields(f)) {
+      result = {
+        name: f.name,
+        title: f.title,
+        description: f.description,
+        kind: 'input',
+        multiplicity: f.multiplicity,
+        type: f.type,
+      };
+    }
+  } else {
+    if (storedRelations(f)) {
+      if (isIEntityField(f)) {
+        result = {
+          name: f.name,
+          title: f.title,
+          description: f.description,
+          kind: 'input',
+          multiplicity: f.type.multiplicity,
+          type: { name: `embed${f.type.type}Input`, type: 'input' },
+        };
+      } else {
+        const createName =
+          isBelongsToMany(f.relation) && f.relation.fields.size > 0
+            ? `embed${f.relation.ref.entity}UpdateInto${entityName}${capitalize(
+                f.name,
+              )}Input`
+            : `embed${f.relation.entity}Input`;
+        result = {
+          name: f.name,
+          title: f.title,
+          description: f.description,
+          kind: 'input',
+          multiplicity: f.relation.metadata.persistence.single ? 'one' : 'many',
+          type: { name: createName, type: 'input' },
+        };
+      }
+    }
+  }
+  return result;
 }
 
 function getCreateFields(fields: Map<string, IField>, entityName: string) {
@@ -536,7 +776,7 @@ function processFields(
           kind: 'input',
           required: f.required,
           multiplicity: f.type.multiplicity,
-          type: `embed${f.type.type}Input`,
+          type: { name: `embed${f.type.type}Input`, type: 'input' },
           order: f.order,
         };
       } else {
@@ -553,7 +793,7 @@ function processFields(
           kind: 'input',
           required: f.required,
           multiplicity: f.relation.metadata.persistence.single ? 'one' : 'many',
-          type: createName,
+          type: { name: createName, type: 'input' },
           order: f.order,
         };
       }
@@ -587,7 +827,7 @@ function getUpdateFields(entity: IEntity) {
             kind: 'input',
             required: f.required,
             multiplicity: f.type.multiplicity,
-            type: `embed${f.type.type}Input`,
+            type: { name: `embed${f.type.type}Input`, type: 'input' },
             order: f.order,
           });
         } else {
@@ -614,7 +854,7 @@ function getUpdateFields(entity: IEntity) {
             multiplicity: f.relation.metadata.persistence.single
               ? 'one'
               : 'many',
-            type: updateName,
+            type: { name: updateName, type: 'input' },
             order: f.order,
           });
 
@@ -628,7 +868,7 @@ function getUpdateFields(entity: IEntity) {
               multiplicity: f.relation.metadata.persistence.single
                 ? 'one'
                 : 'many',
-              type: updateName,
+              type: { name: updateName, type: 'input' },
               order: f.order,
             });
 
@@ -641,7 +881,7 @@ function getUpdateFields(entity: IEntity) {
               multiplicity: f.relation.metadata.persistence.single
                 ? 'one'
                 : 'many',
-              type: createName,
+              type: { name: createName, type: 'input' },
               order: f.order,
             });
           }

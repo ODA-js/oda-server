@@ -192,11 +192,11 @@ export interface INamed {
 }
 
 /**
- * Complext type can refer to existing type system
+ * Complex type can refer to existing type system
  */
 export type EntityType = {
   /**
-   * complext type name
+   * complex type name
    */
   name: string;
   /**
@@ -232,7 +232,43 @@ export function isEnumType(src: any): src is EnumType {
   return typeof src === 'object' && src.type === 'enum';
 }
 
-export type FieldType = string | EnumType | EntityType;
+export type ScalarTypeExtension = {
+  /**
+   * complex type name
+   */
+  name: string;
+  /**
+   * kind of complex type
+   */
+  type: 'scalar';
+  /**
+   * multiplicity of it
+   */
+  multiplicity?: Multiplicity;
+};
+
+export type ObjectTypeReference = {
+  /**
+   * complex type name
+   */
+  name: string;
+  /**
+   * kind of complex type
+   */
+  type: ArgumentKind;
+  /**
+   * multiplicity of it
+   */
+  multiplicity?: Multiplicity;
+};
+
+export type ScalarTypes = 'ID' | 'Float' | 'String' | 'Boolean' | 'Int';
+
+export type FieldType =
+  | ScalarTypes
+  | ScalarTypeExtension
+  | EnumType
+  | EntityType;
 
 export interface AsHash<T extends Partial<INamed> & object> {
   [name: string]: T;

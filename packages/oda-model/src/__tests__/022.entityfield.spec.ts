@@ -15,7 +15,7 @@ describe('EntityField', () => {
   it('default many', () => {
     const res = new EntityField({
       name: 'A',
-      list: true,
+      multiplicity: 'many',
       type: { type: 'entity', name: 'b' },
     });
     expect(res.type.multiplicity).toBe('many');

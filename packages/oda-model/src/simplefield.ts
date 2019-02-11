@@ -8,7 +8,15 @@ import {
   FieldBaseOutput,
 } from './fieldbase';
 import { merge, get } from 'lodash';
-import { EnumType, Nullable, assignValue, MetaModelType } from './types';
+import {
+  EnumType,
+  Nullable,
+  assignValue,
+  MetaModelType,
+  Multiplicity,
+  ScalarTypeExtension,
+  ScalarTypes,
+} from './types';
 import { Internal } from './element';
 ``;
 export interface ISimpleField
@@ -18,8 +26,8 @@ export interface ISimpleField
     SimpleFieldPersistence,
     SimpleFieldOutput
   > {
-  readonly type: string | EnumType;
-  readonly list?: boolean;
+  readonly type: ScalarTypes | ScalarTypeExtension | EnumType;
+  readonly multiplicity?: Multiplicity;
   readonly defaultValue?: string;
 }
 
@@ -34,22 +42,22 @@ export interface SimpleFieldMeta
 }
 
 export interface SimpleFieldInternal extends FieldBaseInternal {
-  type: string | EnumType;
-  list: boolean;
+  type: ScalarTypes | ScalarTypeExtension | EnumType;
+  multiplicity: Multiplicity;
 }
 
 export interface SimpleFieldInput
   extends FieldBaseInput<SimpleFieldMeta, SimpleFieldPersistence> {
-  type?: string | EnumType;
+  type?: ScalarTypes | ScalarTypeExtension | EnumType;
   defaultValue?: string;
-  list?: boolean;
+  multiplicity?: Multiplicity;
 }
 
 export interface SimpleFieldOutput
   extends FieldBaseOutput<SimpleFieldMeta, SimpleFieldPersistence> {
-  type?: string | EnumType;
+  type?: ScalarTypes | ScalarTypeExtension | EnumType;
   defaultValue?: string;
-  list?: boolean;
+  multiplicity?: Multiplicity;
 }
 
 export const simpleFieldDefaultMetaInfo = {};
@@ -70,13 +78,13 @@ export class SimpleField
       : 'enum-field';
   }
 
-  get type(): string | EnumType {
+  get type(): ScalarTypes | ScalarTypeExtension | EnumType {
     return this[Internal].type;
   }
 
   // if it is the field is List of Items i.e. String[]
-  get list(): boolean {
-    return get(this[Internal], 'list', false);
+  get multiplicity(): Multiplicity {
+    return get(this[Internal], 'multiplicity', 'one');
   }
 
   get defaultValue(): string | undefined {
@@ -104,30 +112,29 @@ export class SimpleField
         }
         src.type = value;
       },
-      setDefault: src => (src.type = 'string'),
+      setDefault: src => (src.type = 'String'),
     });
 
     assignValue<
       SimpleFieldInternal,
       SimpleFieldInput,
-      NonNullable<SimpleFieldInput['list']>
+      NonNullable<SimpleFieldInput['multiplicity']>
     >({
       src: this[Internal],
       input,
-      field: 'list',
+      field: 'multiplicity',
       required: true,
       effect: (src, value) => {
         if (this.modelType === 'enum-field') {
           (src.type as EnumType).multiplicity = value ? 'many' : 'one';
         }
-        src.list = value;
+        src.multiplicity = value;
       },
       setDefault: src => {
         if (this.modelType === 'enum-field') {
-          src.list =
-            (src.type as EnumType).multiplicity === 'many' ? true : false;
+          src.multiplicity = (src.type as EnumType).multiplicity || 'one';
         } else {
-          src.list = false;
+          src.multiplicity = 'one';
         }
       },
     });
@@ -193,7 +200,7 @@ export class SimpleField
     return merge({}, super.toObject(), {
       type: this.type,
       inheritedFrom: this[Internal].inheritedFrom,
-      list: this[Internal].list,
+      multiplicity: this[Internal].multiplicity,
     } as Partial<SimpleFieldOutput>);
   }
 

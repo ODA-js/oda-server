@@ -13,7 +13,7 @@ const MediaFile: EntityInput = {
     },
     {
       name: 'description',
-      type: 'RichText',
+      type: { name: 'RichText', type: 'scalar' },
     },
     {
       name: 'reference',
@@ -34,11 +34,11 @@ const Image: EntityInput = {
   fields: [
     {
       name: 'width',
-      type: 'int',
+      type: 'Int',
     },
     {
       name: 'height',
-      type: 'int',
+      type: 'Int',
     },
   ],
 };

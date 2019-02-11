@@ -67,7 +67,6 @@ Object {
           "args": Object {},
           "description": undefined,
           "inheritedFrom": undefined,
-          "list": false,
           "metadata": Object {
             "acl": Object {
               "read": Array [
@@ -87,9 +86,10 @@ Object {
               "required": false,
             },
           },
+          "multiplicity": "one",
           "name": "a",
           "title": undefined,
-          "type": "string",
+          "type": "String",
         },
         Object {
           "args": Object {},
@@ -149,7 +149,6 @@ Object {
           "args": Object {},
           "description": undefined,
           "inheritedFrom": undefined,
-          "list": false,
           "metadata": Object {
             "acl": Object {
               "read": Array [],
@@ -165,6 +164,7 @@ Object {
               "required": true,
             },
           },
+          "multiplicity": "one",
           "name": "id",
           "title": undefined,
           "type": "ID",
@@ -229,7 +229,7 @@ Object {
               "multiplicity": "one",
               "name": "arg",
               "title": undefined,
-              "type": "string",
+              "type": "String",
             },
           ],
           "custom": false,
@@ -254,7 +254,7 @@ Object {
               "multiplicity": "one",
               "name": "payload",
               "title": undefined,
-              "type": "string",
+              "type": "String",
             },
           ],
           "title": undefined,
@@ -281,7 +281,6 @@ Object {
               "args": Object {},
               "description": undefined,
               "inheritedFrom": undefined,
-              "list": false,
               "metadata": Object {
                 "acl": Object {
                   "read": Array [
@@ -301,9 +300,10 @@ Object {
                   "required": false,
                 },
               },
+              "multiplicity": "one",
               "name": "a",
               "title": undefined,
-              "type": "string",
+              "type": "String",
             },
             Object {
               "args": Object {},
@@ -363,7 +363,6 @@ Object {
               "args": Object {},
               "description": undefined,
               "inheritedFrom": undefined,
-              "list": false,
               "metadata": Object {
                 "acl": Object {
                   "read": Array [],
@@ -379,6 +378,7 @@ Object {
                   "required": true,
                 },
               },
+              "multiplicity": "one",
               "name": "id",
               "title": undefined,
               "type": "ID",
@@ -444,7 +444,7 @@ Object {
                   "multiplicity": "one",
                   "name": "arg",
                   "title": undefined,
-                  "type": "string",
+                  "type": "String",
                 },
               ],
               "custom": false,
@@ -469,7 +469,7 @@ Object {
                   "multiplicity": "one",
                   "name": "payload",
                   "title": undefined,
-                  "type": "string",
+                  "type": "String",
                 },
               ],
               "title": undefined,
@@ -493,7 +493,7 @@ Object {
               "multiplicity": "one",
               "name": "arg",
               "title": undefined,
-              "type": "string",
+              "type": "String",
             },
           ],
           "description": undefined,
@@ -514,7 +514,7 @@ Object {
               "multiplicity": "one",
               "name": "payload",
               "title": undefined,
-              "type": "string",
+              "type": "String",
             },
           ],
           "title": undefined,
@@ -532,7 +532,7 @@ Object {
               "multiplicity": "one",
               "name": "arg",
               "title": undefined,
-              "type": "string",
+              "type": "String",
             },
           ],
           "description": undefined,
@@ -553,7 +553,7 @@ Object {
               "multiplicity": "one",
               "name": "payload",
               "title": undefined,
-              "type": "string",
+              "type": "String",
             },
           ],
           "title": undefined,

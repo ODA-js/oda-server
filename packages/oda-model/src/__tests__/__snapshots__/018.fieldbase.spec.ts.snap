@@ -9,7 +9,7 @@ FieldBase {
           "kind": "input",
           "multiplicity": "one",
           "name": "demoARG",
-          "type": "string",
+          "type": "String",
         },
         Symbol(metadata): Object {
           "required": false,
@@ -55,7 +55,7 @@ Object {
       "multiplicity": "one",
       "name": "demoARG",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
   },
   "description": undefined,

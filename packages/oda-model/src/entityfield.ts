@@ -8,7 +8,13 @@ import {
   RelationFieldBaseOutput,
 } from './relationfieldbase';
 import { merge } from 'lodash';
-import { EntityType, Nullable, assignValue, MetaModelType } from './types';
+import {
+  EntityType,
+  Nullable,
+  assignValue,
+  MetaModelType,
+  Multiplicity,
+} from './types';
 import { HasMany } from './hasmany';
 import { HasOne } from './hasone';
 import { Internal, MetaData } from './element';
@@ -21,7 +27,7 @@ export interface IEntityField
     EntityFieldOutput
   > {
   readonly type: EntityType;
-  readonly list: boolean;
+  readonly multiplicity: Multiplicity;
 }
 
 export interface EntityFieldPersistence extends RelationFieldBasePersistence {}
@@ -31,19 +37,19 @@ export interface EntityFieldMeta
 
 export interface EntityFieldInternal extends RelationFieldBaseInternal {
   type: EntityType;
-  list: boolean;
+  multiplicity: Multiplicity;
 }
 
 export interface EntityFieldInput
   extends RelationFieldBaseInput<EntityFieldMeta, EntityFieldPersistence> {
   type: EntityType;
-  list?: boolean;
+  multiplicity?: Multiplicity;
 }
 
 export interface EntityFieldOutput
   extends RelationFieldBaseOutput<EntityFieldMeta, EntityFieldPersistence> {
   type: EntityType;
-  list?: boolean;
+  multiplicity?: Multiplicity;
 }
 
 const defaultMetaInfo = {
@@ -75,8 +81,8 @@ export class EntityField
     return this[Internal].type;
   }
 
-  get list(): boolean {
-    return this[Internal].list;
+  get multiplicity(): Multiplicity {
+    return this[Internal].multiplicity;
   }
 
   get derived(): boolean {
@@ -89,11 +95,11 @@ export class EntityField
     assignValue<
       EntityFieldInternal,
       EntityFieldInput,
-      NonNullable<EntityFieldInput['list']>
+      NonNullable<EntityFieldInput['multiplicity']>
     >({
       src: this[Internal],
       input,
-      field: 'list',
+      field: 'multiplicity',
       effect: (src, value) => {
         if (src.type) {
           src.type.multiplicity = value ? 'many' : 'one';
@@ -102,11 +108,11 @@ export class EntityField
             input.type.multiplicity = value ? 'many' : 'one';
           }
         }
-        src.list = value;
+        src.multiplicity = value;
       },
       required: true,
       setDefault: src => {
-        src.list = src.type ? src.type.multiplicity === 'many' : false;
+        src.multiplicity = src.type ? src.type.multiplicity || 'one' : 'one';
       },
     });
 
@@ -130,7 +136,7 @@ export class EntityField
               field: this.name,
               embedded: true,
             });
-            src.list = false;
+            src.multiplicity = 'one';
             break;
           }
           case 'many': {
@@ -140,7 +146,7 @@ export class EntityField
               field: this.name,
               embedded: true,
             });
-            src.list = true;
+            src.multiplicity = 'many';
             break;
           }
           default:
@@ -193,7 +199,7 @@ export class EntityField
   public toObject(): EntityFieldOutput {
     return merge({}, super.toObject(), {
       type: this[Internal].type,
-      list: this[Internal].list,
+      multiplicity: this[Internal].multiplicity,
     } as Partial<EntityFieldOutput>);
   }
 

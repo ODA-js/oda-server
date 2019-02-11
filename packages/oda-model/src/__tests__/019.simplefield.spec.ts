@@ -8,9 +8,9 @@ describe('SimpleField', () => {
       name: 'A',
     });
     expect(res.name).toBe('a');
-    expect(res.type).toBe('string');
+    expect(res.type).toBe('String');
     expect(res.modelType).toBe('simple-field');
-    expect(res.list).toBeFalsy();
+    expect(res.multiplicity).toBe('one');
     expect(res).toMatchSnapshot('default');
     expect(res.toObject()).toMatchSnapshot('toObject');
   });
@@ -58,7 +58,7 @@ describe('SimpleField', () => {
     });
     expect(res.name).toBe('a');
     expect(res.modelType).toBe('enum-field');
-    expect(res.list).toBeTruthy();
+    expect(res.multiplicity).toBe('many');
     expect((res.type as EnumType).type).toBe('enum');
     expect(res).toMatchSnapshot('default');
     expect(res.toObject()).toMatchSnapshot('toObject');
@@ -67,7 +67,7 @@ describe('SimpleField', () => {
   it('default enum list', () => {
     const res = new SimpleField({
       name: 'A',
-      list: true,
+      multiplicity: 'many',
       type: {
         type: 'enum',
         name: 'ENUM1',
@@ -75,7 +75,7 @@ describe('SimpleField', () => {
     });
     expect(res.name).toBe('a');
     expect(res.modelType).toBe('enum-field');
-    expect(res.list).toBeTruthy();
+    expect(res.multiplicity).toBe('many');
     expect((res.type as EnumType).type).toBe('enum');
     expect((res.type as EnumType).multiplicity).toBe('many');
   });
@@ -89,7 +89,7 @@ describe('SimpleField', () => {
     });
     expect(res.name).toBe('a');
     expect(res.modelType).toBe('enum-field');
-    expect(res.list).toBeFalsy();
+    expect(res.multiplicity).toBe('one');
     expect((res.type as EnumType).type).toBe('enum');
     expect((res.type as EnumType).multiplicity).toBe('one');
     expect(res).toMatchSnapshot('default');

@@ -34,3 +34,4 @@ export * from './validation';
 export * from './modelhooks';
 export * from './objecttypefield';
 export * from './objecttype';
+export * from './aclfixer';

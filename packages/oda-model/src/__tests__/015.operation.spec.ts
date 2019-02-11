@@ -65,20 +65,20 @@ describe('Operation', () => {
       throw new Error('Must be of Map type');
     }
   });
-  it('toQuery', () => {
-    const resMany = new Operation({
-      name: 'ReadMany',
-      entity: 'User',
-      actionType: 'readMany',
-    });
-    const entity = new Entity({ name: 'User' });
+  // it('toQuery', () => {
+  //   const resMany = new Operation({
+  //     name: 'ReadMany',
+  //     entity: 'User',
+  //     actionType: 'readMany',
+  //   });
+  //   const entity = new Entity({ name: 'User' });
 
-    expect(resMany.toQuery(entity)).toMatchSnapshot('ReadManyToQuery');
-    const resOne = new Operation({
-      name: 'ReadOne',
-      entity: 'User',
-      actionType: 'readOne',
-    });
-    expect(resOne.toQuery(entity)).toMatchSnapshot('ReadManyToQuery');
-  });
+  //   expect(resMany.toQuery(entity)).toMatchSnapshot('ReadManyToQuery');
+  //   const resOne = new Operation({
+  //     name: 'ReadOne',
+  //     entity: 'User',
+  //     actionType: 'readOne',
+  //   });
+  //   expect(resOne.toQuery(entity)).toMatchSnapshot('ReadManyToQuery');
+  // });
 });

@@ -14,7 +14,7 @@ ObjectTypeField {
               "kind": "input",
               "multiplicity": "one",
               "name": "a",
-              "type": "string",
+              "type": "String",
             },
             Symbol(metadata): Object {
               "order": 0,
@@ -26,7 +26,7 @@ ObjectTypeField {
               "kind": "input",
               "multiplicity": "one",
               "name": "b",
-              "type": "string",
+              "type": "String",
             },
             Symbol(metadata): Object {
               "order": 1,
@@ -46,7 +46,7 @@ ObjectTypeField {
                         "kind": "input",
                         "multiplicity": "one",
                         "name": "c1",
-                        "type": "string",
+                        "type": "String",
                       },
                       Symbol(metadata): Object {
                         "order": 0,
@@ -131,7 +131,7 @@ Object {
         "multiplicity": "one",
         "name": "a",
         "title": undefined,
-        "type": "string",
+        "type": "String",
       },
       Object {
         "description": undefined,
@@ -142,7 +142,7 @@ Object {
         "multiplicity": "one",
         "name": "b",
         "title": undefined,
-        "type": "string",
+        "type": "String",
       },
       Object {
         "description": undefined,
@@ -165,7 +165,7 @@ Object {
               "multiplicity": "one",
               "name": "c1",
               "title": undefined,
-              "type": "string",
+              "type": "String",
             },
           ],
           "kind": "input",
@@ -291,7 +291,7 @@ ObjectTypeField {
     "kind": "input",
     "multiplicity": "one",
     "name": "A",
-    "type": "string",
+    "type": "String",
   },
   Symbol(metadata): Object {
     "required": false,
@@ -308,7 +308,7 @@ Object {
   "multiplicity": "one",
   "name": "A",
   "title": undefined,
-  "type": "string",
+  "type": "String",
 }
 `;
 
@@ -321,6 +321,6 @@ Object {
   "multiplicity": "one",
   "name": "A",
   "title": undefined,
-  "type": "string",
+  "type": "String",
 }
 `;

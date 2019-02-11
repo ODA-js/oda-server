@@ -63,9 +63,9 @@ describe('queries', () => {
         },
       ],
     });
-    expect(ArgsFromTuples(getGeneralIndexedFields(entity))).toMatchSnapshot(
-      'all ndexes',
-    );
+    expect(
+      ArgsFromTuples(getGeneralIndexedFields(entity), name => name),
+    ).toMatchSnapshot('all ndexes');
   });
   it('unique indexes', () => {
     const entity = new Entity({
@@ -85,8 +85,8 @@ describe('queries', () => {
         },
       ],
     });
-    expect(ArgsFromTuples(getUniqueIndexedFields(entity))).toMatchSnapshot(
-      'all identity indexes',
-    );
+    expect(
+      ArgsFromTuples(getUniqueIndexedFields(entity), name => name),
+    ).toMatchSnapshot('all identity indexes');
   });
 });

@@ -10,7 +10,6 @@ Object {
       "args": Object {},
       "description": undefined,
       "inheritedFrom": undefined,
-      "list": false,
       "metadata": Object {
         "acl": Object {
           "read": Array [],
@@ -26,6 +25,7 @@ Object {
           "required": true,
         },
       },
+      "multiplicity": "one",
       "name": "id",
       "title": undefined,
       "type": "ID",

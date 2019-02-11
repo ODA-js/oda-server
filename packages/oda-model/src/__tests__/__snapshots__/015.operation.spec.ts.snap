@@ -12,7 +12,7 @@ Object {
       "multiplicity": "one",
       "name": "id",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
     Object {
       "description": undefined,
@@ -22,7 +22,7 @@ Object {
       "multiplicity": "many",
       "name": "fields",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
   ],
   "custom": false,
@@ -44,7 +44,7 @@ Object {
       "multiplicity": "many",
       "name": "result",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
   ],
   "title": undefined,
@@ -63,7 +63,7 @@ Object {
       "multiplicity": "one",
       "name": "id",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
     Object {
       "description": undefined,
@@ -73,7 +73,7 @@ Object {
       "multiplicity": "many",
       "name": "fields",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
   ],
   "custom": false,
@@ -95,7 +95,7 @@ Object {
       "multiplicity": "many",
       "name": "result",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
   ],
   "title": undefined,
@@ -114,7 +114,7 @@ Object {
       "multiplicity": "one",
       "name": "id",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
     Object {
       "description": undefined,
@@ -124,7 +124,7 @@ Object {
       "multiplicity": "many",
       "name": "fields",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
   ],
   "custom": false,
@@ -146,47 +146,9 @@ Object {
       "multiplicity": "many",
       "name": "result",
       "title": undefined,
-      "type": "string",
+      "type": "String",
     },
   ],
-  "title": undefined,
-}
-`;
-
-exports[`Operation toQuery: ReadManyToQuery 1`] = `
-Object {
-  "actionType": "readMany",
-  "args": Array [],
-  "custom": false,
-  "description": undefined,
-  "inheritedFrom": undefined,
-  "metadata": Object {
-    "acl": Object {
-      "execute": Array [],
-    },
-    "entity": "User",
-  },
-  "name": "users",
-  "payload": Array [],
-  "title": undefined,
-}
-`;
-
-exports[`Operation toQuery: ReadManyToQuery 2`] = `
-Object {
-  "actionType": "readOne",
-  "args": Array [],
-  "custom": false,
-  "description": undefined,
-  "inheritedFrom": undefined,
-  "metadata": Object {
-    "acl": Object {
-      "execute": Array [],
-    },
-    "entity": "User",
-  },
-  "name": "user",
-  "payload": Array [],
   "title": undefined,
 }
 `;

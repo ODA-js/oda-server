@@ -4,7 +4,7 @@ exports[`SimpleField default enum multiplicity == one: default 1`] = `
 SimpleField {
   Symbol(internal): Object {
     "args": Map {},
-    "list": false,
+    "multiplicity": "one",
     "name": "a",
     "type": Object {
       "multiplicity": "one",
@@ -33,7 +33,6 @@ Object {
   "args": Object {},
   "description": undefined,
   "inheritedFrom": undefined,
-  "list": false,
   "metadata": Object {
     "acl": Object {
       "read": Array [],
@@ -47,6 +46,7 @@ Object {
       "required": false,
     },
   },
+  "multiplicity": "one",
   "name": "a",
   "title": undefined,
   "type": Object {
@@ -61,7 +61,7 @@ exports[`SimpleField default enum: default 1`] = `
 SimpleField {
   Symbol(internal): Object {
     "args": Map {},
-    "list": true,
+    "multiplicity": "many",
     "name": "a",
     "type": Object {
       "multiplicity": "many",
@@ -90,7 +90,6 @@ Object {
   "args": Object {},
   "description": undefined,
   "inheritedFrom": undefined,
-  "list": true,
   "metadata": Object {
     "acl": Object {
       "read": Array [],
@@ -104,6 +103,7 @@ Object {
       "required": false,
     },
   },
+  "multiplicity": "many",
   "name": "a",
   "title": undefined,
   "type": Object {
@@ -118,9 +118,9 @@ exports[`SimpleField default: default 1`] = `
 SimpleField {
   Symbol(internal): Object {
     "args": Map {},
-    "list": false,
+    "multiplicity": "one",
     "name": "a",
-    "type": "string",
+    "type": "String",
   },
   Symbol(metadata): Object {
     "acl": Object {
@@ -143,7 +143,6 @@ Object {
   "args": Object {},
   "description": undefined,
   "inheritedFrom": undefined,
-  "list": false,
   "metadata": Object {
     "acl": Object {
       "read": Array [],
@@ -157,8 +156,9 @@ Object {
       "required": false,
     },
   },
+  "multiplicity": "one",
   "name": "a",
   "title": undefined,
-  "type": "string",
+  "type": "String",
 }
 `;

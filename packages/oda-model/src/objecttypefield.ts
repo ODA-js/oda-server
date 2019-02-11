@@ -15,6 +15,9 @@ import {
   Multiplicity,
   EntityType,
   ArgumentKind,
+  ScalarTypes,
+  ScalarTypeExtension,
+  ObjectTypeReference,
 } from './types';
 import { Internal } from './element';
 import {
@@ -32,7 +35,13 @@ export interface IObjectTypeField
     ObjectTypeFieldInput,
     ObjectTypeFieldOutput
   > {
-  readonly type: string | EnumType | EntityType | IObjectType;
+  readonly type:
+    | ScalarTypes
+    | ScalarTypeExtension
+    | ObjectTypeReference
+    | EnumType
+    | EntityType
+    | IObjectType;
   readonly multiplicity?: Multiplicity;
   readonly defaultValue?: string;
   readonly order?: number;
@@ -48,14 +57,26 @@ export interface ObjectTypeFieldMeta extends ModelBaseMetaInfo {
 }
 
 export interface ObjectTypeFieldInternal extends ModelBaseInternal {
-  type: string | EnumType | EntityType | IObjectType;
+  type:
+    | ScalarTypes
+    | ScalarTypeExtension
+    | ObjectTypeReference
+    | EnumType
+    | EntityType
+    | IObjectType;
   multiplicity: Multiplicity;
   kind: ArgumentKind;
 }
 
 export interface ObjectTypeFieldInput
   extends ModelBaseInput<ObjectTypeFieldMeta> {
-  type?: string | EnumType | EntityType | ObjectTypeInput;
+  type?:
+    | ScalarTypes
+    | ScalarTypeExtension
+    | ObjectTypeReference
+    | EnumType
+    | EntityType
+    | ObjectTypeInput;
   required?: boolean;
   defaultValue?: string;
   multiplicity?: Multiplicity;
@@ -65,7 +86,13 @@ export interface ObjectTypeFieldInput
 
 export interface ObjectTypeFieldOutput
   extends ModelBaseOutput<ObjectTypeFieldMeta> {
-  type?: string | EnumType | EntityType | ObjectTypeOutput;
+  type?:
+    | ScalarTypes
+    | ScalarTypeExtension
+    | ObjectTypeReference
+    | EnumType
+    | EntityType
+    | ObjectTypeOutput;
   multiplicity?: Multiplicity;
   order?: number;
   kind: ArgumentKind;
@@ -93,7 +120,13 @@ export class ObjectTypeField
       : 'argument-enum-field';
   }
 
-  get type(): string | EnumType | EntityType | IObjectType {
+  get type():
+    | ScalarTypes
+    | ScalarTypeExtension
+    | ObjectTypeReference
+    | EnumType
+    | EntityType
+    | IObjectType {
     return this[Internal].type;
   }
 
@@ -159,7 +192,7 @@ export class ObjectTypeField
           src.type = value;
         }
       },
-      setDefault: src => (src.type = 'string'),
+      setDefault: src => (src.type = 'String'),
     });
 
     assignValue<

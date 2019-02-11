@@ -9,7 +9,7 @@ describe('ObjectTypeField', () => {
       name: 'A',
     });
     expect(res.name).toBe('A');
-    expect(res.type).toBe('string');
+    expect(res.type).toBe('String');
     expect(res.modelType).toBe('argument-simple-field');
     expect(res.multiplicity).toBe('one');
     expect(res).toMatchSnapshot('default');
