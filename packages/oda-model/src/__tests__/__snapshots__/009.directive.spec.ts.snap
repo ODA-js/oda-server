@@ -12,7 +12,10 @@ Object {
       "multiplicity": "one",
       "name": "message",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
   ],
   "description": undefined,

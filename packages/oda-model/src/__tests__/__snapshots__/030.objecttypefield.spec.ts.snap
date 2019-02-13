@@ -14,7 +14,10 @@ ObjectTypeField {
               "kind": "input",
               "multiplicity": "one",
               "name": "a",
-              "type": "String",
+              "type": Object {
+                "name": "String",
+                "type": "scalar",
+              },
             },
             Symbol(metadata): Object {
               "order": 0,
@@ -26,7 +29,10 @@ ObjectTypeField {
               "kind": "input",
               "multiplicity": "one",
               "name": "b",
-              "type": "String",
+              "type": Object {
+                "name": "String",
+                "type": "scalar",
+              },
             },
             Symbol(metadata): Object {
               "order": 1,
@@ -46,7 +52,10 @@ ObjectTypeField {
                         "kind": "input",
                         "multiplicity": "one",
                         "name": "c1",
-                        "type": "String",
+                        "type": Object {
+                          "name": "String",
+                          "type": "scalar",
+                        },
                       },
                       Symbol(metadata): Object {
                         "order": 0,
@@ -131,7 +140,10 @@ Object {
         "multiplicity": "one",
         "name": "a",
         "title": undefined,
-        "type": "String",
+        "type": Object {
+          "name": "String",
+          "type": "scalar",
+        },
       },
       Object {
         "description": undefined,
@@ -142,7 +154,10 @@ Object {
         "multiplicity": "one",
         "name": "b",
         "title": undefined,
-        "type": "String",
+        "type": Object {
+          "name": "String",
+          "type": "scalar",
+        },
       },
       Object {
         "description": undefined,
@@ -165,7 +180,10 @@ Object {
               "multiplicity": "one",
               "name": "c1",
               "title": undefined,
-              "type": "String",
+              "type": Object {
+                "name": "String",
+                "type": "scalar",
+              },
             },
           ],
           "kind": "input",
@@ -291,7 +309,10 @@ ObjectTypeField {
     "kind": "input",
     "multiplicity": "one",
     "name": "A",
-    "type": "String",
+    "type": Object {
+      "name": "String",
+      "type": "scalar",
+    },
   },
   Symbol(metadata): Object {
     "required": false,
@@ -308,7 +329,10 @@ Object {
   "multiplicity": "one",
   "name": "A",
   "title": undefined,
-  "type": "String",
+  "type": Object {
+    "name": "String",
+    "type": "scalar",
+  },
 }
 `;
 
@@ -321,6 +345,9 @@ Object {
   "multiplicity": "one",
   "name": "A",
   "title": undefined,
-  "type": "String",
+  "type": Object {
+    "name": "String",
+    "type": "scalar",
+  },
 }
 `;

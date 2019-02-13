@@ -17,7 +17,7 @@ import {
   assignValue,
   NamedArray,
 } from './types';
-import { applyArgs } from './applyArgs';
+import { inputArgs } from './utils/converters';
 import { Internal, MetaData } from './element';
 import { IEntityRef, EntityReference } from './entityreference';
 import {
@@ -202,7 +202,7 @@ export class FieldBase<
       src: this[Internal],
       input,
       field: 'args',
-      effect: applyArgs,
+      effect: (src, value) => (src.args = inputArgs(value)),
       setDefault: src => (src.args = new Map()),
     });
 

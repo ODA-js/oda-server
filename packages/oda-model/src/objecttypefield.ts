@@ -15,9 +15,13 @@ import {
   Multiplicity,
   EntityType,
   ArgumentKind,
-  ScalarTypes,
+  ScalarTypeNames,
   ScalarTypeExtension,
   ObjectTypeReference,
+  ScalarType,
+  isScalarTypeNames,
+  isScalarType,
+  isScalarTypeExtension,
 } from './types';
 import { Internal } from './element';
 import {
@@ -36,7 +40,7 @@ export interface IObjectTypeField
     ObjectTypeFieldOutput
   > {
   readonly type:
-    | ScalarTypes
+    | ScalarType
     | ScalarTypeExtension
     | ObjectTypeReference
     | EnumType
@@ -58,7 +62,7 @@ export interface ObjectTypeFieldMeta extends ModelBaseMetaInfo {
 
 export interface ObjectTypeFieldInternal extends ModelBaseInternal {
   type:
-    | ScalarTypes
+    | ScalarType
     | ScalarTypeExtension
     | ObjectTypeReference
     | EnumType
@@ -71,7 +75,8 @@ export interface ObjectTypeFieldInternal extends ModelBaseInternal {
 export interface ObjectTypeFieldInput
   extends ModelBaseInput<ObjectTypeFieldMeta> {
   type?:
-    | ScalarTypes
+    | ScalarTypeNames
+    | ScalarType
     | ScalarTypeExtension
     | ObjectTypeReference
     | EnumType
@@ -87,7 +92,7 @@ export interface ObjectTypeFieldInput
 export interface ObjectTypeFieldOutput
   extends ModelBaseOutput<ObjectTypeFieldMeta> {
   type?:
-    | ScalarTypes
+    | ScalarType
     | ScalarTypeExtension
     | ObjectTypeReference
     | EnumType
@@ -111,7 +116,7 @@ export class ObjectTypeField
   implements IObjectTypeField {
   public get modelType(): MetaModelType {
     const internal = this[Internal];
-    return typeof internal.type === 'string'
+    return isScalarType(internal.type) || isScalarTypeExtension(internal.type)
       ? 'argument-simple-field'
       : isObjectType(internal.type)
       ? 'argument-object-type'
@@ -121,7 +126,7 @@ export class ObjectTypeField
   }
 
   get type():
-    | ScalarTypes
+    | ScalarType
     | ScalarTypeExtension
     | ObjectTypeReference
     | EnumType
@@ -189,10 +194,12 @@ export class ObjectTypeField
         if (isObjectTypeInput(value)) {
           src.type = new ObjectType(value);
         } else {
-          src.type = value;
+          src.type = isScalarTypeNames(value)
+            ? { name: value, type: 'scalar' }
+            : value;
         }
       },
-      setDefault: src => (src.type = 'String'),
+      setDefault: src => (src.type = { name: 'String', type: 'scalar' }),
     });
 
     assignValue<

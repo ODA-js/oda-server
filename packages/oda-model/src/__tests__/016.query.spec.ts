@@ -5,7 +5,7 @@ describe('Query', () => {
   it('default', () => {
     const res = new Query({
       name: 'GetAllUsersThat',
-      args: [{ name: 'disabled', type: 'boolean', multiplicity: 'one' }],
+      args: [{ name: 'disabled', type: 'Boolean', multiplicity: 'one' }],
       payload: [{ name: 'id', required: true, multiplicity: 'many' }],
     });
     expect(res.metadata).toMatchObject(queryDefaultMetaInfo);
@@ -15,7 +15,7 @@ describe('Query', () => {
     const res = new Query({
       name: 'GetAllUsersThat',
       args: [
-        { name: 'disabled', type: 'boolean', multiplicity: 'one' },
+        { name: 'disabled', type: 'Boolean', multiplicity: 'one' },
         { name: 'disabled', description: 'some' },
       ],
       payload: [
@@ -25,7 +25,11 @@ describe('Query', () => {
     });
     expect(res.args.size).toBe(1);
     expect(res.args.get('disabled')).toHaveProperty('description', 'some');
-    expect(res.payload.size).toBe(1);
-    expect(res.payload.get('id')).toHaveProperty('description', 'other');
+    if (res.payload instanceof Map) {
+      expect(res.payload.size).toBe(1);
+      expect(res.payload.get('id')).toHaveProperty('description', 'other');
+    } else {
+      throw new Error('not Map as expected');
+    }
   });
 });

@@ -16,10 +16,12 @@ import {
   Nullable,
   EnumType,
   EntityType,
+  ScalarTypeExtension,
+  ScalarType,
+  ScalarTypeNames,
 } from './types';
-import { payloadToObject } from './payloadToObject';
-import { applyArgs } from './applyArgs';
-import { applyPayload } from './applyPayload';
+import { outputPayload } from './utils/converters';
+import { inputArgs, inputPayload } from './utils/converters';
 import { merge } from 'lodash';
 import { Internal, MetaData } from './element';
 import decapitalize from './lib/decapitalize';
@@ -47,7 +49,8 @@ export interface IOperation
    */
   readonly args: Map<string, IObjectType | IObjectTypeField>;
   readonly payload:
-    | string
+    | ScalarType
+    | ScalarTypeExtension
     | EnumType
     | EntityType
     | IObjectType
@@ -73,7 +76,9 @@ export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
     | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
     | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   payload?:
-    | string
+    | ScalarTypeNames
+    | ScalarType
+    | ScalarTypeExtension
     | EnumType
     | EntityType
     | ObjectTypeInput
@@ -91,7 +96,8 @@ export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
 export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
   args: NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   payload:
-    | string
+    | ScalarType
+    | ScalarTypeExtension
     | EnumType
     | EntityType
     | ObjectTypeInput
@@ -109,7 +115,8 @@ export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
 export interface OperationInternal extends ModelBaseInternal {
   args: Map<string, IObjectType | IObjectTypeField>;
   payload:
-    | string
+    | ScalarType
+    | ScalarTypeExtension
     | EnumType
     | EntityType
     | IObjectType
@@ -155,7 +162,8 @@ export class Operation
   }
 
   get payload():
-    | string
+    | ScalarType
+    | ScalarTypeExtension
     | EnumType
     | EntityType
     | IObjectType
@@ -253,7 +261,7 @@ export class Operation
       src: this[Internal],
       input,
       field: 'args',
-      effect: applyArgs,
+      effect: (src, value) => (src.args = inputArgs(value)),
       required: true,
       setDefault: src => (src.args = new Map()),
     });
@@ -266,7 +274,7 @@ export class Operation
       src: this[Internal],
       input,
       field: 'payload',
-      effect: applyPayload,
+      effect: (src, value) => (src.payload = inputPayload(value)),
       required: true,
       setDefault: src => (src.payload = new Map()),
     });
@@ -274,7 +282,7 @@ export class Operation
 
   public toObject(): OperationOutput {
     const internal = this[Internal];
-    const payload = payloadToObject(internal);
+    const payload = outputPayload(internal.payload);
     return merge({}, super.toObject(), {
       actionType: this.actionType,
       custom: this.custom,

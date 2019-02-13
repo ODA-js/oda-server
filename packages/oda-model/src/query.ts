@@ -9,10 +9,12 @@ import {
   MapToArray,
   EnumType,
   EntityType,
+  ScalarType,
+  ScalarTypeExtension,
+  ScalarTypeNames,
 } from './types';
-import { payloadToObject } from './payloadToObject';
-import { applyArgs } from './applyArgs';
-import { applyPayload } from './applyPayload';
+import { outputPayload } from './utils/converters';
+import { inputArgs, inputPayload } from './utils/converters';
 import {
   IModelBase,
   ModelBaseInternal,
@@ -35,7 +37,8 @@ export interface IQuery
    * set of output fields
    */
   readonly payload:
-    | string
+    | ScalarType
+    | ScalarTypeExtension
     | EnumType
     | EntityType
     | IObjectType
@@ -51,7 +54,8 @@ export interface QueryMetaInfo extends ModelBaseMetaInfo {
 export interface QueryInternal extends ModelBaseInternal {
   args: Map<string, IObjectType | IObjectTypeField>;
   payload:
-    | string
+    | ScalarType
+    | ScalarTypeExtension
     | EnumType
     | EntityType
     | IObjectType
@@ -63,7 +67,9 @@ export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
     | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
     | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   payload:
-    | string
+    | ScalarTypeNames
+    | ScalarType
+    | ScalarTypeExtension
     | EnumType
     | EntityType
     | ObjectTypeInput
@@ -74,7 +80,8 @@ export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
 export interface QueryOutput extends ModelBaseOutput<QueryMetaInfo> {
   args: NamedArray<ObjectTypeFieldInput>;
   payload:
-    | string
+    | ScalarType
+    | ScalarTypeExtension
     | EnumType
     | EntityType
     | ObjectTypeInput
@@ -104,7 +111,8 @@ export class Query
   }
 
   public get payload():
-    | string
+    | ScalarType
+    | ScalarTypeExtension
     | EnumType
     | EntityType
     | IObjectType
@@ -127,7 +135,7 @@ export class Query
       src: this[Internal],
       input,
       field: 'args',
-      effect: applyArgs,
+      effect: (src, value) => (src.args = inputArgs(value)),
       required: true,
       setDefault: src => (src.args = new Map()),
     });
@@ -136,7 +144,7 @@ export class Query
       src: this[Internal],
       input,
       field: 'payload',
-      effect: applyPayload,
+      effect: (src, value) => (src.payload = inputPayload(value)),
       required: true,
       setDefault: src => (src.payload = new Map()),
     });
@@ -144,7 +152,7 @@ export class Query
 
   public toObject(): QueryOutput {
     const internal = this[Internal];
-    const payload = payloadToObject(internal);
+    const payload = outputPayload(internal.payload);
     return merge({}, super.toObject(), {
       args: MapToArray(this[Internal].args, (_name, value) => value.toObject()),
       payload,

@@ -11,7 +11,10 @@ Object {
       "multiplicity": "one",
       "name": "login",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
     Object {
       "description": undefined,
@@ -21,7 +24,10 @@ Object {
       "multiplicity": "one",
       "name": "password",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
   ],
   "description": undefined,
@@ -40,7 +46,10 @@ Object {
       "multiplicity": "one",
       "name": "token",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
   ],
   "title": undefined,

@@ -8,7 +8,7 @@ describe('SimpleField', () => {
       name: 'A',
     });
     expect(res.name).toBe('a');
-    expect(res.type).toBe('String');
+    expect(res.type).toMatchObject({ name: 'String', type: 'scalar' });
     expect(res.modelType).toBe('simple-field');
     expect(res.multiplicity).toBe('one');
     expect(res).toMatchSnapshot('default');

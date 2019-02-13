@@ -28,7 +28,10 @@ Object {
       "multiplicity": "one",
       "name": "id",
       "title": undefined,
-      "type": "ID",
+      "type": Object {
+        "name": "ID",
+        "type": "scalar",
+      },
     },
   ],
   "implements": Array [

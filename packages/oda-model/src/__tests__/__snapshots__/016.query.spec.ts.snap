@@ -11,7 +11,10 @@ Object {
       "multiplicity": "one",
       "name": "disabled",
       "title": undefined,
-      "type": "boolean",
+      "type": Object {
+        "name": "Boolean",
+        "type": "scalar",
+      },
     },
   ],
   "description": undefined,
@@ -30,7 +33,10 @@ Object {
       "multiplicity": "many",
       "name": "id",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
   ],
   "title": undefined,

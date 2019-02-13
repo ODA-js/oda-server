@@ -14,7 +14,7 @@ import {
   isBelongsToMany,
   NamedArray,
   MapToArray,
-  ScalarTypes,
+  ScalarTypeNames,
 } from './types';
 import { merge } from 'lodash';
 import { Internal } from './element';
@@ -29,7 +29,7 @@ import {
   getGeneralIndexedFields,
 } from './utils/queries';
 import capitalize from './lib/capitalize';
-import { payloadToObject } from './payloadToObject';
+import { outputPayload } from './utils/converters';
 import { ObjectTypeInput, isObjectTypeInput } from './objecttype';
 import decapitalize from './lib/decapitalize';
 import { QueryInput } from './query';
@@ -197,7 +197,7 @@ export class Entity
         op.actionType === 'addTo' ||
         op.actionType === 'removeFrom'
       ) {
-        let payload = payloadToObject(op);
+        let payload = outputPayload(op.payload);
 
         let name = op.name;
         let args: NamedArray<
@@ -240,7 +240,7 @@ export class Entity
                       },
                     },
                   ],
-                  payload: payload.name,
+                  payload,
                 });
               }
               break;
@@ -277,7 +277,7 @@ export class Entity
                       },
                     },
                   ],
-                  payload: payload.name,
+                  payload,
                 });
               }
               break;
@@ -313,7 +313,7 @@ export class Entity
                       },
                     },
                   ],
-                  payload: payload.name,
+                  payload,
                 });
               }
               break;
@@ -388,7 +388,7 @@ export class Entity
                           type: { name: input.name, type: 'input' },
                         },
                       ],
-                      payload: payload.name,
+                      payload,
                     });
                   }
                 }
@@ -408,7 +408,7 @@ export class Entity
                     const fields = [
                       {
                         name: decapitalize(this.name),
-                        type: 'ID' as ScalarTypes,
+                        type: 'ID' as ScalarTypeNames,
                         required: true,
                       },
                     ];
@@ -452,7 +452,7 @@ export class Entity
                           type: { name: input.name, type: 'input' },
                         },
                       ],
-                      payload: payload.name,
+                      payload,
                     });
                   }
                 }
@@ -601,7 +601,7 @@ export class Entity
                 queries.push({
                   name: decapitalize(this.plural),
                   args: getListAttrs(this.name),
-                  payload: connection.name,
+                  payload: connection,
                 });
               }
               break;

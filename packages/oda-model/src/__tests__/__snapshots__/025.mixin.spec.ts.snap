@@ -26,7 +26,10 @@ Object {
       "multiplicity": "one",
       "name": "id",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
   ],
   "metadata": Object {

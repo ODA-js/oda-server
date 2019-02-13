@@ -9,7 +9,10 @@ Array [
     "order": 0,
     "required": false,
     "title": undefined,
-    "type": "String",
+    "type": Object {
+      "name": "String",
+      "type": "scalar",
+    },
   },
   Object {
     "name": "b",
@@ -22,7 +25,10 @@ Array [
           "order": 0,
           "required": false,
           "title": undefined,
-          "type": "String",
+          "type": Object {
+            "name": "String",
+            "type": "scalar",
+          },
         },
         Object {
           "description": undefined,
@@ -31,7 +37,10 @@ Array [
           "order": 1,
           "required": false,
           "title": undefined,
-          "type": "String",
+          "type": Object {
+            "name": "String",
+            "type": "scalar",
+          },
         },
       ],
       "name": "b",
@@ -49,7 +58,10 @@ Array [
     "order": 0,
     "required": true,
     "title": undefined,
-    "type": "String",
+    "type": Object {
+      "name": "String",
+      "type": "scalar",
+    },
   },
   Object {
     "name": "b",
@@ -62,7 +74,10 @@ Array [
           "order": 0,
           "required": true,
           "title": undefined,
-          "type": "String",
+          "type": Object {
+            "name": "String",
+            "type": "scalar",
+          },
         },
         Object {
           "description": undefined,
@@ -71,7 +86,10 @@ Array [
           "order": 1,
           "required": true,
           "title": undefined,
-          "type": "String",
+          "type": Object {
+            "name": "String",
+            "type": "scalar",
+          },
         },
       ],
       "name": "b",
@@ -84,7 +102,10 @@ Array [
     "order": 0,
     "required": true,
     "title": undefined,
-    "type": "ID",
+    "type": Object {
+      "name": "ID",
+      "type": "scalar",
+    },
   },
 ]
 `;

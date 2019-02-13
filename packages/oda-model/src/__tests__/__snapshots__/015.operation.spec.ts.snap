@@ -12,7 +12,10 @@ Object {
       "multiplicity": "one",
       "name": "id",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
     Object {
       "description": undefined,
@@ -22,7 +25,10 @@ Object {
       "multiplicity": "many",
       "name": "fields",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
   ],
   "custom": false,
@@ -44,7 +50,10 @@ Object {
       "multiplicity": "many",
       "name": "result",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
   ],
   "title": undefined,
@@ -63,7 +72,10 @@ Object {
       "multiplicity": "one",
       "name": "id",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
     Object {
       "description": undefined,
@@ -73,7 +85,10 @@ Object {
       "multiplicity": "many",
       "name": "fields",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
   ],
   "custom": false,
@@ -95,7 +110,10 @@ Object {
       "multiplicity": "many",
       "name": "result",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
   ],
   "title": undefined,
@@ -114,7 +132,10 @@ Object {
       "multiplicity": "one",
       "name": "id",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
     Object {
       "description": undefined,
@@ -124,7 +145,10 @@ Object {
       "multiplicity": "many",
       "name": "fields",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
   ],
   "custom": false,
@@ -146,7 +170,10 @@ Object {
       "multiplicity": "many",
       "name": "result",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
   ],
   "title": undefined,

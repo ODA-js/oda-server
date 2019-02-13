@@ -15,7 +15,7 @@ import {
   NamedArray,
   MapToArray,
 } from './types';
-import { applyArgs } from './applyArgs';
+import { inputArgs } from './utils/converters';
 import { Internal } from './element';
 import { merge, mergeWith } from 'lodash';
 import {
@@ -93,7 +93,7 @@ export class Directive
       src: this[Internal],
       input,
       field: 'args',
-      effect: applyArgs,
+      effect: (src, value) => (src.args = inputArgs(value)),
       setDefault: src => (src.args = new Map()),
     });
 

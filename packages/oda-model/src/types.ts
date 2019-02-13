@@ -247,6 +247,33 @@ export type ScalarTypeExtension = {
   multiplicity?: Multiplicity;
 };
 
+export function isScalarTypeExtension(src: any): src is ScalarTypeExtension {
+  return typeof src === 'object' && src.type === 'scalar';
+}
+
+export type ScalarType = {
+  /**
+   * complex type name
+   */
+  name: ScalarTypeNames;
+  /**
+   * kind of complex type
+   */
+  type: 'scalar';
+  /**
+   * multiplicity of it
+   */
+  multiplicity?: Multiplicity;
+};
+
+export function isScalarType(src: any): src is ScalarType {
+  return (
+    typeof src === 'object' &&
+    src.type === 'scalar' &&
+    ['ID', 'Float', 'String', 'Boolean', 'Int'].indexOf(src.type) >= 0
+  );
+}
+
 export type ObjectTypeReference = {
   /**
    * complex type name
@@ -262,10 +289,18 @@ export type ObjectTypeReference = {
   multiplicity?: Multiplicity;
 };
 
-export type ScalarTypes = 'ID' | 'Float' | 'String' | 'Boolean' | 'Int';
+export type ScalarTypeNames = 'ID' | 'Float' | 'String' | 'Boolean' | 'Int';
+
+export function isScalarTypeNames(src: any): src is ScalarTypeNames {
+  return (
+    typeof src === 'string' &&
+    ['ID', 'Float', 'String', 'Boolean', 'Int'].indexOf(src) >= 0
+  );
+}
 
 export type FieldType =
-  | ScalarTypes
+  | ScalarTypeNames
+  | ScalarType
   | ScalarTypeExtension
   | EnumType
   | EntityType;

@@ -9,7 +9,10 @@ ObjectType {
           "kind": "input",
           "multiplicity": "one",
           "name": "A",
-          "type": "String",
+          "type": Object {
+            "name": "String",
+            "type": "scalar",
+          },
         },
         Symbol(metadata): Object {
           "order": 0,
@@ -85,7 +88,10 @@ Object {
       "multiplicity": "one",
       "name": "A",
       "title": undefined,
-      "type": "String",
+      "type": Object {
+        "name": "String",
+        "type": "scalar",
+      },
     },
     Object {
       "description": undefined,
