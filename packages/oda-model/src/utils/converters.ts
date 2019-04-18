@@ -24,6 +24,7 @@ import {
   ScalarTypeExtension,
   isScalarType,
   isScalarTypeExtension,
+  stringToScalar,
 } from '../types';
 
 /**
@@ -41,7 +42,7 @@ export function outputPayload(
     | Map<string, IObjectType | IObjectTypeField>,
 ) {
   return typeof payload === 'string'
-    ? { name: payload, type: 'scalar' }
+    ? stringToScalar(payload)
     : isScalarType(payload) || isScalarTypeExtension(payload)
     ? payload
     : isEnumType(payload) || isEntityType(payload) || isObjectType(payload)
@@ -97,7 +98,7 @@ export function inputPayload(
   | IObjectType
   | Map<string, IObjectType | IObjectTypeField> {
   return typeof value === 'string'
-    ? { name: value, type: 'scalar' }
+    ? stringToScalar(value)
     : isScalarType(value) || isScalarTypeExtension(value)
     ? value
     : isEnumType(value) || isEntityType(value) || isObjectTypeInput(value)
