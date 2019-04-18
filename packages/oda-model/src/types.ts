@@ -232,6 +232,45 @@ export function isEnumType(src: any): src is EnumType {
   return typeof src === 'object' && src.type === 'enum';
 }
 
+export function isArrayScalar(inp: string): Boolean {
+  return !!(inp.match(/^\[(.*)\]$/) || inp.match(/^(.*)\[(\d*)\]$/));
+}
+
+export function getTypeName(inp: string) {
+  let res = inp.match(/^(.*)\[(\d*)\]$/);
+  if (res && res[1]) {
+    return res[1];
+  } else {
+    let res = inp.match(/^\[(.*)\]$/);
+    if (res && res[1]) {
+      return res[1];
+    }
+  }
+  return inp;
+}
+
+export function stringToScalar(_inp: string): ScalarType | ScalarTypeExtension {
+  const multiplicity = isArrayScalar(_inp) ? 'many' : 'one';
+  const inp = multiplicity === 'many' ? getTypeName(_inp) : _inp;
+  switch (inp.toLocaleLowerCase()) {
+    case 'int':
+    case 'integer':
+      return { name: 'Int', type: 'scalar', multiplicity };
+    case 'float':
+    case 'double':
+      return { name: 'Float', type: 'scalar', multiplicity };
+    case 'id':
+      return { name: 'ID', type: 'scalar', multiplicity };
+    case 'string':
+      return { name: 'String', type: 'scalar', multiplicity };
+    case 'boolean':
+    case 'bool':
+      return { name: 'Boolean', type: 'scalar', multiplicity };
+    default:
+      return { name: inp, type: 'scalar', multiplicity };
+  }
+}
+
 export type ScalarTypeExtension = {
   /**
    * complex type name

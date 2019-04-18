@@ -157,3 +157,259 @@ Object {
   },
 }
 `;
+
+exports[`helpers stringToScalar 1`] = `
+Object {
+  "multiplicity": "one",
+  "name": "String",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 2`] = `
+Object {
+  "multiplicity": "one",
+  "name": "String",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 3`] = `
+Object {
+  "multiplicity": "one",
+  "name": "String",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 4`] = `
+Object {
+  "multiplicity": "one",
+  "name": "Int",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 5`] = `
+Object {
+  "multiplicity": "one",
+  "name": "Int",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 6`] = `
+Object {
+  "multiplicity": "one",
+  "name": "Int",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 7`] = `
+Object {
+  "multiplicity": "one",
+  "name": "Float",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 8`] = `
+Object {
+  "multiplicity": "one",
+  "name": "Float",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 9`] = `
+Object {
+  "multiplicity": "one",
+  "name": "ID",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 10`] = `
+Object {
+  "multiplicity": "one",
+  "name": "ID",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 11`] = `
+Object {
+  "multiplicity": "one",
+  "name": "Boolean",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 12`] = `
+Object {
+  "multiplicity": "one",
+  "name": "Boolean",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 13`] = `
+Object {
+  "multiplicity": "one",
+  "name": "Url",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 14`] = `
+Object {
+  "multiplicity": "one",
+  "name": "uRl",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 15`] = `
+Object {
+  "multiplicity": "many",
+  "name": "String",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 16`] = `
+Object {
+  "multiplicity": "many",
+  "name": "Int",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 17`] = `
+Object {
+  "multiplicity": "many",
+  "name": "Float",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 18`] = `
+Object {
+  "multiplicity": "many",
+  "name": "ID",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 19`] = `
+Object {
+  "multiplicity": "many",
+  "name": "Boolean",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 20`] = `
+Object {
+  "multiplicity": "many",
+  "name": "Url",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 21`] = `
+Object {
+  "multiplicity": "many",
+  "name": "String",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 22`] = `
+Object {
+  "multiplicity": "many",
+  "name": "Int",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 23`] = `
+Object {
+  "multiplicity": "many",
+  "name": "Float",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 24`] = `
+Object {
+  "multiplicity": "many",
+  "name": "ID",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 25`] = `
+Object {
+  "multiplicity": "many",
+  "name": "Boolean",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 26`] = `
+Object {
+  "multiplicity": "many",
+  "name": "Url",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 27`] = `
+Object {
+  "multiplicity": "many",
+  "name": "String",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 28`] = `
+Object {
+  "multiplicity": "many",
+  "name": "Int",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 29`] = `
+Object {
+  "multiplicity": "many",
+  "name": "Float",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 30`] = `
+Object {
+  "multiplicity": "many",
+  "name": "ID",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 31`] = `
+Object {
+  "multiplicity": "many",
+  "name": "Boolean",
+  "type": "scalar",
+}
+`;
+
+exports[`helpers stringToScalar 32`] = `
+Object {
+  "multiplicity": "many",
+  "name": "Url",
+  "type": "scalar",
+}
+`;

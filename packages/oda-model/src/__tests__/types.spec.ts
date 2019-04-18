@@ -8,6 +8,9 @@ import {
   MapToArray,
   MapToHash,
   INamed,
+  isArrayScalar,
+  getTypeName,
+  stringToScalar,
 } from '../types';
 
 import { merge } from 'lodash';
@@ -136,5 +139,54 @@ describe('helpers', () => {
         ]),
       ),
     ).toMatchSnapshot('MapToArray-Values');
+  });
+  it('isArrayScalar', () => {
+    expect(isArrayScalar('string')).toBeFalsy();
+    expect(isArrayScalar('string[]')).toBeTruthy();
+    expect(isArrayScalar('string[4]')).toBeTruthy();
+    expect(isArrayScalar('[string]')).toBeTruthy();
+  });
+  it('getTypeName', () => {
+    expect(getTypeName('string')).toBe('string');
+    expect(getTypeName('string[]')).toBe('string');
+    expect(getTypeName('string[4]')).toBe('string');
+    expect(getTypeName('[string]')).toBe('string');
+  });
+  it('stringToScalar', () => {
+    expect(stringToScalar('string')).toMatchSnapshot();
+    expect(stringToScalar('String')).toMatchSnapshot();
+    expect(stringToScalar('strIng')).toMatchSnapshot();
+    expect(stringToScalar('Int')).toMatchSnapshot();
+    expect(stringToScalar('int')).toMatchSnapshot();
+    expect(stringToScalar('InteGer')).toMatchSnapshot();
+    expect(stringToScalar('float')).toMatchSnapshot();
+    expect(stringToScalar('Double')).toMatchSnapshot();
+    expect(stringToScalar('Id')).toMatchSnapshot();
+    expect(stringToScalar('ID')).toMatchSnapshot();
+    expect(stringToScalar('booleAn')).toMatchSnapshot();
+    expect(stringToScalar('boolean')).toMatchSnapshot();
+    expect(stringToScalar('Url')).toMatchSnapshot();
+    expect(stringToScalar('uRl')).toMatchSnapshot();
+
+    expect(stringToScalar('String[]')).toMatchSnapshot();
+    expect(stringToScalar('Int[]')).toMatchSnapshot();
+    expect(stringToScalar('Float[]')).toMatchSnapshot();
+    expect(stringToScalar('ID[]')).toMatchSnapshot();
+    expect(stringToScalar('Boolean[]')).toMatchSnapshot();
+    expect(stringToScalar('Url[]')).toMatchSnapshot();
+
+    expect(stringToScalar('String[1]')).toMatchSnapshot();
+    expect(stringToScalar('Int[2]')).toMatchSnapshot();
+    expect(stringToScalar('Float[3]')).toMatchSnapshot();
+    expect(stringToScalar('ID[4]')).toMatchSnapshot();
+    expect(stringToScalar('Boolean[5]')).toMatchSnapshot();
+    expect(stringToScalar('Url[6]')).toMatchSnapshot();
+
+    expect(stringToScalar('[String]')).toMatchSnapshot();
+    expect(stringToScalar('[Int]')).toMatchSnapshot();
+    expect(stringToScalar('[Float]')).toMatchSnapshot();
+    expect(stringToScalar('[ID]')).toMatchSnapshot();
+    expect(stringToScalar('[Boolean]')).toMatchSnapshot();
+    expect(stringToScalar('[Url]')).toMatchSnapshot();
   });
 });
