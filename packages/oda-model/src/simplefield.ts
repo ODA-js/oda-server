@@ -15,8 +15,8 @@ import {
   MetaModelType,
   Multiplicity,
   isEnumType,
-  SimpleModelTypes,
-  SimpleInputModelTypes,
+  SimpleModelType,
+  SimpleModelTypeInput,
   stringToScalar,
 } from './types';
 import { Internal } from './element';
@@ -29,7 +29,7 @@ export interface ISimpleField
     SimpleFieldPersistence,
     SimpleFieldOutput
   > {
-  readonly type: SimpleModelTypes;
+  readonly type: SimpleModelType;
   readonly multiplicity?: Multiplicity;
   readonly defaultValue?: string;
 }
@@ -45,20 +45,20 @@ export interface SimpleFieldMeta
 }
 
 export interface SimpleFieldInternal extends FieldBaseInternal {
-  type: SimpleModelTypes;
+  type: SimpleModelType;
   multiplicity: Multiplicity;
 }
 
 export interface SimpleFieldInput
   extends FieldBaseInput<SimpleFieldMeta, SimpleFieldPersistence> {
-  type?: SimpleInputModelTypes;
+  type?: SimpleModelTypeInput;
   defaultValue?: string;
   multiplicity?: Multiplicity;
 }
 
 export interface SimpleFieldOutput
   extends FieldBaseOutput<SimpleFieldMeta, SimpleFieldPersistence> {
-  type?: SimpleModelTypes;
+  type?: SimpleModelType;
   defaultValue?: string;
   multiplicity?: Multiplicity;
 }
@@ -79,7 +79,7 @@ export class SimpleField
     return isEnumType(this[Internal].type) ? 'enum-field' : 'simple-field';
   }
 
-  get type(): SimpleModelTypes {
+  get type(): SimpleModelType {
     return this[Internal].type;
   }
 

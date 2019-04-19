@@ -332,61 +332,65 @@ export type ObjectTypeReference = {
 
 export type ScalarTypeNames = 'ID' | 'Float' | 'String' | 'Boolean' | 'Int';
 
-export type SimpleModelTypes = ScalarType | ScalarTypeExtension | EnumType;
-export type SimpleInputModelTypes = string | ScalarTypeNames | SimpleModelTypes;
+export type SimpleModelType = ScalarType | ScalarTypeExtension | EnumType;
+export type SimpleModelTypeInput = string | ScalarTypeNames | SimpleModelType;
 
-export type FieldType = SimpleInputModelTypes | EntityType;
+export type FieldType = SimpleModelTypeInput | EntityType;
+export type FieldTypeInput = SimpleModelTypeInput | EntityType;
+export type FieldTypeOutput = SimpleModelType | EntityType;
+
 export type IndexValueType = boolean | string | string[];
 
 export type CommonArgsInput =
   | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
   | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
 
+export type CommonArgsOutput = NamedArray<ObjectTypeFieldInput>;
+export type CommonArgs = Map<string, IObjectType | IObjectTypeField>;
+
 export type CommonPayloadInput =
   | string
   | ScalarTypeNames
-  | SimpleModelTypes
+  | SimpleModelType
   | EntityType
   | ObjectTypeInput
   | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
   | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
 
-export type CommonArgsOutput = NamedArray<ObjectTypeFieldInput>;
-
 export type CommonPayloadOutput =
-  | SimpleModelTypes
+  | SimpleModelType
   | EntityType
   | ObjectTypeInput
   | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
 
-export type CommonArgs = Map<string, IObjectType | IObjectTypeField>;
-
 export type CommonPayload =
   | CommonArgs
-  | SimpleModelTypes
+  | SimpleModelType
   | EntityType
   | IObjectType;
 
 export type ObjectTypeFieldsInput =
   | AsHash<ObjectTypeFieldInput>
   | NamedArray<ObjectTypeFieldInput>;
+
 export type ObjectTypeFieldsOutput = NamedArray<ObjectTypeFieldInput>;
+
 export type ObjectTypeFields = Map<string, IObjectTypeField>;
 
 export type ObjectTypeFieldType =
-  | SimpleModelTypes
+  | SimpleModelType
   | ObjectTypeReference
   | EntityType
   | IObjectType;
 
 export type ObjectTypeFieldTypeInput =
-  | SimpleInputModelTypes
+  | SimpleModelTypeInput
   | ObjectTypeReference
   | EntityType
   | ObjectTypeInput;
 
 export type ObjectTypeFieldTypeOutput =
-  | SimpleModelTypes
+  | SimpleModelType
   | ObjectTypeReference
   | EntityType
   | ObjectTypeOutput;

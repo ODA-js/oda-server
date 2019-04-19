@@ -118,6 +118,7 @@ EntityBase {
       "d" => RelationField {
         Symbol(internal): Object {
           "args": Map {},
+          "multiplicity": "one",
           "name": "d",
           "relation": HasOne {
             Symbol(internal): Object {
@@ -146,6 +147,11 @@ EntityBase {
               },
               "verb": "HasOne",
             },
+          },
+          "type": Object {
+            "multiplicity": "one",
+            "name": "A",
+            "type": "entity",
           },
         },
         Symbol(metadata): Object {

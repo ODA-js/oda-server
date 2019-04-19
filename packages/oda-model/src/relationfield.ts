@@ -1,5 +1,11 @@
 import { merge } from 'lodash';
-import { Nullable, assignValue, MetaModelType } from './types';
+import {
+  Nullable,
+  assignValue,
+  MetaModelType,
+  EntityType,
+  Multiplicity,
+} from './types';
 import { RelationInput } from './relation';
 import { HasOne } from './hasone';
 import { HasMany } from './hasmany';
@@ -71,7 +77,10 @@ export interface RelationFieldInput
     RelationFieldPersistence
   > {}
 
-export interface RelationFieldInternal extends RelationFieldBaseInternal {}
+export interface RelationFieldInternal extends RelationFieldBaseInternal {
+  type: EntityType;
+  multiplicity: Multiplicity;
+}
 
 const defaultMetaInfo = {};
 const defaultInput = {
@@ -95,6 +104,11 @@ export class RelationField
   public get modelType(): MetaModelType {
     return 'relation-field';
   }
+
+  get type(): EntityType {
+    return this[Internal].type;
+  }
+
   constructor(init: RelationFieldInput) {
     super(merge({}, defaultInput, init));
   }
@@ -244,6 +258,42 @@ export class RelationField
       },
       required: true,
       setDefault: src => (src.persistence.required = defaultInput.required),
+    });
+
+    assignValue<
+      RelationFieldInternal,
+      RelationFieldInput,
+      NonNullable<RelationFieldInput['relation']>
+    >({
+      src: this[Internal],
+      input,
+      field: 'relation',
+      effect: (src, _) => {
+        if (!src.multiplicity) {
+          switch (src.relation.verb) {
+            case 'BelongsTo':
+              src.multiplicity = 'one';
+              break;
+            case 'BelongsToMany':
+              src.multiplicity = 'many';
+              break;
+            case 'HasOne':
+              src.multiplicity = 'one';
+              break;
+            case 'HasMany':
+              src.multiplicity = 'many';
+              break;
+          }
+        }
+        if (src.relation.entity) {
+          src.type = {
+            name: src.relation.entity,
+            type: 'entity',
+            multiplicity: src.multiplicity,
+          };
+        }
+      },
+      required: true,
     });
   }
 

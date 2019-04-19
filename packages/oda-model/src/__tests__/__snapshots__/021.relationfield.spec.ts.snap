@@ -4,6 +4,7 @@ exports[`RelationField belongsTo: belongsTo 1`] = `
 RelationField {
   Symbol(internal): Object {
     "args": Map {},
+    "multiplicity": "one",
     "name": "ref",
     "relation": BelongsTo {
       Symbol(internal): Object {
@@ -99,6 +100,7 @@ exports[`RelationField belongsToMany: belongsToMany 1`] = `
 RelationField {
   Symbol(internal): Object {
     "args": Map {},
+    "multiplicity": "many",
     "name": "ref",
     "relation": BelongsToMany {
       Symbol(internal): Object {
@@ -206,6 +208,7 @@ exports[`RelationField hasMany: hasMany 1`] = `
 RelationField {
   Symbol(internal): Object {
     "args": Map {},
+    "multiplicity": "many",
     "name": "ref",
     "relation": HasMany {
       Symbol(internal): Object {
@@ -302,6 +305,7 @@ exports[`RelationField hasOne: hasOne 1`] = `
 RelationField {
   Symbol(internal): Object {
     "args": Map {},
+    "multiplicity": "one",
     "name": "ref",
     "relation": HasOne {
       Symbol(internal): Object {
