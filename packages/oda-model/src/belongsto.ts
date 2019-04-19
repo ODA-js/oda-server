@@ -9,7 +9,7 @@ import {
 } from './relationbase';
 import { IEntityRef, EntityReference } from './entityreference';
 import { merge } from 'lodash';
-import { assignValue, Nullable } from './types';
+import { assignValue, Nullable, IndexValueType } from './types';
 import { Internal } from './element';
 
 export interface BelongsToPersistence extends RelationBasePersistence {
@@ -17,8 +17,8 @@ export interface BelongsToPersistence extends RelationBasePersistence {
   stored: boolean;
   embedded: boolean;
   required: boolean;
-  identity: boolean | string | string[];
-  indexed: boolean | string | string[];
+  identity: IndexValueType;
+  indexed: IndexValueType;
 }
 
 export interface IBelongsToRelation

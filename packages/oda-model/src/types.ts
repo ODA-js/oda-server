@@ -334,6 +334,7 @@ export type SimpleModelTypes = ScalarType | ScalarTypeExtension | EnumType;
 export type SimpleInputModelTypes = ScalarTypeNames | SimpleModelTypes;
 
 export type FieldType = string | SimpleInputModelTypes | EntityType;
+export type IndexValueType = boolean | string | string[];
 
 export interface AsHash<T extends Partial<INamed> & object> {
   [name: string]: T;

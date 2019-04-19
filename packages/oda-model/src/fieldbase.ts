@@ -16,6 +16,7 @@ import {
   Nullable,
   assignValue,
   NamedArray,
+  IndexValueType,
 } from './types';
 import { inputArgs } from './utils/converters';
 import { Internal, MetaData } from './element';
@@ -40,9 +41,9 @@ export interface IFieldBase<
   readonly derived: boolean;
   readonly args: Map<string, IObjectTypeField | IObjectType>;
   readonly persistent: boolean;
-  readonly identity: boolean | string | string[];
+  readonly identity: IndexValueType;
   readonly required: boolean;
-  readonly indexed: boolean | string | string[];
+  readonly indexed: IndexValueType;
 }
 
 export interface FieldBasePersistence {
@@ -53,9 +54,9 @@ export interface FieldBasePersistence {
   /** is field required */
   required: boolean;
   /** is field identity */
-  identity: boolean | string | string[];
+  identity: IndexValueType;
   /** is field indexed */
-  indexed: boolean | string | string[];
+  indexed: IndexValueType;
 }
 
 export interface FieldBaseMetaInfoACL {
@@ -97,8 +98,8 @@ export interface FieldBaseInput<
   type?: FieldType;
   order?: number;
   required?: boolean;
-  identity?: boolean | string | string[];
-  indexed?: boolean | string | string[];
+  identity?: IndexValueType;
+  indexed?: IndexValueType;
 }
 
 export interface FieldBaseOutput<
@@ -165,7 +166,7 @@ export class FieldBase<
     return this[MetaData].persistence.persistent;
   }
 
-  get identity(): boolean | string | string[] {
+  get identity(): IndexValueType {
     return this[MetaData].persistence.identity;
   }
 
@@ -173,7 +174,7 @@ export class FieldBase<
     return this[MetaData].persistence.required;
   }
 
-  get indexed(): boolean | string | string[] {
+  get indexed(): IndexValueType {
     return this[MetaData].persistence.indexed;
   }
 
