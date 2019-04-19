@@ -12,6 +12,7 @@ Object {
       "name": "disabled",
       "title": undefined,
       "type": Object {
+        "multiplicity": "one",
         "name": "Boolean",
         "type": "scalar",
       },

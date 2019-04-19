@@ -11,7 +11,8 @@ import {
   EntityType,
   ScalarType,
   ScalarTypeExtension,
-  ScalarTypeNames,
+  SimpleModelTypes,
+  SimpleInputModelTypes,
 } from './types';
 import { outputPayload } from './utils/converters';
 import { inputArgs, inputPayload } from './utils/converters';
@@ -55,9 +56,7 @@ export interface MutationMetaInfo extends ModelBaseMetaInfo {
 export interface MutationInternal extends ModelBaseInternal {
   args: Map<string, IObjectType | IObjectTypeField>;
   payload:
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
+    | SimpleModelTypes
     | EntityType
     | IObjectType
     | Map<string, IObjectType | IObjectTypeField>;
@@ -68,10 +67,7 @@ export interface MutationInput extends ModelBaseInput<MutationMetaInfo> {
     | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
     | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   payload:
-    | ScalarTypeNames
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
+    | SimpleInputModelTypes
     | EntityType
     | ObjectTypeInput
     | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
@@ -81,9 +77,7 @@ export interface MutationInput extends ModelBaseInput<MutationMetaInfo> {
 export interface MutationOutput extends ModelBaseOutput<MutationMetaInfo> {
   args: NamedArray<ObjectTypeFieldInput>;
   payload:
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
+    | SimpleModelTypes
     | EntityType
     | ObjectTypeInput
     | NamedArray<ObjectTypeFieldInput>;
@@ -113,9 +107,7 @@ export class Mutation
   }
 
   public get payload():
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
+    | SimpleModelTypes
     | EntityType
     | IObjectType
     | Map<string, IObjectType | IObjectTypeField> {

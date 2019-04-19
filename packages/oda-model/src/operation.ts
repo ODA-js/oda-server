@@ -14,11 +14,9 @@ import {
   NamedArray,
   MapToArray,
   Nullable,
-  EnumType,
   EntityType,
-  ScalarTypeExtension,
-  ScalarType,
   ScalarTypeNames,
+  SimpleModelTypes,
 } from './types';
 import { outputPayload } from './utils/converters';
 import { inputArgs, inputPayload } from './utils/converters';
@@ -49,9 +47,7 @@ export interface IOperation
    */
   readonly args: Map<string, IObjectType | IObjectTypeField>;
   readonly payload:
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
+    | SimpleModelTypes
     | EntityType
     | IObjectType
     | Map<string, IObjectType | IObjectTypeField>;
@@ -77,9 +73,7 @@ export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
     | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   payload?:
     | ScalarTypeNames
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
+    | SimpleModelTypes
     | EntityType
     | ObjectTypeInput
     | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
@@ -96,9 +90,7 @@ export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
 export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
   args: NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   payload:
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
+    | SimpleModelTypes
     | EntityType
     | ObjectTypeInput
     | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
@@ -115,9 +107,7 @@ export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
 export interface OperationInternal extends ModelBaseInternal {
   args: Map<string, IObjectType | IObjectTypeField>;
   payload:
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
+    | SimpleModelTypes
     | EntityType
     | IObjectType
     | Map<string, IObjectType | IObjectTypeField>;
@@ -162,9 +152,7 @@ export class Operation
   }
 
   get payload():
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
+    | SimpleModelTypes
     | EntityType
     | IObjectType
     | Map<string, IObjectType | IObjectTypeField> {

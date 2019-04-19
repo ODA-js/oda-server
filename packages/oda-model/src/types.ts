@@ -330,19 +330,10 @@ export type ObjectTypeReference = {
 
 export type ScalarTypeNames = 'ID' | 'Float' | 'String' | 'Boolean' | 'Int';
 
-export function isScalarTypeNames(src: any): src is ScalarTypeNames {
-  return (
-    typeof src === 'string' &&
-    ['ID', 'Float', 'String', 'Boolean', 'Int'].indexOf(src) >= 0
-  );
-}
+export type SimpleModelTypes = ScalarType | ScalarTypeExtension | EnumType;
+export type SimpleInputModelTypes = ScalarTypeNames | SimpleModelTypes;
 
-export type FieldType =
-  | ScalarTypeNames
-  | ScalarType
-  | ScalarTypeExtension
-  | EnumType
-  | EntityType;
+export type FieldType = string | SimpleInputModelTypes | EntityType;
 
 export interface AsHash<T extends Partial<INamed> & object> {
   [name: string]: T;

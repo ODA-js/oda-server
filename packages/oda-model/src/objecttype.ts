@@ -52,9 +52,9 @@ export interface ObjectTypeInternal extends ModelBaseInternal {
 }
 
 export interface ObjectTypeInput extends ModelBaseInput<ObjectTypeMetaInfo> {
+  kind?: ArgumentKind;
   plural?: string;
   global?: boolean;
-  kind?: ArgumentKind;
   titlePlural?: string;
   fields: AsHash<ObjectTypeFieldInput> | NamedArray<ObjectTypeFieldInput>;
 }

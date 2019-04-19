@@ -44,6 +44,7 @@ Object {
           "name": "id",
           "title": undefined,
           "type": Object {
+            "multiplicity": "one",
             "name": "ID",
             "type": "scalar",
           },
@@ -126,6 +127,7 @@ Object {
           "name": "id",
           "title": undefined,
           "type": Object {
+            "multiplicity": "one",
             "name": "ID",
             "type": "scalar",
           },

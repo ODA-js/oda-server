@@ -103,6 +103,7 @@ Array [
     "required": true,
     "title": undefined,
     "type": Object {
+      "multiplicity": "one",
       "name": "ID",
       "type": "scalar",
     },

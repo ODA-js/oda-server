@@ -179,6 +179,7 @@ EntityBase {
           "multiplicity": "one",
           "name": "id",
           "type": Object {
+            "multiplicity": "one",
             "name": "ID",
             "type": "scalar",
           },
@@ -410,6 +411,7 @@ Object {
       "name": "id",
       "title": undefined,
       "type": Object {
+        "multiplicity": "one",
         "name": "ID",
         "type": "scalar",
       },
@@ -484,6 +486,7 @@ Object {
       "name": "id",
       "title": undefined,
       "type": Object {
+        "multiplicity": "one",
         "name": "ID",
         "type": "scalar",
       },
@@ -548,6 +551,7 @@ Object {
       "name": "id",
       "title": undefined,
       "type": Object {
+        "multiplicity": "one",
         "name": "ID",
         "type": "scalar",
       },
@@ -672,6 +676,7 @@ Object {
       "name": "id",
       "title": undefined,
       "type": Object {
+        "multiplicity": "one",
         "name": "ID",
         "type": "scalar",
       },
@@ -849,6 +854,7 @@ Object {
       "name": "id",
       "title": undefined,
       "type": Object {
+        "multiplicity": "one",
         "name": "ID",
         "type": "scalar",
       },
@@ -987,6 +993,7 @@ Object {
       "name": "id",
       "title": undefined,
       "type": Object {
+        "multiplicity": "one",
         "name": "ID",
         "type": "scalar",
       },
@@ -1201,6 +1208,7 @@ Object {
       "name": "id",
       "title": undefined,
       "type": Object {
+        "multiplicity": "one",
         "name": "ID",
         "type": "scalar",
       },
@@ -1327,6 +1335,7 @@ EntityBase {
           "multiplicity": "one",
           "name": "id",
           "type": Object {
+            "multiplicity": "one",
             "name": "ID",
             "type": "scalar",
           },

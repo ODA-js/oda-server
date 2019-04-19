@@ -14,14 +14,14 @@ import {
   assignValue,
   MetaModelType,
   Multiplicity,
-  ScalarTypeExtension,
-  ScalarTypeNames,
-  ScalarType,
-  isScalarTypeNames,
   isEnumType,
+  SimpleModelTypes,
+  SimpleInputModelTypes,
+  stringToScalar,
 } from './types';
 import { Internal } from './element';
 ``;
+
 export interface ISimpleField
   extends IFieldBase<
     SimpleFieldMeta,
@@ -29,7 +29,7 @@ export interface ISimpleField
     SimpleFieldPersistence,
     SimpleFieldOutput
   > {
-  readonly type: ScalarType | ScalarTypeExtension | EnumType;
+  readonly type: SimpleModelTypes;
   readonly multiplicity?: Multiplicity;
   readonly defaultValue?: string;
 }
@@ -45,20 +45,20 @@ export interface SimpleFieldMeta
 }
 
 export interface SimpleFieldInternal extends FieldBaseInternal {
-  type: ScalarType | ScalarTypeExtension | EnumType;
+  type: SimpleModelTypes;
   multiplicity: Multiplicity;
 }
 
 export interface SimpleFieldInput
   extends FieldBaseInput<SimpleFieldMeta, SimpleFieldPersistence> {
-  type?: ScalarTypeNames | ScalarType | ScalarTypeExtension | EnumType;
+  type?: SimpleInputModelTypes;
   defaultValue?: string;
   multiplicity?: Multiplicity;
 }
 
 export interface SimpleFieldOutput
   extends FieldBaseOutput<SimpleFieldMeta, SimpleFieldPersistence> {
-  type?: ScalarType | ScalarTypeExtension | EnumType;
+  type?: SimpleModelTypes;
   defaultValue?: string;
   multiplicity?: Multiplicity;
 }
@@ -79,7 +79,7 @@ export class SimpleField
     return isEnumType(this[Internal].type) ? 'enum-field' : 'simple-field';
   }
 
-  get type(): ScalarType | ScalarTypeExtension | EnumType {
+  get type(): SimpleModelTypes {
     return this[Internal].type;
   }
 
@@ -111,9 +111,7 @@ export class SimpleField
         if (typeof value !== 'string' && !value.multiplicity) {
           value.multiplicity = 'one';
         }
-        src.type = isScalarTypeNames(value)
-          ? { name: value, type: 'scalar' }
-          : value;
+        src.type = typeof value === 'string' ? stringToScalar(value) : value;
       },
       setDefault: src => (src.type = { name: 'String', type: 'scalar' }),
     });

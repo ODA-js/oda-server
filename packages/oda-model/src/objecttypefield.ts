@@ -15,13 +15,12 @@ import {
   Multiplicity,
   EntityType,
   ArgumentKind,
-  ScalarTypeNames,
-  ScalarTypeExtension,
   ObjectTypeReference,
-  ScalarType,
-  isScalarTypeNames,
   isScalarType,
   isScalarTypeExtension,
+  stringToScalar,
+  SimpleModelTypes,
+  SimpleInputModelTypes,
 } from './types';
 import { Internal } from './element';
 import {
@@ -40,10 +39,8 @@ export interface IObjectTypeField
     ObjectTypeFieldOutput
   > {
   readonly type:
-    | ScalarType
-    | ScalarTypeExtension
+    | SimpleModelTypes
     | ObjectTypeReference
-    | EnumType
     | EntityType
     | IObjectType;
   readonly multiplicity?: Multiplicity;
@@ -61,13 +58,7 @@ export interface ObjectTypeFieldMeta extends ModelBaseMetaInfo {
 }
 
 export interface ObjectTypeFieldInternal extends ModelBaseInternal {
-  type:
-    | ScalarType
-    | ScalarTypeExtension
-    | ObjectTypeReference
-    | EnumType
-    | EntityType
-    | IObjectType;
+  type: SimpleModelTypes | ObjectTypeReference | EntityType | IObjectType;
   multiplicity: Multiplicity;
   kind: ArgumentKind;
 }
@@ -75,11 +66,8 @@ export interface ObjectTypeFieldInternal extends ModelBaseInternal {
 export interface ObjectTypeFieldInput
   extends ModelBaseInput<ObjectTypeFieldMeta> {
   type?:
-    | ScalarTypeNames
-    | ScalarType
-    | ScalarTypeExtension
+    | SimpleInputModelTypes
     | ObjectTypeReference
-    | EnumType
     | EntityType
     | ObjectTypeInput;
   required?: boolean;
@@ -91,13 +79,7 @@ export interface ObjectTypeFieldInput
 
 export interface ObjectTypeFieldOutput
   extends ModelBaseOutput<ObjectTypeFieldMeta> {
-  type?:
-    | ScalarType
-    | ScalarTypeExtension
-    | ObjectTypeReference
-    | EnumType
-    | EntityType
-    | ObjectTypeOutput;
+  type?: SimpleModelTypes | ObjectTypeReference | EntityType | ObjectTypeOutput;
   multiplicity?: Multiplicity;
   order?: number;
   kind: ArgumentKind;
@@ -126,10 +108,8 @@ export class ObjectTypeField
   }
 
   get type():
-    | ScalarType
-    | ScalarTypeExtension
+    | SimpleModelTypes
     | ObjectTypeReference
-    | EnumType
     | EntityType
     | IObjectType {
     return this[Internal].type;
@@ -194,9 +174,7 @@ export class ObjectTypeField
         if (isObjectTypeInput(value)) {
           src.type = new ObjectType(value);
         } else {
-          src.type = isScalarTypeNames(value)
-            ? { name: value, type: 'scalar' }
-            : value;
+          src.type = typeof value === 'string' ? stringToScalar(value) : value;
         }
       },
       setDefault: src => (src.type = { name: 'String', type: 'scalar' }),

@@ -7,11 +7,9 @@ import {
   assignValue,
   NamedArray,
   MapToArray,
-  EnumType,
   EntityType,
-  ScalarType,
-  ScalarTypeExtension,
   ScalarTypeNames,
+  SimpleModelTypes,
 } from './types';
 import { outputPayload } from './utils/converters';
 import { inputArgs, inputPayload } from './utils/converters';
@@ -37,9 +35,7 @@ export interface IQuery
    * set of output fields
    */
   readonly payload:
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
+    | SimpleModelTypes
     | EntityType
     | IObjectType
     | Map<string, IObjectType | IObjectTypeField>;
@@ -54,9 +50,7 @@ export interface QueryMetaInfo extends ModelBaseMetaInfo {
 export interface QueryInternal extends ModelBaseInternal {
   args: Map<string, IObjectType | IObjectTypeField>;
   payload:
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
+    | SimpleModelTypes
     | EntityType
     | IObjectType
     | Map<string, IObjectType | IObjectTypeField>;
@@ -68,9 +62,7 @@ export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
     | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
   payload:
     | ScalarTypeNames
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
+    | SimpleModelTypes
     | EntityType
     | ObjectTypeInput
     | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
@@ -80,9 +72,7 @@ export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
 export interface QueryOutput extends ModelBaseOutput<QueryMetaInfo> {
   args: NamedArray<ObjectTypeFieldInput>;
   payload:
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
+    | SimpleModelTypes
     | EntityType
     | ObjectTypeInput
     | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
@@ -111,9 +101,7 @@ export class Query
   }
 
   public get payload():
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
+    | SimpleModelTypes
     | EntityType
     | IObjectType
     | Map<string, IObjectType | IObjectTypeField> {
