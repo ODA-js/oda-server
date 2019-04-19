@@ -8,29 +8,24 @@ import {
 } from './modelbase';
 import {
   DirectiveLocation,
-  AsHash,
   MetaModelType,
   Nullable,
   assignValue,
-  NamedArray,
   MapToArray,
+  CommonArgs,
+  CommonArgsOutput,
+  CommonArgsInput,
 } from './types';
 import { inputArgs } from './utils/converters';
 import { Internal } from './element';
 import { merge, mergeWith } from 'lodash';
-import {
-  IObjectTypeField,
-  ObjectTypeFieldInput,
-  ObjectTypeFieldOutput,
-} from './objecttypefield';
-import { IObjectType, ObjectTypeInput, ObjectTypeOutput } from './objecttype';
 
 export interface IDirective
   extends IModelBase<DirectiveMetaInfo, DirectiveInput, DirectiveOutput> {
   /**
    * set of arguments
    */
-  readonly args: Map<string, IObjectTypeField | IObjectType>;
+  readonly args: CommonArgs;
   /**
    * where it can met
    */
@@ -40,19 +35,17 @@ export interface IDirective
 export interface DirectiveMetaInfo extends ModelBaseMetaInfo {}
 
 export interface DirectiveInternal extends ModelBaseInternal {
-  args: Map<string, IObjectTypeField | IObjectType>;
+  args: CommonArgs;
   on: Set<DirectiveLocation>;
 }
 
 export interface DirectiveInput extends ModelBaseInput<DirectiveMetaInfo> {
-  args?:
-    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
-    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
+  args?: CommonArgsInput;
   on: DirectiveLocation[];
 }
 
 export interface DirectiveOutput extends ModelBaseOutput<DirectiveMetaInfo> {
-  args: NamedArray<ObjectTypeOutput | ObjectTypeFieldOutput>;
+  args: CommonArgsOutput;
   on: DirectiveLocation[];
 }
 
@@ -70,7 +63,7 @@ export class Directive
   public get modelType(): MetaModelType {
     return 'directive';
   }
-  get args(): Map<string, IObjectTypeField | IObjectType> {
+  get args(): CommonArgs {
     return this[Internal].args;
   }
 

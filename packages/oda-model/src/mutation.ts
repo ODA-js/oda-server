@@ -1,18 +1,16 @@
 import { merge } from 'lodash';
 import { Internal } from './element';
 import {
-  AsHash,
   MetaModelType,
   Nullable,
   assignValue,
-  NamedArray,
   MapToArray,
-  EnumType,
-  EntityType,
-  ScalarType,
-  ScalarTypeExtension,
-  SimpleModelTypes,
-  SimpleInputModelTypes,
+  CommonArgs,
+  CommonPayload,
+  CommonArgsInput,
+  CommonPayloadInput,
+  CommonArgsOutput,
+  CommonPayloadOutput,
 } from './types';
 import { outputPayload } from './utils/converters';
 import { inputArgs, inputPayload } from './utils/converters';
@@ -25,25 +23,17 @@ import {
   ModelBaseMetaInfo,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
-import { IObjectTypeField, ObjectTypeFieldInput } from './objecttypefield';
-import { IObjectType, ObjectTypeInput } from './objecttype';
 
 export interface IMutation
   extends IModelBase<MutationMetaInfo, MutationInput, MutationOutput> {
   /**
    * set of arguments
    */
-  readonly args: Map<string, IObjectType | IObjectTypeField>;
+  readonly args: CommonArgs;
   /**
    * set of output fields
    */
-  readonly payload:
-    | ScalarType
-    | ScalarTypeExtension
-    | EnumType
-    | EntityType
-    | IObjectType
-    | Map<string, IObjectType | IObjectTypeField>;
+  readonly payload: CommonPayload;
 }
 
 export interface MutationMetaInfo extends ModelBaseMetaInfo {
@@ -54,33 +44,18 @@ export interface MutationMetaInfo extends ModelBaseMetaInfo {
 }
 
 export interface MutationInternal extends ModelBaseInternal {
-  args: Map<string, IObjectType | IObjectTypeField>;
-  payload:
-    | SimpleModelTypes
-    | EntityType
-    | IObjectType
-    | Map<string, IObjectType | IObjectTypeField>;
+  args: CommonArgs;
+  payload: CommonPayload;
 }
 
 export interface MutationInput extends ModelBaseInput<MutationMetaInfo> {
-  args:
-    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
-    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
-  payload:
-    | SimpleInputModelTypes
-    | EntityType
-    | ObjectTypeInput
-    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
-    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
+  args: CommonArgsInput;
+  payload: CommonPayloadInput;
 }
 
 export interface MutationOutput extends ModelBaseOutput<MutationMetaInfo> {
-  args: NamedArray<ObjectTypeFieldInput>;
-  payload:
-    | SimpleModelTypes
-    | EntityType
-    | ObjectTypeInput
-    | NamedArray<ObjectTypeFieldInput>;
+  args: CommonArgsOutput;
+  payload: CommonPayloadOutput;
 }
 
 export const mutationDefaultMetaInfo = { acl: { execute: [] } };
@@ -102,15 +77,11 @@ export class Mutation
     super(merge({}, mutationDefaultInput, init));
   }
 
-  public get args(): Map<string, IObjectType | IObjectTypeField> {
+  public get args(): CommonArgs {
     return this[Internal].args;
   }
 
-  public get payload():
-    | SimpleModelTypes
-    | EntityType
-    | IObjectType
-    | Map<string, IObjectType | IObjectTypeField> {
+  public get payload(): CommonPayload {
     return this[Internal].payload;
   }
 

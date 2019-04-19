@@ -10,23 +10,18 @@ import decapitalize from './lib/decapitalize';
 import { merge } from 'lodash';
 import {
   FieldType,
-  AsHash,
   MetaModelType,
   MapToHash,
   Nullable,
   assignValue,
-  NamedArray,
   IndexValueType,
+  CommonArgs,
+  CommonArgsInput,
+  CommonArgsOutput,
 } from './types';
 import { inputArgs } from './utils/converters';
 import { Internal, MetaData } from './element';
 import { IEntityRef, EntityReference } from './entityreference';
-import {
-  IObjectTypeField,
-  ObjectTypeFieldInput,
-  ObjectTypeFieldOutput,
-} from './objecttypefield';
-import { IObjectType, ObjectTypeInput, ObjectTypeOutput } from './objecttype';
 
 export interface IFieldBase<
   M extends FieldBaseMetaInfo<P>,
@@ -39,7 +34,7 @@ export interface IFieldBase<
   readonly inheritedFrom?: string;
   readonly order: number;
   readonly derived: boolean;
-  readonly args: Map<string, IObjectTypeField | IObjectType>;
+  readonly args: CommonArgs;
   readonly persistent: boolean;
   readonly identity: IndexValueType;
   readonly required: boolean;
@@ -78,7 +73,7 @@ export interface FieldBaseMetaInfo<T extends FieldBasePersistence>
 }
 
 export interface FieldBaseInternal extends ModelBaseInternal {
-  args: Map<string, IObjectTypeField | IObjectType>;
+  args: CommonArgs;
   inheritedFrom?: string;
   type: FieldType;
   idKey: IEntityRef;
@@ -88,9 +83,7 @@ export interface FieldBaseInput<
   T extends FieldBaseMetaInfo<P>,
   P extends FieldBasePersistence
 > extends ModelBaseInput<T> {
-  args?:
-    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
-    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
+  args?: CommonArgsInput;
   inheritedFrom?: string;
   derived?: boolean;
   persistent?: boolean;
@@ -108,7 +101,7 @@ export interface FieldBaseOutput<
 > extends ModelBaseOutput<T> {
   inheritedFrom?: string;
   type?: FieldType;
-  args: NamedArray<ObjectTypeOutput | ObjectTypeFieldOutput>;
+  args: CommonArgsOutput;
 }
 
 export const fieldBaseDefaultMetaInfo = {
@@ -150,7 +143,7 @@ export class FieldBase<
     return this[Internal].inheritedFrom;
   }
 
-  get args(): Map<string, IObjectTypeField | IObjectType> {
+  get args(): CommonArgs {
     return this[Internal].args;
   }
 

@@ -3,6 +3,8 @@ import { IUpdatableBase } from './element';
 import { get, set, has } from 'lodash';
 import { IRelation } from './relation';
 import { IBelongsToManyRelation } from './belongstomany';
+import { ObjectTypeFieldInput, IObjectTypeField } from './objecttypefield';
+import { ObjectTypeInput, IObjectType, ObjectTypeOutput } from './objecttype';
 
 export type Nullable<T> = { [P in keyof T]: T[P] | undefined | null };
 
@@ -331,10 +333,63 @@ export type ObjectTypeReference = {
 export type ScalarTypeNames = 'ID' | 'Float' | 'String' | 'Boolean' | 'Int';
 
 export type SimpleModelTypes = ScalarType | ScalarTypeExtension | EnumType;
-export type SimpleInputModelTypes = ScalarTypeNames | SimpleModelTypes;
+export type SimpleInputModelTypes = string | ScalarTypeNames | SimpleModelTypes;
 
-export type FieldType = string | SimpleInputModelTypes | EntityType;
+export type FieldType = SimpleInputModelTypes | EntityType;
 export type IndexValueType = boolean | string | string[];
+
+export type CommonArgsInput =
+  | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
+  | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
+
+export type CommonPayloadInput =
+  | string
+  | ScalarTypeNames
+  | SimpleModelTypes
+  | EntityType
+  | ObjectTypeInput
+  | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
+  | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
+
+export type CommonArgsOutput = NamedArray<ObjectTypeFieldInput>;
+
+export type CommonPayloadOutput =
+  | SimpleModelTypes
+  | EntityType
+  | ObjectTypeInput
+  | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
+
+export type CommonArgs = Map<string, IObjectType | IObjectTypeField>;
+
+export type CommonPayload =
+  | CommonArgs
+  | SimpleModelTypes
+  | EntityType
+  | IObjectType;
+
+export type ObjectTypeFieldsInput =
+  | AsHash<ObjectTypeFieldInput>
+  | NamedArray<ObjectTypeFieldInput>;
+export type ObjectTypeFieldsOutput = NamedArray<ObjectTypeFieldInput>;
+export type ObjectTypeFields = Map<string, IObjectTypeField>;
+
+export type ObjectTypeFieldType =
+  | SimpleModelTypes
+  | ObjectTypeReference
+  | EntityType
+  | IObjectType;
+
+export type ObjectTypeFieldTypeInput =
+  | SimpleInputModelTypes
+  | ObjectTypeReference
+  | EntityType
+  | ObjectTypeInput;
+
+export type ObjectTypeFieldTypeOutput =
+  | SimpleModelTypes
+  | ObjectTypeReference
+  | EntityType
+  | ObjectTypeOutput;
 
 export interface AsHash<T extends Partial<INamed> & object> {
   [name: string]: T;

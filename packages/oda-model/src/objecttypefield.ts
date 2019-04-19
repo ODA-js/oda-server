@@ -15,22 +15,15 @@ import {
   Multiplicity,
   EntityType,
   ArgumentKind,
-  ObjectTypeReference,
   isScalarType,
   isScalarTypeExtension,
   stringToScalar,
-  SimpleModelTypes,
-  SimpleInputModelTypes,
+  ObjectTypeFieldType,
+  ObjectTypeFieldTypeInput,
+  ObjectTypeFieldTypeOutput,
 } from './types';
 import { Internal } from './element';
-import {
-  IObjectType,
-  ObjectTypeInput,
-  ObjectTypeOutput,
-  isObjectType,
-  isObjectTypeInput,
-  ObjectType,
-} from './objecttype';
+import { isObjectType, isObjectTypeInput, ObjectType } from './objecttype';
 
 export interface IObjectTypeField
   extends IModelBase<
@@ -38,11 +31,7 @@ export interface IObjectTypeField
     ObjectTypeFieldInput,
     ObjectTypeFieldOutput
   > {
-  readonly type:
-    | SimpleModelTypes
-    | ObjectTypeReference
-    | EntityType
-    | IObjectType;
+  readonly type: ObjectTypeFieldType;
   readonly multiplicity?: Multiplicity;
   readonly defaultValue?: string;
   readonly order?: number;
@@ -58,18 +47,14 @@ export interface ObjectTypeFieldMeta extends ModelBaseMetaInfo {
 }
 
 export interface ObjectTypeFieldInternal extends ModelBaseInternal {
-  type: SimpleModelTypes | ObjectTypeReference | EntityType | IObjectType;
+  type: ObjectTypeFieldType;
   multiplicity: Multiplicity;
   kind: ArgumentKind;
 }
 
 export interface ObjectTypeFieldInput
   extends ModelBaseInput<ObjectTypeFieldMeta> {
-  type?:
-    | SimpleInputModelTypes
-    | ObjectTypeReference
-    | EntityType
-    | ObjectTypeInput;
+  type?: ObjectTypeFieldTypeInput;
   required?: boolean;
   defaultValue?: string;
   multiplicity?: Multiplicity;
@@ -79,7 +64,7 @@ export interface ObjectTypeFieldInput
 
 export interface ObjectTypeFieldOutput
   extends ModelBaseOutput<ObjectTypeFieldMeta> {
-  type?: SimpleModelTypes | ObjectTypeReference | EntityType | ObjectTypeOutput;
+  type?: ObjectTypeFieldTypeOutput;
   multiplicity?: Multiplicity;
   order?: number;
   kind: ArgumentKind;
@@ -107,11 +92,7 @@ export class ObjectTypeField
       : 'argument-enum-field';
   }
 
-  get type():
-    | SimpleModelTypes
-    | ObjectTypeReference
-    | EntityType
-    | IObjectType {
+  get type(): ObjectTypeFieldType {
     return this[Internal].type;
   }
 

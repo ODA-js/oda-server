@@ -1,15 +1,16 @@
 import { merge } from 'lodash';
 import { Internal } from './element';
 import {
-  AsHash,
   MetaModelType,
   Nullable,
   assignValue,
-  NamedArray,
   MapToArray,
-  EntityType,
-  ScalarTypeNames,
-  SimpleModelTypes,
+  CommonArgs,
+  CommonPayload,
+  CommonArgsInput,
+  CommonPayloadInput,
+  CommonArgsOutput,
+  CommonPayloadOutput,
 } from './types';
 import { outputPayload } from './utils/converters';
 import { inputArgs, inputPayload } from './utils/converters';
@@ -22,23 +23,17 @@ import {
   ModelBaseMetaInfo,
 } from './modelbase';
 import decapitalize from './lib/decapitalize';
-import { IObjectTypeField, ObjectTypeFieldInput } from './objecttypefield';
-import { IObjectType, ObjectTypeInput } from './objecttype';
 
 export interface IQuery
   extends IModelBase<QueryMetaInfo, QueryInput, QueryOutput> {
   /**
    * set of arguments
    */
-  readonly args: Map<string, IObjectType | IObjectTypeField>;
+  readonly args: CommonArgs;
   /**
    * set of output fields
    */
-  readonly payload:
-    | SimpleModelTypes
-    | EntityType
-    | IObjectType
-    | Map<string, IObjectType | IObjectTypeField>;
+  readonly payload: CommonPayload;
 }
 
 export interface QueryMetaInfo extends ModelBaseMetaInfo {
@@ -48,34 +43,18 @@ export interface QueryMetaInfo extends ModelBaseMetaInfo {
 }
 
 export interface QueryInternal extends ModelBaseInternal {
-  args: Map<string, IObjectType | IObjectTypeField>;
-  payload:
-    | SimpleModelTypes
-    | EntityType
-    | IObjectType
-    | Map<string, IObjectType | IObjectTypeField>;
+  args: CommonArgs;
+  payload: CommonPayload;
 }
 
 export interface QueryInput extends ModelBaseInput<QueryMetaInfo> {
-  args:
-    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
-    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
-  payload:
-    | ScalarTypeNames
-    | SimpleModelTypes
-    | EntityType
-    | ObjectTypeInput
-    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
-    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
+  args: CommonArgsInput;
+  payload: CommonPayloadInput;
 }
 
 export interface QueryOutput extends ModelBaseOutput<QueryMetaInfo> {
-  args: NamedArray<ObjectTypeFieldInput>;
-  payload:
-    | SimpleModelTypes
-    | EntityType
-    | ObjectTypeInput
-    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
+  args: CommonArgsOutput;
+  payload: CommonPayloadOutput;
 }
 
 export const queryDefaultMetaInfo = {
@@ -96,15 +75,11 @@ export class Query
     super(merge({}, queryDefaultInput, init));
   }
 
-  public get args(): Map<string, IObjectType | IObjectTypeField> {
+  public get args(): CommonArgs {
     return this[Internal].args;
   }
 
-  public get payload():
-    | SimpleModelTypes
-    | EntityType
-    | IObjectType
-    | Map<string, IObjectType | IObjectTypeField> {
+  public get payload(): CommonPayload {
     return this[Internal].payload;
   }
 

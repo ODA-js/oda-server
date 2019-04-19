@@ -8,25 +8,24 @@ import {
 } from './modelbase';
 import {
   OperationKind,
-  AsHash,
   MetaModelType,
   assignValue,
-  NamedArray,
   MapToArray,
   Nullable,
-  EntityType,
-  ScalarTypeNames,
-  SimpleModelTypes,
+  CommonArgs,
+  CommonPayload,
+  CommonArgsInput,
+  CommonPayloadInput,
+  CommonArgsOutput,
+  CommonPayloadOutput,
 } from './types';
 import { outputPayload } from './utils/converters';
 import { inputArgs, inputPayload } from './utils/converters';
 import { merge } from 'lodash';
 import { Internal, MetaData } from './element';
 import decapitalize from './lib/decapitalize';
-import { IObjectTypeField, ObjectTypeFieldInput } from './objecttypefield';
 import { IEntity } from './entity';
 import { IRelationField } from './relationfield';
-import { IObjectType, ObjectTypeInput } from './objecttype';
 
 /**
  * Kind of mutation which is intended to work with single entity
@@ -45,12 +44,8 @@ export interface IOperation
   /**
    * set of arguments
    */
-  readonly args: Map<string, IObjectType | IObjectTypeField>;
-  readonly payload:
-    | SimpleModelTypes
-    | EntityType
-    | IObjectType
-    | Map<string, IObjectType | IObjectTypeField>;
+  readonly args: CommonArgs;
+  readonly payload: CommonPayload;
   readonly order: number;
   readonly entity: string;
   readonly field?: string;
@@ -68,17 +63,8 @@ export interface OperationMetaInfo extends ModelBaseMetaInfo {
 }
 
 export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
-  args?:
-    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
-    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
-  payload?:
-    | ScalarTypeNames
-    | SimpleModelTypes
-    | EntityType
-    | ObjectTypeInput
-    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
-    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
-
+  args?: CommonArgsInput;
+  payload?: CommonPayloadInput;
   inheritedFrom?: string;
   entity?: string;
   field?: string;
@@ -88,13 +74,8 @@ export interface OperationInput extends ModelBaseInput<OperationMetaInfo> {
 }
 
 export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
-  args: NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
-  payload:
-    | SimpleModelTypes
-    | EntityType
-    | ObjectTypeInput
-    | AsHash<ObjectTypeFieldInput | ObjectTypeInput>
-    | NamedArray<ObjectTypeFieldInput | ObjectTypeInput>;
+  args: CommonArgsOutput;
+  payload: CommonPayloadOutput;
   inheritedFrom?: string;
   entity: string;
   /** addTo/removeFrom */
@@ -105,12 +86,8 @@ export interface OperationOutput extends ModelBaseOutput<OperationMetaInfo> {
 }
 
 export interface OperationInternal extends ModelBaseInternal {
-  args: Map<string, IObjectType | IObjectTypeField>;
-  payload:
-    | SimpleModelTypes
-    | EntityType
-    | IObjectType
-    | Map<string, IObjectType | IObjectTypeField>;
+  args: CommonArgs;
+  payload: CommonPayload;
   inheritedFrom?: string;
   /** хранит ссылку на entity */
   entity?: IEntity;
@@ -147,15 +124,11 @@ export class Operation
     return this[Internal].inheritedFrom;
   }
 
-  get args(): Map<string, IObjectType | IObjectTypeField> {
+  get args(): CommonArgs {
     return this[Internal].args;
   }
 
-  get payload():
-    | SimpleModelTypes
-    | EntityType
-    | IObjectType
-    | Map<string, IObjectType | IObjectTypeField> {
+  get payload(): CommonPayload {
     return this[Internal].payload;
   }
 

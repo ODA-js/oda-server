@@ -7,24 +7,21 @@ import {
   ModelBaseOutput,
 } from './modelbase';
 import {
-  AsHash,
   MetaModelType,
   Nullable,
   assignValue,
   HashToArray,
-  NamedArray,
   MapToArray,
   ArrayToMap,
   ArgumentKind,
+  ObjectTypeFieldsInput,
+  ObjectTypeFieldsOutput,
+  ObjectTypeFields,
 } from './types';
 
 import { merge } from 'lodash';
 import * as inflected from 'inflected';
-import {
-  ObjectTypeFieldInput,
-  ObjectTypeField,
-  IObjectTypeField,
-} from './objecttypefield';
+import { ObjectTypeField } from './objecttypefield';
 import { UIView } from './entitybase';
 
 export interface IObjectType
@@ -33,7 +30,7 @@ export interface IObjectType
   readonly plural: string;
   readonly global: boolean;
   readonly titlePlural: string;
-  readonly fields: Map<string, IObjectTypeField>;
+  readonly fields: ObjectTypeFields;
 }
 
 export interface ObjectTypeMetaInfo extends ElementMetaInfo {
@@ -47,7 +44,7 @@ export interface ObjectTypeMetaInfo extends ElementMetaInfo {
 }
 
 export interface ObjectTypeInternal extends ModelBaseInternal {
-  fields: Map<string, IObjectTypeField>;
+  fields: ObjectTypeFields;
   kind: ArgumentKind;
 }
 
@@ -56,7 +53,7 @@ export interface ObjectTypeInput extends ModelBaseInput<ObjectTypeMetaInfo> {
   plural?: string;
   global?: boolean;
   titlePlural?: string;
-  fields: AsHash<ObjectTypeFieldInput> | NamedArray<ObjectTypeFieldInput>;
+  fields: ObjectTypeFieldsInput;
 }
 
 export function isObjectTypeInput(inp: any): inp is ObjectTypeInput {
@@ -71,7 +68,7 @@ export function isObjectType(inp: any): inp is IObjectType | ObjectType {
 }
 
 export interface ObjectTypeOutput extends ModelBaseOutput<ObjectTypeMetaInfo> {
-  fields: NamedArray<ObjectTypeFieldInput>;
+  fields: ObjectTypeFieldsOutput;
   kind: ArgumentKind;
 }
 
@@ -124,7 +121,7 @@ export class ObjectType
     return this.metadata.global;
   }
 
-  get fields(): Map<string, IObjectTypeField> {
+  get fields(): ObjectTypeFields {
     return this[Internal].fields;
   }
 
