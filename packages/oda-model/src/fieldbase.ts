@@ -18,6 +18,11 @@ import {
   CommonArgs,
   CommonArgsInput,
   CommonArgsOutput,
+  makeIndexDefinition,
+  convertIndexValueTypeToIndexDefinition,
+  IndexFieldStore,
+  IndexDefinition,
+  IndexTypes,
 } from './types';
 import { inputArgs } from './utils/converters';
 import { Internal, MetaData } from './element';
@@ -29,16 +34,23 @@ export interface IFieldBase<
   P extends FieldBasePersistence,
   O extends FieldBaseOutput<M, P>
 > extends IModelBase<M, I, O> {
-  readonly idKey: IEntityRef;
+  readonly idKey?: IEntityRef;
   readonly type: FieldType;
   readonly inheritedFrom?: string;
   readonly order: number;
   readonly derived: boolean;
   readonly args: CommonArgs;
   readonly persistent: boolean;
-  readonly identity: IndexValueType;
+  readonly identity: boolean;
   readonly required: boolean;
-  readonly indexed: IndexValueType;
+  readonly indexed: boolean;
+  readonly indexes: IndexFieldStore;
+  fixIndexes: () => void;
+  addIndex: (
+    index: IndexDefinition[] | IndexDefinition,
+    type?: IndexTypes,
+    sparse?: boolean,
+  ) => void;
 }
 
 export interface FieldBasePersistence {
@@ -49,9 +61,11 @@ export interface FieldBasePersistence {
   /** is field required */
   required: boolean;
   /** is field identity */
-  identity: IndexValueType;
+  identity: boolean;
   /** is field indexed */
-  indexed: IndexValueType;
+  indexed: boolean;
+  /** index definition */
+  indexes: IndexFieldStore;
 }
 
 export interface FieldBaseMetaInfoACL {
@@ -76,7 +90,7 @@ export interface FieldBaseInternal extends ModelBaseInternal {
   args: CommonArgs;
   inheritedFrom?: string;
   type: FieldType;
-  idKey: IEntityRef;
+  idKey?: IEntityRef;
 }
 
 export interface FieldBaseInput<
@@ -111,6 +125,7 @@ export const fieldBaseDefaultMetaInfo = {
     identity: false,
     required: false,
     indexed: false,
+    indexes: {},
   },
   acl: {
     read: [],
@@ -131,7 +146,7 @@ export class FieldBase<
   public get modelType(): MetaModelType {
     return 'field-base';
   }
-  public get idKey(): IEntityRef {
+  public get idKey(): IEntityRef | undefined {
     return this[Internal].idKey;
   }
 
@@ -159,7 +174,7 @@ export class FieldBase<
     return this[MetaData].persistence.persistent;
   }
 
-  get identity(): IndexValueType {
+  get identity(): boolean {
     return this[MetaData].persistence.identity;
   }
 
@@ -167,8 +182,12 @@ export class FieldBase<
     return this[MetaData].persistence.required;
   }
 
-  get indexed(): IndexValueType {
+  get indexed(): boolean {
     return this[MetaData].persistence.indexed;
+  }
+
+  get indexes(): IndexFieldStore {
+    return this[MetaData].persistence.indexes;
   }
 
   constructor(init: I) {
@@ -233,13 +252,19 @@ export class FieldBase<
       input,
       inputField: 'identity',
       effect: (_, value) => {
-        if (typeof value === 'string') {
-          value = value.trim();
+        this.metadata.persistence.identity = !!value;
+        if (value) {
+          const index = convertIndexValueTypeToIndexDefinition(
+            this.name,
+            value,
+          );
+          if (index) {
+            index.forEach(i => {
+              this.addIndex(i, 'unique', i.sparse);
+            });
+          }
         }
-        if (Array.isArray(value)) {
-          value = value.map(v => v.trim());
-        }
-        this.metadata.persistence.identity = value;
+
         if (value) {
           this.metadata.persistence.required = true;
           this.metadata.persistence.indexed =
@@ -248,6 +273,10 @@ export class FieldBase<
             entity: this.metadata.entity,
             field: this[Internal].name,
           });
+        } else {
+          delete this.metadata.persistence.required;
+          delete this.metadata.persistence.indexed;
+          delete this[Internal].idKey;
         }
       },
     });
@@ -257,13 +286,18 @@ export class FieldBase<
       input,
       inputField: 'indexed',
       effect: (src, value) => {
-        if (typeof value === 'string') {
-          value = value.trim();
+        if (value) {
+          const index = convertIndexValueTypeToIndexDefinition(
+            this.name,
+            value,
+          );
+          if (index) {
+            index.forEach(i => {
+              this.addIndex(i, i.type, i.sparse);
+            });
+          }
         }
-        if (Array.isArray(value)) {
-          value = value.map(v => v.trim());
-        }
-        src.persistence.indexed = value;
+        src.persistence.indexed = !!value;
       },
     });
 
@@ -272,6 +306,20 @@ export class FieldBase<
       input,
       inputField: 'required',
       effect: (src, value) => (src.persistence.required = value),
+    });
+
+    this.fixIndexes();
+  }
+
+  public fixIndexes() {
+    Object.keys(this.indexes).forEach(index => {
+      this.metadata.persistence.identity =
+        this.metadata.persistence.identity ||
+        this.indexes[index].type === 'unique';
+      this.metadata.persistence.indexed = true;
+      this.metadata.persistence.required =
+        this.metadata.persistence.required ||
+        this.metadata.persistence.identity;
     });
   }
 
@@ -284,6 +332,21 @@ export class FieldBase<
     this.metadata.persistence.indexed = true;
     this.metadata.persistence.identity = true;
     this.metadata.persistence.required = true;
+    this.addIndex(makeIndexDefinition(this.name), 'unique', true);
+  }
+
+  public addIndex(
+    index: IndexDefinition[] | IndexDefinition,
+    type?: IndexTypes,
+    sparse?: boolean,
+  ) {
+    if (Array.isArray(index)) {
+      index.forEach(i => this.addIndex(i, type, sparse));
+    } else {
+      this.indexes[index.name] = { ...index, type, sparse };
+    }
+
+    this.fixIndexes();
   }
 
   public toObject(): O {

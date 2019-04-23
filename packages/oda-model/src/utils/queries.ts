@@ -1,8 +1,8 @@
 import { ISimpleField } from '../simplefield';
 import { IField, isISimpleField } from '../field';
 import { IEntity } from '../entity';
-import { IndexEntry } from '../entitybase';
 import { ObjectTypeFieldInput } from '../objecttypefield';
+import { IndexEntry } from '../types';
 
 /**
  * checks if field is _id or id

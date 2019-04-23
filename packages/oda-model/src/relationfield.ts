@@ -5,6 +5,7 @@ import {
   MetaModelType,
   EntityType,
   Multiplicity,
+  convertIndexValueTypeToIndexDefinition,
 } from './types';
 import { RelationInput } from './relation';
 import { HasOne } from './hasone';
@@ -213,7 +214,13 @@ export class RelationField
       inputField: 'identity',
       effect: (src, value) => {
         if (this.relation.verb === 'BelongsTo') {
-          src.persistence.identity = value;
+          const index = convertIndexValueTypeToIndexDefinition(
+            this.name,
+            value,
+          );
+          if (index) {
+            this.addIndex(index, 'unique', true);
+          }
         } else {
           src.persistence.identity = false;
         }
@@ -232,7 +239,13 @@ export class RelationField
       inputField: 'indexed',
       effect: (src, value) => {
         if (this.relation.verb === 'BelongsTo') {
-          src.persistence.indexed = value;
+          const index = convertIndexValueTypeToIndexDefinition(
+            this.name,
+            value,
+          );
+          if (index) {
+            this.addIndex(index, 'index', true);
+          }
         } else {
           src.persistence.indexed = false;
         }

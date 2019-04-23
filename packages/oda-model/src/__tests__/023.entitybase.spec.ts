@@ -197,7 +197,7 @@ describe('Indexing', () => {
             coolIndex: {
               name: 'some',
               fields: {
-                a: 1,
+                a: 'Asc',
               },
             },
           },
@@ -206,8 +206,8 @@ describe('Indexing', () => {
     });
     expect(res.metadata.persistence.indexes['a']).toMatchObject({
       name: 'a',
-      fields: { a: 1 },
-      options: { sparse: true },
+      fields: { a: 'Asc' },
+      options: { sparse: false, unique: false },
     });
     expect(res).toMatchSnapshot('indexed entity');
   });
@@ -218,10 +218,11 @@ describe('Indexing', () => {
     });
     expect(res.metadata.persistence.indexes['a']).toMatchObject({
       name: 'a',
-      fields: { a: 1 },
-      options: { sparse: true, unique: true },
+      fields: { a: 'Asc' },
+      options: { sparse: false, unique: true },
     });
   });
+  // тут тестируем
   it('should create complex index entry', () => {
     const res = new EntityBase({
       name: 'A',
@@ -230,11 +231,11 @@ describe('Indexing', () => {
     expect(res.toObject()).toMatchSnapshot('complex index text');
     expect(res.metadata.persistence.indexes['text']).toMatchObject({
       name: 'text',
-      fields: { a: 1, b: 1 },
-      options: { sparse: true },
+      fields: { a: 'text', b: 'text' },
+      options: { sparse: false },
     });
   });
-  it('should create complex unique index entry', () => {
+  it('should create complex unique index entry 1', () => {
     const res = new EntityBase({
       name: 'A',
       fields: [{ name: 'a', identity: 'ab ' }, { name: 'b', identity: 'ab' }],
@@ -242,11 +243,27 @@ describe('Indexing', () => {
     expect(res.toObject()).toMatchSnapshot('complex identity index text');
     expect(res.metadata.persistence.indexes['ab']).toMatchObject({
       name: 'ab',
-      fields: { a: 1, b: 1 },
-      options: { sparse: true, unique: true },
+      fields: { a: 'Asc', b: 'Asc' },
+      options: { sparse: false, unique: true },
     });
   });
-  it('should create complex unique index entry', () => {
+
+  it('should create text index type from `text` string', () => {
+    const res = new EntityBase({
+      name: 'A',
+      fields: [
+        { name: 'd', indexed: 'text ab d' }, //
+      ],
+    });
+
+    expect(res.metadata.persistence.indexes['text']).toMatchObject({
+      name: 'text',
+      fields: { d: 'text' },
+      options: { sparse: false, unique: false },
+    });
+  });
+
+  it('should create complex unique index entry 2', () => {
     const res = new EntityBase({
       name: 'A',
       fields: [
@@ -258,40 +275,41 @@ describe('Indexing', () => {
     });
     const a = res.fields.get('a');
     if (a) {
-      expect(a.identity).toBe('ab');
-      expect(a.indexed).toBe('text');
+      expect(a.identity).toBe(true);
+      expect(a.indexed).toBe(true);
     }
     const b = res.fields.get('b');
     if (b) {
-      expect(b.identity).toBe('ab');
+      expect(b.identity).toBe(false);
       expect(b.indexed).toBe(true);
     }
     const c = res.fields.get('c');
     if (c) {
       expect(c.identity).toBe(false);
-      expect(c.indexed).toBe('text');
+      expect(c.indexed).toBe(true);
+      expect((c.indexes.text.type = 'text'));
     }
     const d = res.fields.get('d');
     if (d) {
-      expect(d.identity).toBe('ab');
-      expect(d.indexed).toMatchObject(['text', 'd']);
+      expect(d.identity).toBe(false);
+      expect(d.indexed).toBe(true);
     }
     expect(res.toObject()).toMatchSnapshot('complex identity index text');
-
+    // тут
     expect(res.metadata.persistence.indexes['ab']).toMatchObject({
       name: 'ab',
-      fields: { a: 1, b: 1, d: 1 },
-      options: { sparse: true, unique: true },
+      fields: { a: 'Asc', b: 'Asc', d: 'Asc' },
+      options: { sparse: false, unique: true },
     });
     expect(res.metadata.persistence.indexes['text']).toMatchObject({
       name: 'text',
-      fields: { a: 1, c: 1, d: 1 },
-      options: { sparse: true },
+      fields: { a: 'text', c: 'text', d: 'text' },
+      options: { sparse: false, unique: false },
     });
     expect(res.metadata.persistence.indexes['d']).toMatchObject({
       name: 'd',
-      fields: { d: 1 },
-      options: { sparse: true },
+      fields: { d: 'Asc' },
+      options: { sparse: false, unique: false },
     });
   });
 });

@@ -25,7 +25,8 @@ EntityBase {
           "persistence": Object {
             "derived": false,
             "identity": false,
-            "indexed": true,
+            "indexed": false,
+            "indexes": Object {},
             "persistent": true,
             "required": false,
           },
@@ -53,6 +54,7 @@ EntityBase {
             "derived": false,
             "identity": false,
             "indexed": false,
+            "indexes": Object {},
             "persistent": true,
             "required": false,
           },
@@ -109,7 +111,8 @@ EntityBase {
           "persistence": Object {
             "derived": false,
             "identity": false,
-            "indexed": true,
+            "indexed": false,
+            "indexes": Object {},
             "persistent": false,
             "required": false,
           },
@@ -167,6 +170,7 @@ EntityBase {
             "derived": false,
             "identity": false,
             "indexed": false,
+            "indexes": Object {},
             "persistent": false,
             "required": false,
           },
@@ -177,6 +181,7 @@ EntityBase {
           "args": Map {},
           "idKey": EntityReference {
             Symbol(internal): Object {
+              "backField": "id",
               "entity": "A",
               "field": "id",
             },
@@ -201,6 +206,14 @@ EntityBase {
             "derived": false,
             "identity": true,
             "indexed": true,
+            "indexes": Object {
+              "id": Object {
+                "name": "id",
+                "sort": "Asc",
+                "sparse": true,
+                "type": "unique",
+              },
+            },
             "persistent": true,
             "required": true,
           },
@@ -247,10 +260,11 @@ EntityBase {
       "indexes": Object {
         "id": Object {
           "fields": Object {
-            "id": 1,
+            "id": "Asc",
           },
           "name": "id",
           "options": Object {
+            "sparse": true,
             "unique": true,
           },
         },
@@ -279,7 +293,8 @@ Object {
         "persistence": Object {
           "derived": false,
           "identity": false,
-          "indexed": true,
+          "indexed": false,
+          "indexes": Object {},
           "persistent": true,
           "required": false,
         },
@@ -307,6 +322,7 @@ Object {
           "derived": false,
           "identity": false,
           "indexed": false,
+          "indexes": Object {},
           "persistent": true,
           "required": false,
         },
@@ -336,7 +352,8 @@ Object {
         "persistence": Object {
           "derived": false,
           "identity": false,
-          "indexed": true,
+          "indexed": false,
+          "indexes": Object {},
           "persistent": false,
           "required": false,
         },
@@ -367,6 +384,7 @@ Object {
           "derived": false,
           "identity": false,
           "indexed": false,
+          "indexes": Object {},
           "persistent": false,
           "required": false,
         },
@@ -409,6 +427,14 @@ Object {
           "derived": false,
           "identity": true,
           "indexed": true,
+          "indexes": Object {
+            "id": Object {
+              "name": "id",
+              "sort": "Asc",
+              "sparse": true,
+              "type": "unique",
+            },
+          },
           "persistent": true,
           "required": true,
         },
@@ -448,10 +474,11 @@ Object {
       "indexes": Object {
         "id": Object {
           "fields": Object {
-            "id": 1,
+            "id": "Asc",
           },
           "name": "id",
           "options": Object {
+            "sparse": true,
             "unique": true,
           },
         },
@@ -484,6 +511,14 @@ Object {
           "derived": false,
           "identity": true,
           "indexed": true,
+          "indexes": Object {
+            "id": Object {
+              "name": "id",
+              "sort": "Asc",
+              "sparse": undefined,
+              "type": "unique",
+            },
+          },
           "persistent": true,
           "required": true,
         },
@@ -520,7 +555,18 @@ Object {
       "singular": "Species",
     },
     "persistence": Object {
-      "indexes": Object {},
+      "indexes": Object {
+        "id": Object {
+          "fields": Object {
+            "id": "Asc",
+          },
+          "name": "id",
+          "options": Object {
+            "sparse": false,
+            "unique": true,
+          },
+        },
+      },
     },
     "titlePlural": "AllSpecies",
   },
@@ -549,6 +595,14 @@ Object {
           "derived": false,
           "identity": true,
           "indexed": true,
+          "indexes": Object {
+            "id": Object {
+              "name": "id",
+              "sort": "Asc",
+              "sparse": undefined,
+              "type": "unique",
+            },
+          },
           "persistent": true,
           "required": true,
         },
@@ -585,7 +639,18 @@ Object {
       "singular": "A",
     },
     "persistence": Object {
-      "indexes": Object {},
+      "indexes": Object {
+        "id": Object {
+          "fields": Object {
+            "id": "Asc",
+          },
+          "name": "id",
+          "options": Object {
+            "sparse": false,
+            "unique": true,
+          },
+        },
+      },
     },
     "titlePlural": "As",
   },
@@ -611,6 +676,14 @@ Object {
       "derived": false,
       "identity": true,
       "indexed": true,
+      "indexes": Object {
+        "_id": Object {
+          "name": "_id",
+          "sort": "Asc",
+          "sparse": true,
+          "type": "unique",
+        },
+      },
       "persistent": true,
       "required": true,
     },
@@ -641,6 +714,14 @@ Object {
       "derived": false,
       "identity": true,
       "indexed": true,
+      "indexes": Object {
+        "id": Object {
+          "name": "id",
+          "sort": "Asc",
+          "sparse": true,
+          "type": "unique",
+        },
+      },
       "persistent": true,
       "required": true,
     },
@@ -674,6 +755,14 @@ Object {
           "derived": false,
           "identity": true,
           "indexed": true,
+          "indexes": Object {
+            "id": Object {
+              "name": "id",
+              "sort": "Asc",
+              "sparse": undefined,
+              "type": "unique",
+            },
+          },
           "persistent": true,
           "required": true,
         },
@@ -710,7 +799,18 @@ Object {
       "singular": "A",
     },
     "persistence": Object {
-      "indexes": Object {},
+      "indexes": Object {
+        "id": Object {
+          "fields": Object {
+            "id": "Asc",
+          },
+          "name": "id",
+          "options": Object {
+            "sparse": false,
+            "unique": true,
+          },
+        },
+      },
     },
     "titlePlural": "As",
   },
@@ -797,7 +897,15 @@ Object {
         "persistence": Object {
           "derived": false,
           "identity": false,
-          "indexed": "text",
+          "indexed": true,
+          "indexes": Object {
+            "text": Object {
+              "name": "text",
+              "sort": "Asc",
+              "sparse": undefined,
+              "type": "text",
+            },
+          },
           "persistent": true,
           "required": false,
         },
@@ -824,7 +932,15 @@ Object {
         "persistence": Object {
           "derived": false,
           "identity": false,
-          "indexed": "text",
+          "indexed": true,
+          "indexes": Object {
+            "text": Object {
+              "name": "text",
+              "sort": "Asc",
+              "sparse": undefined,
+              "type": "text",
+            },
+          },
           "persistent": true,
           "required": false,
         },
@@ -852,6 +968,14 @@ Object {
           "derived": false,
           "identity": true,
           "indexed": true,
+          "indexes": Object {
+            "id": Object {
+              "name": "id",
+              "sort": "Asc",
+              "sparse": true,
+              "type": "unique",
+            },
+          },
           "persistent": true,
           "required": true,
         },
@@ -891,21 +1015,23 @@ Object {
       "indexes": Object {
         "id": Object {
           "fields": Object {
-            "id": 1,
+            "id": "Asc",
           },
           "name": "id",
           "options": Object {
+            "sparse": true,
             "unique": true,
           },
         },
         "text": Object {
           "fields": Object {
-            "a": 1,
-            "b": 1,
+            "a": "text",
+            "b": "text",
           },
           "name": "text",
           "options": Object {
-            "sparse": true,
+            "sparse": false,
+            "unique": false,
           },
         },
       },
@@ -918,7 +1044,7 @@ Object {
 }
 `;
 
-exports[`Indexing should create complex unique index entry: complex identity index text 1`] = `
+exports[`Indexing should create complex unique index entry 1: complex identity index text 1`] = `
 Object {
   "description": undefined,
   "fields": Array [
@@ -935,8 +1061,16 @@ Object {
         "order": 0,
         "persistence": Object {
           "derived": false,
-          "identity": "ab",
+          "identity": true,
           "indexed": true,
+          "indexes": Object {
+            "ab": Object {
+              "name": "ab",
+              "sort": "Asc",
+              "sparse": undefined,
+              "type": "unique",
+            },
+          },
           "persistent": true,
           "required": true,
         },
@@ -962,8 +1096,16 @@ Object {
         "order": 1,
         "persistence": Object {
           "derived": false,
-          "identity": "ab",
+          "identity": true,
           "indexed": true,
+          "indexes": Object {
+            "ab": Object {
+              "name": "ab",
+              "sort": "Asc",
+              "sparse": undefined,
+              "type": "unique",
+            },
+          },
           "persistent": true,
           "required": true,
         },
@@ -991,6 +1133,14 @@ Object {
           "derived": false,
           "identity": true,
           "indexed": true,
+          "indexes": Object {
+            "id": Object {
+              "name": "id",
+              "sort": "Asc",
+              "sparse": true,
+              "type": "unique",
+            },
+          },
           "persistent": true,
           "required": true,
         },
@@ -1028,41 +1178,24 @@ Object {
     },
     "persistence": Object {
       "indexes": Object {
-        "a": Object {
-          "fields": Object {
-            "a": 1,
-          },
-          "name": "a",
-          "options": Object {
-            "sparse": true,
-          },
-        },
         "ab": Object {
           "fields": Object {
-            "a": 1,
-            "b": 1,
+            "a": "Asc",
+            "b": "Asc",
           },
           "name": "ab",
           "options": Object {
-            "sparse": true,
+            "sparse": false,
             "unique": true,
-          },
-        },
-        "b": Object {
-          "fields": Object {
-            "b": 1,
-          },
-          "name": "b",
-          "options": Object {
-            "sparse": true,
           },
         },
         "id": Object {
           "fields": Object {
-            "id": 1,
+            "id": "Asc",
           },
           "name": "id",
           "options": Object {
+            "sparse": true,
             "unique": true,
           },
         },
@@ -1076,7 +1209,7 @@ Object {
 }
 `;
 
-exports[`Indexing should create complex unique index entry: complex identity index text 2`] = `
+exports[`Indexing should create complex unique index entry 2: complex identity index text 1`] = `
 Object {
   "description": undefined,
   "fields": Array [
@@ -1093,8 +1226,22 @@ Object {
         "order": 0,
         "persistence": Object {
           "derived": false,
-          "identity": "ab",
-          "indexed": "text",
+          "identity": true,
+          "indexed": true,
+          "indexes": Object {
+            "ab": Object {
+              "name": "ab",
+              "sort": "Asc",
+              "sparse": undefined,
+              "type": "unique",
+            },
+            "text": Object {
+              "name": "text",
+              "sort": "Asc",
+              "sparse": undefined,
+              "type": "text",
+            },
+          },
           "persistent": true,
           "required": true,
         },
@@ -1120,10 +1267,18 @@ Object {
         "order": 1,
         "persistence": Object {
           "derived": false,
-          "identity": "ab",
+          "identity": false,
           "indexed": true,
+          "indexes": Object {
+            "ab": Object {
+              "name": "ab",
+              "sort": "Asc",
+              "sparse": undefined,
+              "type": undefined,
+            },
+          },
           "persistent": true,
-          "required": true,
+          "required": false,
         },
       },
       "multiplicity": "one",
@@ -1148,7 +1303,15 @@ Object {
         "persistence": Object {
           "derived": false,
           "identity": false,
-          "indexed": "text",
+          "indexed": true,
+          "indexes": Object {
+            "text": Object {
+              "name": "text",
+              "sort": "Asc",
+              "sparse": undefined,
+              "type": "text",
+            },
+          },
           "persistent": true,
           "required": false,
         },
@@ -1174,13 +1337,30 @@ Object {
         "order": 3,
         "persistence": Object {
           "derived": false,
-          "identity": "ab",
-          "indexed": Array [
-            "text",
-            "d",
-          ],
+          "identity": false,
+          "indexed": true,
+          "indexes": Object {
+            "ab": Object {
+              "name": "ab",
+              "sort": "Asc",
+              "sparse": undefined,
+              "type": undefined,
+            },
+            "d": Object {
+              "name": "d",
+              "sort": "Asc",
+              "sparse": undefined,
+              "type": undefined,
+            },
+            "text": Object {
+              "name": "text",
+              "sort": "Asc",
+              "sparse": undefined,
+              "type": "text",
+            },
+          },
           "persistent": true,
-          "required": true,
+          "required": false,
         },
       },
       "multiplicity": "one",
@@ -1206,6 +1386,14 @@ Object {
           "derived": false,
           "identity": true,
           "indexed": true,
+          "indexes": Object {
+            "id": Object {
+              "name": "id",
+              "sort": "Asc",
+              "sparse": true,
+              "type": "unique",
+            },
+          },
           "persistent": true,
           "required": true,
         },
@@ -1245,43 +1433,46 @@ Object {
       "indexes": Object {
         "ab": Object {
           "fields": Object {
-            "a": 1,
-            "b": 1,
-            "d": 1,
+            "a": "Asc",
+            "b": "Asc",
+            "d": "Asc",
           },
           "name": "ab",
           "options": Object {
-            "sparse": true,
+            "sparse": false,
             "unique": true,
           },
         },
         "d": Object {
           "fields": Object {
-            "d": 1,
+            "d": "Asc",
           },
           "name": "d",
           "options": Object {
-            "sparse": true,
+            "sparse": false,
+            "unique": false,
           },
         },
         "id": Object {
           "fields": Object {
-            "id": 1,
+            "id": "Asc",
           },
           "name": "id",
           "options": Object {
+            "sparse": true,
             "unique": true,
           },
         },
         "text": Object {
           "fields": Object {
-            "a": 1,
-            "c": 1,
-            "d": 1,
+            "a": "text",
+            "c": "text",
+            "d": "text",
           },
           "name": "text",
           "options": Object {
-            "sparse": true,
+            "sparse": false,
+            "unique": false,
           },
         },
       },
@@ -1319,10 +1510,21 @@ EntityBase {
           "persistence": Object {
             "derived": false,
             "identity": false,
-            "indexed": Array [
-              "some",
-              "a",
-            ],
+            "indexed": true,
+            "indexes": Object {
+              "a": Object {
+                "name": "a",
+                "sort": "Asc",
+                "sparse": undefined,
+                "type": undefined,
+              },
+              "some": Object {
+                "name": "some",
+                "sort": "Asc",
+                "sparse": undefined,
+                "type": undefined,
+              },
+            },
             "persistent": true,
             "required": false,
           },
@@ -1333,6 +1535,7 @@ EntityBase {
           "args": Map {},
           "idKey": EntityReference {
             Symbol(internal): Object {
+              "backField": "id",
               "entity": "A",
               "field": "id",
             },
@@ -1357,6 +1560,14 @@ EntityBase {
             "derived": false,
             "identity": true,
             "indexed": true,
+            "indexes": Object {
+              "id": Object {
+                "name": "id",
+                "sort": "Asc",
+                "sparse": true,
+                "type": "unique",
+              },
+            },
             "persistent": true,
             "required": true,
           },
@@ -1402,26 +1613,38 @@ EntityBase {
       "indexes": Object {
         "a": Object {
           "fields": Object {
-            "a": 1,
+            "a": "Asc",
           },
           "name": "a",
           "options": Object {
-            "sparse": true,
+            "sparse": false,
+            "unique": false,
           },
         },
         "coolIndex": Object {
           "fields": Object {
-            "a": 1,
+            "a": "Asc",
           },
           "name": "some",
         },
         "id": Object {
           "fields": Object {
-            "id": 1,
+            "id": "Asc",
           },
           "name": "id",
           "options": Object {
+            "sparse": true,
             "unique": true,
+          },
+        },
+        "some": Object {
+          "fields": Object {
+            "a": "Asc",
+          },
+          "name": "some",
+          "options": Object {
+            "sparse": false,
+            "unique": false,
           },
         },
       },

@@ -36,6 +36,14 @@ Object {
               "derived": false,
               "identity": true,
               "indexed": true,
+              "indexes": Object {
+                "id": Object {
+                  "name": "id",
+                  "sort": "Asc",
+                  "sparse": undefined,
+                  "type": "unique",
+                },
+              },
               "persistent": true,
               "required": true,
             },
@@ -73,7 +81,18 @@ Object {
           "singular": "Entity",
         },
         "persistence": Object {
-          "indexes": Object {},
+          "indexes": Object {
+            "id": Object {
+              "fields": Object {
+                "id": "Asc",
+              },
+              "name": "id",
+              "options": Object {
+                "sparse": false,
+                "unique": true,
+              },
+            },
+          },
         },
         "titlePlural": "Entities",
       },
@@ -119,6 +138,14 @@ Object {
               "derived": false,
               "identity": true,
               "indexed": true,
+              "indexes": Object {
+                "id": Object {
+                  "name": "id",
+                  "sort": "Asc",
+                  "sparse": undefined,
+                  "type": "unique",
+                },
+              },
               "persistent": true,
               "required": true,
             },
@@ -155,7 +182,18 @@ Object {
           "singular": "Mixin",
         },
         "persistence": Object {
-          "indexes": Object {},
+          "indexes": Object {
+            "id": Object {
+              "fields": Object {
+                "id": "Asc",
+              },
+              "name": "id",
+              "options": Object {
+                "sparse": false,
+                "unique": true,
+              },
+            },
+          },
         },
         "titlePlural": "Mixins",
       },

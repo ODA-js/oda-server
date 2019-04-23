@@ -40,6 +40,14 @@ FieldBase {
       "derived": true,
       "identity": true,
       "indexed": true,
+      "indexes": Object {
+        "fieldName": Object {
+          "name": "fieldName",
+          "sort": "Asc",
+          "sparse": undefined,
+          "type": undefined,
+        },
+      },
       "persistent": true,
       "required": true,
     },
@@ -77,6 +85,14 @@ Object {
       "derived": true,
       "identity": true,
       "indexed": true,
+      "indexes": Object {
+        "fieldName": Object {
+          "name": "fieldName",
+          "sort": "Asc",
+          "sparse": undefined,
+          "type": undefined,
+        },
+      },
       "persistent": true,
       "required": true,
     },
@@ -108,6 +124,14 @@ FieldBase {
       "derived": false,
       "identity": true,
       "indexed": true,
+      "indexes": Object {
+        "field": Object {
+          "name": "field",
+          "sort": "Asc",
+          "sparse": undefined,
+          "type": "unique",
+        },
+      },
       "persistent": true,
       "required": true,
     },

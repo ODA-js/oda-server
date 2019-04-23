@@ -16,6 +16,7 @@ Object {
       "derived": false,
       "identity": false,
       "indexed": false,
+      "indexes": Object {},
       "persistent": true,
       "required": false,
     },

@@ -81,7 +81,8 @@ Object {
             "persistence": Object {
               "derived": false,
               "identity": false,
-              "indexed": true,
+              "indexed": false,
+              "indexes": Object {},
               "persistent": true,
               "required": false,
             },
@@ -121,6 +122,7 @@ Object {
               "derived": false,
               "identity": false,
               "indexed": false,
+              "indexes": Object {},
               "persistent": false,
               "required": false,
             },
@@ -163,6 +165,14 @@ Object {
               "derived": false,
               "identity": true,
               "indexed": true,
+              "indexes": Object {
+                "id": Object {
+                  "name": "id",
+                  "sort": "Asc",
+                  "sparse": true,
+                  "type": "unique",
+                },
+              },
               "persistent": true,
               "required": true,
             },
@@ -212,10 +222,11 @@ Object {
           "indexes": Object {
             "id": Object {
               "fields": Object {
-                "id": 1,
+                "id": "Asc",
               },
               "name": "id",
               "options": Object {
+                "sparse": true,
                 "unique": true,
               },
             },
@@ -308,7 +319,8 @@ Object {
                 "persistence": Object {
                   "derived": false,
                   "identity": false,
-                  "indexed": true,
+                  "indexed": false,
+                  "indexes": Object {},
                   "persistent": true,
                   "required": false,
                 },
@@ -348,6 +360,7 @@ Object {
                   "derived": false,
                   "identity": false,
                   "indexed": false,
+                  "indexes": Object {},
                   "persistent": false,
                   "required": false,
                 },
@@ -390,6 +403,14 @@ Object {
                   "derived": false,
                   "identity": true,
                   "indexed": true,
+                  "indexes": Object {
+                    "id": Object {
+                      "name": "id",
+                      "sort": "Asc",
+                      "sparse": true,
+                      "type": "unique",
+                    },
+                  },
                   "persistent": true,
                   "required": true,
                 },
@@ -440,10 +461,11 @@ Object {
               "indexes": Object {
                 "id": Object {
                   "fields": Object {
-                    "id": 1,
+                    "id": "Asc",
                   },
                   "name": "id",
                   "options": Object {
+                    "sparse": true,
                     "unique": true,
                   },
                 },

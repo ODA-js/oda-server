@@ -16,6 +16,11 @@ import {
   MapToArray,
   ArrayToMap,
   IBuildable,
+  IndexEntry,
+  IndexValueType,
+  convertIndexEntryToIndexDefinition,
+  IndexEntityStore,
+  convertIndexDefinitionToIndexEntry,
 } from './types';
 
 import { OperationInput, IOperation, Operation } from './operation';
@@ -28,7 +33,6 @@ import {
   isISimpleField,
   isIEntityField,
   isIRelationField,
-  mergeStringArray,
 } from './field';
 import { merge } from 'lodash';
 import * as inflected from 'inflected';
@@ -57,21 +61,8 @@ export interface IEntityBase<
   readonly objectTypes: ObjectType[];
 }
 
-export interface IndexEntry {
-  name: string;
-  fields: { [field: string]: number };
-  options?: { sparse?: boolean; unique?: boolean };
-}
-
-export interface IndexEntryOptions {
-  sparse?: boolean;
-  unique?: boolean;
-}
-
 export interface EntityBasePersistence {
-  indexes: {
-    [index: string]: IndexEntry;
-  };
+  indexes: IndexEntityStore;
 }
 
 export interface UIView {
@@ -220,38 +211,18 @@ export class EntityBase<
     return this[Internal].indexed;
   }
 
-  protected updateIndex(f: IField, options: IndexEntryOptions) {
-    let indexName: string | string[];
-    const key: 'indexed' | 'identity' = options.unique ? 'identity' : 'indexed';
-
-    if (typeof f[key] === 'boolean') {
-      indexName = f.name;
-    } else if (Array.isArray(f[key])) {
-      indexName = f[key] as string[];
-    } else {
-      indexName = (f[key] as string).split(' ');
-      indexName = indexName.length > 1 ? indexName : indexName[0];
-    }
-    let entry = {
-      fields: {
-        [f.name]: 1,
-      },
-      options,
-    };
-    if (typeof indexName === 'string') {
-      this.mergeIndex(indexName, { name: indexName, ...entry });
-    } else {
-      indexName.forEach(index => {
-        this.mergeIndex(index, { name: index, ...entry });
-      });
-    }
-  }
-
-  protected mergeIndex(index: string, entry: any) {
+  protected mergeIndex(index: string, entry: IndexEntry) {
     const indexes = this.metadata.persistence.indexes;
     if (this.metadata.persistence.indexes.hasOwnProperty(index)) {
-      indexes[index] = merge(indexes[index], entry);
-      indexes[index].name = indexes[index].name;
+      const newIndex = merge({}, indexes[index], entry);
+      const curIndex = indexes[index];
+      if (curIndex.options && curIndex.options.unique) {
+        if (!newIndex.options) {
+          newIndex.options = {};
+        }
+        newIndex.options.unique = true;
+      }
+      indexes[index] = newIndex;
     } else {
       indexes[index] = entry;
     }
@@ -325,13 +296,6 @@ export class EntityBase<
                   entity: this.name,
                 } as Partial<SimpleFieldInput>),
               );
-              if (field.identity) {
-                this.updateIndex(field, { unique: true, sparse: true });
-              }
-
-              if (field.indexed) {
-                this.updateIndex(field, { sparse: true });
-              }
             } else if (isRelationFieldInput(fld)) {
               field = new RelationField(
                 merge({}, fld, {
@@ -357,11 +321,9 @@ export class EntityBase<
           if (fields.has('id')) {
             f = fields.get('id') as SimpleField;
             f.updateWith({ identity: true } as Nullable<SimpleFieldInput>);
-            this.updateIndex(f, { unique: true });
           } else if (fields.has('_id')) {
             f = fields.get('_id') as SimpleField;
             f.updateWith({ identity: true } as Nullable<SimpleFieldInput>);
-            this.updateIndex(f, { unique: true });
           } else {
             f = new SimpleField({
               ...DEFAULT_ID_FIELD,
@@ -369,7 +331,6 @@ export class EntityBase<
               order: -1,
             });
             fields.set(f.name, f);
-            this.updateIndex(f, { unique: true });
           }
 
           f.makeIdentity();
@@ -412,70 +373,56 @@ export class EntityBase<
     const required = new Set();
     const indexed = new Set();
 
-    const initialized = {
-      identity: new Set<string>(),
-      indexed: new Set<string>(),
-    };
-
     Object.keys(this.metadata.persistence.indexes).forEach(name => {
       const index = this.metadata.persistence.indexes[name];
       const fields = Object.keys(index.fields);
-      const isUnique = index.options && index.options.unique;
-      const indexType = isUnique ? 'identity' : 'indexed';
       fields.forEach(f => {
         const field = this.fields.get(f);
         if (field) {
-          let value: string[];
-          const indexed = field[indexType];
-          if (initialized[indexType].has(field.name)) {
-            /**
-             * index can be defined as external index, but field is marked just as boolean
-             * in this case we need to merge two index implementation and set it to selected field
-             */
-            value = mergeStringArray(
-              typeof indexed === 'boolean' ? [field.name] : indexed,
-              index.name,
+          if (!field.indexes.hasOwnProperty(index.name)) {
+            field.addIndex(
+              convertIndexEntryToIndexDefinition(field.name, index),
             );
           } else {
-            value = [index.name];
-            initialized[indexType].add(field.name);
+            const current = convertIndexEntryToIndexDefinition(
+              field.name,
+              index,
+            );
+            const curField = field.indexes[index.name];
+            const newIndex = merge(
+              {},
+              curField,
+              convertIndexEntryToIndexDefinition(field.name, index),
+            );
+            if (current.type === 'unique' || curField.type === 'unique') {
+              newIndex.type = 'unique';
+            }
+            field.addIndex(newIndex);
           }
-
-          updateFieldWithIndex(field, indexType, value);
         }
       });
     });
 
     this.fields.forEach(f => {
       if (f.identity) {
-        if (Array.isArray(f.identity) && f.identity.length === 1) {
-          if (f.identity[0] === f.name) {
-            updateFieldWithIndex(f, 'identity', true);
-          } else {
-            updateFieldWithIndex(f, 'identity', f.identity[0]);
-          }
-        }
         identity.add(f.name);
       }
       if (f.required) {
         required.add(f.name);
       }
       if (f.indexed) {
-        if (Array.isArray(f.indexed) && f.indexed.length === 1) {
-          if (f.indexed[0] === f.name) {
-            updateFieldWithIndex(f, 'indexed', true);
-          } else {
-            updateFieldWithIndex(f, 'indexed', f.indexed[0]);
-          }
-        }
         indexed.add(f.name);
-      }
-      if (f.indexed === f.identity) {
-        updateFieldWithIndex(f, 'indexed', true);
       }
       if (f.modelType === 'relation-field') {
         relations.add(f.name);
       }
+      Object.keys(f.indexes).forEach(iName => {
+        const index = f.indexes[iName];
+        this.mergeIndex(
+          index.name,
+          convertIndexDefinitionToIndexEntry(f, index),
+        );
+      });
     });
 
     internal.relations = relations;
@@ -502,27 +449,4 @@ export class EntityBase<
   }
 
   public build() {}
-}
-
-function updateFieldWithIndex(
-  field: IField,
-  indexType: string,
-  value: string[] | string | boolean,
-) {
-  if (isISimpleField(field)) {
-    field.updateWith({
-      [indexType]: value,
-    } as any);
-  } else if (isIEntityField(field)) {
-    field.updateWith({
-      [indexType]: value,
-    } as any);
-  } else if (
-    isIRelationField(field) &&
-    field.relation.modelType === 'BelongsTo'
-  ) {
-    field.updateWith({
-      [indexType]: value,
-    } as any);
-  }
 }

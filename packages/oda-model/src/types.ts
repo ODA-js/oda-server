@@ -5,6 +5,7 @@ import { IRelation } from './relation';
 import { IBelongsToManyRelation } from './belongstomany';
 import { ObjectTypeFieldInput, IObjectTypeField } from './objecttypefield';
 import { ObjectTypeInput, IObjectType, ObjectTypeOutput } from './objecttype';
+import { IField } from './field';
 
 export type Nullable<T> = { [P in keyof T]: T[P] | undefined | null };
 
@@ -339,7 +340,128 @@ export type FieldType = SimpleModelTypeInput | EntityType;
 export type FieldTypeInput = SimpleModelTypeInput | EntityType;
 export type FieldTypeOutput = SimpleModelType | EntityType;
 
-export type IndexValueType = boolean | string | string[];
+export type SpecialIndexType = 'text' | 'geo';
+export type IndexTypes = 'index' | 'unique' | SpecialIndexType;
+export type SortOrder = 'Asc' | 'Desc';
+
+export type IndexEntityStore = {
+  [index: string]: IndexEntry;
+};
+
+export type IndexFieldStore = {
+  [index: string]: IndexDefinition;
+};
+
+export interface IndexEntry {
+  name: string;
+  fields: { [field: string]: SortOrder | SpecialIndexType };
+  options?: IndexEntryOptions;
+}
+
+export interface IndexEntryOptions {
+  sparse?: boolean;
+  unique?: boolean;
+}
+
+export type IndexDefinition = {
+  name: string;
+  sort: SortOrder;
+  type?: IndexTypes;
+  sparse?: boolean;
+};
+
+export function convertIndexDefinitionToIndexEntry(
+  field: IField,
+  entry: IndexDefinition,
+  options?: IndexEntryOptions,
+): IndexEntry {
+  return {
+    name: entry.name,
+    fields: {
+      [field.name]:
+        entry.type !== 'text' && entry.type !== 'geo' ? entry.sort : entry.type,
+    },
+    options: {
+      sparse: entry.sparse || (options ? options.sparse : false),
+      unique: entry.type === 'unique' || (options ? options.unique : false),
+    },
+  };
+}
+
+export function convertIndexEntryToIndexDefinition(
+  field: string,
+  index: IndexEntry,
+): IndexDefinition {
+  const entry = index.fields[field];
+  return {
+    name: index.name,
+    sort: entry !== 'geo' && entry !== 'text' ? entry : 'Asc',
+    sparse: index.options ? index.options.sparse : false,
+    type:
+      entry !== 'geo' && entry !== 'text'
+        ? index.options && index.options.unique
+          ? 'unique'
+          : 'index'
+        : entry,
+  };
+}
+
+export function makeIndexDefinition(inp: string): IndexDefinition[] {
+  inp = inp.trim();
+  const result = inp.trim().split(' ');
+  if (result.length > 1) {
+    return result.map(r => makeIndexDefinition(r)[0]);
+  } else {
+    const def = inp.split(':').map(v => v.trim());
+    const sort = def.length > 1 ? def[1].toLowerCase() : 'Asc';
+    const index: IndexDefinition = {
+      name: def[0],
+      sort:
+        sort.match(/asc/i) || sort.match(/1/) ? 'Asc' : ('Desc' as SortOrder),
+    };
+    if (def[0] === 'text') {
+      index.type = 'text';
+    }
+    if (def[0] === 'geo') {
+      index.type = 'geo';
+    }
+    return [index];
+  }
+}
+
+export type IndexValueType =
+  | boolean
+  | string
+  | string[]
+  | IndexDefinition
+  | IndexDefinition[]
+  | (string | IndexDefinition)[];
+
+export function convertIndexValueTypeToIndexDefinition(
+  fieldName: string,
+  value: IndexValueType,
+) {
+  let result: boolean | IndexDefinition[];
+  if (typeof value === 'string') {
+    result = makeIndexDefinition(value);
+  } else if (Array.isArray(value)) {
+    result = [] as IndexDefinition[];
+    value.forEach(val => {
+      if (typeof val === 'string') {
+        (result as IndexDefinition[]).push(...makeIndexDefinition(val));
+      } else {
+        (result as IndexDefinition[]).push(val);
+      }
+    });
+  } else if (typeof value === 'object') {
+    result = [value];
+  } else if (value) {
+    result = makeIndexDefinition(fieldName);
+  } else {
+    result = false;
+  }
+  return result;
+}
 
 export type CommonArgsInput =
   | AsHash<ObjectTypeFieldInput | ObjectTypeInput>

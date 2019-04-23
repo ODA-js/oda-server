@@ -42,6 +42,13 @@ describe('FieldBase', () => {
         persistence: {
           indexed: true,
           identity: true,
+          indexes: {
+            field: {
+              name: 'field',
+              sort: 'Asc',
+              type: 'unique',
+            },
+          },
         },
       },
     });
@@ -56,5 +63,19 @@ describe('FieldBase', () => {
       ],
     });
     expect(res.args.size).toBe(1);
+  });
+
+  it('should create text index type from text string', () => {
+    debugger;
+    const res = new FieldBase(
+      { name: 'd', indexed: 'text ab d' }, //
+    );
+
+    expect(res.metadata.persistence.indexes['text']).toMatchObject({
+      name: 'text',
+      sort: 'Asc',
+      sparse: undefined,
+      type: 'text',
+    });
   });
 });
